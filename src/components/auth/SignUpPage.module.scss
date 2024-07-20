@@ -1,0 +1,97 @@
+
+.authContainer {
+  max-width: 400px;
+  margin: 100px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.authContainer h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.authContainer form {
+  display: flex;
+  flex-direction: column;
+}
+
+.authContainer form p {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.authContainer form label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.authContainer form input {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.authContainer form button {
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.authContainer form button:hover {
+  background-color: #0056b3;
+}
+
+.authContainer .loginLink {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.authContainer .loginLink a {
+  text-decoration: none;
+  color: #007bff;
+}
+
+.authContainer .loginLink a:hover {
+  text-decoration: underline;
+}
+
+.inputWithButton {
+  display: flex;
+  flex-direction: column;
+}
+
+.emailField {
+  display: flex;
+  align-items: center;
+}
+
+.emailField input {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.emailField button {
+  padding: 10px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+.emailField button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}

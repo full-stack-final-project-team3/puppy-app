@@ -1,0 +1,55 @@
+// MainNavigation.module.scss
+.header {
+  background-color: #f8f9fa;
+  padding: 10px;
+  border-bottom: 1px solid #e7e7e7;
+  display: flex;
+  justify-content: center;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 20px;
+}
+
+.nav li {
+  margin: 0;
+}
+
+.nav a {
+  text-decoration: none;
+  color: #007bff;
+}
+
+.nav a:hover,
+.nav a.active {
+  color: #0056b3;
+  font-weight: bold;
+}
+
+.nav form {
+  margin: 0;
+}
+
+.logoutButton {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+}
+
+.logoutButton:hover {
+  color: #0056b3;
+  font-weight: bold;
+}
