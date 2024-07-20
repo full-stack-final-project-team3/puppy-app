@@ -1,3 +1,4 @@
+// MainNavigation.module.scss
 .header {
   background-color: #f8f9fa;
   padding: 10px;
@@ -18,7 +19,6 @@
   padding: 0;
   display: flex;
   gap: 20px;
-  cursor: pointer;
 }
 
 .nav li {
@@ -38,4 +38,18 @@
 
 .nav form {
   margin: 0;
+}
+
+.logoutButton {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+}
+
+.logoutButton:hover {
+  color: #0056b3;
+  font-weight: bold;
 }

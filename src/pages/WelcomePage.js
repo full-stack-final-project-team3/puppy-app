@@ -4,18 +4,13 @@ import {useRouteLoaderData} from "react-router-dom";
 const WelcomePage = () => {
 
     const userData = useRouteLoaderData('user-data');
-
-
+    if (userData) console.log(userData)
 
     return (
         <>
-            <div>
-                Welcome ~
-            </div>
+            {userData ? <div>Welcome {userData.nickname}~</div> : <div>Welcome ~</div>}
         </>
-
-
     );
-};
+}
 
 export default WelcomePage;

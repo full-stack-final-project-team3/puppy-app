@@ -6,6 +6,7 @@ import WelcomePage from '../pages/WelcomePage';
 import LoginForm, { loginAction } from '../components/auth/LoginForm';
 import SignUpPage from '../components/auth/SignUpPage';
 import { userDataLoader } from './auth';
+import { logoutAction } from '../pages/Logout';
 
 const homeRouter = [
   {
@@ -35,6 +36,10 @@ export const router = createBrowserRouter([
         element: <Home />,
         children: homeRouter,
       },
+      {
+        path: 'logout',
+        action: logoutAction,
+      }
     ],
   },
 ]);

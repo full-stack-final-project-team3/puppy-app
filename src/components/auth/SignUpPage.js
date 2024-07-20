@@ -14,6 +14,7 @@ const SignUpPage = () => {
     const [nickname, setNickname] = useState('');
     const [verificationCodeSent, setVerificationCodeSent] = useState(false);
     const [emailValid, setEmailValid] = useState(false);
+    const [codeValid, setCodeValid] = useState(false);
 
     useEffect(() => {
         emailRef.current.focus();
@@ -67,10 +68,35 @@ const SignUpPage = () => {
         }
     };
 
+    const handleVerifyCode = async (e) => {
+        console.log(verificationCode)
+        e.preventDefault();
+        try {
+            const response = await fetch(`${AUTH_URL}/code?email=${email}&code=${verificationCode}`);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const flag = await response.json();
+            if (flag) {
+                setCodeValid(true);
+                console.log("코드 검증 완료");
+            } else {
+                setCodeValid(false);
+                console.log("코드 검증 실패");
+            }
+        } catch (error) {
+            console.error('Fetch error:', error);
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (password !== passwordCheck) {
             console.log("비밀번호가 일치하지 않습니다.");
+            return;
+        }
+        if (!codeValid) {
+            console.log("코드 검증이 완료되지 않았습니다.");
             return;
         }
         const payload = { email, password, nickname };
@@ -112,16 +138,21 @@ const SignUpPage = () => {
                         </button>
                     </div>
                 </p>
-                <p>
+                <p className={styles.inputWithButton}>
                     <label htmlFor="verificationCode">Verification Code</label>
-                    <input
-                        id="verificationCode"
-                        type="text"
-                        name="verificationCode"
-                        value={verificationCode}
-                        onChange={handleVerificationCodeChange}
-                        required
-                    />
+                    <div className={styles.emailField}>
+                        <input
+                            id="verificationCode"
+                            type="text"
+                            name="verificationCode"
+                            value={verificationCode}
+                            onChange={handleVerificationCodeChange}
+                            required
+                        />
+                        <button onClick={handleVerifyCode} disabled={codeValid}>
+                            {codeValid ? '완료' : '코드 검증'}
+                        </button>
+                    </div>
                 </p>
                 <p>
                     <label htmlFor="password">Password</label>

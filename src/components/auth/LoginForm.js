@@ -47,11 +47,11 @@ export const loginAction = async ({ request }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
     });
-
-    if (response.status === 422) {
-        const errorText = await response.text();
-        return errorText;
-    }
+    //
+    // if (response.status === 422) {
+    //     const errorText = await response.text();
+    //     return errorText;
+    // }
 
     const responseData = await response.json();
     localStorage.setItem('userData', JSON.stringify(responseData));
