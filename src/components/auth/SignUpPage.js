@@ -1,31 +1,160 @@
-import React from 'react';
-import { Form, Link } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from './SignUpPage.module.scss';
+import { AUTH_URL } from '../../config/host-config';
 
 const SignUpPage = () => {
+    const navigate = useNavigate();
+    const emailRef = useRef();
+
+    const [email, setEmail] = useState('');
+    const [verificationCode, setVerificationCode] = useState('');
+    const [password, setPassword] = useState('');
+    const [passwordCheck, setPasswordCheck] = useState('');
+    const [nickname, setNickname] = useState('');
+    const [verificationCodeSent, setVerificationCodeSent] = useState(false);
+    const [emailValid, setEmailValid] = useState(false);
+
+    useEffect(() => {
+        emailRef.current.focus();
+    }, []);
+
+    const handleEmailChange = (e) => {
+        setEmail(e.target.value);
+    };
+
+    const handleVerificationCodeChange = (e) => {
+        setVerificationCode(e.target.value);
+    };
+
+    const handlePasswordChange = (e) => {
+        setPassword(e.target.value);
+    };
+
+    const handlePasswordCheckChange = (e) => {
+        setPasswordCheck(e.target.value);
+    };
+
+    const handleNicknameChange = (e) => {
+        setNickname(e.target.value);
+    };
+
+    const validateEmail = (email) => {
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailPattern.test(email);
+    };
+
+    const handleSendVerificationCode = async (e) => {
+        e.preventDefault();
+        if (!validateEmail(email)) {
+            console.log("형식이 유효하지 않다!");
+            return;
+        }
+        try {
+            const response = await fetch(`${AUTH_URL}/check-email?email=${email}`);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const flag = await response.json();
+            if (flag) {
+                setEmailValid(false);
+                return;
+            }
+            setEmailValid(true);
+            setVerificationCodeSent(true);
+        } catch (error) {
+            console.error('Fetch error:', error);
+        }
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (password !== passwordCheck) {
+            console.log("비밀번호가 일치하지 않습니다.");
+            return;
+        }
+        const payload = { email, password, nickname };
+        try {
+            const response = await fetch(`${AUTH_URL}/join`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            navigate('/');
+        } catch (error) {
+            console.error('Fetch error:', error);
+        }
+    };
+
     return (
         <div className={styles.authContainer}>
-            <Form method="post">
+            <form onSubmit={handleSubmit}>
                 <h1>Sign Up</h1>
-                <p>
+                <p className={styles.inputWithButton}>
                     <label htmlFor="email">Email</label>
-                    <input id="email" type="email" name="email" required />
+                    <div className={styles.emailField}>
+                        <input
+                            ref={emailRef}
+                            id="email"
+                            type="email"
+                            name="email"
+                            value={email}
+                            onChange={handleEmailChange}
+                            required
+                        />
+                        <button onClick={handleSendVerificationCode} disabled={verificationCodeSent}>
+                            {verificationCodeSent ? '코드 발송됨' : '인증코드 받기'}
+                        </button>
+                    </div>
                 </p>
                 <p>
                     <label htmlFor="verificationCode">Verification Code</label>
-                    <input id="verificationCode" type="text" name="verificationCode" required />
+                    <input
+                        id="verificationCode"
+                        type="text"
+                        name="verificationCode"
+                        value={verificationCode}
+                        onChange={handleVerificationCodeChange}
+                        required
+                    />
                 </p>
                 <p>
                     <label htmlFor="password">Password</label>
-                    <input id="password" type="password" name="password" required />
+                    <input
+                        id="password"
+                        type="password"
+                        name="password"
+                        value={password}
+                        onChange={handlePasswordChange}
+                        required
+                    />
                 </p>
                 <p>
                     <label htmlFor="passwordCheck">Confirm Password</label>
-                    <input id="passwordCheck" type="password" name="passwordCheck" required />
+                    <input
+                        id="passwordCheck"
+                        type="password"
+                        name="passwordCheck"
+                        value={passwordCheck}
+                        onChange={handlePasswordCheckChange}
+                        required
+                    />
                 </p>
                 <p>
                     <label htmlFor="nickname">Nickname</label>
-                    <input id="nickname" type="text" name="nickname" required />
+                    <input
+                        id="nickname"
+                        type="text"
+                        name="nickname"
+                        value={nickname}
+                        onChange={handleNicknameChange}
+                        required
+                    />
                 </p>
                 <div>
                     <button type="submit">Sign Up</button>
@@ -33,7 +162,7 @@ const SignUpPage = () => {
                 <div className={styles.loginLink}>
                     <Link to="/login">이미 계정이 있으신가요? 로그인</Link>
                 </div>
-            </Form>
+            </form>
         </div>
     );
 };

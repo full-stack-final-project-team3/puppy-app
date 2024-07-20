@@ -1,3 +1,4 @@
+
 .authContainer {
   max-width: 400px;
   margin: 100px auto;
@@ -63,4 +64,34 @@
 
 .authContainer .loginLink a:hover {
   text-decoration: underline;
+}
+
+.inputWithButton {
+  display: flex;
+  flex-direction: column;
+}
+
+.emailField {
+  display: flex;
+  align-items: center;
+}
+
+.emailField input {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.emailField button {
+  padding: 10px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+.emailField button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
