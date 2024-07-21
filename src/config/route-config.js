@@ -5,7 +5,9 @@ import Home from '../pages/Home';
 import WelcomePage from '../pages/WelcomePage';
 import LoginForm, { loginAction } from '../components/auth/LoginForm';
 import SignUpPage from '../components/auth/SignUpPage';
-import { userDataLoader } from './auth';
+import HotelPage from '../pages/HotelPage'; // 새로 추가된 HotelPage
+import AddHotelPage from '../pages/AddHotelPage'; // 새로 추가된 AddHotelPage
+import { userDataLoader, authCheckLoader } from './auth';
 import { logoutAction } from '../pages/Logout';
 
 const homeRouter = [
@@ -39,7 +41,17 @@ export const router = createBrowserRouter([
       {
         path: 'logout',
         action: logoutAction,
-      }
+      },
+      {
+        path: 'hotel',
+        element: <HotelPage />,
+        loader: authCheckLoader, // 로그인 정보를 확인하는 loader 추가
+      },
+      {
+        path: 'add-hotel',
+        element: <AddHotelPage />,
+        loader: authCheckLoader, // 로그인 정보를 확인하는 loader 추가
+      },
     ],
   },
 ]);

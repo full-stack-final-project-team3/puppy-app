@@ -25,6 +25,6 @@ export const authCheckLoader = () => {
         alert('로그인이 필요한 서비스입니다.')
         return redirect('/'); // 홈으로 돌려보냄
     }
-    return null; // 현재 페이지에 머묾
+    return userData; // 현재 페이지에 머묾
     // 이벤트에 최상위 router에 걸어준다. (EventLayout.js)
 }
