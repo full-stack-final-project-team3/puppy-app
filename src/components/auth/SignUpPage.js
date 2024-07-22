@@ -48,7 +48,7 @@ const SignUpPage = () => {
     const handleSendVerificationCode = async (e) => {
         e.preventDefault();
         if (!validateEmail(email)) {
-            console.log("형식이 유효하지 않다!");
+            setEmailValid(true)
             return;
         }
         try {
@@ -67,6 +67,8 @@ const SignUpPage = () => {
             console.error('Fetch error:', error);
         }
     };
+
+    // 클릭 눌렀을때 페치 나감.
 
     const handleVerifyCode = async (e) => {
         console.log(verificationCode)
@@ -123,6 +125,7 @@ const SignUpPage = () => {
                 <h1>Sign Up</h1>
                 <p className={styles.inputWithButton}>
                     <label htmlFor="email">Email</label>
+                    {/*{ emailValid && <p>[이메일 형식에 맞게 입력 해주세요]</p>}*/}
                     <div className={styles.emailField}>
                         <input
                             ref={emailRef}
