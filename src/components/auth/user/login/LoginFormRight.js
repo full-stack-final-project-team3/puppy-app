@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from './LoginFormRight.module.scss';
-import { AUTH_URL } from '../../../config/user/host-config';
+import { AUTH_URL } from "../../../../config/user/host-config";
 import { useNavigate } from "react-router-dom";
 
 const LoginFormRight = () => {

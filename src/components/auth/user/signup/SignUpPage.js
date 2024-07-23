@@ -3,7 +3,7 @@ import styles from "./SignUpPage.module.scss";
 import EmailInput from "./EmailInput";
 import VerificationInput from "./VerificationInput";
 import PasswordInput from "./PasswordInput";
-import { AUTH_URL } from '../../../config/user/host-config';
+import { AUTH_URL } from '../../../../config/user/host-config';
 import { useNavigate } from "react-router-dom";
 
 const SignUpPage = () => {
