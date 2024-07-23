@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styles from "./SignUpPage.module.scss";
-import { AUTH_URL } from '../../../config/user/host-config';
+import { AUTH_URL } from '../../../../config/user/host-config';
 import { debounce } from 'lodash';
 
 const EmailInput = ({ onSuccess }) => {
@@ -27,7 +27,7 @@ const EmailInput = ({ onSuccess }) => {
       setError('이메일 형식이 유효하지 않습니다.');
       return;
     }
-    
+
       // 중복 검사
       const response = await fetch(`${AUTH_URL}/check-email?email=${email}`);
       // console.log('response: ', response);
@@ -59,7 +59,8 @@ const EmailInput = ({ onSuccess }) => {
 
   return (
     <>
-      <p>Step 1: 유효한 이메일을 입력해주세요.</p>
+      <h1>Step 1</h1>
+      <h2>Email</h2>
       <input
         ref={inputRef}
         type="email"
