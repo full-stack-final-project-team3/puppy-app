@@ -31,7 +31,7 @@ const LoginFormRight = () => {
             if (response.ok) {
                 const responseData = await response.json();
                 localStorage.setItem('userData', JSON.stringify(responseData));
-                console.log(responseData);
+                console.log(responseData); 
                 navigate('/'); // 로그인 후 리다이렉트할 경로
             } else {
                 const errorData = await response.json();
