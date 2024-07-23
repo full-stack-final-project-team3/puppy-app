@@ -1,17 +1,17 @@
 import React from 'react';
-import {createBrowserRouter} from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
 import RootLayout from '../../layout/user/RootLayout';
 import Home from '../../pages/hotel/Home';
 import WelcomePage from '../../pages/user/WelcomePage';
 import LoginFormRight from '../../components/auth/user/LoginFormRight';
-import SignUpPage from '../../components/auth/user/SignUpPage';
+import LoginForm from '../../components/auth/user/login/LoginForm';
+import SignUpPage from '../../components/auth/user/signup/SignUpPage';
 import HotelPage from '../../pages/hotel/HotelPage'; // 새로 추가된 HotelPage
 import AddHotelPage from '../../pages/hotel/AddHotelPage'; // 새로 추가된 AddHotelPage
-import {userDataLoader, authCheckLoader} from './auth';
 import {logoutAction} from '../../pages/user/Logout';
 import ReviewPage from '../../pages/shop/ReviewPage';
 import UserProvider from "../../components/context/UserProvider";
-import LoginForm from "../../components/auth/user/LoginForm";
+import { userDataLoader, authCheckLoader } from './auth';
 
 const homeRouter = [
     {

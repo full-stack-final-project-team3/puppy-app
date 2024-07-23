@@ -1,8 +1,7 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import styles from './LoginFormRight.module.scss';
-import { AUTH_URL } from '../../../config/user/host-config';
+import { AUTH_URL } from '../../../../config/user/host-config';
 import { useNavigate } from "react-router-dom";
-import UserContext from "../../context/user-context";
 
 const LoginFormRight = () => {
     const [email, setEmail] = useState('');
@@ -10,7 +9,6 @@ const LoginFormRight = () => {
     const [autoLogin, setAutoLogin] = useState(false);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
-    const { changeIsLogin } = useContext(UserContext);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -33,8 +31,7 @@ const LoginFormRight = () => {
             if (response.ok) {
                 const responseData = await response.json();
                 localStorage.setItem('userData', JSON.stringify(responseData));
-                console.log(responseData);
-                changeIsLogin(true);
+                console.log(responseData); 
                 navigate('/'); // 로그인 후 리다이렉트할 경로
             } else {
                 const errorData = await response.json();
@@ -77,7 +74,7 @@ const LoginFormRight = () => {
                         <input
                             type="checkbox"
                             id="autoLogin"
-                            name="autoLogin"
+                            name="isAutoLogin"
                             checked={autoLogin}
                             onChange={(e) => setAutoLogin(e.target.checked)}
                         />
