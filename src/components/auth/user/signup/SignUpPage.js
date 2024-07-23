@@ -3,8 +3,13 @@ import styles from "./SignUpPage.module.scss";
 import EmailInput from "./EmailInput";
 import VerificationInput from "./VerificationInput";
 import PasswordInput from "./PasswordInput";
-import { AUTH_URL } from '../../../config/user/host-config';
+import { AUTH_URL } from '../../../../config/user/host-config';
 import { useNavigate } from "react-router-dom";
+import NickNameInput from "./NickNameInput";
+import PhoneNumberInput from "./PhoneNumberInput";
+import BirthInput from "./BirthInput";
+import AddressInput from "./AddressInput";
+import DogInfoInput from "./DogInfoInput";
 
 const SignUpPage = () => {
 
@@ -21,6 +26,16 @@ const SignUpPage = () => {
   // 입력된 패스워드
   const [enteredPassword, setEnteredPassword] = useState("");
   const [passwordIsVaild, setPasswordIsValid] = useState(false);
+  // 입력된 닉네임
+  const [enteredNickName, setEnteredNickName] = useState("");
+  // 입력된 휴대폰 번호 (4단계부턴 스킵 후 나중에 정보수정으로 변경가능)
+  const [enteredPhoneNumber, setEnteredPhoneNumber] = useState("");
+  // 입력된 가입자의 생년월일
+  const [enteredUserBirth, setEnteredUserBirth] = useState("");
+  // 입력된 주소
+  const [enteredAddress, setEnteredAddress] = useState("");
+  // 입력된 강아지 정보
+  const [enteredDogInfo, setEnteredDogInfo] = useState("");
 
   // 회원가입 버튼 활성화 여부
   const [activeButton, setActiveButton] = useState(false);
@@ -41,10 +56,41 @@ const SignUpPage = () => {
     nextStep();
   };
 
+  // 비밀번호 입력
   const passwordSuccessHandler = (password, isValid) => {
     setEnteredPassword(password);
     setPasswordIsValid(isValid);
+    nextStep();
   };
+
+  // 닉네임 입력
+  const nickNameSuccessHandler = (nickName) => {
+    setEnteredNickName(nickName);
+    nextStep();
+  };
+
+  // 휴대폰 번호 입력
+  const phoneNumberSuccessHandler = (phoneNumber) => {
+    setEnteredPhoneNumber(phoneNumber);
+    nextStep();
+  };
+
+  // 생년월일 입력
+  const userBirthSuccessHandler = (userBirth) => {
+    setEnteredUserBirth(userBirth);
+    nextStep();
+  };
+
+  // 주소 입력
+  const addressSuccessHandler = (address) => {
+    setEnteredAddress(address);
+    nextStep();
+  }
+
+  // 강아지 정보 입력
+  const dogInfoSuccessHandler = (dogInfo) => {
+    setEnteredDogInfo(dogInfo);
+  }
 
   // 서버에 회원가입 완료 요청하기
   const submitHandler = async (e) => {
@@ -52,6 +98,11 @@ const SignUpPage = () => {
     const payload = {
       email: enteredEmail,
       password: enteredPassword,
+      nickName: enteredNickName,
+      phoneNumber: enteredPhoneNumber,
+      userBirth: enteredUserBirth,
+      address: enteredAddress,
+      dogInfo: enteredDogInfo,
     };
 
     const response = await fetch(`${AUTH_URL}/join`, {
@@ -70,15 +121,15 @@ const SignUpPage = () => {
 
   useEffect(() => {
     // 활성화 여부 감시
-    const isActive = enteredEmail && passwordIsVaild;
+    const isActive = enteredEmail && passwordIsVaild && enteredNickName && enteredPhoneNumber && enteredUserBirth && enteredAddress && enteredDogInfo;
     setActiveButton(isActive);
-  }, [enteredEmail, enteredPassword, passwordIsVaild]);
+  }, [enteredEmail, enteredPassword, passwordIsVaild, enteredNickName, enteredPhoneNumber, enteredUserBirth, enteredAddress, enteredDogInfo]);
 
   return (
     <form onSubmit={submitHandler}>
       <div className={styles.signupForm}>
         <div className={styles.formStepActive}>
-          {step === 1 && <EmailInput onSuccess={emailSuccessHandler} />}
+          {step === 1 && <EmailInput onSuccess={emailSuccessHandler} /> }
 
           {step === 2 && (
             <VerificationInput
@@ -88,6 +139,16 @@ const SignUpPage = () => {
           )}
 
           {step === 3 && <PasswordInput onSuccess={passwordSuccessHandler} />}
+
+          {step === 4 && <NickNameInput onSuccess={nickNameSuccessHandler} />}
+
+          {step === 5 && <PhoneNumberInput onSuccess={phoneNumberSuccessHandler} />}
+
+          {step === 6 && <BirthInput onSuccess={userBirthSuccessHandler} />}
+
+          {step === 7 && <AddressInput onSuccess={addressSuccessHandler} />}
+
+          {step === 8 && <DogInfoInput onSuccess={dogInfoSuccessHandler} />}
 
           {activeButton && (
             <div>
