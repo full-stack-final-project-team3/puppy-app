@@ -19,8 +19,9 @@ const EVENT = '/events';
 const AUTH = '/auth';
 const HOTEL = '/hotel';
 const ROOM = '/room';
+// const AUTH = '/auth'
 
 export const EVENT_URL = API_BASE_URL + EVENT;
-export const AUTH_URL = API_BASE_URL + AUTH;
 export const HOTEL_URL = API_BASE_URL + HOTEL;
 export const ROOM_URL = API_BASE_URL + ROOM;
+export const AUTH_URL = API_BASE_URL;
