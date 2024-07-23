@@ -1,76 +1,54 @@
 .authContainer {
-  max-width: 400px;
+  width: 55%;
   margin: 100px auto;
   padding: 20px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 32px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  background-color: #fff;
+  background-color: #F4E8D3;
+  display: flex;
 }
 
-.authContainer h1 {
+h2 {
+  font-weight: 400;
+  font-size: 30px;
+}
+
+.authContainer > div {
+  width: 50%;
+  border: 1px solid #ccc;
+  padding-left: 20px;
+}
+
+.wrap {
+  margin: 30px 0 50px;
+}
+
+.signup {
+  width: 60%;
+  border: 1px solid #ccc;
   text-align: center;
+  background: #195C4D;
+  border-radius: 32px;
+  padding: 7px 0;
+  margin-bottom: 20px;
+}
+.kakao {
+  width: 60%;
+  border: 1px solid #ccc;
+  text-align: center;
+  background: #F5DE07;
+  border-radius: 32px;
+  padding: 7px 0;
   margin-bottom: 20px;
 }
 
-.authContainer form {
-  display: flex;
-  flex-direction: column;
+.signupBtn {
+  text-decoration-line: none;
+  color: #fff;
 }
 
-.authContainer form p {
-  margin-bottom: 15px;
-  display: flex;
-  flex-direction: column;
-}
-
-.authContainer form label {
-  margin-bottom: 5px;
-  font-weight: bold;
-}
-
-.authContainer form input {
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.authContainer form button {
-  padding: 10px;
-  font-size: 16px;
-  border: none;
-  border-radius: 5px;
-  background-color: #007bff;
-  color: white;
-  cursor: pointer;
-  margin-top: 10px;
-}
-
-.authContainer form button:hover {
-  background-color: #0056b3;
-}
-
-.authContainer .signupLink {
-  text-align: center;
-  margin-top: 20px;
-}
-
-.authContainer .signupLink a {
-  text-decoration: none;
-  color: #007bff;
-}
-
-.authContainer .signupLink a:hover {
-  text-decoration: underline;
-}
-
-.authContainer .checkboxContainer {
-  display: flex;
-  align-items: center;
-  margin-bottom: 15px;
-}
-
-.authContainer .checkboxContainer input {
-  margin-right: 10px;
+.kakaoBtn {
+  text-decoration-line: none;
+  color: black;
 }
