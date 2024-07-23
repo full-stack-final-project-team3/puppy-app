@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+import {NavLink, useRouteLoaderData} from 'react-router-dom';
 import styles from './MainNavigation.module.scss';
 import { GiHamburgerMenu } from "react-icons/gi";
 import { BsBell } from "react-icons/bs";
@@ -7,14 +7,17 @@ import { BiUser } from "react-icons/bi";
 
 const MainNavigation = () => {
     const [menuOpen, setMenuOpen] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    useEffect(() => {
-        const storedUser = localStorage.getItem('userData');
-        if (storedUser) {
-            setIsLoggedIn(true);
-        }
-    }, []);
+    const userData = useRouteLoaderData('user-data');
+
+    if (userData) console.log(userData)
+
+    // useEffect(() => {
+    //     const storedUser = localStorage.getItem('userData');
+    //     if (storedUser) {
+    //         setIsLoggedIn(true);
+    //     }
+    // }, []);
 
     const toggleMenuHandler = () => {
         setMenuOpen(prevState => !prevState);
@@ -22,7 +25,6 @@ const MainNavigation = () => {
 
     const logoutHandler = () => {
         localStorage.removeItem('userData');
-        setIsLoggedIn(false);
         window.location.reload(); // 로그아웃 후 페이지 새로고침
     };
 
@@ -36,11 +38,11 @@ const MainNavigation = () => {
                     </NavLink>
                 </div>
                 <div className={styles.right}>
-                    {isLoggedIn ? (
+                    { userData ? (
                         <>
                             <button className={styles.logout} onClick={logoutHandler}>Logout</button>
                             <BsBell className={styles.icon} />
-                            <BiUser className={styles.icon} /> 
+                            <BiUser className={styles.icon} />
                             <GiHamburgerMenu className={styles.icon} onClick={toggleMenuHandler} />
                         </>
                     ) : (

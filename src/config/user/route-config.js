@@ -3,7 +3,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import RootLayout from '../../layout/user/RootLayout';
 import Home from '../../pages/hotel/Home';
 import WelcomePage from '../../pages/user/WelcomePage';
-import LoginForm, { loginAction } from '../../components/auth/user/LoginForm';
+import LoginForm from '../../components/auth/user/LoginForm';
 import SignUpPage from '../../components/auth/user/SignUpPage';
 import HotelPage from '../../pages/hotel/HotelPage'; // 새로 추가된 HotelPage
 import AddHotelPage from '../../pages/hotel/AddHotelPage'; // 새로 추가된 AddHotelPage
@@ -19,7 +19,6 @@ const homeRouter = [
   {
     path: 'login',
     element: <LoginForm />,
-    action: loginAction,
   },
   {
     path: 'signup',
