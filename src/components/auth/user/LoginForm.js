@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Link, redirect } from 'react-router-dom';
 import styles from './LoginForm.module.scss';
-import { AUTH_URL } from "../../config/host-config";
+import { AUTH_URL } from "../../../config/user/host-config";
 import LoginFormLeft from "./LoginFormLeft";
 import LoginFormRight from "./LoginFormRight";
 
