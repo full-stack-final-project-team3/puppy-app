@@ -3,9 +3,8 @@ import { createBrowserRouter } from 'react-router-dom';
 import RootLayout from '../../layout/user/RootLayout';
 import Home from '../../pages/hotel/Home';
 import WelcomePage from '../../pages/user/WelcomePage';
-import LoginForm from '../../components/auth/user/LoginForm';
-import { loginAction } from '../../components/auth/user/LoginFormRight'
-import SignUpPage from '../../components/auth/user/SignUpPage';
+import LoginForm from '../../components/auth/user/login/LoginForm';
+import SignUpPage from '../../components/auth/user/signup/SignUpPage';
 import HotelPage from '../../pages/hotel/HotelPage'; // 새로 추가된 HotelPage
 import AddHotelPage from '../../pages/hotel/AddHotelPage'; // 새로 추가된 AddHotelPage
 import { userDataLoader, authCheckLoader } from './auth';
