@@ -1,7 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React, { useContext, useState } from 'react';
 import styles from './LoginFormRight.module.scss';
 import { AUTH_URL } from '../../../config/user/host-config';
 import { useNavigate } from "react-router-dom";
+import UserContext from "../../context/user-context";
 
 const LoginFormRight = () => {
     const [email, setEmail] = useState('');
@@ -9,10 +10,7 @@ const LoginFormRight = () => {
     const [autoLogin, setAutoLogin] = useState(false);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
-
-    useEffect(() => {
-
-    }, []);
+    const { changeIsLogin } = useContext(UserContext);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -36,6 +34,7 @@ const LoginFormRight = () => {
                 const responseData = await response.json();
                 localStorage.setItem('userData', JSON.stringify(responseData));
                 console.log(responseData);
+                changeIsLogin(true);
                 navigate('/'); // 로그인 후 리다이렉트할 경로
             } else {
                 const errorData = await response.json();
@@ -78,7 +77,7 @@ const LoginFormRight = () => {
                         <input
                             type="checkbox"
                             id="autoLogin"
-                            name="isAutoLogin"
+                            name="autoLogin"
                             checked={autoLogin}
                             onChange={(e) => setAutoLogin(e.target.checked)}
                         />
