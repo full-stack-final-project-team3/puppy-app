@@ -55,7 +55,7 @@ const MainNavigation = () => {
             {menuOpen && (
                 <div className={styles.dropdownMenu}>
                     <ul>
-                        <li><NavLink to='/category1'>Category 1</NavLink></li>
+                        <li><NavLink to='/hotel'>hotel</NavLink></li>
                         <li><NavLink to='/category2'>Category 2</NavLink></li>
                         <li><NavLink to='/category3'>Category 3</NavLink></li>
                     </ul>
