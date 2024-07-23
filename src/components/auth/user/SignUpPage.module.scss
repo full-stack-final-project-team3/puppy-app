@@ -1,0 +1,106 @@
+// SignUpForm.module.scss
+
+.signupForm {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+input, button {
+  width: 50%;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 5px;
+}
+
+input {
+  border: 1px solid #ccc;
+}
+
+button {
+  background-color: var(--color-primary-700);
+  color: #000;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #004494;
+  }
+}
+
+.formStep {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 1s ease, visibility 0s linear 1s;
+}
+
+.formStepActive {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 1s ease;
+}
+
+.invalidInput {
+  border-color: #ff0000; // 유효하지 않은 입력을 빨간색 테두리로 표시
+}
+
+.errorMessage {
+  color: #ffff00; // 경고 메시지를 빨간색으로 표시
+  font-size: 0.8em;
+  text-align: center;
+}
+
+.codeInputContainer {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.codeInput {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #ccc;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+
+  &:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+
+  &::placeholder {
+    color: #ccc;
+  }
+}
+
+.timer {
+  font-family: 'Digital', sans-serif; // 디지털 시계 폰트 사용
+  background-color: #fff;
+  color: #000;
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-size: 20px;
+  text-align: center;
+  margin: 10px 0;
+  display: inline-block;
+  width: auto;
+}
+
+.timerHighlight {
+  color: #fff;
+  background-color: #f44336; // 시간이 얼마 남지 않았을 때 빨간색 배경
+  animation: blink 1s step-start 0s infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.5;
+  }
+}
+
