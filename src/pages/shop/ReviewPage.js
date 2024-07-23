@@ -3,7 +3,7 @@ import React from 'react'
 const ReviewPage = () => {
   return (
     <div>
-      asdasdasd
+      리뷰페이지 임시
     </div>
   )
 }

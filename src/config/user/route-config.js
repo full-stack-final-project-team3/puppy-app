@@ -9,7 +9,7 @@ import HotelPage from '../../pages/hotel/HotelPage'; // 새로 추가된 HotelPa
 import AddHotelPage from '../../pages/hotel/AddHotelPage'; // 새로 추가된 AddHotelPage
 import { userDataLoader, authCheckLoader } from './auth';
 import { logoutAction } from '../../pages/user/Logout';
-import ReviewPage from '../../pages/shop/ReviewPage';
+import ReviewPage from '../../pages/shop/ReviewPage'; //리뷰페이지
 
 const homeRouter = [
   {
@@ -56,7 +56,7 @@ export const router = createBrowserRouter([
       {
         path: 'review-page',
         element: <ReviewPage />,
-        loader: authCheckLoader, // 리뷰페이지 
+        loader: authCheckLoader, // 리뷰페이지 추가
       },
     ],
   },
