@@ -91,8 +91,7 @@ const VerificationInput = ({ email, onSuccess }) => {
 
   return (
     <>
-      <h1>Step 2</h1>
-      <h2>이메일로 전송된 인증번호 4자리</h2>
+      <p>Step 2: 이메일로 전송된 인증번호 4자리를 입력해주세요.</p>
       <div className={styles.codeInputContainer}>
         {Array.from(new Array(4)).map((_, index) => (
           <input
