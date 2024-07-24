@@ -1,12 +1,11 @@
 import React, {useEffect, useRef, useState} from 'react';
-import styles from "./SignUpPage.module.scss";
+import styles from './SignUpPage.module.scss';
 
 const PasswordInput = ({ onSuccess }) => {
 
   const passwordRef = useRef();
 
   const [password, setPassword] = useState('');
-  const [passwordCheck, setPasswordCheck] = useState('');
   const [passwordValid, setPasswordValid] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -37,8 +36,7 @@ const PasswordInput = ({ onSuccess }) => {
 
   return (
     <>
-      <h1>Step 3</h1>
-      <h2>비밀번호 입력</h2>
+      <p>Step 3: 안전한 비밀번호를 설정해주세요.</p>
       <input
         ref={passwordRef}
         type="password"
@@ -47,15 +45,6 @@ const PasswordInput = ({ onSuccess }) => {
         className={passwordValid ? '' : styles.invalidInput}
         placeholder="Enter your password"
       />
-      {/* <h2>비밀번호 확인</h2>
-      <input
-        ref={passwordRef}
-        type="passwordCheck"
-        value={passwordCheck}
-        onChange={changeHandler}
-        className={passwordValid ? '' : styles.invalidInput}
-        placeholder="Enter your password again"
-      /> */}
       {!passwordValid && <p className={styles.errorMessage}>{errorMessage}</p>}
       
     </>
