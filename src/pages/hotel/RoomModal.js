@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { ROOM_URL, HOTEL_URL } from '../../config/user/host-config';
+import React, { useState } from 'react';
+import { ROOM_URL } from '../../config/user/host-config';
 import styles from './RoomModal.module.scss';
 
-const RoomModal = ({ onClose }) => {
+const RoomModal = ({ hotelId, onClose }) => {
   const [roomData, setRoomData] = useState({
     name: '',
     content: '',
@@ -10,36 +10,7 @@ const RoomModal = ({ onClose }) => {
     price: '',
     roomImages: [{ hotelImgUri: '', type: '' }]
   });
-  const [hotelId, setHotelId] = useState(null); // hotelId 상태 추가
   const [errorMessage, setErrorMessage] = useState('');
-
-  useEffect(() => {
-    // 서버에서 hotelId를 받아오는 함수
-    const fetchHotelId = async () => {
-      try {
-        const token = JSON.parse(localStorage.getItem('userData')).token;
-        const response = await fetch(`${HOTEL_URL}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          }
-        });
-        if (response.ok) {
-          const data = await response.json();
-          setHotelId(data.id); // hotelId 설정
-          console.log('Hotel ID fetched:', data.id);
-        } else {
-          const errorData = await response.json();
-          setErrorMessage(errorData.message || 'Failed to fetch hotel ID');
-        }
-      } catch (error) {
-        setErrorMessage('Error occurred while fetching hotel ID');
-      }
-    };
-
-    fetchHotelId();
-  }, []);
 
   const handleRoomChange = (e) => {
     const { name, value } = e.target;
@@ -71,7 +42,7 @@ const RoomModal = ({ onClose }) => {
           'room-type': roomData.type,
           'room-price': roomData.price,
           'room-images': roomData.roomImages,
-          'hotel-id': hotelId // hotelId를 포함시킴
+          'hotel-id': hotelId
         })
       });
 
@@ -89,64 +60,64 @@ const RoomModal = ({ onClose }) => {
   };
 
   return (
-    <div className={styles.roomModal}>
-      <form onSubmit={handleRoomSubmit}>
-        <h1>방 추가</h1>
-        <input
-          type="text"
-          name="name"
-          placeholder="방 이름"
-          value={roomData.name}
-          onChange={handleRoomChange}
-          required
-        />
-        <textarea
-          name="content"
-          placeholder="방 내용"
-          value={roomData.content}
-          onChange={handleRoomChange}
-        />
-        <input
-          type="text"
-          name="type"
-          placeholder="방 타입"
-          value={roomData.type}
-          onChange={handleRoomChange}
-          required
-        />
-        <input
-          type="number"
-          name="price"
-          placeholder="방 가격"
-          value={roomData.price}
-          onChange={handleRoomChange}
-          required
-        />
-        {roomData.roomImages.map((image, index) => (
-          <div key={index}>
-            <input
+      <div className={styles.roomModal}>
+        <form onSubmit={handleRoomSubmit}>
+          <h1>방 추가</h1>
+          <input
               type="text"
-              name="hotelImgUri"
-              placeholder="방 이미지 URI"
-              value={image.hotelImgUri}
-              onChange={(e) => handleImageChange(e, index)}
+              name="name"
+              placeholder="방 이름"
+              value={roomData.name}
+              onChange={handleRoomChange}
               required
-            />
-            <input
+          />
+          <textarea
+              name="content"
+              placeholder="방 내용"
+              value={roomData.content}
+              onChange={handleRoomChange}
+          />
+          <input
               type="text"
               name="type"
-              placeholder="이미지 타입"
-              value={image.type}
-              onChange={(e) => handleImageChange(e, index)}
+              placeholder="방 타입"
+              value={roomData.type}
+              onChange={handleRoomChange}
               required
-            />
-          </div>
-        ))}
-        <button type="submit">저장</button>
-        {errorMessage && <p className={styles.error}>{errorMessage}</p>}
-      </form>
-      <button onClick={onClose}>닫기</button>
-    </div>
+          />
+          <input
+              type="number"
+              name="price"
+              placeholder="방 가격"
+              value={roomData.price}
+              onChange={handleRoomChange}
+              required
+          />
+          {roomData.roomImages.map((image, index) => (
+              <div key={index}>
+                <input
+                    type="text"
+                    name="hotelImgUri"
+                    placeholder="방 이미지 URI"
+                    value={image.hotelImgUri}
+                    onChange={(e) => handleImageChange(e, index)}
+                    required
+                />
+                <input
+                    type="text"
+                    name="type"
+                    placeholder="이미지 타입"
+                    value={image.type}
+                    onChange={(e) => handleImageChange(e, index)}
+                    required
+                />
+              </div>
+          ))}
+          <button type="submit">저장</button>
+          {errorMessage && <p className={styles.error}>{errorMessage}</p>}
+        </form>
+        <button onClick={onClose}>닫기</button>
+      </div>
   );
 };
 
