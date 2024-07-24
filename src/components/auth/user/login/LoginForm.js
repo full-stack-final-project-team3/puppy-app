@@ -1,18 +1,17 @@
-import React, {useContext, useState} from 'react';
+import React, { useContext, useState } from 'react';
 import styles from './LoginForm.module.scss';
-import {Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import UserContext from "../../../context/user-context";
-import {AUTH_URL} from "../../../../config/user/host-config";
-import {RiKakaoTalkFill} from "react-icons/ri";
+import { AUTH_URL } from "../../../../config/user/host-config";
+import { RiKakaoTalkFill } from "react-icons/ri";
 
 const LoginForm = () => {
-
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [autoLogin, setAutoLogin] = useState(false);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
-    const {changeIsLogin} = useContext(UserContext);
+    const { changeIsLogin,  setUser } = useContext(UserContext);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -35,9 +34,10 @@ const LoginForm = () => {
             if (response.ok) {
                 const responseData = await response.json();
                 localStorage.setItem('userData', JSON.stringify(responseData));
-                console.log(responseData);
-                changeIsLogin(true);
-                navigate('/'); // 로그인 후 리다이렉트할 경로
+                setUser(responseData);
+                changeIsLogin(true); // 상태 업데이트
+                navigate('/'); // 로그인 후 리디렉트할 경로
+
             } else {
                 const errorData = await response.json();
                 setError(errorData.message || '로그인에 실패했습니다.');
@@ -47,19 +47,18 @@ const LoginForm = () => {
         }
     };
 
-
     return (
         <div className={styles.whole}>
             <div className={styles.authContainer}>
                 <div>
                     <div className={styles.wrap}>
-                        <img src="/header-logo.png" alt="logo"/>
+                        <img src="/header-logo.png" alt="logo" />
                         <h2>Login</h2>
                         <div className={styles.signup}>
                             <Link to="/signup" className={styles.signupBtn}>Sign Up</Link>
                         </div>
                         <div className={styles.kakao}>
-                            <Link to="/signup" className={styles.kakaoBtn}><RiKakaoTalkFill/></Link>
+                            <Link to="/signup" className={styles.kakaoBtn}><RiKakaoTalkFill /></Link>
                         </div>
                     </div>
                 </div>
@@ -113,10 +112,7 @@ const LoginForm = () => {
                     </div>
                 </div>
             </div>
-
-
         </div>
-
     );
 };
 

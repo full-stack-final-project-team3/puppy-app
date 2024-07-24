@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import { NavLink, useRouteLoaderData } from 'react-router-dom';
 import styles from './MainNavigation.module.scss';
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -8,7 +8,7 @@ import UserContext from "../../components/context/user-context";
 
 const MainNavigation = () => {
     const [menuOpen, setMenuOpen] = useState(false);
-    const { isLogin } = useContext(UserContext);
+    const { isLogin, changeIsLogin } = useContext(UserContext);
 
     const userData = useRouteLoaderData('user-data');
 
@@ -22,6 +22,16 @@ const MainNavigation = () => {
         localStorage.removeItem('userData');
         window.location.reload(); // 로그아웃 후 페이지 새로고침
     };
+
+    useEffect(() => {
+
+        if (userData) {
+            changeIsLogin(true)
+        }
+
+    }, []);
+
+
 
     return (
         <header className={styles.header}>

@@ -7,7 +7,7 @@ import LoginForm from '../../components/auth/user/login/LoginForm';
 import SignUpPage from '../../components/auth/user/signup/SignUpPage';
 import HotelPage from '../../pages/hotel/HotelPage'; // 새로 추가된 HotelPage
 import AddHotelPage from '../../pages/hotel/AddHotelPage'; // 새로 추가된 AddHotelPage
-import {logoutAction} from '../../pages/user/Logout';
+import { logoutAction } from '../../pages/user/Logout';
 import UserProvider from "../../components/context/UserProvider";
 import { userDataLoader, authCheckLoader } from './auth';
 
@@ -19,7 +19,6 @@ const homeRouter = [
     {
         path: 'login',
         element: <LoginForm/>,
-
     },
     {
         path: 'signup',
