@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./SignUpPage.module.scss";
 import { debounce } from 'lodash';
-import { AUTH_URL } from '../../../../config/user/host-config';
+import { AUTH_URL } from "../../../../config/user/host-config";
 
 const VerificationInput = ({ email, onSuccess }) => {
 
@@ -34,7 +34,7 @@ const VerificationInput = ({ email, onSuccess }) => {
 
     // console.log('코드검증: ', flag);
     // 검증에 실패했을 때
-    if (flag) {
+    if (!flag) {
       setError('유효하지 않거나 만료된 코드입니다. 인증코드를 재발송합니다.');
       // 기존 인증코드 상태값 비우기
       setCodes(Array(4).fill(''));
@@ -91,8 +91,7 @@ const VerificationInput = ({ email, onSuccess }) => {
 
   return (
     <>
-      <h1>Step 2</h1>
-      <h2>이메일로 전송된 인증번호 4자리</h2>
+      <p>Step 2: 이메일로 전송된 인증번호 4자리를 입력해주세요.</p>
       <div className={styles.codeInputContainer}>
         {Array.from(new Array(4)).map((_, index) => (
           <input

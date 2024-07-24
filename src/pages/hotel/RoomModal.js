@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ROOM_URL } from '../../config/user/host-config';
+import { ROOM_URL , UPLOAD_URL } from '../../config/user/host-config';
 import styles from './RoomModal.module.scss';
 
 const RoomModal = ({ hotelId, onClose }) => {
@@ -8,7 +8,7 @@ const RoomModal = ({ hotelId, onClose }) => {
     content: '',
     type: '',
     price: '',
-    roomImages: [{ hotelImgUri: '', type: '' }]
+    roomImages: [{ hotelImgUri: '', type: 'ROOM' }]
   });
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -22,6 +22,41 @@ const RoomModal = ({ hotelId, onClose }) => {
     const images = [...roomData.roomImages];
     images[index][name] = value;
     setRoomData({ ...roomData, roomImages: images });
+  };
+
+  const handleAddImage = () => {
+    setRoomData(prev => ({
+      ...prev,
+      roomImages: [...prev.roomImages, { hotelImgUri: '', type: '' }]
+    }));
+  };
+
+  const handleRemoveImage = index => {
+    setRoomData(prev => ({
+      ...prev,
+      roomImages: prev.roomImages.filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleFileChange = async (e, index) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const response = await fetch(`${UPLOAD_URL}`, {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await response.text();
+
+      const images = [...roomData.roomImages];
+      images[index] = { hotelImgUri: data, type: 'image' };
+      setRoomData({ ...roomData, roomImages: images });
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      setErrorMessage('Error uploading file');
+    }
   };
 
   const handleRoomSubmit = async (e) => {
@@ -41,7 +76,10 @@ const RoomModal = ({ hotelId, onClose }) => {
           'room-content': roomData.content,
           'room-type': roomData.type,
           'room-price': roomData.price,
-          'room-images': roomData.roomImages,
+          'room-images': roomData.roomImages.map(image => ({
+            hotelImgUri: image.hotelImgUri,
+            type: 'ROOM'
+          })),
           'hotel-id': hotelId
         })
       });
@@ -94,28 +132,32 @@ const RoomModal = ({ hotelId, onClose }) => {
               required
           />
           {roomData.roomImages.map((image, index) => (
-              <div key={index}>
+          <div key={index}>
+            <input
+              type="file"
+              onChange={(e) => handleFileChange(e, index)}
+              required
+            />
+            {image.hotelImgUri && (
+              <>
+                <img src={`${ROOM_URL}/images/${image.hotelImgUri}`} alt="Hotel" />
                 <input
-                    type="text"
-                    name="hotelImgUri"
-                    placeholder="방 이미지 URI"
-                    value={image.hotelImgUri}
-                    onChange={(e) => handleImageChange(e, index)}
-                    required
+                  type="hidden"
+                  name="type"
+                  placeholder="Image Type"
+                  value={image.type}
+                  onChange={(e) => handleImageChange(e, index)}
+                  required
                 />
-                <input
-                    type="text"
-                    name="type"
-                    placeholder="이미지 타입"
-                    value={image.type}
-                    onChange={(e) => handleImageChange(e, index)}
-                    required
-                />
-              </div>
-          ))}
-          <button type="submit">저장</button>
-          {errorMessage && <p className={styles.error}>{errorMessage}</p>}
-        </form>
+                <button type="button" onClick={() => handleRemoveImage(index)}>Remove</button>
+              </>
+            )}
+          </div>
+        ))}
+          <button type="button" onClick={handleAddImage}>Add Image</button>
+        <button type="submit">객실 저장</button>
+        {errorMessage && <p className={styles.error}>{errorMessage}</p>}
+      </form>
         <button onClick={onClose}>닫기</button>
       </div>
   );
