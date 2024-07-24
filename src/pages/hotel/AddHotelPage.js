@@ -35,7 +35,6 @@ const AddHotelPage = () => {
   };
 
   const handleHotelSubmit = async (e) => {
-    
     e.preventDefault();
 
     try {
@@ -60,19 +59,18 @@ const AddHotelPage = () => {
           'hotel-images': hotelData.hotelImages
         })
       });
-      console.log("호텔 아이디 가지고잇냐 ", hotelId);
 
       console.log('Response status:', response.status);
 
       if (response.ok) {
-        const data = await response.text();
+        const data = await response.json(); // 응답을 JSON으로 파싱
         console.log('Response data:', data);
-        setHotelId(data.id); // Ensure this key matches the key used in the server response
+        setHotelId(data.id); // 호텔 ID를 상태에 저장
         setShowConfirmModal(true); // Show confirm modal
       } else {
-        const errorData = await response.text();
+        const errorData = await response.json();
         console.error('Error data:', errorData);
-        setErrorMessage(errorData.message || 'Failed to add hotel');
+        setErrorMessage(errorData.error || 'Failed to add hotel');
       }
     } catch (error) {
       console.error('Error occurred:', error);
@@ -90,105 +88,102 @@ const AddHotelPage = () => {
     navigate('/hotel'); // Navigate to hotel page
   };
 
- 
-
   return (
-    <div className={styles.addHotelPage}>
-      <form onSubmit={handleHotelSubmit}>
-        <h1>Add Hotel</h1>
-        <input
-          type="text"
-          name="name"
-          placeholder="Hotel Name"
-          value={hotelData.name}
-          onChange={handleHotelChange}
-          required
-        />
-        <textarea
-          name="description"
-          placeholder="Description"
-          value={hotelData.description}
-          onChange={handleHotelChange}
-        />
-        <input
-          type="text"
-          name="businessOwner"
-          placeholder="Business Owner"
-          value={hotelData.businessOwner}
-          onChange={handleHotelChange}
-          required
-        />
-        <input
-          type="text"
-          name="location"
-          placeholder="Location"
-          value={hotelData.location}
-          onChange={handleHotelChange}
-          required
-        />
-        <textarea
-          name="rulesPolicy"
-          placeholder="Rules Policy"
-          value={hotelData.rulesPolicy}
-          onChange={handleHotelChange}
-        />
-        <textarea
-          name="cancelPolicy"
-          placeholder="Cancel Policy"
-          value={hotelData.cancelPolicy}
-          onChange={handleHotelChange}
-        />
-        <input
-          type="number"
-          name="price"
-          placeholder="Price"
-          value={hotelData.price}
-          onChange={handleHotelChange}
-          required
-        />
-        <input
-          type="text"
-          name="phoneNumber"
-          placeholder="Phone Number"
-          value={hotelData.phoneNumber}
-          onChange={handleHotelChange}
-          required
-        />
-        {hotelData.hotelImages.map((image, index) => (
-          <div key={index}>
-            <input
+      <div className={styles.addHotelPage}>
+        <form onSubmit={handleHotelSubmit}>
+          <h1>Add Hotel</h1>
+          <input
               type="text"
-              name="hotelImgUri"
-              placeholder="Hotel Image URI"
-              value={image.hotelImgUri}
-              onChange={(e) => handleImageChange(e, index)}
+              name="name"
+              placeholder="Hotel Name"
+              value={hotelData.name}
+              onChange={handleHotelChange}
               required
-            />
-            <input
+          />
+          <textarea
+              name="description"
+              placeholder="Description"
+              value={hotelData.description}
+              onChange={handleHotelChange}
+          />
+          <input
               type="text"
-              name="type"
-              placeholder="Image Type"
-              value={image.type}
-              onChange={(e) => handleImageChange(e, index)}
+              name="businessOwner"
+              placeholder="Business Owner"
+              value={hotelData.businessOwner}
+              onChange={handleHotelChange}
               required
-            />
-          </div>
-        ))}
-        <button type="submit">Save Hotel</button>
-        {errorMessage && <p className={styles.error}>{errorMessage}</p>}
-      </form>
+          />
+          <input
+              type="text"
+              name="location"
+              placeholder="Location"
+              value={hotelData.location}
+              onChange={handleHotelChange}
+              required
+          />
+          <textarea
+              name="rulesPolicy"
+              placeholder="Rules Policy"
+              value={hotelData.rulesPolicy}
+              onChange={handleHotelChange}
+          />
+          <textarea
+              name="cancelPolicy"
+              placeholder="Cancel Policy"
+              value={hotelData.cancelPolicy}
+              onChange={handleHotelChange}
+          />
+          <input
+              type="number"
+              name="price"
+              placeholder="Price"
+              value={hotelData.price}
+              onChange={handleHotelChange}
+              required
+          />
+          <input
+              type="text"
+              name="phoneNumber"
+              placeholder="Phone Number"
+              value={hotelData.phoneNumber}
+              onChange={handleHotelChange}
+              required
+          />
+          {hotelData.hotelImages.map((image, index) => (
+              <div key={index}>
+                <input
+                    type="text"
+                    name="hotelImgUri"
+                    placeholder="Hotel Image URI"
+                    value={image.hotelImgUri}
+                    onChange={(e) => handleImageChange(e, index)}
+                    required
+                />
+                <input
+                    type="text"
+                    name="type"
+                    placeholder="Image Type"
+                    value={image.type}
+                    onChange={(e) => handleImageChange(e, index)}
+                    required
+                />
+              </div>
+          ))}
+          <button type="submit">Save Hotel</button>
+          {errorMessage && <p className={styles.error}>{errorMessage}</p>}
+        </form>
 
-      {showConfirmModal && (
-        <div className={styles.confirmModal}>
-          <p>Hotel added successfully. Do you want to add rooms?</p>
-          <button onClick={handleConfirmYes}>Yes</button>
-          <button onClick={handleConfirmNo}>No</button>
-        </div>
-      )}
+        {showConfirmModal && (
+            <div className={styles.confirmModal}>
+              <p>Hotel added successfully. Do you want to add rooms?</p>
+              <button onClick={handleConfirmYes}>Yes</button>
+              <button onClick={handleConfirmNo}>No</button>
+            </div>
+        )}
 
-      {showRoomModal && <RoomModal hotelId={hotelId} onClose={() => setShowRoomModal(false)} />}
-
-    </div>
+        {showRoomModal && <RoomModal hotelId={hotelId} onClose={() => setShowRoomModal(false)} />}
+      </div>
   );
 };
 
