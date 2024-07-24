@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect} from 'react';
 import { useRouteLoaderData } from "react-router-dom";
 import UserContext from "../../components/context/user-context";
 
@@ -10,10 +10,10 @@ const WelcomePage = () => {
     useEffect(() => {
         if (userData) {
             changeIsLogin(true);
-            // const userData = useRouteLoaderData('user-data');
+
             const userDataJson = localStorage.getItem('userData');
             setUser(userData)
-
+            console.log(user)
         }
     }, [userData, changeIsLogin]); // 종속성 배열 추가
 
