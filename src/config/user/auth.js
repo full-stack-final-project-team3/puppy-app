@@ -2,8 +2,11 @@
 // 로그인한 유저의 정보 가져오기
 import {redirect} from "react-router-dom";
 
+
+
 const getUserData = () => {
     const userDataJson = localStorage.getItem('userData')
+
     return  JSON.parse(userDataJson);
 };
 
@@ -15,8 +18,12 @@ export const getUserToken = () => {
 
 // 로그인 회원정보를 불러오는 loader
 export const userDataLoader = () => {
-    return getUserData();
+
+    const userData = getUserData();
+
+    return userData;
 }
+
 
 // 접근 권한을 확인하는 loader
 export const authCheckLoader = () => {
