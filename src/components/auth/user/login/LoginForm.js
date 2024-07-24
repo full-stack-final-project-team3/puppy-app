@@ -52,8 +52,8 @@ const LoginForm = () => {
             <div className={styles.authContainer}>
                 <div>
                     <div className={styles.wrap}>
-                        <img src="/header-logo.png" alt="logo" />
-                        <h2>Login</h2>
+                        <img className={styles.img} src="/header-logo.png" alt="logo" />
+                        <h2 className={styles.h2}>Login</h2>
                         <div className={styles.signup}>
                             <Link to="/signup" className={styles.signupBtn}>Sign Up</Link>
                         </div>

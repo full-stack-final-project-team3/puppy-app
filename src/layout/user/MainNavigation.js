@@ -8,11 +8,21 @@ import UserContext from "../../components/context/user-context";
 
 const MainNavigation = () => {
     const [menuOpen, setMenuOpen] = useState(false);
-    const { isLogin, changeIsLogin } = useContext(UserContext);
+    const {changeIsLogin, user, setUser} = useContext(UserContext);
+
 
     const userData = useRouteLoaderData('user-data');
 
-    if (userData) console.log(userData);
+    useEffect(() => {
+        if (userData) {
+            changeIsLogin(true);
+            // const userData = useRouteLoaderData('user-data');
+            const userDataJson = localStorage.getItem('userData');
+            setUser(userData)
+
+        }
+    }, [userData, changeIsLogin]); // 종속성 배열 추가
+
 
     const toggleMenuHandler = () => {
         setMenuOpen(prevState => !prevState);
@@ -23,13 +33,6 @@ const MainNavigation = () => {
         window.location.reload(); // 로그아웃 후 페이지 새로고침
     };
 
-    useEffect(() => {
-
-        if (userData) {
-            changeIsLogin(true)
-        }
-
-    }, []);
 
 
 
@@ -43,7 +46,7 @@ const MainNavigation = () => {
                     </NavLink>
                 </div>
                 <div className={styles.right}>
-                    { isLogin ? (
+                    { user ? (
                         <>
                             <button className={styles.logout} onClick={logoutHandler}>Logout</button>
                             <BsBell className={styles.icon} />
