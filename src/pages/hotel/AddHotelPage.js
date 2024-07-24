@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { HOTEL_URL } from '../../config/user/host-config';
+import { HOTEL_URL , UPLOAD_URL } from '../../config/user/host-config';
 import RoomModal from './RoomModal';
 import styles from './AddHotelPage.module.scss';
 
@@ -14,7 +14,7 @@ const AddHotelPage = () => {
     cancelPolicy: '',
     price: '',
     phoneNumber: '',
-    hotelImages: [{ hotelImgUri: '', type: '' }]
+    hotelImages: [{ hotelImgUri: '', type: 'HOTEL' }]
   });
   const [hotelId, setHotelId] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
@@ -34,13 +34,47 @@ const AddHotelPage = () => {
     setHotelData({ ...hotelData, hotelImages: images });
   };
 
-  const handleHotelSubmit = async (e) => {
-    e.preventDefault();
+  const handleAddImage = () => {
+    setHotelData(prev => ({
+      ...prev,
+      hotelImages: [...prev.hotelImages, { hotelImgUri: '', type: '' }]
+    }));
+  };
+
+  const handleRemoveImage = index => {
+    setHotelData(prev => ({
+      ...prev,
+      hotelImages: prev.hotelImages.filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleFileChange = async (e, index) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append('file', file);
 
     try {
-      const token = JSON.parse(localStorage.getItem('userData')).token;
-      console.log('Token:', token);
+      const response = await fetch(`${UPLOAD_URL}`, {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await response.text();
 
+      const images = [...hotelData.hotelImages];
+      images[index] = { hotelImgUri: data, type: 'image' };
+      setHotelData({ ...hotelData, hotelImages: images });
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      setErrorMessage('Error uploading file');
+    }
+  };
+
+  const handleHotelSubmit = async (e) => {
+    e.preventDefault();
+  
+    try {
+      const token = JSON.parse(localStorage.getItem('userData')).token;
+  
       const response = await fetch(`${HOTEL_URL}`, {
         method: 'POST',
         headers: {
@@ -56,28 +90,26 @@ const AddHotelPage = () => {
           'cancel-policy': hotelData.cancelPolicy,
           'price': hotelData.price,
           'phone-number': hotelData.phoneNumber,
-          'hotel-images': hotelData.hotelImages
+          'hotel-images': hotelData.hotelImages.map(image => ({
+            hotelImgUri: image.hotelImgUri,
+            type: 'HOTEL'
+          }))
         })
       });
-
-      console.log('Response status:', response.status);
-
+  
       if (response.ok) {
-        const data = await response.json(); // 응답을 JSON으로 파싱
-        console.log('Response data:', data);
-        setHotelId(data.id); // 호텔 ID를 상태에 저장
-        setShowConfirmModal(true); // Show confirm modal
+        const data = await response.json();
+        setHotelId(data.id);
+        setShowConfirmModal(true);
       } else {
         const errorData = await response.json();
-        console.error('Error data:', errorData);
         setErrorMessage(errorData.error || 'Failed to add hotel');
       }
     } catch (error) {
-      console.error('Error occurred:', error);
       setErrorMessage('An error occurred while adding the hotel');
     }
   };
-
+  
   const handleConfirmYes = () => {
     setShowConfirmModal(false);
     setShowRoomModal(true); // Show room modal
@@ -86,6 +118,14 @@ const AddHotelPage = () => {
   const handleConfirmNo = () => {
     setShowConfirmModal(false);
     navigate('/hotel'); // Navigate to hotel page
+  };
+
+  const openKakaoAddress = () => {
+    new window.daum.Postcode({
+      oncomplete: function (data) {
+        setHotelData({ ...hotelData, location: data.address });
+      }
+    }).open();
   };
 
   return (
@@ -114,14 +154,17 @@ const AddHotelPage = () => {
               onChange={handleHotelChange}
               required
           />
-          <input
-              type="text"
-              name="location"
-              placeholder="Location"
-              value={hotelData.location}
-              onChange={handleHotelChange}
-              required
-          />
+          <div className={styles.locationContainer}>
+            <input
+                type="text"
+                name="location"
+                placeholder="Location"
+                value={hotelData.location}
+                onChange={handleHotelChange}
+                required
+            />
+            <button type="button" onClick={openKakaoAddress}>Find Address</button>
+          </div>
           <textarea
               name="rulesPolicy"
               placeholder="Rules Policy"
@@ -151,28 +194,32 @@ const AddHotelPage = () => {
               required
           />
           {hotelData.hotelImages.map((image, index) => (
-              <div key={index}>
+          <div key={index}>
+            <input
+              type="file"
+              onChange={(e) => handleFileChange(e, index)}
+              required
+            />
+            {image.hotelImgUri && (
+              <>
+                <img src={`${HOTEL_URL}/images/${image.hotelImgUri}`} alt="Hotel" />
                 <input
-                    type="text"
-                    name="hotelImgUri"
-                    placeholder="Hotel Image URI"
-                    value={image.hotelImgUri}
-                    onChange={(e) => handleImageChange(e, index)}
-                    required
+                  type="hidden"
+                  name="type"
+                  placeholder="Image Type"
+                  value={image.type}
+                  onChange={(e) => handleImageChange(e, index)}
+                  required
                 />
-                <input
-                    type="text"
-                    name="type"
-                    placeholder="Image Type"
-                    value={image.type}
-                    onChange={(e) => handleImageChange(e, index)}
-                    required
-                />
-              </div>
-          ))}
-          <button type="submit">Save Hotel</button>
-          {errorMessage && <p className={styles.error}>{errorMessage}</p>}
-        </form>
+                <button type="button" onClick={() => handleRemoveImage(index)}>Remove</button>
+              </>
+            )}
+          </div>
+        ))}
+        <button type="button" onClick={handleAddImage}>Add Image</button>
+        <button type="submit">Save Hotel</button>
+        {errorMessage && <p className={styles.error}>{errorMessage}</p>}
+      </form>
 
         {showConfirmModal && (
             <div className={styles.confirmModal}>
