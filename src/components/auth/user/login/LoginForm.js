@@ -53,7 +53,7 @@ const LoginForm = () => {
                 <div>
                     <div className={styles.wrap}>
                         <img src="/header-logo.png" alt="logo" />
-                        <h2>Login</h2>
+                        <h2 className={styles.h2}>Login</h2>
                         <div className={styles.signup}>
                             <Link to="/signup" className={styles.signupBtn}>Sign Up</Link>
                         </div>
