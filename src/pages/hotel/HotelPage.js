@@ -18,29 +18,35 @@ const HotelPage = () => {
   const [personCount, setPersonCount] = useState(1);
 
   useEffect(() => {
-    const fetchHotels = async () => {
-      try {
-        const response = await fetch(HOTEL_URL, {
-          headers: {
-            'Authorization': `Bearer ${JSON.parse(localStorage.getItem('userData')).token}`
-          }
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch hotels');
-        }
-
-        const data = await response.json();
-        setHotels(data.hotels);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchHotels();
   }, []);
+
+  const fetchHotels = async (location = '') => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetch(`${HOTEL_URL}?location=${location}`, {
+        headers: {
+          'Authorization': `Bearer ${JSON.parse(localStorage.getItem('userData')).token}`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch hotels');
+      }
+
+      const data = await response.json();
+      setHotels(data.hotels);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSearch = (location) => {
+    fetchHotels(location);
+  };
 
   const handleNextStep = () => {
     setStep(prev => Math.min(prev + 1, 5));
@@ -53,6 +59,7 @@ const HotelPage = () => {
   const handleStepClick = (num) => {
     if (num === 1) {
       setStep(1);
+      setHotels([]);
     }
   };
 
@@ -67,24 +74,27 @@ const HotelPage = () => {
   return (
     <div className={styles.hotelReservationPage}>
       <StepIndicator step={step} onStepClick={handleStepClick} />
-      <div className={styles.stepContent}>
-        {step === 1 && (
+      {step === 1 ? (
+        <div className={styles.stepContent}>
           <HotelSearchForm
             isAdmin={isAdmin}
             personCount={personCount}
             incrementPersonCount={incrementPersonCount}
             decrementPersonCount={decrementPersonCount}
             handleNextStep={handleNextStep}
+            onSearch={handleSearch}
           />
-        )}
-        {/* Add other step content here */}
-      </div>
-      {loading ? (
-        <p>Loading...</p>
-      ) : error ? (
-        <p>Error: {error}</p>
+        </div>
       ) : (
-        <HotelList hotels={hotels} />
+        <div className={styles.hotelListContainer}>
+          {loading ? (
+            <p>Loading...</p>
+          ) : error ? (
+            <p>Error: {error}</p>
+          ) : (
+            <HotelList hotels={hotels} />
+          )}
+        </div>
       )}
     </div>
   );
