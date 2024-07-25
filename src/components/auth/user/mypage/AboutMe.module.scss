@@ -1,0 +1,20 @@
+.wrap {
+  width: 90%;
+  margin: 50px auto;
+  background: #F0E1C4;
+
+
+  .mainContainer {
+    background: #F4E8D3;
+    width: 90%;
+    margin: 0 auto 50px;
+    display: flex;
+
+    .img {
+      width: 100px;
+      height: 100px;
+    }
+
+
+  }
+}
