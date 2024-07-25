@@ -1,5 +1,5 @@
 import React, {useState, useContext, useEffect} from 'react';
-import { NavLink, useRouteLoaderData } from 'react-router-dom';
+import {Link, NavLink, useRouteLoaderData} from 'react-router-dom';
 import styles from './MainNavigation.module.scss';
 import { GiHamburgerMenu } from "react-icons/gi";
 import { BsBell } from "react-icons/bs";
@@ -50,7 +50,7 @@ const MainNavigation = () => {
                         <>
                             <button className={styles.logout} onClick={logoutHandler}>Logout</button>
                             <BsBell className={styles.icon} />
-                            <BiUser className={styles.icon} />
+                            <Link to={"/mypage"}><BiUser className={styles.icon}/></Link>
                             <GiHamburgerMenu className={styles.icon} onClick={toggleMenuHandler} />
                         </>
                     ) : (
