@@ -1,0 +1,66 @@
+.stepContent {
+  label {
+    margin-bottom: 20px;
+    color: black;
+    font-family: sans-serif;
+    display: block;
+    text-indent: 5px;
+    font-size: 16px;
+    width: 100%;
+  }
+
+  select,
+  input[type='text'] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+
+  .next {
+    width: 100%;
+    padding: 10px;
+    background-color: rgb(155, 0, 0);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .next:hover {
+    background: #550d0d;
+  }
+
+  .addHotelButtonContainer {
+    display: flex;
+    justify-content: end;
+
+    .addHotelButton {
+      width: 100px;
+      height: 30px;
+      background-color: #898b8d;
+      color: rgb(255, 255, 255);
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+
+      &:hover {
+        background-color: #0056b3;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+    }
+  }
+}
