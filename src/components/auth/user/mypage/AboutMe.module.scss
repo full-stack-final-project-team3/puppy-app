@@ -2,19 +2,40 @@
   width: 90%;
   margin: 50px auto;
   background: #F0E1C4;
+  padding-bottom: 20px;
 
+  .me {
+    width: 90%;
+    margin: 30px auto;
+    padding-top: 30px;
+    font-size: 23px;
+    font-weight: 600;
+  }
 
   .mainContainer {
     background: #F4E8D3;
     width: 90%;
-    margin: 0 auto 50px;
+    margin: 0 auto;
     display: flex;
+    padding-bottom: 30px;
+
 
     .img {
       width: 100px;
       height: 100px;
     }
 
+    .wrapRight {
+      margin-left: 30px;
 
+      .point {
+        font-weight: 300;
+      }
+      .modify {
+        width: 70px;
+        white-space: nowrap;
+
+      }
+    }
   }
 }

@@ -90,7 +90,7 @@ const SignUpPage = () => {
 
           {activeButton && (
             <div>
-              <button>회원가입 완료</button>
+              <button className={styles.button}>회원가입 완료</button>
             </div>
           )}
 

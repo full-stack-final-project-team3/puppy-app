@@ -8,7 +8,7 @@ import { AUTH_URL } from "../../../../config/user/host-config";
 const MyPageMain = () => {
 
     const userData= useRouteLoaderData('user-data2');
-    console.log(userData)
+    // console.log(userData)
     const [userDetail, setUserDetail] = useState("");
 
 
@@ -27,6 +27,7 @@ const MyPageMain = () => {
         fetchData();
     }, []);
 
+    // console.log(userDetail)
 
 
     return (

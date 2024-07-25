@@ -8,13 +8,13 @@ const AboutMe = ({ user }) => {
 
     return (
         <div className={styles.wrap}>
-            <div>Me</div>
+            <div className={styles.me}>Me</div>
             <div className={styles.mainContainer}>
                 <img className={styles.img} src={user.profileUrl}></img>
-                <div>
-                    <h3>{user.nickname}</h3>
-                    <span>내 포인트 : {user.point}</span> <br/>
-                    <button>수정</button>
+                <div className={styles.wrapRight}>
+                    <h3 className={styles.nickname}>{user.nickname}</h3>
+                    <span className={styles.point}>내 포인트 : {user.point}</span> <br/>
+                    <button className={styles.modify}>수정(아직x)</button>
                 </div>
             </div>
         </div>
