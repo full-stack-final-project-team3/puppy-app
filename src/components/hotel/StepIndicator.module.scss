@@ -1,0 +1,38 @@
+.stepIndicator {
+  display: flex;
+  height: 90px;
+  width: 100%;
+  background: #FFF;
+  align-items: center;
+  border-top: 0.2px solid #bcbcbc;
+  margin-bottom: 40px;
+  
+
+  .stepNumber {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: lightgray;
+    color: white;
+    cursor: default;
+
+    &.active {
+      background-color: rgb(155, 0, 0);
+    }
+  }
+
+  .stepLine {
+    flex: 1;
+    height: 2px;
+    background-color: lightgray;
+
+    &.active {
+      background-color: rgb(155, 0, 0);
+    }
+  }
+}
