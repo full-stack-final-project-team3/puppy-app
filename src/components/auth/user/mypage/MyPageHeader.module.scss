@@ -1,0 +1,16 @@
+.headerWrap {
+  width: 80%;
+  margin: 0 auto;
+  border-bottom: 1px solid black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+
+  .icon {
+    width: 20px;
+    height: 20px;
+    font-weight: 300;
+  }
+}
+

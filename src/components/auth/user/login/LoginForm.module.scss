@@ -92,6 +92,10 @@
     box-sizing: border-box;
     background: #F4E8D3;
   }
+  input:focus {
+    outline: none;
+  }
+
 }
 
 .checkboxContainer {

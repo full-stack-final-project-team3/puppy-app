@@ -9,7 +9,8 @@ import HotelPage from '../../pages/hotel/HotelPage'; // 새로 추가된 HotelPa
 import AddHotelPage from '../../pages/hotel/AddHotelPage'; // 새로 추가된 AddHotelPage
 import { logoutAction } from '../../pages/user/Logout';
 import UserProvider from "../../components/context/UserProvider";
-import { userDataLoader, authCheckLoader } from './auth';
+import {userDataLoader, authCheckLoader} from './auth';
+import MyPageMain from "../../components/auth/user/mypage/MyPageMain";
 
 const homeRouter = [
     {
@@ -23,7 +24,13 @@ const homeRouter = [
     {
         path: 'signup',
         element: <SignUpPage/>
-    }
+    },
+    {
+      path: 'mypage',
+      element: <MyPageMain/>,
+      loader: userDataLoader,
+      id: "user-data2",
+    },
 ];
 
 export const router = createBrowserRouter([
