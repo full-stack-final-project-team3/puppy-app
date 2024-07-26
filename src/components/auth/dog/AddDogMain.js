@@ -10,29 +10,31 @@ const AddDogMain = () => {
     const [step, setStep] = useState(1);
     const [name, setName] = useState('');
     const [breed, setBreed] = useState('');
+    const [birthday, setBirthday] = useState(null);
 
     useEffect(() => {
-
     }, [step]);
 
     const dogNameValue = (dogName) => {
         setName(dogName);
-        // console.log("setName 됨!");
         setStep(2);
-    }
+    };
 
     const dogBreedValue = (dogBreed) => {
-        setBreed(dogBreed)
+        setBreed(dogBreed);
         setStep(3);
-    }
+    };
 
-
+    const dogBirthdayValue = (date) => {
+        const formatDate = date.format('YYYY-MM-DD');
+        setBirthday(formatDate);
+        setStep(4);
+    };
 
     return (
         <div className={styles.wrap}>
-            {/*<DogRegisterStep/>*/}
-            {step > 2 && <DogBirthdayInput/>}
-            {step > 1 && <DogBreedInput  dogBreedValue={dogBreedValue} />}
+            {step > 2 && <DogBirthdayInput onDateChange={dogBirthdayValue} />}
+            {step > 1 && <DogBreedInput dogBreedValue={dogBreedValue} />}
             <DogNameInput dogNameValue={dogNameValue} />
         </div>
     );
