@@ -11,6 +11,9 @@ const MyPageMain = () => {
     const [dogList, setDogList] = useState([]);
 
     useEffect(() => {
+
+        if (!userData) return;
+
         const fetchData = async () => {
             try {
                 const response = await fetch(`${AUTH_URL}/${userData.email}`);
@@ -21,7 +24,7 @@ const MyPageMain = () => {
             }
         };
         fetchData();
-    }, [userData.email]);
+    }, []);
 
     const { id } = userDetail;
 

@@ -2,6 +2,9 @@ import React from 'react';
 import styles from './AboutDog.module.scss';
 
 const AboutDog = ({ dogList }) => {
+
+    console.log(dogList)
+
     return (
         <div className={styles.wrap}>
             <div className={styles.me}>My Dogs</div>
@@ -10,6 +13,7 @@ const AboutDog = ({ dogList }) => {
                     <img className={styles.img} src={dog.dogProfileUrl}></img>
                     <div className={styles.wrapRight}>
                         <h3 className={styles.nickname}>{dog.dogName}</h3>
+                        <span className={styles.breed}>{dog.dogBreed}</span> <br/>
                         <button className={styles.modify}>수정(아직x)</button>
                     </div>
                 </div>

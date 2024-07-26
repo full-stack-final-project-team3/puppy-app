@@ -5,7 +5,8 @@ import UserContext from "../../components/context/user-context";
 const WelcomePage = () => {
 
     const userData = useRouteLoaderData('user-data');
-    if (userData) console.log(userData);
+
+
     const {changeIsLogin, user, setUser} = useContext(UserContext);
     useEffect(() => {
         if (userData) {
