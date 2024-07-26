@@ -1,4 +1,3 @@
-// src/components/hotel/HotelList.js
 import React from 'react';
 import styles from './HotelList.module.scss';
 

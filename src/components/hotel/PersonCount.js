@@ -6,7 +6,7 @@ const PersonCount = ({ personCount, incrementPersonCount, decrementPersonCount }
   return (
     <div className={styles.personCountWrapper}>
       <label>
-        Person count
+        Dog count
         <div className={styles.personCount}>
           <button onClick={decrementPersonCount}>-</button>
           <span>{personCount}</span>

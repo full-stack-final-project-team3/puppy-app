@@ -1,0 +1,24 @@
+// CSS
+.datePickerContainer {
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+  border-radius: 10px;
+}
+
+.datePicker {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  margin: 0 12px;
+  width: 800px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05); // 그림자 더 부드럽게
+}
+
+.MuiTextField-root {
+  width: 100%;
+  font-size: 16px;
+  border: none;
+  background: #eaeaea; // 입력 필드 배경색 변경
+  border-radius: 8px;
+}
