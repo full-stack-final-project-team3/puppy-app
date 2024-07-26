@@ -1,100 +1,48 @@
-import React, { useState } from 'react';
-import { ROOM_URL , UPLOAD_URL } from '../../config/user/host-config';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { uploadFile, submitRoom, updateRoomData, addRoomImage, removeRoomImage, setErrorMessage } from '../../components/store/hotel/RoomAddSlice';
 import styles from './RoomModal.module.scss';
+import { ROOM_URL } from "../../config/user/host-config";
 
 const RoomModal = ({ hotelId, onClose }) => {
-  const [roomData, setRoomData] = useState({
-    name: '',
-    content: '',
-    type: '',
-    price: '',
-    roomImages: [{ hotelImgUri: '', type: 'ROOM' }]
-  });
-  const [errorMessage, setErrorMessage] = useState('');
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const roomData = useSelector((state) => state.roomAdd);
 
   const handleRoomChange = (e) => {
     const { name, value } = e.target;
-    setRoomData({ ...roomData, [name]: value });
-  };
-
-  const handleImageChange = (e, index) => {
-    const { name, value } = e.target;
-    const images = [...roomData.roomImages];
-    images[index][name] = value;
-    setRoomData({ ...roomData, roomImages: images });
+    dispatch(updateRoomData({ [name]: value }));
   };
 
   const handleAddImage = () => {
-    setRoomData(prev => ({
-      ...prev,
-      roomImages: [...prev.roomImages, { hotelImgUri: '', type: '' }]
-    }));
+    dispatch(addRoomImage());
   };
 
-  const handleRemoveImage = index => {
-    setRoomData(prev => ({
-      ...prev,
-      roomImages: prev.roomImages.filter((_, i) => i !== index)
-    }));
+  const handleRemoveImage = (index) => {
+    dispatch(removeRoomImage(index));
   };
 
-  const handleFileChange = async (e, index) => {
+  const handleFileChange = (e, index) => {
     const file = e.target.files[0];
-    const formData = new FormData();
-    formData.append('file', file);
-
-    try {
-      const response = await fetch(`${UPLOAD_URL}`, {
-        method: 'POST',
-        body: formData,
-      });
-      const data = await response.text();
-
-      const images = [...roomData.roomImages];
-      images[index] = { hotelImgUri: data, type: 'image' };
-      setRoomData({ ...roomData, roomImages: images });
-    } catch (error) {
-      console.error('Error uploading file:', error);
-      setErrorMessage('Error uploading file');
-    }
+    dispatch(uploadFile({ file, index }));
   };
 
-  const handleRoomSubmit = async (e) => {
+  const handleRoomSubmit = (e) => {
     e.preventDefault();
-
-    try {
-      const token = JSON.parse(localStorage.getItem('userData')).token;
-
-      const response = await fetch(`${ROOM_URL}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          'room-name': roomData.name,
-          'room-content': roomData.content,
-          'room-type': roomData.type,
-          'room-price': roomData.price,
-          'room-images': roomData.roomImages.map(image => ({
-            hotelImgUri: image.hotelImgUri,
-            type: 'ROOM'
-          })),
-          'hotel-id': hotelId
+    const token = JSON.parse(localStorage.getItem('userData')).token;
+    dispatch(submitRoom({ roomData, token, hotelId }))
+        // unwrap 비동기 작업의 결과를 처리하기 위한 리덕트 도구인듯
+        .unwrap()
+        .then((response) => {
+          console.log('Room added successfully:', response);
+          alert('룸 생성이 완료되었습니다.');
+          navigate('/hotel');
         })
-      });
-
-      if (response.ok) {
-        const data = await response.text();
-        console.log('응답 데이터:', data);
-        onClose(); // 방이 추가된 후 모달 닫기
-      } else {
-        const errorData = await response.text();
-        setErrorMessage(errorData.message || '방 추가에 실패했습니다.');
-      }
-    } catch (error) {
-      setErrorMessage('방 추가 중 오류가 발생했습니다.');
-    }
+        .catch((error) => {
+          console.error('Failed to add room:', error);
+          dispatch(setErrorMessage(error));
+        });
   };
 
   return (
@@ -132,32 +80,24 @@ const RoomModal = ({ hotelId, onClose }) => {
               required
           />
           {roomData.roomImages.map((image, index) => (
-          <div key={index}>
-            <input
-              type="file"
-              onChange={(e) => handleFileChange(e, index)}
-              required
-            />
-            {image.hotelImgUri && (
-              <>
-                <img src={`${ROOM_URL}/images/${image.hotelImgUri}`} alt="Hotel" />
+              <div key={index}>
                 <input
-                  type="hidden"
-                  name="type"
-                  placeholder="Image Type"
-                  value={image.type}
-                  onChange={(e) => handleImageChange(e, index)}
-                  required
+                    type="file"
+                    onChange={(e) => handleFileChange(e, index)}
+                    required
                 />
-                <button type="button" onClick={() => handleRemoveImage(index)}>Remove</button>
-              </>
-            )}
-          </div>
-        ))}
+                {image.hotelImgUri && (
+                    <>
+                      <img src={`${ROOM_URL}/images/${image.hotelImgUri}`} alt="Hotel" />
+                      <button type="button" onClick={() => handleRemoveImage(index)}>Remove</button>
+                    </>
+                )}
+              </div>
+          ))}
           <button type="button" onClick={handleAddImage}>Add Image</button>
-        <button type="submit">객실 저장</button>
-        {errorMessage && <p className={styles.error}>{errorMessage}</p>}
-      </form>
+          <button type="submit">객실 저장</button>
+          {roomData.errorMessage && <p className={styles.error}>{roomData.errorMessage}</p>}
+        </form>
         <button onClick={onClose}>닫기</button>
       </div>
   );
