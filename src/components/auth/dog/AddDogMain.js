@@ -4,6 +4,7 @@ import DogBirthdayInput from "./DogBirthdayInput";
 import DogBreedInput from "./DogBreedInput";
 import styles from "./AddDogMain.module.scss";
 import DogRegisterStep from "./DogRegisterStep";
+import DogSexInput from "./DogSexInput";
 
 const AddDogMain = () => {
 
@@ -11,6 +12,7 @@ const AddDogMain = () => {
     const [name, setName] = useState('');
     const [breed, setBreed] = useState('');
     const [birthday, setBirthday] = useState(null);
+    const [gender, setGender] = useState('');
 
     useEffect(() => {
     }, [step]);
@@ -31,8 +33,14 @@ const AddDogMain = () => {
         setStep(4);
     };
 
+    const dogSexValue = (sex) => {
+        setGender(sex);
+        setStep(5)
+    }
+
     return (
         <div className={styles.wrap}>
+            {step > 3 && <DogSexInput dogSexValue={dogSexValue}/>}
             {step > 2 && <DogBirthdayInput onDateChange={dogBirthdayValue} />}
             {step > 1 && <DogBreedInput dogBreedValue={dogBreedValue} />}
             <DogNameInput dogNameValue={dogNameValue} />
