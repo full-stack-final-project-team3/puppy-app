@@ -10,7 +10,7 @@
   }
 
   select,
-  input[type='text'] {
+  .custom-text-field {
     width: 100%;
     padding: 10px;
     margin-top: 10px;
@@ -62,5 +62,11 @@
         text-decoration: none;
       }
     }
+  }
+
+  .warning {
+    color: red;
+    font-weight: bold;
+    margin-top: 10px;
   }
 }
