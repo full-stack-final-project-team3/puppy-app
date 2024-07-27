@@ -23,6 +23,15 @@
     font-weight: 600;
   }
 
+  .add {
+    float: right;
+    .addDog {
+      font-size: 12px;
+      text-decoration: underline;
+      color: black;
+    }
+  }
+
   .mainContainer {
     background: #F4E8D3;
     width: 90%;

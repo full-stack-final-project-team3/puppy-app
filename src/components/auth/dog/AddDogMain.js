@@ -23,6 +23,8 @@ const AddDogMain = () => {
     const [weight, setWeight] = useState('');
     const [dogSize, setDogSize] = useState('');
     const [allergies, setAllergies] = useState([]);
+    // 기본 이미지
+    const profileUrl = "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fst2.depositphotos.com%2F5045705%2F11671%2Fv%2F950%2Fdepositphotos_116714982-stock-illustration-little-puppy-icon.jpg&type=a340";
 
     useEffect(() => {
         console.log("Current step:", step);
@@ -75,6 +77,7 @@ const AddDogMain = () => {
             "dogSize": dogSize,
             "weight": weight,
             "allergies": allergies,
+            "dogProfileUrl": profileUrl,
         }
         console.log(payload)
         console.log(userData)
