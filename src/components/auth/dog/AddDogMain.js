@@ -92,7 +92,7 @@ const AddDogMain = () => {
 
         if (result) {
             alert('강아지 등록 성공!');
-            navigate('/')
+            navigate('/mypage')
         }
     }
 

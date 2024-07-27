@@ -6,13 +6,15 @@ const DogWeightInput = ({ dogWeightValue }) => {
     const secondRef = useRef();
     const [weight, setWeight] = useState(0.0);
 
-
     const handleKeyDown = (e, ref, setter) => {
         if (e.key === 'Enter') {
-            const value = parseFloat(ref.current.value);
-            setter(value);
             calculateWeight();
         }
+    };
+
+    const handleChange = (e, ref) => {
+        const value = e.target.value.replace(/[^0-9]/g, ''); // 숫자 외 문자 제거
+        ref.current.value = value;
     };
 
     const calculateWeight = () => {
@@ -33,6 +35,7 @@ const DogWeightInput = ({ dogWeightValue }) => {
                 <input
                     ref={firstRef}
                     onKeyDown={(e) => handleKeyDown(e, firstRef, () => {})}
+                    onChange={(e) => handleChange(e, firstRef)}
                     className={styles.input}
                     placeholder={"0"}
                 />
@@ -40,6 +43,7 @@ const DogWeightInput = ({ dogWeightValue }) => {
                 <input
                     ref={secondRef}
                     onKeyDown={(e) => handleKeyDown(e, secondRef, () => {})}
+                    onChange={(e) => handleChange(e, secondRef)}
                     className={styles.input}
                     placeholder={"0"}
                 />kg
