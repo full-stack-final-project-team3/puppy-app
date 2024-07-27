@@ -60,8 +60,8 @@ const MyPageMain = () => {
                 !isEditMode &&
                 <MyPageBody user={userDetail} dogList={dogList} />
             }
-            { isDogEditMode && <DogEdit/> }
             { isUserEditMode && <UserEdit/>}
+            { isDogEditMode && <DogEdit/> }
         </div>
     );
 };

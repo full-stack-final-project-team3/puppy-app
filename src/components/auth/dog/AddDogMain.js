@@ -27,7 +27,7 @@ const AddDogMain = () => {
     const profileUrl = "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fst2.depositphotos.com%2F5045705%2F11671%2Fv%2F950%2Fdepositphotos_116714982-stock-illustration-little-puppy-icon.jpg&type=a340";
 
     useEffect(() => {
-        console.log("Current step:", step);
+
     }, [step]);
 
     const dogNameValue = (dogName) => {
@@ -95,9 +95,6 @@ const AddDogMain = () => {
             navigate('/mypage')
         }
     }
-
-
-
 
 
     return (

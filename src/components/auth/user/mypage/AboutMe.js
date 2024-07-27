@@ -6,7 +6,7 @@ import {userEditActions} from "../../../store/user/UserEditSlice";
 import userEdit from "./UserEdit";
 
 
-const AboutMe = ({ user }) => {
+const AboutMe = ({user}) => {
 
     const dispatch = useDispatch();
     const startEditMode = e => {
@@ -20,9 +20,11 @@ const AboutMe = ({ user }) => {
             <div className={styles.mainContainer}>
                 <img className={styles.img} src={user.profileUrl}></img>
                 <div className={styles.wrapRight}>
-                    <h3 className={styles.nickname}>{user.nickname}</h3>
+                    <div className={styles.flex}>
+                        <h3 className={styles.nickname}>{user.nickname}</h3>
+                        <span onClick={startEditMode} className={styles.modify}>수정</span>
+                    </div>
                     <span className={styles.point}>내 포인트 : {user.point}</span> <br/>
-                    <span onClick={startEditMode} className={styles.modify}>수정</span>
                 </div>
             </div>
         </div>
