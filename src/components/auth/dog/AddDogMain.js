@@ -6,8 +6,14 @@ import styles from "./AddDogMain.module.scss";
 import DogSexInput from "./DogSexInput";
 import DogWeightInput from "./DogWeightInput";
 import DogAllergiesInput from "./DogAllergiesInput";
+import {useNavigate, useRouteLoaderData} from "react-router-dom";
+import {DOG_URL} from "../../../config/user/host-config";
 
 const AddDogMain = () => {
+
+    const navigate = useNavigate();
+
+    const userData = useRouteLoaderData('user-data');
 
     const [step, setStep] = useState(1);
     const [name, setName] = useState('');
@@ -15,6 +21,7 @@ const AddDogMain = () => {
     const [birthday, setBirthday] = useState(null);
     const [gender, setGender] = useState('');
     const [weight, setWeight] = useState('');
+    const [dogSize, setDogSize] = useState('');
     const [allergies, setAllergies] = useState([]);
 
     useEffect(() => {
@@ -44,23 +51,60 @@ const AddDogMain = () => {
 
     const dogWeightValue = (weight) => {
         setWeight(weight);
+
+        if (weight > 25) {
+            setDogSize("LARGE")
+        } else if (weight > 10) {
+            setDogSize("MEDIUM")
+        } else {
+            setDogSize("SMALL")
+        }
+
         setStep(6);
     }
 
-    const dogAllergiesValue = (allergies) => {
+    const dogAllergiesValue = async (allergies) => {
+
         setAllergies(allergies);
+
+        const payload = {
+            "dogName": name,
+            "dogBreed": breed,
+            "birthday": birthday,
+            "dogSex": gender,
+            "dogSize": dogSize,
+            "weight": weight,
+            "allergies": allergies,
+        }
+        console.log(payload)
+        console.log(userData)
+
+        const response = await fetch(`${DOG_URL}/register/${userData.email}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        const result = await response.text();
+
+        if (result) {
+            alert('강아지 등록 성공!');
+            navigate('/')
+        }
     }
+
+
 
 
 
     return (
         <div className={styles.wrap}>
-            {step > 5 && <DogAllergiesInput onAllergiesChange={dogAllergiesValue}  />}
-            {step > 4 && <DogWeightInput dogWeightValue={dogWeightValue}/>}
-            {step > 3 && <DogSexInput dogSexValue={dogSexValue}/>}
-            {step > 2 && <DogBirthdayInput onDateChange={dogBirthdayValue} />}
-            {step > 1 && <DogBreedInput dogBreedValue={dogBreedValue} />}
-            <DogNameInput dogNameValue={dogNameValue} />
+            {step === 1 && <DogNameInput dogNameValue={dogNameValue}/>}
+            {step === 2 && <DogBreedInput dogBreedValue={dogBreedValue} />}
+            {step === 3 && <DogBirthdayInput onDateChange={dogBirthdayValue} />}
+            {step === 4 && <DogSexInput dogSexValue={dogSexValue}/>}
+            {step === 5 && <DogWeightInput dogWeightValue={dogWeightValue}/>}
+            {step === 6 && <DogAllergiesInput onAllergiesChange={dogAllergiesValue}  />}
         </div>
     );
 };

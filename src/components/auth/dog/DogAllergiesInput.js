@@ -60,9 +60,9 @@ const DogAllergiesInput = ({ onAllergiesChange }) => {
                 onClick={handleSubmit}
                 disabled={!isNextButtonEnabled}
             >
-                다음
+                작성 완료
             </button>
-            <div>더 추가 예정 - 기범</div>
+            <div>알러지 더 추가 예정 - 기범</div>
         </div>
     );
 };

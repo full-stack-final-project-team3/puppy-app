@@ -6,6 +6,7 @@ const DogWeightInput = ({ dogWeightValue }) => {
     const secondRef = useRef();
     const [weight, setWeight] = useState(0.0);
 
+
     const handleKeyDown = (e, ref, setter) => {
         if (e.key === 'Enter') {
             const value = parseFloat(ref.current.value);
@@ -18,7 +19,6 @@ const DogWeightInput = ({ dogWeightValue }) => {
         const firstValue = parseFloat(firstRef.current.value) || 0;
         const secondValue = parseFloat(secondRef.current.value) || 0;
         const totalWeight = firstValue + secondValue / 10;
-        console.log(totalWeight)
         setWeight(totalWeight);
         if (dogWeightValue) {
             dogWeightValue(totalWeight);
