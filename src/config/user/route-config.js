@@ -12,6 +12,7 @@ import UserProvider from "../../components/context/UserProvider";
 import {userDataLoader, authCheckLoader} from './auth';
 import MyPageMain from "../../components/auth/user/mypage/MyPageMain";
 import AddDogMain from "../../components/auth/dog/AddDogMain";
+import DogEdit from "../../components/auth/dog/DogEdit";
 
 const homeRouter = [
     {
@@ -67,8 +68,7 @@ export const router = createBrowserRouter([
             {
                 path: 'add-dog',
                 element: <AddDogMain />,
-            }
-
+            },
         ],
     },
 ]);

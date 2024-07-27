@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './AboutMe.module.scss';
+import {Link} from "react-router-dom";
 
 
 const AboutMe = ({ user }) => {
@@ -14,7 +15,7 @@ const AboutMe = ({ user }) => {
                 <div className={styles.wrapRight}>
                     <h3 className={styles.nickname}>{user.nickname}</h3>
                     <span className={styles.point}>내 포인트 : {user.point}</span> <br/>
-                    <button className={styles.modify}>수정(아직x)</button>
+                    <Link to={"/"} className={styles.modify}>수정</Link>
                 </div>
             </div>
         </div>

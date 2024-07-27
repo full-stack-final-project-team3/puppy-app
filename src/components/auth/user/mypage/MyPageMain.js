@@ -4,11 +4,17 @@ import MyPageHeader from "./MyPageHeader";
 import MyPageBody from "./MyPageBody";
 import { useRouteLoaderData } from "react-router-dom";
 import { AUTH_URL, DOG_URL } from "../../../../config/user/host-config";
+import DogEdit from "../../dog/DogEdit";
+import {useDispatch, useSelector} from "react-redux";
 
 const MyPageMain = () => {
     const userData = useRouteLoaderData('user-data2');
     const [userDetail, setUserDetail] = useState({});
     const [dogList, setDogList] = useState([]);
+
+    const isEditMode = useSelector(state => state.dogEdit.editMode)
+    console.log(isEditMode)
+
 
     useEffect(() => {
 
@@ -46,7 +52,12 @@ const MyPageMain = () => {
     return (
         <div className={styles.wrap}>
             <MyPageHeader />
-            <MyPageBody user={userDetail} dogList={dogList} />
+            {
+                !isEditMode ?
+                <MyPageBody user={userDetail} dogList={dogList} />
+                :
+                <DogEdit/>
+            }
         </div>
     );
 };

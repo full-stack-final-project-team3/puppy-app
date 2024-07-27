@@ -42,7 +42,7 @@ const MainNavigation = () => {
                 <div className={styles.left}></div>
                 <div className={styles.center}>
                     <NavLink to='/'>
-                        <img src="/header-logo.png" alt="Header Logo" />
+                        <img className={styles.img} src="/header-logo.png" alt="Header Logo" />
                     </NavLink>
                 </div>
                 <div className={styles.right}>

@@ -1,10 +1,17 @@
 import React from 'react';
 import styles from './AboutDog.module.scss';
 import {Link} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {dogEditActions} from "../../../store/dog/DogEditSlice";
 
 const AboutDog = ({ dogList }) => {
 
-    console.log(dogList)
+    // console.log(dogList)
+    const dispatch = useDispatch();
+
+    const startEditMode = e => {
+        dispatch(dogEditActions.startEdit())
+    }
 
     return (
         <div className={styles.wrap}>
@@ -20,7 +27,7 @@ const AboutDog = ({ dogList }) => {
                     <div className={styles.wrapRight}>
                         <h3 className={styles.nickname}>{dog.dogName}</h3>
                         <span className={styles.breed}>{dog.dogBreed}</span> <br/>
-                        <button className={styles.modify}>수정(아직x)</button>
+                        <span className={styles.modify} onClick={startEditMode}>수정</span>
                     </div>
                 </div>
             ))}
