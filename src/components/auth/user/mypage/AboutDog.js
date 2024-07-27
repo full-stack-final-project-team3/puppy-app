@@ -3,6 +3,7 @@ import styles from './AboutDog.module.scss';
 import {Link} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {dogEditActions} from "../../../store/dog/DogEditSlice";
+import {userEditActions} from "../../../store/user/UserEditSlice";
 
 const AboutDog = ({ dogList }) => {
 
@@ -11,6 +12,7 @@ const AboutDog = ({ dogList }) => {
 
     const startEditMode = e => {
         dispatch(dogEditActions.startEdit())
+        dispatch(userEditActions.startMode())
     }
 
     return (

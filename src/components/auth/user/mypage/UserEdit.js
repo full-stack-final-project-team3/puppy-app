@@ -1,23 +1,23 @@
 import React from 'react';
-import styles from './DogEdit.module.scss';
 import {useDispatch} from "react-redux";
-import {userEditActions} from "../../store/user/UserEditSlice";
-import {dogEditActions} from "../../store/dog/DogEditSlice";
+import {userEditActions} from "../../../store/user/UserEditSlice";
 
-const DogEdit = () => {
+
+const UserEdit = () => {
+
 
     const dispatch = useDispatch();
     const clearEditMode = e => {
         dispatch(userEditActions.clearMode())
-        dispatch(dogEditActions.clearEdit())
+        dispatch(userEditActions.clearUserEditMode())
     }
 
     return (
         <div>
-            강아지 수정 !!!
+            userEditMode!!!
             <button onClick={clearEditMode}>완료</button>
         </div>
     );
 };
 
-export default DogEdit;
+export default UserEdit;

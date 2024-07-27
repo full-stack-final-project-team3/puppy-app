@@ -6,14 +6,18 @@ import { useRouteLoaderData } from "react-router-dom";
 import { AUTH_URL, DOG_URL } from "../../../../config/user/host-config";
 import DogEdit from "../../dog/DogEdit";
 import {useDispatch, useSelector} from "react-redux";
+import UserEdit from "./UserEdit";
+
 
 const MyPageMain = () => {
     const userData = useRouteLoaderData('user-data2');
     const [userDetail, setUserDetail] = useState({});
     const [dogList, setDogList] = useState([]);
 
-    const isEditMode = useSelector(state => state.dogEdit.editMode)
-    console.log(isEditMode)
+    const isEditMode = useSelector(state => state.userEdit.isEditMode)
+    const isDogEditMode = useSelector(state => state.dogEdit.isDogEditMode)
+    const isUserEditMode = useSelector(state => state.userEdit.isUserEditMode)
+
 
 
     useEffect(() => {
@@ -53,11 +57,11 @@ const MyPageMain = () => {
         <div className={styles.wrap}>
             <MyPageHeader />
             {
-                !isEditMode ?
+                !isEditMode &&
                 <MyPageBody user={userDetail} dogList={dogList} />
-                :
-                <DogEdit/>
             }
+            { isDogEditMode && <DogEdit/> }
+            { isUserEditMode && <UserEdit/>}
         </div>
     );
 };

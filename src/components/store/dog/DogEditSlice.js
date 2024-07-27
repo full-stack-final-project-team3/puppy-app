@@ -2,7 +2,7 @@ import {createSlice} from "@reduxjs/toolkit";
 
 
 const initialState = {
-    editMode: false, // 수정 모드 진입 여부
+    isDogEditMode: false, // 수정 모드 진입 여부
 };
 
 const dogEditSlice = createSlice({
@@ -10,10 +10,10 @@ const dogEditSlice = createSlice({
     initialState: initialState,
     reducers: {
         startEdit(state) {
-            state.editMode = true;
+            state.isDogEditMode = true;
         },
         clearEdit(state) {
-            state.editMode = false;
+            state.isDogEditMode = false;
         }
     }
 })
