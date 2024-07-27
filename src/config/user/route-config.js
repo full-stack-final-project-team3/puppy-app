@@ -11,6 +11,7 @@ import { logoutAction } from '../../pages/user/Logout';
 import UserProvider from "../../components/context/UserProvider";
 import {userDataLoader, authCheckLoader} from './auth';
 import MyPageMain from "../../components/auth/user/mypage/MyPageMain";
+import AddDogMain from "../../components/auth/dog/AddDogMain";
 
 const homeRouter = [
     {
@@ -63,6 +64,10 @@ export const router = createBrowserRouter([
                 element: <AddHotelPage/>,
                 loader: authCheckLoader, // 로그인 정보를 확인하는 loader 추가
             },
+            {
+                path: 'add-dog',
+                element: <AddDogMain />,
+            }
 
         ],
     },

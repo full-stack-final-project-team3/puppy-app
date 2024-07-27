@@ -23,6 +23,15 @@
     font-weight: 600;
   }
 
+  .add {
+    float: right;
+    .addDog {
+      font-size: 12px;
+      text-decoration: underline;
+      color: black;
+    }
+  }
+
   .mainContainer {
     background: #F4E8D3;
     width: 90%;
@@ -39,14 +48,19 @@
     .wrapRight {
       margin-left: 30px;
 
-      .point {
-        font-weight: 300;
+      .nickname {
+        font-weight: 600;
+        margin-bottom: 10px;
       }
       .modify {
         width: 70px;
         white-space: nowrap;
-
       }
+    }
+    .breed {
+      margin-bottom: 10px;
+      font-size: 12px;
+      color: #6c757d;
     }
   }
 }

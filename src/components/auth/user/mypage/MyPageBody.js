@@ -12,7 +12,7 @@ const MyPageBody = ({ user, dogList }) => {
                 <AboutDog dogList={dogList} />
             ) : (
                 <div className={styles.add}>
-                    <Link className={styles.addDog}>강아지 등록하기</Link>
+                    <Link to={"/add-dog"} className={styles.addDog}>강아지 등록하기</Link>
                 </div>
             )}
         </div>

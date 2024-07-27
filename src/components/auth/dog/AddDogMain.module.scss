@@ -1,0 +1,13 @@
+.wrap {
+  width: 60%;
+  margin: 100px auto 0;
+  border: 1px solid black;
+  height: 500px;
+  border-radius: 32px;
+  overflow: scroll;
+}
+
+
+.wrap::-webkit-scrollbar {
+  display: none;
+}
