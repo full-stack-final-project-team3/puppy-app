@@ -1,23 +1,31 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styles from './HotelSearchForm.module.scss';
 import PersonCount from './PersonCount';
 import DualDatePickers from './Hoteldates';
+import {
+  setSelectedCity,
+  setStartDate,
+  setEndDate,
+  incrementPersonCount,
+  decrementPersonCount,
+  setShowWarning,
+} from '../../components/store/hotel/ReservationSlice';
+import dayjs from 'dayjs';
 
 const cities = ["서울", "부산", "인천", "대구", "대전", "광주", "수원", "울산", "고양", "용인", "경기"];
 
-const HotelSearchForm = ({ isAdmin, personCount, incrementPersonCount, decrementPersonCount, handleNextStep, onSearch }) => {
-  const [selectedCity, setSelectedCity] = useState('');
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
-  const [showWarning, setShowWarning] = useState(false);
+const HotelSearchForm = ({ isAdmin, handleNextStep, onSearch }) => {
+  const dispatch = useDispatch();
+  const { selectedCity, startDate, endDate, personCount, showWarning } = useSelector((state) => state.reservation);
 
   const handleSearch = (e) => {
     e.preventDefault();
     if (!startDate || !endDate) {
-      setShowWarning(true);
+      dispatch(setShowWarning(true));
     } else {
-      setShowWarning(false);
+      dispatch(setShowWarning(false));
       onSearch(selectedCity);
       handleNextStep();
     }
@@ -35,7 +43,7 @@ const HotelSearchForm = ({ isAdmin, personCount, incrementPersonCount, decrement
         <form onSubmit={handleSearch}>
           <label>
             Location
-            <select value={selectedCity} onChange={(e) => setSelectedCity(e.target.value)}>
+            <select value={selectedCity} onChange={(e) => dispatch(setSelectedCity(e.target.value))}>
               <option value="">Select a city</option>
               {cities.map(city => (
                   <option key={city} value={city}>{city}</option>
@@ -44,24 +52,23 @@ const HotelSearchForm = ({ isAdmin, personCount, incrementPersonCount, decrement
           </label>
           <label>
             <DualDatePickers
-                startDate={startDate}
-                setStartDate={setStartDate}
-                endDate={endDate}
-                setEndDate={setEndDate}
+                startDate={startDate ? dayjs(startDate) : null}
+                setStartDate={(date) => dispatch(setStartDate(date.toISOString()))}
+                endDate={endDate ? dayjs(endDate) : null}
+                setEndDate={(date) => dispatch(setEndDate(date.toISOString()))}
             />
           </label>
           <div className={styles.personCountWrapper}>
             <PersonCount
                 personCount={personCount}
-                incrementPersonCount={incrementPersonCount}
-                decrementPersonCount={decrementPersonCount}
+                incrementPersonCount={() => dispatch(incrementPersonCount())}
+                decrementPersonCount={() => dispatch(decrementPersonCount())}
             />
           </div>
           <button className={styles.next} type="submit">Search</button>
           {showWarning && (
               <p className={styles.warning}>날짜 정보를 입력하세요.</p>
           )}
-
         </form>
       </div>
   );

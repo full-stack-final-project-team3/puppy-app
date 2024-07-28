@@ -1,5 +1,5 @@
 // src/pages/hotel/HotelPage.js
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useLoaderData } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { HOTEL_URL } from '../../config/user/host-config';
@@ -7,7 +7,8 @@ import StepIndicator from '../../components/hotel/StepIndicator';
 import HotelList from '../../components/hotel/HotelList';
 import HotelSearchForm from '../../components/hotel/HotelSearchForm';
 import styles from './HotelPage.module.scss';
-import './HotelPageAnimations.scss'; // 애니메이션 CSS 파일
+import './HotelPageAnimations.scss';
+import { useSelector } from "react-redux";
 
 const HotelPage = () => {
   const userData = useLoaderData();
@@ -17,6 +18,11 @@ const HotelPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [personCount, setPersonCount] = useState(1);
+
+  const startDate = useSelector(state => state.reservation.startDate);
+  const endDate = useSelector(state => state.reservation.endDate);
+  console.log("start date", startDate);
+  console.log("end date", endDate);
 
   const backgroundImages = [
     'url(https://www.zooplus.co.uk/magazine/wp-content/uploads/2018/03/dachshund.jpg)', // Step 1
@@ -77,6 +83,8 @@ const HotelPage = () => {
     setPersonCount(prevCount => Math.max(1, prevCount - 1));
   };
 
+  const nodeRef = useRef(null);
+
   return (
       <div
           className={styles.hotelReservationPage}
@@ -88,8 +96,9 @@ const HotelPage = () => {
               key={step}
               timeout={300}
               classNames="page"
+              nodeRef={nodeRef}
           >
-            <div className={styles.page}>
+            <div ref={nodeRef} className={styles.page}>
               {step === 1 ? (
                   <div className={styles.stepContent}>
                     <HotelSearchForm
