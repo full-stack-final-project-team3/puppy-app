@@ -12,6 +12,7 @@ import UserProvider from "../../components/context/UserProvider";
 import { userDataLoader, authCheckLoader } from "./auth";
 import MyPageMain from "../../components/auth/user/mypage/MyPageMain";
 import AddDogMain from "../../components/auth/dog/AddDogMain";
+import DogEdit from "../../components/auth/dog/DogEdit";
 import BoardPage from "../../pages/community/BoardPage";
 
 const homeRouter = [
@@ -36,6 +37,44 @@ const homeRouter = [
 ];
 
 export const router = createBrowserRouter([
+
+    {
+        path: '/',
+        element: (
+            <UserProvider>
+                <RootLayout/>
+            </UserProvider>
+        ),
+        loader: userDataLoader,
+        id: 'user-data',
+        children: [
+            {
+                path: '',
+                element: <Home/>,
+                children: homeRouter,
+            },
+            {
+                path: 'logout',
+                action: logoutAction,
+            },
+            {
+                path: 'hotel',
+                element: <HotelPage/>,
+                loader: authCheckLoader, // 로그인 정보를 확인하는 loader 추가
+            },
+            {
+                path: 'add-hotel',
+                element: <AddHotelPage/>,
+                loader: authCheckLoader, // 로그인 정보를 확인하는 loader 추가
+            },
+            {
+                path: 'add-dog',
+                element: <AddDogMain />,
+            },
+        ],
+    },
+]);
+
   {
     path: "/",
     element: (
@@ -77,3 +116,4 @@ export const router = createBrowserRouter([
     ],
   },
 ]);
+
