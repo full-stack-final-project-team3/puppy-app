@@ -1,9 +1,14 @@
-import React, { useContext, useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import styles from './LoginForm.module.scss';
 import { Link, useNavigate } from "react-router-dom";
 import UserContext from "../../../context/user-context";
 import { AUTH_URL } from "../../../../config/user/host-config";
 import { RiKakaoTalkFill } from "react-icons/ri";
+
+const APP_KEY = process.env.REACT_APP_KAKAO_APP_KEY;
+const REDIRECT_URL = process.env.REACT_APP_KAKAO_REDIRECT_URL;
+
+const KAKAO_LOGIN_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${APP_KEY}&redirect_uri=${REDIRECT_URL}&response_type=code`;
 
 const LoginForm = () => {
     const [email, setEmail] = useState('');
@@ -11,7 +16,7 @@ const LoginForm = () => {
     const [autoLogin, setAutoLogin] = useState(false);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
-    const { changeIsLogin,  setUser } = useContext(UserContext);
+    const { changeIsLogin, setUser } = useContext(UserContext);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -37,7 +42,6 @@ const LoginForm = () => {
                 setUser(responseData);
                 changeIsLogin(true); // 상태 업데이트
                 navigate('/'); // 로그인 후 리디렉트할 경로
-
             } else {
                 const errorData = await response.json();
                 setError(errorData.message || '로그인에 실패했습니다.');
@@ -46,6 +50,40 @@ const LoginForm = () => {
             setError('서버와의 통신 중 오류가 발생했습니다.');
         }
     };
+
+    // 카카오 로그인 처리
+    const handleKakaoLogin = async () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+
+        if (code) {
+            try {
+                const response = await fetch(`${AUTH_URL}/oauth/kakao?code=${code}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const responseData = await response.json();
+                    localStorage.setItem('userData', JSON.stringify(responseData));
+                    setUser(responseData);
+                    changeIsLogin(true); // 상태 업데이트
+                    navigate('/'); // 로그인 후 리디렉트할 경로
+                } else {
+                    setError('카카오 로그인에 실패했습니다.');
+                }
+            } catch (err) {
+                setError('서버와의 통신 중 오류가 발생했습니다.');
+            }
+        }
+    };
+
+    // useEffect 훅을 사용하여 URL에 코드가 있는지 확인
+    useEffect(() => {
+        handleKakaoLogin();
+    }, []);
 
     return (
         <div className={styles.whole}>
@@ -58,7 +96,7 @@ const LoginForm = () => {
                             <Link to="/signup" className={styles.signupBtn}>Sign Up</Link>
                         </div>
                         <div className={styles.kakao}>
-                            <Link to="/signup" className={styles.kakaoBtn}><RiKakaoTalkFill /></Link>
+                            <a href={KAKAO_LOGIN_URL} className={styles.kakaoBtn}><RiKakaoTalkFill /></a>
                         </div>
                     </div>
                 </div>

@@ -7,10 +7,12 @@ import { AUTH_URL } from "../../../../config/user/host-config";
 const UserEdit = ({ user }) => {
     const passwordRef = useRef();
     const confirmPasswordRef = useRef();
-    const addressRef = useRef();
-    const phoneNumRef = useRef();
 
-    const [nickname, setNickname] = useState(user.nickname); // 닉네임 상태 추가
+    const [nickname, setNickname] = useState(user.nickname);
+    const [address, setAddress] = useState(user.address);
+    const [phoneNum, setPhoneNum] = useState(user.phoneNumber);
+
+
     const [passwordMatch, setPasswordMatch] = useState(false);
     const [passwordMessage, setPasswordMessage] = useState('');
     const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
@@ -38,17 +40,27 @@ const UserEdit = ({ user }) => {
         setNickname(e.target.value);
     };
 
+    const handleAddressChange = (e) => {
+        setAddress(e.target.value);
+
+    };
+
+    const handlePhoneNumChange = (e) => {
+        setPhoneNum(e.target.value);
+    };
+
     const clearEditMode = async () => {
         dispatch(userEditActions.clearMode());
         dispatch(userEditActions.clearUserEditMode());
 
         const payload = {
             "email": user.email,
-            "address": addressRef.current.value,
+            "address": address,
             "password": passwordRef.current.value,
-            "nickname": nickname, // 닉네임 상태 사용
-            "phoneNumber": phoneNumRef.current.value
+            "nickname": nickname,
+            "phoneNumber": phoneNum
         };
+
         console.log(`${AUTH_URL}/${user.email}`)
         console.log(payload)
 
@@ -58,8 +70,12 @@ const UserEdit = ({ user }) => {
             body: JSON.stringify(payload)
         });
 
-        const result = await response.json();
-        alert("변경 성공!");
+        if (response.ok) {
+            const result = await response.json();
+            alert("변경 성공!");
+        } else {
+            alert("변경 실패!");
+        }
     };
 
     return (
@@ -101,8 +117,8 @@ const UserEdit = ({ user }) => {
                 <input
                     id="nickname"
                     type="text"
-                    value={nickname} // 상태 사용
-                    onChange={handleNicknameChange} // 닉네임 변경 핸들러 추가
+                    value={nickname}
+                    onChange={handleNicknameChange}
                 />
             </div>
             <div className={styles.section}>
@@ -111,11 +127,21 @@ const UserEdit = ({ user }) => {
             </div>
             <div className={styles.section}>
                 <label htmlFor="address">주소</label>
-                <input id="address" ref={addressRef} type="text" />
+                <input
+                    id="address"
+                    type="text"
+                    value={address}
+                    onChange={handleAddressChange}
+                />
             </div>
             <div className={styles.section}>
                 <label htmlFor="phone">휴대전화</label>
-                <input id="phone" ref={phoneNumRef} type="text" value={user.phoneNumber} />
+                <input
+                    id="phone"
+                    type="text"
+                    value={phoneNum}
+                    onChange={handlePhoneNumChange}
+                />
             </div>
             <button
                 className={styles.submitButton}
