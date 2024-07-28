@@ -6,7 +6,7 @@ import styles from "./MyPageBody.module.scss";
 
 const MyPageBody = ({ user, dogList }) => {
     return (
-        <div>
+        <div className={styles.wrap}>
             <AboutMe user={user} />
             {dogList && dogList.length > 0 ? (
                 <AboutDog dogList={dogList} />
