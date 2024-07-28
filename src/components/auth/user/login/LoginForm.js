@@ -1,12 +1,14 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import styles from './LoginForm.module.scss';
 import { Link, useNavigate } from "react-router-dom";
 import UserContext from "../../../context/user-context";
 import { AUTH_URL } from "../../../../config/user/host-config";
 import { RiKakaoTalkFill } from "react-icons/ri";
 
+
 const APP_KEY = process.env.REACT_APP_KAKAO_APP_KEY;
 const REDIRECT_URL = process.env.REACT_APP_KAKAO_REDIRECT_URL;
+console.log(APP_KEY)
 
 const KAKAO_LOGIN_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${APP_KEY}&redirect_uri=${REDIRECT_URL}&response_type=code`;
 
