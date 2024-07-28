@@ -1,5 +1,4 @@
-// src/pages/hotel/HotelPage.js
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { useLoaderData } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { HOTEL_URL } from '../../config/user/host-config';
@@ -9,6 +8,7 @@ import HotelSearchForm from '../../components/hotel/HotelSearchForm';
 import styles from './HotelPage.module.scss';
 import './HotelPageAnimations.scss';
 import { useSelector } from "react-redux";
+import dayjs from 'dayjs';  // dayjs 라이브러리 추가
 
 const HotelPage = () => {
   const userData = useLoaderData();
@@ -21,8 +21,14 @@ const HotelPage = () => {
 
   const startDate = useSelector(state => state.reservation.startDate);
   const endDate = useSelector(state => state.reservation.endDate);
-  console.log("start date", startDate);
-  console.log("end date", endDate);
+
+  // 날짜를 YYYY-MM-DD 형식으로 포맷팅하는 함수
+  const formatDate = (date) => {
+    return dayjs(date).format('YYYY-MM-DD');
+  };
+
+  console.log("start date", formatDate(startDate));
+  console.log("end date", formatDate(endDate));
 
   const backgroundImages = [
     'url(https://www.zooplus.co.uk/magazine/wp-content/uploads/2018/03/dachshund.jpg)', // Step 1
