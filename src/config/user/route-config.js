@@ -71,49 +71,11 @@ export const router = createBrowserRouter([
                 path: 'add-dog',
                 element: <AddDogMain />,
             },
+            {
+                path: "boards",
+                element: <BoardPage />,
+                loader: authCheckLoader,
+            },
         ],
     },
 ]);
-
-  {
-    path: "/",
-    element: (
-      <UserProvider>
-        <RootLayout />
-      </UserProvider>
-    ),
-    loader: userDataLoader,
-    id: "user-data",
-    children: [
-      {
-        path: "",
-        element: <Home />,
-        children: homeRouter,
-      },
-      {
-        path: "logout",
-        action: logoutAction,
-      },
-      {
-        path: "hotel",
-        element: <HotelPage />,
-        loader: authCheckLoader, // 로그인 정보를 확인하는 loader 추가
-      },
-      {
-        path: "add-hotel",
-        element: <AddHotelPage />,
-        loader: authCheckLoader, // 로그인 정보를 확인하는 loader 추가
-      },
-      {
-        path: "add-dog",
-        element: <AddDogMain />,
-      },
-      {
-        path: "boards",
-        element: <BoardPage />,
-        loader: authCheckLoader,
-      },
-    ],
-  },
-]);
-
