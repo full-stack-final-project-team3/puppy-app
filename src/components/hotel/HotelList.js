@@ -5,11 +5,11 @@ const HotelList = ({ hotels }) => {
   return (
     <>
       {hotels.map(hotel => (
-        <div key={hotel.hotel_id} className={styles.hotel}>
+        <div key={hotel.id} className={styles.hotel}>
           <h2>{hotel.name}</h2>
           <p>{hotel.description}</p>
           <p>{hotel.location}</p>
-          <p>{hotel.phone_number}</p>
+          <p>{hotel.phoneNumber}</p>
           {/* Additional hotel information */}
         </div>
       ))}
