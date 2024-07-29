@@ -3,6 +3,7 @@ import styles from "./SignUpPage.module.scss";
 import EmailInput from "./EmailInput";
 import VerificationInput from "./VerificationInput";
 import PasswordInput from "./PasswordInput";
+import NicknameInput from "./NicknameInput";
 import { AUTH_URL } from "../../../../config/user/host-config";
 import { useNavigate } from "react-router-dom";
 
@@ -19,19 +20,19 @@ const SignUpPage = () => {
   const [enteredEmail, setEnteredEmail] = useState("");
   // 입력된 패스워드
   const [enteredPassword, setEnteredPassword] = useState("");
+  const [passwordCheck, setPasswordCheck] = useState('');
   const [passwordIsVaild, setPasswordIsValid] = useState(false);
+
+  // 입력된 닉네임
+  const [enteredNickname, setEnteredNickname] = useState("");
+  const [nicknameValid, setNicknameValid] = useState(false);
 
   // 회원가입 버튼 활성화 여부
   const [activeButton, setActiveButton] = useState(false);
 
   // 다음 단계로 넘어가는 함수
   const nextStep = () => {
-    setSuccess(true);
-
-    setTimeout(() => {
-      setStep((prevStep) => prevStep + 1);
-      setSuccess(false);
-    }, 1500);
+    setStep((prevStep) => prevStep + 1);
   };
 
   // 이메일 중복확인이 끝났을 때 호출될 함수
@@ -41,8 +42,15 @@ const SignUpPage = () => {
   };
 
   const passwordSuccessHandler = (password, isValid) => {
-    setEnteredPassword(password);
-    setPasswordIsValid(isValid);
+    if (isValid) {
+      setEnteredPassword(password);
+      setPasswordIsValid(isValid);
+      nextStep();
+    }
+  };
+
+  const nicknameSuccessHandler = (nickname) => {
+    setEnteredNickname(nickname);
   };
 
   // 서버에 회원가입 완료 요청하기
@@ -51,6 +59,7 @@ const SignUpPage = () => {
     const payload = {
       email: enteredEmail,
       password: enteredPassword,
+      nickname: enteredNickname,
     };
 
     const response = await fetch(`${AUTH_URL}/join`, {
@@ -69,9 +78,9 @@ const SignUpPage = () => {
 
   useEffect(() => {
     // 활성화 여부 감시
-    const isActive = enteredEmail && passwordIsVaild;
+    const isActive = enteredEmail && enteredPassword && enteredNickname;
     setActiveButton(isActive);
-  }, [enteredEmail, enteredPassword, passwordIsVaild]);
+  }, [enteredEmail, enteredPassword, passwordIsVaild, enteredNickname]);
 
   return (
     <form onSubmit={submitHandler}>
@@ -87,6 +96,8 @@ const SignUpPage = () => {
           )}
 
           {step === 3 && <PasswordInput onSuccess={passwordSuccessHandler} />}
+
+          {step === 4 && <NicknameInput onSuccess={nicknameSuccessHandler} />}
 
           {activeButton && (
             <div>
