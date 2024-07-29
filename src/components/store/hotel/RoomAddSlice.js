@@ -91,7 +91,8 @@ const roomAddSlice = createSlice({
         },
         setErrorMessage: (state, action) => {
             state.errorMessage = action.payload;
-        }
+        },
+        resetRoomData: () => initialRoomAddState // 초기 상태로 리셋
     },
     extraReducers: (builder) => {
         builder
@@ -111,5 +112,6 @@ const roomAddSlice = createSlice({
     }
 });
 
-export const { updateRoomData, addRoomImage, removeRoomImage, setErrorMessage } = roomAddSlice.actions;
+
+export const { updateRoomData, addRoomImage, removeRoomImage, setErrorMessage, resetRoomData } = roomAddSlice.actions;
 export default roomAddSlice.reducer;
