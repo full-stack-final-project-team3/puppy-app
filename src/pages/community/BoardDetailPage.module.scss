@@ -1,0 +1,146 @@
+// BoardDetailPage.module.scss
+
+.postDetailPage {
+    background-color: #f8f4e9;
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+    position: relative;
+    min-height: 100vh;
+    padding-bottom: 60px; // 여백 추가
+}
+
+.postTitle {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.postMeta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.author,
+.date,
+.viewCount {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.postContent {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.postImage img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.commentsSection {
+    margin-top: 40px;
+}
+
+.commentsSection h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.commentForm {
+    margin-bottom: 20px;
+}
+
+.commentForm textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+
+.commentForm button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, color 0.3s;
+
+    &:hover {
+        background-color: #0056b3;
+    }
+}
+
+.commentList {
+    list-style-type: none;
+    padding: 0;
+}
+
+.commentItem {
+    background-color: #fff;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+}
+
+.commentContent {
+    margin-bottom: 10px;
+}
+
+.commentAuthor {
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-right: 10px;
+    color: #333;
+}
+
+.commentDate {
+    font-size: 0.8rem;
+    color: #999;
+}
+
+.replyList {
+    list-style-type: none;
+    padding: 0 0 0 20px;
+}
+
+.replyItem {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+}
+
+.replyAuthor {
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-right: 10px;
+    color: #333;
+}
+
+.replyDate {
+    font-size: 0.8rem;
+    color: #999;
+}
+
+.loading {
+    text-align: center;
+    padding: 20px;
+    font-size: 16px;
+    color: #666;
+}
