@@ -4,6 +4,7 @@ import {createSlice} from "@reduxjs/toolkit";
 const initialState = {
     isEditMode: false, // 수정 모드 진입 여부
     userEditMode: false,
+    userDetail: {} // 사용자 정보
 };
 
 const userEditSlice = createSlice({
@@ -21,6 +22,9 @@ const userEditSlice = createSlice({
         },
         clearUserEditMode(state) {
             state.isUserEditMode = false;
+        },
+        updateUserDetail(state, action) {
+            state.userDetail = action.payload;
         }
     }
 })
