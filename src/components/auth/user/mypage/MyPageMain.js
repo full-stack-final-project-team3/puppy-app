@@ -56,7 +56,6 @@ const MyPageMain = () => {
     }, [id]);
 
 
-    // 여기서 프롭스 보내지말고 aboutme에서 다시 페치
     return (
         <div className={styles.wrap}>
             <MyPageHeader />

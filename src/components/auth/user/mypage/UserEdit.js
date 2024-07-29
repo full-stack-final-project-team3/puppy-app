@@ -52,19 +52,22 @@ const UserEdit = ({ user }) => {
 
     const nameHandler = e => {
         setName(e.target.value)
+        setIsSubmitDisabled(false);
     }
 
     const handleNicknameChange = (e) => {
         setNickname(e.target.value);
+        setIsSubmitDisabled(false);
     };
 
     const handleAddressChange = (e) => {
         setAddress(e.target.value);
-
+        setIsSubmitDisabled(false);
     };
 
     const handlePhoneNumChange = (e) => {
         setPhoneNum(e.target.value);
+        setIsSubmitDisabled(false);
     };
 
     const clearEditMode = async () => {
@@ -105,12 +108,13 @@ const UserEdit = ({ user }) => {
                 <input id="email" type="text" value={user.email} readOnly />
             </div>
             <div className={styles.section}>
-                <label htmlFor="password">비밀번호</label>
+                <label htmlFor="password">비밀번호 변경</label>
                 <input
                     id="password"
                     type="password"
                     ref={passwordRef}
                     onChange={handlePasswordChange}
+                    placeholder={"바꾸실 비밀번호를 입력해주세요."}
                 />
             </div>
             <div className={styles.section}>
