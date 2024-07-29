@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Link, NavLink, useRouteLoaderData } from "react-router-dom";
+import {Link, NavLink, useNavigate, useRouteLoaderData} from "react-router-dom";
 import styles from "./MainNavigation.module.scss";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { BsBell } from "react-icons/bs";
@@ -9,6 +9,8 @@ import {userEditActions} from "../../components/store/user/UserEditSlice";
 import {useDispatch} from "react-redux";
 
 const MainNavigation = () => {
+
+    let navi = useNavigate();
     const [menuOpen, setMenuOpen] = useState(false);
     const { changeIsLogin, user, setUser } = useContext(UserContext);
     const userData = useRouteLoaderData("user-data");
@@ -34,6 +36,7 @@ const MainNavigation = () => {
     const logoutHandler = () => {
         localStorage.removeItem('userData');
         window.location.reload();
+        // navi('/');
     };
 
     return (
