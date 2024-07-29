@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import styles from './HotelList.module.scss';
 
-const HotelList = ({ hotels }) => {
+const HotelList = ({ hotels, onShowProperty  }) => {
     const navigate = useNavigate();
 
     const handleAddRoom = (hotelId) => {
@@ -34,6 +34,12 @@ const HotelList = ({ hotels }) => {
                         })}
                     </div>
                     <button onClick={() => handleAddRoom(hotel.id)}>Add Room</button>
+                    <button 
+            className={styles.showPropertyButton} 
+            onClick={() => onShowProperty(hotel.id)}
+          >
+            Show Property
+          </button>
                 </div>
             ))}
         </div>

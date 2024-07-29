@@ -1,0 +1,37 @@
+
+
+.roomDetail {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  .room {
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #0a0909;
+
+    h2 {
+      margin: 0 0 10px;
+      font-size: 1.5em;
+      color: #333;
+    }
+
+    p {
+      margin: 5px 0;
+    }
+
+    .slider {
+      margin-top: 10px;
+
+      .slide {
+        img {
+          width: 100%;
+          height: auto;
+          border-radius: 4px;
+        }
+      }
+    }
+  }
+}
+
