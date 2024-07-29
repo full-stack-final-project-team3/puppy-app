@@ -1,21 +1,17 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import { useDispatch } from "react-redux";
 import { userEditActions } from "../../../store/user/UserEditSlice";
 import styles from "./UserEdit.module.scss";
 import { AUTH_URL } from "../../../../config/user/host-config";
-import {updateHotelData} from "../../../store/hotel/HotelAddSlice";
 
 const UserEdit = ({ user }) => {
     const passwordRef = useRef();
     const confirmPasswordRef = useRef();
 
-    console.log(user)
-
     const [nickname, setNickname] = useState(user.nickname);
     const [address, setAddress] = useState(user.address);
     const [phoneNum, setPhoneNum] = useState(user.phoneNumber);
     const [name, setName] = useState(user.realName);
-
 
     const [passwordMatch, setPasswordMatch] = useState(false);
     const [passwordMessage, setPasswordMessage] = useState('');
@@ -40,20 +36,10 @@ const UserEdit = ({ user }) => {
         }
     };
 
-
-    // 주소 찾기
-    const openKakaoAddress = () => {
-        new window.daum.Postcode({
-            oncomplete: function (data) {
-                dispatch(updateHotelData({ location: data.address }));
-            }
-        }).open();
-    };
-
-    const nameHandler = e => {
-        setName(e.target.value)
+    const nameHandler = (e) => {
+        setName(e.target.value);
         setIsSubmitDisabled(false);
-    }
+    };
 
     const handleNicknameChange = (e) => {
         setNickname(e.target.value);
@@ -71,31 +57,41 @@ const UserEdit = ({ user }) => {
     };
 
     const clearEditMode = async () => {
-        dispatch(userEditActions.clearMode());
-        dispatch(userEditActions.clearUserEditMode());
-
         const payload = {
-            "email": user.email,
-            "address": address,
-            "password": passwordRef.current.value,
-            "nickname": nickname,
-            "phoneNumber": phoneNum,
-            "realName": name,
+            email: user.email,
+            address,
+            password: passwordRef.current.value,
+            nickname,
+            phoneNumber: phoneNum,
+            realName: name,
         };
 
-        console.log(`${AUTH_URL}/${user.email}`)
-        console.log(payload)
+        try {
+            const response = await fetch(`${AUTH_URL}/${user.email}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
 
-        const response = await fetch(`${AUTH_URL}/${user.email}`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        });
-
-        if (response.ok) {
-            const result = await response.json();
-            alert("변경 성공!");
-        } else {
+            const result = await response.text();
+            try {
+                const jsonResult = JSON.parse(result);
+                dispatch(userEditActions.updateUserDetail({ ...user, ...jsonResult }));
+                dispatch(userEditActions.clearMode());
+                dispatch(userEditActions.clearUserEditMode());
+                alert("변경 성공!");
+            } catch (e) {
+                if (result === "success") {
+                    dispatch(userEditActions.updateUserDetail({ ...user, ...payload }));
+                    dispatch(userEditActions.clearMode());
+                    dispatch(userEditActions.clearUserEditMode());
+                    alert("변경 성공!");
+                } else {
+                    alert("알 수 없는 응답 형식: " + result);
+                }
+            }
+        } catch (error) {
+            console.error("Error during fetch:", error);
             alert("변경 실패!");
         }
     };
@@ -126,11 +122,7 @@ const UserEdit = ({ user }) => {
                     onChange={handlePasswordChange}
                 />
                 {passwordMessage && (
-                    <p
-                        className={
-                            passwordMatch ? styles.successMessage : styles.errorMessage
-                        }
-                    >
+                    <p className={passwordMatch ? styles.successMessage : styles.errorMessage}>
                         {passwordMessage}
                     </p>
                 )}
@@ -161,18 +153,6 @@ const UserEdit = ({ user }) => {
                     value={address}
                     onChange={handleAddressChange}
                 />
-
-                <div className={styles.locationContainer}>
-                    <input
-                        type="text"
-                        name="location"
-                        placeholder="Location"
-                        required
-                    />
-                    <button type="button" onClick={openKakaoAddress}>Find Address</button>
-                </div>
-
-
             </div>
             <div className={styles.section}>
                 <label htmlFor="phone">휴대전화</label>
@@ -195,4 +175,3 @@ const UserEdit = ({ user }) => {
 };
 
 export default UserEdit;
-
