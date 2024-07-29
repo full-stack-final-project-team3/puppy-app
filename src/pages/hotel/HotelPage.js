@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useLoaderData } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { useDispatch, useSelector } from "react-redux";
@@ -19,12 +19,15 @@ const HotelPage = () => {
   const startDate = useSelector(state => state.reservation.startDate);
   const endDate = useSelector(state => state.reservation.endDate);
 
+  useEffect(() => {
+    if (hotels && hotels.length > 0) {
+      console.log('Hotels:', hotels);
+    }
+  }, [hotels]);
+
   const formatDate = (date) => {
     return dayjs(date).format('YYYY-MM-DD');
   };
-
-  console.log("start date", formatDate(startDate));
-  console.log("end date", formatDate(endDate));
 
   const backgroundImages = [
     'url(https://www.zooplus.co.uk/magazine/wp-content/uploads/2018/03/dachshund.jpg)', // Step 1
