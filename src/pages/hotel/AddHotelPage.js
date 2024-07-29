@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import {
   updateHotelData, updateImage, addImage, removeImage,
   setShowConfirmModal, setShowRoomModal, setErrorMessage,
-  uploadFile, submitHotel
-} from '../../components/store/hotel/HotelAddSlice'; // 올바른 경로로 수정
+  uploadFile, submitHotel, resetRoomData
+} from '../../components/store/hotel/HotelAddSlice';
 import styles from './AddHotelPage.module.scss';
 import {HOTEL_URL} from "../../config/user/host-config";
 import RoomModal from "./RoomModal";
@@ -15,13 +15,11 @@ const AddHotelPage = () => {
   const navigate = useNavigate();
   const { hotelData, hotelId, errorMessage, showConfirmModal, showRoomModal } = useSelector((state) => state.hotelAdd);
 
-  // 입력값 처리함수
   const handleHotelChange = (e) => {
     const { name, value } = e.target;
     dispatch(updateHotelData({ [name]: value }));
   };
 
-  // 이미지 파일 처리 함수
   const handleImageChange = (e, index) => {
     const { name, value } = e.target;
     dispatch(updateImage({ index, image: { [name]: value } }));
@@ -40,7 +38,6 @@ const AddHotelPage = () => {
     dispatch(uploadFile(file));
   };
 
-  // 호텔 정보 제공 함수
   const handleHotelSubmit = (e) => {
     e.preventDefault();
     const token = JSON.parse(localStorage.getItem('userData')).token;
@@ -57,13 +54,17 @@ const AddHotelPage = () => {
     navigate('/hotel');
   };
 
-  // 주소 찾기
   const openKakaoAddress = () => {
     new window.daum.Postcode({
       oncomplete: function (data) {
         dispatch(updateHotelData({ location: data.address }));
       }
     }).open();
+  };
+
+  const handleRoomAdded = () => {
+    dispatch(resetRoomData()); // 룸 데이터 초기화
+    dispatch(setShowRoomModal(true)); // 모달창 다시 열기
   };
 
   return (
@@ -167,7 +168,7 @@ const AddHotelPage = () => {
             </div>
         )}
 
-        {showRoomModal && <RoomModal hotelId={hotelId} onClose={() => dispatch(setShowRoomModal(false))} />}
+        {showRoomModal && <RoomModal hotelId={hotelId} onClose={() => dispatch(setShowRoomModal(false))} onRoomAdded={handleRoomAdded} />}
       </div>
   );
 };

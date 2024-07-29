@@ -5,7 +5,7 @@ import { uploadFile, submitRoom, updateRoomData, addRoomImage, removeRoomImage, 
 import styles from './RoomModal.module.scss';
 import { ROOM_URL } from "../../config/user/host-config";
 
-const RoomModal = ({ hotelId, onClose }) => {
+const RoomModal = ({ hotelId, onClose, onRoomAdded, onFinish }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const roomData = useSelector((state) => state.roomAdd);
@@ -32,12 +32,11 @@ const RoomModal = ({ hotelId, onClose }) => {
     e.preventDefault();
     const token = JSON.parse(localStorage.getItem('userData')).token;
     dispatch(submitRoom({ roomData, token, hotelId }))
-        // unwrap 비동기 작업의 결과를 처리하기 위한 리덕트 도구인듯
         .unwrap()
         .then((response) => {
           console.log('Room added successfully:', response);
           alert('룸 생성이 완료되었습니다.');
-          navigate('/hotel');
+          onRoomAdded(); // 부모 컴포넌트에 룸 추가 완료 알림
         })
         .catch((error) => {
           console.error('Failed to add room:', error);
@@ -99,6 +98,7 @@ const RoomModal = ({ hotelId, onClose }) => {
           {roomData.errorMessage && <p className={styles.error}>{roomData.errorMessage}</p>}
         </form>
         <button onClick={onClose}>닫기</button>
+        <button onClick={onFinish}>목록으로 돌아가기</button>
       </div>
   );
 };
