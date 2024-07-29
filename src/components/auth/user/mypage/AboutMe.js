@@ -5,8 +5,7 @@ import { userEditActions } from "../../../store/user/UserEditSlice";
 
 const AboutMe = ({ user }) => {
 
-    console.log(user.nickname)
-    const [nickname, setNickname] = useState(user.nickname);
+    const [nickname, setNickname] = useState('');
 
     const dispatch = useDispatch();
 
@@ -17,9 +16,14 @@ const AboutMe = ({ user }) => {
     };
 
     useEffect(() => {
-        setNickname(user.nickname); // user 객체가 변경될 때 nickname 업데이트
-        console.log(nickname)
+        if (user && user.nickname) {
+            setNickname(user.nickname); // user 객체가 변경될 때 nickname 업데이트
+        }
     }, [user]);
+
+    useEffect(() => {
+        console.log(nickname); // nickname 상태가 업데이트된 후 로그 출력
+    }, [nickname]);
 
     return (
         <div className={styles.wrap}>
