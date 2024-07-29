@@ -14,6 +14,8 @@ const MyPageMain = () => {
     const [userDetail, setUserDetail] = useState({});
     const [dogList, setDogList] = useState([]);
 
+    // userdata, userdata2 가 undefined
+
     const isEditMode = useSelector(state => state.userEdit.isEditMode)
     const isDogEditMode = useSelector(state => state.dogEdit.isDogEditMode)
     const isUserEditMode = useSelector(state => state.userEdit.isUserEditMode)
@@ -52,6 +54,7 @@ const MyPageMain = () => {
         };
         fetchData();
     }, [id]);
+
 
     return (
         <div className={styles.wrap}>

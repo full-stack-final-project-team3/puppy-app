@@ -20,6 +20,8 @@ const homeRouter = [
   {
     index: true,
     element: <WelcomePage />,
+    loader: userDataLoader,
+    id: "user-data3"
   },
   {
     path: "login",

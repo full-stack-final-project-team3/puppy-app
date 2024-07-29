@@ -13,7 +13,12 @@ const AddDogMain = () => {
 
     const navigate = useNavigate();
 
+    const userData2 = useRouteLoaderData('user-data2');
     const userData = useRouteLoaderData('user-data');
+
+    console.log(userData2)
+    console.log(userData)
+
 
     const [step, setStep] = useState(1);
     const [name, setName] = useState('');

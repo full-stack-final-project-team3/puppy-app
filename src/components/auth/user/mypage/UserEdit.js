@@ -3,14 +3,18 @@ import { useDispatch } from "react-redux";
 import { userEditActions } from "../../../store/user/UserEditSlice";
 import styles from "./UserEdit.module.scss";
 import { AUTH_URL } from "../../../../config/user/host-config";
+import {updateHotelData} from "../../../store/hotel/HotelAddSlice";
 
 const UserEdit = ({ user }) => {
     const passwordRef = useRef();
     const confirmPasswordRef = useRef();
 
+    console.log(user)
+
     const [nickname, setNickname] = useState(user.nickname);
     const [address, setAddress] = useState(user.address);
     const [phoneNum, setPhoneNum] = useState(user.phoneNumber);
+    const [name, setName] = useState(user.realName);
 
 
     const [passwordMatch, setPasswordMatch] = useState(false);
@@ -36,17 +40,34 @@ const UserEdit = ({ user }) => {
         }
     };
 
+
+    // 주소 찾기
+    const openKakaoAddress = () => {
+        new window.daum.Postcode({
+            oncomplete: function (data) {
+                dispatch(updateHotelData({ location: data.address }));
+            }
+        }).open();
+    };
+
+    const nameHandler = e => {
+        setName(e.target.value)
+        setIsSubmitDisabled(false);
+    }
+
     const handleNicknameChange = (e) => {
         setNickname(e.target.value);
+        setIsSubmitDisabled(false);
     };
 
     const handleAddressChange = (e) => {
         setAddress(e.target.value);
-
+        setIsSubmitDisabled(false);
     };
 
     const handlePhoneNumChange = (e) => {
         setPhoneNum(e.target.value);
+        setIsSubmitDisabled(false);
     };
 
     const clearEditMode = async () => {
@@ -58,7 +79,8 @@ const UserEdit = ({ user }) => {
             "address": address,
             "password": passwordRef.current.value,
             "nickname": nickname,
-            "phoneNumber": phoneNum
+            "phoneNumber": phoneNum,
+            "realName": name,
         };
 
         console.log(`${AUTH_URL}/${user.email}`)
@@ -86,12 +108,13 @@ const UserEdit = ({ user }) => {
                 <input id="email" type="text" value={user.email} readOnly />
             </div>
             <div className={styles.section}>
-                <label htmlFor="password">비밀번호</label>
+                <label htmlFor="password">비밀번호 변경</label>
                 <input
                     id="password"
                     type="password"
                     ref={passwordRef}
                     onChange={handlePasswordChange}
+                    placeholder={"바꾸실 비밀번호를 입력해주세요."}
                 />
             </div>
             <div className={styles.section}>
@@ -123,7 +146,12 @@ const UserEdit = ({ user }) => {
             </div>
             <div className={styles.section}>
                 <label htmlFor="name">이름</label>
-                <input id="name" type="text" value={user.realName} readOnly />
+                <input
+                    id="name"
+                    type="text"
+                    value={name}
+                    onChange={nameHandler}
+                />
             </div>
             <div className={styles.section}>
                 <label htmlFor="address">주소</label>
@@ -133,6 +161,18 @@ const UserEdit = ({ user }) => {
                     value={address}
                     onChange={handleAddressChange}
                 />
+
+                <div className={styles.locationContainer}>
+                    <input
+                        type="text"
+                        name="location"
+                        placeholder="Location"
+                        required
+                    />
+                    <button type="button" onClick={openKakaoAddress}>Find Address</button>
+                </div>
+
+
             </div>
             <div className={styles.section}>
                 <label htmlFor="phone">휴대전화</label>
@@ -155,3 +195,4 @@ const UserEdit = ({ user }) => {
 };
 
 export default UserEdit;
+

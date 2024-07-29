@@ -29,6 +29,7 @@ const LoginForm = () => {
             autoLogin
         };
 
+
         try {
             const response = await fetch(`${AUTH_URL}/sign-in`, {
                 method: 'POST',
@@ -37,6 +38,8 @@ const LoginForm = () => {
                 },
                 body: JSON.stringify(payload)
             });
+
+            // 로그인 할때 setItem
 
             if (response.ok) {
                 const responseData = await response.json();

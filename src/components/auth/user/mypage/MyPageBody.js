@@ -5,6 +5,9 @@ import { Link } from "react-router-dom";
 import styles from "./MyPageBody.module.scss";
 
 const MyPageBody = ({ user, dogList }) => {
+
+
+
     return (
         <div className={styles.wrap}>
             <AboutMe user={user} />
