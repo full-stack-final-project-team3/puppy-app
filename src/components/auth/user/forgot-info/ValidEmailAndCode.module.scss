@@ -1,0 +1,48 @@
+
+  .authContainer {
+    width: 44%;
+    margin: 100px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 32px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #F4E8D3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .errorMessage {
+      color: red;
+      font-size: 0.8em;
+      text-align: center;
+    }
+  }
+
+
+
+.codeInputContainer {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.codeInput {
+  width: 30px;
+  height: 30px;
+  border: 2px solid #ccc;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin-right: 10px;
+
+  &:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+
+  &::placeholder {
+    color: #ccc;
+  }
+}
