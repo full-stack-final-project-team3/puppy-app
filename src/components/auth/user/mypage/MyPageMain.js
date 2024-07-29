@@ -32,6 +32,7 @@ const MyPageMain = () => {
                 const response = await fetch(`${AUTH_URL}/${userData.email}`);
                 const userDetailData = await response.json();
                 dispatch(userEditActions.updateUserDetail(userDetailData));
+                console.log(userDetailData);
             } catch (error) {
                 console.error(error);
             }
