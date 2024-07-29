@@ -10,6 +10,7 @@ const MyPageHeader = () => {
 
     const navigate = useNavigate();
     const isEditMode = useSelector(state => state.userEdit.isEditMode)
+    const isUserEditMode = useSelector(state => state.userEdit.isUserEditMode)
     const dispatch = useDispatch();
 
     const goToHome = () => {
@@ -18,6 +19,8 @@ const MyPageHeader = () => {
 
     const backHandler = () => {
         if (isEditMode) dispatch(userEditActions.clearMode())
+        if (isUserEditMode) dispatch(userEditActions.clearUserEditMode())
+        console.log("취소!")
     }
 
 

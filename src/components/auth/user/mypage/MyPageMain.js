@@ -14,6 +14,8 @@ const MyPageMain = () => {
     const [userDetail, setUserDetail] = useState({});
     const [dogList, setDogList] = useState([]);
 
+    // userdata, userdata2 가 undefined
+
     const isEditMode = useSelector(state => state.userEdit.isEditMode)
     const isDogEditMode = useSelector(state => state.dogEdit.isDogEditMode)
     const isUserEditMode = useSelector(state => state.userEdit.isUserEditMode)
@@ -53,6 +55,8 @@ const MyPageMain = () => {
         fetchData();
     }, [id]);
 
+
+    // 여기서 프롭스 보내지말고 aboutme에서 다시 페치
     return (
         <div className={styles.wrap}>
             <MyPageHeader />
