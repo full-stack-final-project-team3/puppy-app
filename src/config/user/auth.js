@@ -6,6 +6,7 @@ import {redirect} from "react-router-dom";
 
 const getUserData = () => {
     const userDataJson = localStorage.getItem('userData')
+    // console.log(userDataJson)
 
     return  JSON.parse(userDataJson);
 };

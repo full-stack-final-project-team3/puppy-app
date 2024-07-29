@@ -6,18 +6,20 @@ import styles from "./AddDogMain.module.scss";
 import DogSexInput from "./DogSexInput";
 import DogWeightInput from "./DogWeightInput";
 import DogAllergiesInput from "./DogAllergiesInput";
-import {useNavigate, useRouteLoaderData} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {DOG_URL} from "../../../config/user/host-config";
+import {useSelector} from "react-redux";
 
 const AddDogMain = () => {
 
     const navigate = useNavigate();
 
-    // const userData2 = useRouteLoaderData('user-data2');
-    const userData = useRouteLoaderData('user-data');
 
-    // console.log(userData2)
-    console.log(userData)
+    const user = useSelector(state => state.userEdit.userDetail);
+
+
+    const email = user.email;
+    console.log(email);
 
 
     const [step, setStep] = useState(1);
@@ -86,10 +88,10 @@ const AddDogMain = () => {
             "dogProfileUrl": profileUrl,
         }
         console.log(payload)
-        console.log(userData)
-        console.log(userData.email)
 
-        const response = await fetch(`${DOG_URL}/register/${userData.email}`, {
+        console.log(email)
+
+        const response = await fetch(`${DOG_URL}/register/${email}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
