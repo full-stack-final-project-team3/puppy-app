@@ -16,6 +16,7 @@ import DogEdit from "../../components/auth/dog/DogEdit";
 import BoardPage from "../../pages/community/BoardPage";
 import BoardDetailPage from "../../pages/community/BoardDetailPage";
 import AddRoomPage from "../../pages/hotel/AddRoomPage";
+import AddReviewPage from "../../pages/hotel/AddReviewPage";
 
 const homeRouter = [
   {
@@ -73,6 +74,11 @@ export const router = createBrowserRouter([
       {
         path: "add-room/:hotelId",
         element: <AddRoomPage />,
+        loader: authCheckLoader,
+      },
+      {
+        path: 'add-review/:hotelId', // 새로 추가된 경로
+        element: <AddReviewPage />,
         loader: authCheckLoader,
       },
       {

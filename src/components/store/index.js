@@ -7,7 +7,7 @@ import userEditReducer from "./user/UserEditSlice";
 
 import reservationReducer from "./hotel/ReservationSlice"
 import hotelPageReducer from "./hotel/HotelPageSlice";
-
+import reviewReducer from "./hotel/HotelReviewSlice";
 
 const store = configureStore({
     reducer: {
@@ -17,6 +17,7 @@ const store = configureStore({
         userEdit: userEditReducer,
         reservation: reservationReducer,
         hotelPage: hotelPageReducer,
+        reviews: reviewReducer,
     }
 });
 
