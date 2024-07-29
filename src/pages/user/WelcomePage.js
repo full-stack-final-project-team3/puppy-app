@@ -5,9 +5,9 @@ import {AUTH_URL} from "../../config/user/host-config";
 
 const WelcomePage = () => {
 
-    const userData = useRouteLoaderData('user-data');
+    const userData = useRouteLoaderData('user-data3');
 
-
+    console.log(userData)
     const {changeIsLogin, user, setUser} = useContext(UserContext);
     useEffect(() => {
         if (userData) {
