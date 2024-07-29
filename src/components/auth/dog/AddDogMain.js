@@ -13,10 +13,10 @@ const AddDogMain = () => {
 
     const navigate = useNavigate();
 
-    const userData2 = useRouteLoaderData('user-data2');
+    // const userData2 = useRouteLoaderData('user-data2');
     const userData = useRouteLoaderData('user-data');
 
-    console.log(userData2)
+    // console.log(userData2)
     console.log(userData)
 
 
@@ -70,6 +70,7 @@ const AddDogMain = () => {
         setStep(6);
     }
 
+
     const dogAllergiesValue = async (allergies) => {
 
         setAllergies(allergies);
@@ -86,6 +87,7 @@ const AddDogMain = () => {
         }
         console.log(payload)
         console.log(userData)
+        console.log(userData.email)
 
         const response = await fetch(`${DOG_URL}/register/${userData.email}`, {
             method: 'POST',
