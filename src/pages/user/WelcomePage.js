@@ -7,6 +7,7 @@ const WelcomePage = () => {
 
     const userData = useRouteLoaderData('user-data3');
 
+
     // console.log(userData)
     const {changeIsLogin, user, setUser} = useContext(UserContext);
     useEffect(() => {
@@ -15,7 +16,6 @@ const WelcomePage = () => {
 
             const userDataJson = localStorage.getItem('userData');
             setUser(userData)
-            // console.log(user)
         }
     }, [userData, changeIsLogin]); // 종속성 배열 추가
 
