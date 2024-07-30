@@ -46,7 +46,7 @@ const HotelList = ({ hotels, onShowProperty }) => {
                     <div className={styles.imageGallery}>
                         {hotel["hotel-images"] && hotel["hotel-images"].map(image => {
                             const imageUrl = `http://localhost:8888${image.hotelImgUri.replace('/local', '/hotel/images')}`;
-                            console.log(`Loading image from URL: ${imageUrl}`);
+                            // console.log(`Loading image from URL: ${imageUrl}`);
                             return (
                                 <img
                                     key={image.imageId}
