@@ -98,71 +98,99 @@ const UserEdit = ({ user }) => {
 
     return (
         <div className={styles.wrap}>
+            <img className={styles.img} src="/header-logo.png" alt="Header Logo"/>
             <h2 className={styles.title}>회원 정보 수정</h2>
-            <div className={styles.section}>
-                <label htmlFor="email">이메일</label>
-                <input id="email" type="text" value={user.email} readOnly />
+
+            <div className={styles.flex}>
+                <div className={styles.section}>
+                    <label htmlFor="email">이메일</label>
+                    <input id="email" type="text" className={styles.input} value={user.email} readOnly/>
+                </div>
+                <div className={styles.section}>
+                    <label htmlFor="name">이름</label>
+                    <input
+                        id="name"
+                        type="text"
+                        className={styles.input}
+                        value={name}
+                        onChange={nameHandler}
+                    />
+                </div>
+                <div className={styles.section}>
+                    <label htmlFor="password">비밀번호 변경</label>
+                    <input
+                        id="password"
+                        type="password"
+                        className={styles.input}
+                        ref={passwordRef}
+                        onChange={handlePasswordChange}
+                        placeholder={"바꾸실 비밀번호를 입력해주세요."}
+                    />
+                </div>
+
+                <div className={styles.section}>
+                    <label htmlFor="nickname">닉네임</label>
+                    <input
+                        id="nickname"
+                        type="text"
+                        className={styles.input}
+                        value={nickname}
+                        onChange={handleNicknameChange}
+                    />
+                </div>
+                <div className={styles.section}>
+                    <label htmlFor="confirmPassword">비밀번호 확인</label>
+                    <input
+                        id="confirmPassword"
+                        type="password"
+                        className={styles.input}
+                        ref={confirmPasswordRef}
+                        onChange={handlePasswordChange}
+                    />
+                    {passwordMessage && (
+                        <p className={passwordMatch ? styles.successMessage : styles.errorMessage}>
+                            {passwordMessage}
+                        </p>
+                    )}
+                </div>
+
+                <div className={styles.section}>
+                    <label htmlFor="phone">휴대전화</label>
+                    <input
+                        id="phone"
+                        type="text"
+                        value={phoneNum}
+                        className={styles.input}
+                        placeholder={"ex) 01055551111"}
+                        onChange={handlePhoneNumChange}
+                    />
+                </div>
             </div>
             <div className={styles.section}>
-                <label htmlFor="password">비밀번호 변경</label>
-                <input
-                    id="password"
-                    type="password"
-                    ref={passwordRef}
-                    onChange={handlePasswordChange}
-                    placeholder={"바꾸실 비밀번호를 입력해주세요."}
-                />
-            </div>
-            <div className={styles.section}>
-                <label htmlFor="confirmPassword">비밀번호 확인</label>
-                <input
-                    id="confirmPassword"
-                    type="password"
-                    ref={confirmPasswordRef}
-                    onChange={handlePasswordChange}
-                />
-                {passwordMessage && (
-                    <p className={passwordMatch ? styles.successMessage : styles.errorMessage}>
-                        {passwordMessage}
-                    </p>
-                )}
-            </div>
-            <div className={styles.section}>
-                <label htmlFor="nickname">닉네임</label>
-                <input
-                    id="nickname"
-                    type="text"
-                    value={nickname}
-                    onChange={handleNicknameChange}
-                />
-            </div>
-            <div className={styles.section}>
-                <label htmlFor="name">이름</label>
-                <input
-                    id="name"
-                    type="text"
-                    value={name}
-                    onChange={nameHandler}
-                />
-            </div>
-            <div className={styles.section}>
-                <label htmlFor="address">주소</label>
+                <label htmlFor="address" className={styles.address}>주소</label>
                 <input
                     id="address"
                     type="text"
+                    className={styles.addressName}
                     value={address}
                     onChange={handleAddressChange}
                 />
             </div>
-            <div className={styles.section}>
-                <label htmlFor="phone">휴대전화</label>
-                <input
-                    id="phone"
-                    type="text"
-                    value={phoneNum}
-                    onChange={handlePhoneNumChange}
-                />
-            </div>
+            {/*<div >*/}
+            {/*    <div >*/}
+            {/*        <img src="/assets/img/image-add.png" alt="프로필 썸네일"/>*/}
+            {/*        <span ></span>*/}
+            {/*    </div>*/}
+
+            {/*    <label>프로필 이미지 추가</label>*/}
+
+            {/*    <input*/}
+            {/*        type="file"*/}
+            {/*        id="profile-img"*/}
+            {/*        accept="image/*"*/}
+            {/*        name="profileImage"*/}
+            {/*    />*/}
+            {/*</div>*/}
             <button
                 className={styles.submitButton}
                 onClick={clearEditMode}
