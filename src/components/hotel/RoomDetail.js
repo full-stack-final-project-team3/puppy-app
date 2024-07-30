@@ -1,15 +1,19 @@
-import React, {useMemo} from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import Slider from "react-slick";
 import styles from './RoomDetail.module.scss';
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css";
 
-const RoomDetail = ({hotel}) => {
+const RoomDetail = ({ hotel, onBook }) => {
     const sliderSettings = useMemo(() => ({
         dots: true,
-        infinite: true,
+        infinite: false,
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1,
+        arrows: true,
+        cssEase: 'linear'
     }), []);
 
     if (!hotel || !hotel.room || hotel.room.length === 0) {
@@ -29,18 +33,19 @@ const RoomDetail = ({hotel}) => {
 
     return (
         <div className={styles.roomDetail}>
-            {hotel.room.map((room) => (
+            {hotel.room.map((room, roomIndex) => (
                 <div key={room['room-id']} className={styles.room}>
                     <Slider className={styles.slider} {...sliderSettings}>
-                        {room["room-images"] && room["room-images"].map((image, index) => {
+                        {room["room-images"] && room["room-images"].map((image, imageIndex) => {
                             const imageUrl = getImageUrl(image['image-uri']);
                             if (!imageUrl) {
                                 console.error('Invalid image URI for image', image);
                                 return null;
                             }
+                            console.log(`Rendering image ${imageIndex}:`, imageUrl);
                             return (
-                                <div key={image['image-id'] || index} className={styles.slide}>
-                                    <img src={imageUrl} alt={`${room.name} - ${image['image-uri']}`}/>
+                                <div key={image['image-id'] || `${roomIndex}-${imageIndex}`} className={styles.slide}>
+                                    <img src={imageUrl} alt={`${room.name} - ${image['image-uri']}`} />
                                 </div>
                             );
                         })}
@@ -49,6 +54,7 @@ const RoomDetail = ({hotel}) => {
                     <p>{room.content}</p>
                     <p>Type: {room.type}</p>
                     <p>Price: {room.price}</p>
+                    <button onClick={() => onBook(hotel.hotelId)}>Book Now</button> // Book Now 버튼 추가
                 </div>
             ))}
         </div>
@@ -74,6 +80,7 @@ RoomDetail.propTypes = {
             }).isRequired
         ).isRequired,
     }).isRequired,
+    onBook: PropTypes.func.isRequired,
 };
 
 export default RoomDetail;

@@ -70,3 +70,27 @@
     margin-top: 10px;
   }
 }
+
+/* 반응형 디자인을 위한 미디어 쿼리 */
+@media (max-width: 390px) {
+  .stepContent {
+    padding: 10px; /* 아이폰 12 화면에 맞게 패딩 추가 */
+  }
+
+  .personCountWrapper {
+    flex-direction: column; /* 수직으로 배치 변경 */
+    align-items: flex-start; /* 왼쪽 정렬 */
+  }
+
+  .personCount {
+    width: 100%; /* 전체 너비 사용 */
+  }
+
+  .addHotelButtonContainer {
+    justify-content: center; /* 버튼을 중앙에 배치 */
+  }
+
+  .addHotelButton {
+    width: 100%; /* 버튼 너비를 100%로 변경 */
+  }
+}

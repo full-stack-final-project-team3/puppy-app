@@ -62,10 +62,10 @@ const HotelList = ({ hotels, onShowProperty }) => {
                     <p>{hotel.description}</p>
                     <p>{hotel.location}</p>
                     <p>{hotel.phoneNumber}</p>
-                    <button onClick={() => handleAddReview(hotel.id)}>Write Review</button>
-                    <button className={styles.AddRoomButton} onClick={() => handleAddRoom(hotel.id)}>Add Room</button>
+                    <button className={styles.ListButton}onClick={() => handleAddReview(hotel.id)}>Write Review</button>
+                    <button className={styles.ListButton} onClick={() => handleAddRoom(hotel.id)}>Add Room</button>
                     <button 
-            className={styles.showPropertyButton} 
+            className={styles.ListButton} 
             onClick={() => onShowProperty(hotel.id)}
           >
             Show Property
