@@ -2,19 +2,19 @@
 import React from 'react';
 import styles from './PersonCount.module.scss';
 
-const PersonCount = ({ personCount, incrementPersonCount, decrementPersonCount }) => {
-  return (
-    <div className={styles.personCountWrapper}>
-      <label>
-        Dog count
-        <div className={styles.personCount}>
-          <button onClick={decrementPersonCount}>-</button>
-          <span>{personCount}</span>
-          <button onClick={incrementPersonCount}>+</button>
+const PersonCount = ({personCount, incrementPersonCount, decrementPersonCount}) => {
+    return (
+        <div className={styles.personCountWrapper}>
+            <label>
+                Dog count
+                <div className={styles.personCount}>
+                    <button onClick={decrementPersonCount}>-</button>
+                    <span>{personCount}</span>
+                    <button onClick={incrementPersonCount}>+</button>
+                </div>
+            </label>
         </div>
-      </label>
-    </div>
-  );
+    );
 };
 
 export default PersonCount;
