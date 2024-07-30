@@ -1,59 +1,62 @@
-import React, { useRef, useState } from 'react';
-import styles from './SignUpPage.module.scss';
+import React, { useRef, useState } from "react";
+import styles from "./SignUpPage.module.scss";
 import { AUTH_URL } from "../../../../config/user/host-config";
-import { debounce } from 'lodash';
+import { debounce } from "lodash";
 
 const NicknameInput = ({ onSuccess }) => {
-
   const inputRef = useRef();
 
-  const [nicknameValid, setNicknameValid] = useState(false);
+  const [nicknameValid, setNicknameValid] = useState(false); // 닉네임 검증
+  const [success, setSuccess] = useState(""); // 중복 검증 성공 메시지
+  const [error, setError] = useState(""); // 중복 검증 에러 메시지
+  const [step, setStep] = useState(1);
 
-  const [nickname, setNickname] = useState("");
-
-  
-  const [success, setSuccess] = useState('');
-
-  // 에러 메시지
-  const [error, setError] = useState('');
+  const nextStep = () => {
+    setStep((prevStep) => prevStep + 1);
+  };
 
   const checkNickname = debounce(async (nickname) => {
-
     // 중복 검사
-    const response = await fetch(`${AUTH_URL}/check-nickname?nickname=${nickname}`);
+    const response = await fetch(
+      `${AUTH_URL}/check-nickname?nickname=${nickname}`
+    );
     const flag = await response.json();
 
     if (flag) {
       setNicknameValid(false);
-      setError('닉넴 중복');
+      setError("닉네임이 중복되었습니다");
       return;
     }
 
     // 닉네임 중복확인 종료
     setNicknameValid(true);
-    setSuccess('닉넴 성공')
+    setSuccess("사용가능한 닉네임입니다");
     onSuccess(nickname);
   }, 1500);
 
-  const nicknameHandler = e => {
+  const nicknameHandler = (e) => {
     const nickname = e.target.value;
     checkNickname(nickname);
-  }
+    nextStep();
+  };
 
   return (
     <>
-      <p>Step 1: 유효한 닉네임을 입력해주세요.</p>
-      <input
-        ref={inputRef}
-        type="nickname"
-        placeholder="Enter your nickname"
-        onChange={nicknameHandler}
-        className={!nicknameValid ? styles.invalidInput : ''}
-      />
-      { !nicknameValid && <p className={styles.errorMessage}>{error}</p> }
-      { nicknameValid && <p className={styles.successMessage}>{success}</p> }
+      <h1 className={styles.h1}>Step 2</h1>
+      <div className={styles.nicknameInput}>
+        <h2>닉네임</h2>
+        <input
+          ref={inputRef}
+          type="nickname"
+          placeholder="Enter your nickname"
+          onChange={nicknameHandler}
+          className={styles.input}
+        />
+        {nicknameValid && <p className={styles.successMessage}>{success}</p>}
+        {!nicknameValid && <p className={styles.errorMessage}>{error}</p>}
+      </div>
     </>
-  )
-}
+  );
+};
 
-export default NicknameInput
+export default NicknameInput;
