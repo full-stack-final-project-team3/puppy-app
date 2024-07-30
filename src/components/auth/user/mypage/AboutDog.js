@@ -1,9 +1,16 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styles from './AboutDog.module.scss';
 import {Link} from "react-router-dom";
 import DogList from "../../dog/DogList";
+import {useSelector} from "react-redux";
 
-const AboutDog = ({ dogList }) => {
+const AboutDog = () => {
+
+    const userDetail = useSelector(state => state.userEdit.userDetail);
+    const dogList = userDetail.dogList;
+
+    console.log(dogList)
+
 
     return (
         <div className={styles.wrap}>
