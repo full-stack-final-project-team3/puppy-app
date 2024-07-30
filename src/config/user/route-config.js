@@ -9,7 +9,7 @@ import HotelPage from "../../pages/hotel/HotelPage"; // 새로 추가된 HotelPa
 import AddHotelPage from "../../pages/hotel/AddHotelPage"; // 새로 추가된 AddHotelPage
 import { logoutAction } from "../../pages/user/Logout";
 import UserProvider from "../../components/context/UserProvider";
-import { userDataLoader, authCheckLoader } from "./auth";
+import { userDataLoader, authCheckLoader, getUserToken } from "./auth";
 import MyPageMain from "../../components/auth/user/mypage/MyPageMain";
 import AddDogMain from "../../components/auth/dog/AddDogMain";
 import DogEdit from "../../components/auth/dog/DogEdit";
@@ -20,14 +20,15 @@ import AddRoomPage from "../../pages/hotel/AddRoomPage";
 import AddReviewPage from "../../pages/hotel/AddReviewPage";
 
 import ForgotSection from "../../components/auth/user/forgot-info/ForgotSection";
-
+import ShopMain from "../../pages/shop/ShopMain";
+import TreatsListForDog from "../../pages/shop/TreatsListForDog";
 
 const homeRouter = [
   {
     index: true,
     element: <WelcomePage />,
     loader: userDataLoader,
-    id: "user-data3"
+    id: "user-data3",
   },
   {
     path: "login",
@@ -81,8 +82,19 @@ export const router = createBrowserRouter([
         loader: authCheckLoader,
       },
       {
-        path: 'add-review/:hotelId', // 새로 추가된 경로
+        path: "add-review/:hotelId", // 새로 추가된 경로
         element: <AddReviewPage />,
+        loader: authCheckLoader,
+      },
+      {
+        path: "treats",
+        element: <ShopMain />,
+        loader: getUserToken,
+        id: "getToken"
+      },
+      {
+        path: "list/:dogId",
+        element: <TreatsListForDog />,
         loader: authCheckLoader,
       },
       {
@@ -101,8 +113,8 @@ export const router = createBrowserRouter([
       },
       {
         path: "forgot-info",
-        element: <ForgotSection/>
-      }
+        element: <ForgotSection />,
+      },
     ],
   },
 ]);
