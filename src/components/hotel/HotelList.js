@@ -15,10 +15,7 @@ const HotelList = ({ hotels, onShowProperty  }) => {
         <div className={styles.hotelList}>
             {hotels.map(hotel => (
                 <div key={hotel.id} className={styles.hotel}>
-                    <h2>{hotel.name}</h2>
-                    <p>{hotel.description}</p>
-                    <p>{hotel.location}</p>
-                    <p>{hotel.phoneNumber}</p>
+                  <div className={styles.imageBox}>
                     <div className={styles.imageGallery}>
                         {hotel["hotel-images"] && hotel["hotel-images"].map(image => {
                             const imageUrl = `http://localhost:8888${image.hotelImgUri.replace('/local', '/hotel/images')}`;
@@ -32,8 +29,14 @@ const HotelList = ({ hotels, onShowProperty  }) => {
                                 />
                             );
                         })}
+                      </div>
                     </div>
-                    <button onClick={() => handleAddRoom(hotel.id)}>Add Room</button>
+                    <h2>{hotel.name}</h2>
+                    <p>{hotel.description}</p>
+                    <p>{hotel.location}</p>
+                    <p>{hotel.phoneNumber}</p>
+                    
+                    <button className={styles.AddRoomButton} onClick={() => handleAddRoom(hotel.id)}>Add Room</button>
                     <button 
             className={styles.showPropertyButton} 
             onClick={() => onShowProperty(hotel.id)}

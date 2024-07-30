@@ -10,49 +10,65 @@ dayjs.locale('ko');
 
 export default function DualDatePickers({ startDate, setStartDate, endDate, setEndDate }) {
 
-
     const today = dayjs();
 
     // 날짜 포맷팅 함수
     const formatDateRange = (start, end) => {
-        const startFormatted = dayjs(start).format('M월 D일');
-        const endFormatted = dayjs(end).format('M월 D일');
+        const startFormatted = dayjs(start).format('YYYY년 M월 D일');
+        const endFormatted = dayjs(end).format('YYYY년 M월 D일');
         return `${startFormatted}부터 ${endFormatted}까지`;
     };
 
+    const handleStartDateChange = (newValue) => {
+        if (newValue && dayjs(newValue).isValid()) {
+            setStartDate(newValue);
+            if (!endDate || dayjs(newValue).isAfter(endDate)) {
+                setEndDate(dayjs(newValue).add(1, 'day'));
+            }
+        } else {
+            alert('유효하지 않은 날짜입니다.');
+        }
+    };
+
+    const handleEndDateChange = (newValue) => {
+        if (newValue && dayjs(newValue).isValid()) {
+            setEndDate(newValue);
+        } else {
+            alert('유효하지 않은 날짜입니다.');
+        }
+    };
+
     return (
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <LocalizationProvider dateAdapter={AdapterDayjs} locale="ko">
             <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
                 <DatePicker
-                    views={['day']}
                     label="Arrival"
                     value={startDate}
-                    onChange={(newValue) => {
-                        setStartDate(newValue);
-                        if (newValue && (!endDate || dayjs(newValue).isAfter(endDate))) {
-                            setEndDate(dayjs(newValue).add(1, 'day'));
-                        }
-                    }}
-                    renderInput={(params) => <TextField {...params} />}
-                    inputFormat="MM월 DD일"
-                    minDate={today} // 오늘 날짜 이전은 선택할 수 없습니다.
+                    onChange={handleStartDateChange}
+                    renderInput={(params) => (
+                        <TextField 
+                            {...params} 
+                            value={startDate ? dayjs(startDate).format('YYYY년 MM월 DD일') : ''}
+                            aria-label="Arrival date"
+                        />
+                    )}
+                    inputFormat="YYYY년 MM월 DD일"
+                    minDate={today} // 오늘 날짜 이전은 선택할 수 없습니다
                 />
                 <DatePicker
-                    views={['day']}
                     label="Departure"
                     value={endDate}
-                    onChange={(newValue) => {
-                        setEndDate(newValue);
-                    }}
-                    renderInput={(params) => <TextField {...params} />}
-                    inputFormat="MM월 DD일"
-                    minDate={startDate || today} // startDate 이후만 선택할 수 있습니다.
+                    onChange={handleEndDateChange}
+                    renderInput={(params) => (
+                        <TextField 
+                            {...params} 
+                            value={endDate ? dayjs(endDate).format('YYYY년 MM월 DD일') : ''}
+                            aria-label="Departure date"
+                        />
+                    )}
+                    inputFormat="YYYY년 MM월 DD일"
+                    minDate={startDate || today} // startDate 이후만 선택할 수 있습니다
                 />
-            </Box>
-            <Box sx={{ marginTop: 2, textAlign: 'center' }}>
-                {startDate && endDate && (
-                    <div>{formatDateRange(startDate, endDate)}</div>
-                )}
             </Box>
         </LocalizationProvider>
     );
