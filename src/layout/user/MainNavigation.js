@@ -35,9 +35,22 @@ const MainNavigation = () => {
 
     const logoutHandler = () => {
         localStorage.removeItem('userData');
-        window.location.reload();
-        // navi('/');
+
+        // 현재 URL을 가져옴
+        const currentUrl = window.location.href;
+
+        // 현재 URL이 루트 경로가 아닌 경우 루트 경로로 리다이렉트
+        if (currentUrl !== 'http://localhost:3000/') {
+            window.location.href = 'http://localhost:3000/';
+        } else {
+            // 현재 페이지를 새로고침
+            window.location.reload();
+        }
     };
+
+    const loginHandler = () => {
+        navi("/login")
+    }
 
     return (
         <header className={styles.header}>
@@ -59,7 +72,7 @@ const MainNavigation = () => {
                     ) : (
                         <>
                             <NavLink className={styles.login} to='/login'>Login</NavLink>
-                            <BiUser className={styles.icon} />
+                            <BiUser onClick={loginHandler} className={styles.icon} />
                             <GiHamburgerMenu className={styles.icon} onClick={toggleMenuHandler} />
                         </>
                     )}

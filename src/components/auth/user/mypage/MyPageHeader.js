@@ -17,6 +17,9 @@ const MyPageHeader = () => {
     const dispatch = useDispatch();
 
     const goToHome = () => {
+        if (isEditMode) dispatch(userEditActions.clearMode())
+        if (isUserEditMode) dispatch(userEditActions.clearUserEditMode())
+        if (isDogEditMode) dispatch(dogEditActions.clearEdit())
         navigate('/')
     }
 

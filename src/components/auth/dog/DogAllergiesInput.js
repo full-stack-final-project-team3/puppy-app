@@ -19,7 +19,7 @@ const allergiesOptions = [
     { value: 'OAT', label: '귀리' },
     { value: 'POTATO', label: '감자' },
     { value: 'TOMATO', label: '토마토' },
-    { value: 'YEAST', label: '이스트' },
+
 ];
 
 const DogAllergiesInput = ({ onAllergiesChange }) => {
@@ -51,6 +51,7 @@ const DogAllergiesInput = ({ onAllergiesChange }) => {
         <div className={styles.wrap}>
             <h3 className={styles.h3}>강아지의 알러지를 체크해주세요!</h3>
             <div className={styles.allergies}>
+                <div className={styles.subWrap}>
                 {allergiesOptions.map((option) => (
                     <label key={option.value} className={`${styles.label} ${selectedAllergy.includes(option.value) ? styles.selected : ''}`}>
                         <input
@@ -63,6 +64,7 @@ const DogAllergiesInput = ({ onAllergiesChange }) => {
                         {option.label}
                     </label>
                 ))}
+                </div>
             </div>
             <div className={styles.buttons}>
                 <button className={styles.skip} onClick={handleSkip}>알러지 없어요!</button>

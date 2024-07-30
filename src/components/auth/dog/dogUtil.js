@@ -45,7 +45,6 @@ export const allergyTranslations = {
     OAT: '귀리',
     POTATO: '감자',
     TOMATO: '토마토',
-    YEAST: '이스트'
 };
 
 export const translateAllergy = (allergy) => {
