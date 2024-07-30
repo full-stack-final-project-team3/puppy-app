@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styles from './HotelSearchForm.module.scss';
@@ -22,7 +22,7 @@ const HotelSearchForm = ({ isAdmin, handleNextStep, onSearch }) => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    if (!selectedCity || !startDate || !endDate) {
+    if (!startDate || !endDate) {
       dispatch(setShowWarning(true));
     } else {
       dispatch(setShowWarning(false));
@@ -30,12 +30,6 @@ const HotelSearchForm = ({ isAdmin, handleNextStep, onSearch }) => {
       handleNextStep();
     }
   };
-
-  useEffect(() => {
-    if (selectedCity && startDate && endDate) {
-      dispatch(setShowWarning(false));
-    }
-  }, [selectedCity, startDate, endDate, dispatch]);
 
   return (
       <div className={styles.stepContent}>
@@ -73,9 +67,7 @@ const HotelSearchForm = ({ isAdmin, handleNextStep, onSearch }) => {
           </div>
           <button className={styles.next} type="submit">Search</button>
           {showWarning && (
-              <p className={styles.warning}>
-                {(!selectedCity && !startDate && !endDate) ? '지역 정보와 날짜 정보를 모두 입력하세요.' : (!selectedCity ? '지역 정보를 선택하세요.' : '날짜 정보를 입력하세요.')}
-              </p>
+              <p className={styles.warning}>날짜 정보를 입력하세요.</p>
           )}
         </form>
       </div>

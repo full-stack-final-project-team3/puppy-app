@@ -1,6 +1,3 @@
-
-
-
 import React, { useRef, useEffect } from 'react';
 import { useLoaderData } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
@@ -17,6 +14,7 @@ import StepIndicator from '../../components/hotel/StepIndicator';
 import HotelList from '../../components/hotel/HotelList';
 import HotelSearchForm from '../../components/hotel/HotelSearchForm';
 import RoomDetail from '../../components/hotel/RoomDetail';
+import BookingDetail from '../../components/hotel/BookingDetail'; // 새로운 컴포넌트 임포트
 import styles from './HotelPage.module.scss';
 import './HotelPageAnimations.scss';
 import dayjs from 'dayjs';
@@ -41,7 +39,7 @@ const HotelPage = () => {
   }, [selectedHotel]);
 
   const formatDate = (date) => {
-    return dayjs(date).format('YYYY-MM-DD');
+    return dayjs(date).format('YYYY / MM / DD ddd'); // 날짜를 원하는 형식으로 변환합니다.
   };
 
   const backgroundImages = [
@@ -76,6 +74,12 @@ const HotelPage = () => {
   const handleShowProperty = (hotelId) => {
     dispatch(fetchHotelDetails(hotelId)).then(() => {
       dispatch(setStep(3));
+    });
+  };
+
+  const handleBook = (hotelId) => {
+    dispatch(fetchHotelDetails(hotelId)).then(() => {
+      dispatch(setStep(4)); // Step 4로 이동
     });
   };
 
@@ -132,11 +136,18 @@ const HotelPage = () => {
                   {`${formatDate(startDate)} - ${formatDate(endDate)}`}
                 </button>
                 {selectedHotel ? (
-                  <RoomDetail hotel={selectedHotel} />
+                  <RoomDetail hotel={selectedHotel} onBook={handleBook}/> // onBook 핸들러 추가
                 ) : (
                   <p>Loading...</p>
                 )}
               </div>
+            ) : step === 4 ? ( // Step 4 추가
+              <BookingDetail 
+                hotel={selectedHotel} 
+                personCount={personCount} 
+                startDate={startDate} 
+                endDate={endDate}
+              />
             ) : null /* 다른 단계에 대한 컴포넌트를 추가할 수 있습니다. */}
           </div>
         </CSSTransition>

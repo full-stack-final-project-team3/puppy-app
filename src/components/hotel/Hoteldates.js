@@ -4,9 +4,9 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { TextField, Box } from '@mui/material';
 import dayjs from 'dayjs';
-import 'dayjs/locale/ko';
+// import 'dayjs/locale/ko';
 
-dayjs.locale('ko');
+// dayjs.locale('ko');
 
 export default function DualDatePickers({ startDate, setStartDate, endDate, setEndDate }) {
 
