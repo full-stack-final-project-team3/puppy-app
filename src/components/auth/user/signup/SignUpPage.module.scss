@@ -46,7 +46,13 @@
 }
 
 .errorMessage {
-  color: #ffff00; // 경고 메시지를 빨간색으로 표시
+  color: #ff0000; // 경고 메시지를 빨간색으로 표시
+  font-size: 0.8em;
+  text-align: center;
+}
+
+.successMessage {
+  color: green; // 성공 메시지를 초록색으로 표시
   font-size: 0.8em;
   text-align: center;
 }

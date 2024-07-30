@@ -10,13 +10,14 @@ const PasswordInput = ({ onSuccess }) => {
   const [passwordCheck, setPasswordCheck] = useState('');
   const [passwordValid, setPasswordValid] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
+  const [success, setSuccess] = useState('');
 
   const validatePassword = (password) => {
     const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
     return passwordPattern.test(password);
   };
 
-  const changeHandler =(e) => {
+  const changeHandler = (e) => {
     const newPassword = e.target.value;
     setPassword(newPassword);
     console.log(newPassword)
@@ -38,7 +39,11 @@ const PasswordInput = ({ onSuccess }) => {
     console.log(checkPassword)
 
     if (password === checkPassword) {
+      setSuccess("비번 일치")
       onSuccess(checkPassword, true);
+      setPasswordValid(true);
+    } else {
+      setErrorMessage("비번틀림");
     }
 
 
@@ -64,10 +69,11 @@ const PasswordInput = ({ onSuccess }) => {
         <input
             ref={passwordCheckRef}
             type="password"
-            // value={password}
+            value={passwordCheck}
             onChange={checkHandler}
             placeholder="Enter your password"
         />
+        {passwordCheck && <p className={styles.successMessage}>{success}</p>}
       </>
   );
 };

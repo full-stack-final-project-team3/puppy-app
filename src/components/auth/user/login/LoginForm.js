@@ -146,7 +146,7 @@ const LoginForm = () => {
                                 {error && <div className={styles.errorMessage}>{error}</div>}
                                 <div className={styles.bottomGroup}>
                                     <div className={styles.links}>
-                                        <a href="/forgot-password">아이디 / 비밀번호 찾기</a>
+                                        <Link to={"/forgot-info"}>아이디 / 비밀번호 찾기</Link>
                                     </div>
                                     <button type="submit" className={styles.loginButton}>Login</button>
                                 </div>
