@@ -13,8 +13,8 @@ const getUserData = () => {
 
 // 인증 토큰만 가져오기
 export const getUserToken = () => {
-    // console.log(getUserData().token)
-    return getUserData().token;
+    const userData = getUserData();
+    return userData && userData.token ? userData.token : null; // null 체크 후 token 가져오기
 };
 
 // 로그인 회원정보를 불러오는 loader
@@ -24,10 +24,6 @@ export const userDataLoader = () => {
 
     return userData;
 }
-
-
-
-
 
 // 접근 권한을 확인하는 loader
 export const authCheckLoader = () => {
