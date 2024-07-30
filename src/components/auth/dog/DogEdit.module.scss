@@ -11,12 +11,71 @@
     height: 45px;
   }
 
-  .title {
-    text-align: left;
-    margin-bottom: 20px;
-    font-size: 24px;
-    font-weight: 700;
-    color: #333;
+
+  .flex {
+    display: flex;
+
+
+    .left {
+      width: 70%;
+
+      .title {
+        text-align: left;
+        margin-bottom: 20px;
+        font-size: 24px;
+        font-weight: 700;
+        color: #333;
+      }
+
+      .row {
+
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 20px;
+        align-items: center;
+
+        .item {
+          color: #6c757d;
+          text-align: start;
+          white-space: pre-wrap;
+          width: 80px;
+        }
+
+        .sub {
+          font-size: 0.8rem;
+          color: #6c757d;
+          margin-left: 10px;
+        }
+
+        .input {
+          width: 30%;
+          padding: 7px;
+          border: 1px solid #B7AE9E;
+          border-radius: 10px;
+          box-sizing: border-box;
+          background: #F4E8D3;
+        }
+        .input:focus {
+          outline: none;
+        }
+
+        .answer {
+
+        }
+      }
+
+    }
+    .right {
+      width: 25%;
+      height: 25%;
+      overflow: hidden;
+      margin-top: 50px;
+      .dogProfileUrl {
+        max-width: 100%;
+
+      }
+    }
+
   }
 
 }
