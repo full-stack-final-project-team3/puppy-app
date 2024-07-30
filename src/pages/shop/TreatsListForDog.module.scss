@@ -1,0 +1,55 @@
+.treatsList {
+  height: 91vh;
+  background-image: url(https://www.zooplus.co.uk/magazine/wp-content/uploads/2018/03/dachshund.jpg); // 배경 이미지 경로
+  background-size: cover;
+  background-position: center;
+  color: white;
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    padding: 40px;
+    border-radius: 25px;
+    width: 30%;
+    margin: 0 auto;
+    box-sizing: border-box;
+    color: black;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    h1 {
+      text-align: center;
+      margin-top: 40px;
+      margin-bottom: 20px;
+    }
+  }
+
+  .treat {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: black;
+
+    h2 {
+      margin-top: 0;
+    }
+  }
+
+  .loading {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .error {
+    text-align: center;
+    color: red;
+    margin-top: 20px;
+  }
+
+  .treatList {
+    display: block;
+    margin: 0 auto 20px;
+  }
+}

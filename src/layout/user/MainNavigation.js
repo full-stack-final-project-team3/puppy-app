@@ -69,7 +69,7 @@ const MainNavigation = () => {
                 <div className={styles.dropdownMenu}>
                     <ul>
                         <li><NavLink to='/hotel'>Hotel</NavLink></li>
-                        <li><NavLink to='/category2'>Category 2</NavLink></li>
+                        <li><NavLink to='/treats'>Shop</NavLink></li>
                         <li><NavLink to='/boards'>Community</NavLink></li>
                     </ul>
                 </div>

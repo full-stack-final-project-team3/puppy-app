@@ -19,6 +19,9 @@ const ROOM = "/room";
 const UPLOAD = "/hotel/upload";
 const DOG = "/dog";
 const BOARD = "/boards";
+const TREATS = "/treats";
+const BUNDLE = "/bundle";
+const CART = "/cart";
 // const AUTH = '/auth'
 
 export const EVENT_URL = API_BASE_URL + EVENT;
@@ -28,3 +31,6 @@ export const UPLOAD_URL = API_BASE_URL + UPLOAD;
 export const AUTH_URL = API_BASE_URL;
 export const DOG_URL = API_BASE_URL + DOG;
 export const BOARD_URL = API_BASE_URL + BOARD;
+export const TREATS_URL = API_BASE_URL + TREATS;
+export const BUNDLE_URL = API_BASE_URL + BUNDLE;
+export const CART_URL = API_BASE_URL + CART;
