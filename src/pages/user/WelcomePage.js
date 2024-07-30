@@ -8,7 +8,7 @@ const WelcomePage = () => {
     const userData = useRouteLoaderData('user-data3');
 
 
-    // console.log(userData)
+    console.log(userData)
     const {changeIsLogin, user, setUser} = useContext(UserContext);
     useEffect(() => {
         if (userData) {
