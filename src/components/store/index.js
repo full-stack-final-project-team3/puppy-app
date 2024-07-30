@@ -8,7 +8,7 @@ import userReducer from "./user/UserSlice";
 import reservationReducer from "./hotel/ReservationSlice"
 import hotelPageReducer from "./hotel/HotelPageSlice";
 import reviewReducer from "./hotel/HotelReviewSlice";
-import dogInfoReducer from "./dog/DogInfoSlice"
+
 
 const store = configureStore({
     reducer: {
@@ -20,7 +20,7 @@ const store = configureStore({
         hotelPage: hotelPageReducer,
         reviews: reviewReducer,
         user: userReducer,
-        dog: dogInfoReducer,
+
     }
 });
 
