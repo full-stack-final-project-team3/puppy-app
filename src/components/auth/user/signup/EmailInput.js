@@ -6,7 +6,7 @@ import { debounce } from "lodash";
 const EmailInput = ({ onSuccess }) => {
   const inputRef = useRef();
 
-  const [emailValid, setEmailValid] = useState(false); // 검증여부
+  const [emailValid, setEmailValid] = useState(false); // 검증 여부
   const [success, setSuccess] = useState(""); // 검증 성공 메시지
   const [error, setError] = useState(""); // 검증 에러 메시지
 
@@ -66,7 +66,7 @@ const EmailInput = ({ onSuccess }) => {
           type="email"
           placeholder="Enter your email"
           onChange={changeHandler}
-          className={!emailValid ? styles.invalidInput : ""}
+          className={styles.input}
         />
         {emailValid && <p className={styles.successMessage}>{success}</p>}
         {!emailValid && <p className={styles.errorMessage}>{error}</p>}

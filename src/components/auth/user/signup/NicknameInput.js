@@ -50,7 +50,7 @@ const NicknameInput = ({ onSuccess }) => {
           type="nickname"
           placeholder="Enter your nickname"
           onChange={nicknameHandler}
-          className={!nicknameValid ? styles.invalidInput : ""}
+          className={styles.input}
         />
         {nicknameValid && <p className={styles.successMessage}>{success}</p>}
         {!nicknameValid && <p className={styles.errorMessage}>{error}</p>}

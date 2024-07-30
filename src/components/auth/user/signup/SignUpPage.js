@@ -13,15 +13,12 @@ const SignUpPage = () => {
   const navigate = useNavigate();
 
   const [step, setStep] = useState(1); // 현재 몇 단계가 진행되고 있는지
-  // const [success, setSuccess] = useState(false); // 단계가 성공적으로 완료되었는지
   const [enteredEmail, setEnteredEmail] = useState(""); // 입력된 이메일
   const [enteredPassword, setEnteredPassword] = useState(""); // 입력된 패스워드
-  // const [passwordCheck, setPasswordCheck] = useState('');
   const [passwordIsVaild, setPasswordIsValid] = useState(false);
   const [enteredNickname, setEnteredNickname] = useState(""); // 입력된 닉네임
-  // const [nicknameValid, setNicknameValid] = useState(false);
-  const [enteredAddress, setEnteredAddrrss] = useState(""); // 입력된 주소
-  const [enteredPhoneNumber, setEnteredPhoneNumber] = useState(""); // 입력된 휴대폰 번호
+  // const [enteredAddress, setEnteredAddrrss] = useState(""); // 입력된 주소
+  // const [enteredPhoneNumber, setEnteredPhoneNumber] = useState(""); // 입력된 휴대폰 번호
   const [activeButton, setActiveButton] = useState(false); // 회원가입 버튼 활성화 여부
 
   // 다음 단계로 넘어가는 함수
@@ -32,7 +29,6 @@ const SignUpPage = () => {
   // 이메일 입력 성공
   const emailSuccessHandler = (email) => {
     setEnteredEmail(email);
-    nextStep();
   };
 
   // 닉네임 입력 성공
@@ -42,22 +38,19 @@ const SignUpPage = () => {
 
   // 패스워드 입력 성공
   const passwordSuccessHandler = (password, isValid) => {
-    if (isValid) {
-      setEnteredPassword(password);
-      setPasswordIsValid(isValid);
-    }
-    nextStep();
+    setEnteredPassword(password);
+    setPasswordIsValid(isValid);
   };
 
   // 주소 입력 성공
-  const addressSuccessHandler = () => {
+  // const addressSuccessHandler = () => {
 
-  };
+  // };
 
   // 휴대폰 번호 입력 성공
-  const PhoneNumberSuccessHandler = () => {
+  // const PhoneNumberSuccessHandler = () => {
 
-  };
+  // };
 
   // 서버에 회원가입 완료 요청하기
   const submitHandler = async (e) => {
@@ -90,26 +83,27 @@ const SignUpPage = () => {
 
   return (
     <form onSubmit={submitHandler}>
-      <div className={styles.signupForm}>
+      <div className={styles.signupPage}>
         <div className={styles.formStepActive}>
 
-        {/* {step === 1 && <div className={styles.emailBox}>
+        {step === 1 && <div className={styles.emailBox}>
           <EmailInput onSuccess={emailSuccessHandler} />
           <VerificationInput email={enteredEmail} onSuccess={() => nextStep()} />
-        </div>} */}
+        </div>}
         
-        {/* {step === 1 && <div className={styles.nickPwBox}>
+        {step === 2 && <div className={styles.nickPwBox}>
           <NicknameInput onSuccess={nicknameSuccessHandler} />
           <PasswordInput onSuccess={passwordSuccessHandler} />
-        </div>} */}
+        </div>}
 
-        {step === 1 && <div className={styles.addNumBox}>
+        {/* {step === 1 && <div className={styles.addNumBox}>
           <AddressInput onSuccess={addressSuccessHandler} />
           <PhoneNumberInput onSuccess={PhoneNumberSuccessHandler} />
-        </div>}
+        </div>} */}
 
           {activeButton && (
             <div>
+              <button className={styles.button}>강아지 등록하기</button>
               <button className={styles.button}>회원가입 완료</button>
             </div>
           )}

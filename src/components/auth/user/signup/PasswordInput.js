@@ -41,7 +41,8 @@ const PasswordInput = ({ onSuccess }) => {
     setPasswordCheck(passwordCheck);
 
     if (password === passwordCheck) { // 비밀번호 재확인 성공
-      setCheckSuccess("비밀번호가 일치합니다")
+      setCheckSuccess("비밀번호가 일치합니다");
+      onSuccess(passwordCheck, true);
     }
 
     // 비밀번호 재확인 실패
@@ -60,7 +61,7 @@ const PasswordInput = ({ onSuccess }) => {
             type="password"
             value={password}
             onChange={passwordHandler}
-            className={passwordValid ? '' : styles.invalidInput}
+            className={styles.input}
             placeholder="Enter your password"
         />
         {passwordValid && <p className={styles.successMessage}>{success}</p>}
@@ -71,6 +72,7 @@ const PasswordInput = ({ onSuccess }) => {
             type="password"
             value={passwordCheck}
             onChange={passwordCheckHandler}
+            className={styles.input}
             placeholder="Enter your password again"
         />
         {passwordCheck && <p className={styles.successMessage}>{checkSuccess}</p>}

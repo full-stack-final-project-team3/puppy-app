@@ -10,6 +10,7 @@ const VerificationInput = ({ email, onSuccess }) => {
   const [success, setSuccess] = useState(""); // 검증 성공 메시지
   const [error, setError] = useState(""); // 에러메시지 저장
   const [timer, setTimer] = useState(300); // 타이머 시간
+  const [emailValid, setEmailValid] = useState(false); // 이메일 검증 여부
 
   // 다음 칸으로 포커스를 이동하는 함수
   const focusNextInput = (index) => {
@@ -27,20 +28,19 @@ const VerificationInput = ({ email, onSuccess }) => {
     );
     const flag = await response.json();
 
-    // console.log('코드검증: ', flag);
-    if (!flag) {
-      // 검증에 실패했을 때
-      setError("유효하지 않거나 만료된 코드입니다 인증코드를 재발송합니다");
-      setCodes(Array(4).fill("")); // 기존 인증코드 상태값 비우기
-      setTimer(300); // 타이머 리셋
+      // console.log('코드검증: ', flag);
+      if (!flag) {
+        // 검증에 실패했을 때
+        setError("유효하지 않거나 만료된 코드입니다 인증코드를 재발송합니다");
+        setCodes(Array(4).fill("")); // 기존 인증코드 상태값 비우기
+        setTimer(300); // 타이머 리셋
+        inputsRef.current[0].focus();
+        return;
+      }
 
-      inputsRef.current[0].focus();
-      return;
-    }
-
-    // 검증 성공 시
-    onSuccess();
-    setSuccess("인증이 완료되었습니다");
+      // 검증 성공 시
+      onSuccess();
+      setSuccess("인증이 완료되었습니다");
   }, 1500);
 
   const changeHandler = (index, inputValue) => {
@@ -63,7 +63,7 @@ const VerificationInput = ({ email, onSuccess }) => {
 
   useEffect(() => {
     // 처음엔 첫번째 칸에 포커싱
-    inputsRef.current[0].focus();
+    // inputsRef.current[0].focus();
 
     // 타이머 설정
     const intervalId = setInterval(() => {
