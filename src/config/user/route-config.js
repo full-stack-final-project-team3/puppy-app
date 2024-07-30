@@ -15,7 +15,12 @@ import AddDogMain from "../../components/auth/dog/AddDogMain";
 import DogEdit from "../../components/auth/dog/DogEdit";
 import BoardPage from "../../pages/community/BoardPage";
 import BoardDetailPage from "../../pages/community/BoardDetailPage";
+
+import AddRoomPage from "../../pages/hotel/AddRoomPage";
+import AddReviewPage from "../../pages/hotel/AddReviewPage";
+
 import ForgotSection from "../../components/auth/user/forgot-info/ForgotSection";
+
 
 const homeRouter = [
   {
@@ -69,6 +74,16 @@ export const router = createBrowserRouter([
         path: "add-hotel",
         element: <AddHotelPage />,
         loader: authCheckLoader, // 로그인 정보를 확인하는 loader 추가
+      },
+      {
+        path: "add-room/:hotelId",
+        element: <AddRoomPage />,
+        loader: authCheckLoader,
+      },
+      {
+        path: 'add-review/:hotelId', // 새로 추가된 경로
+        element: <AddReviewPage />,
+        loader: authCheckLoader,
       },
       {
         path: "add-dog",
