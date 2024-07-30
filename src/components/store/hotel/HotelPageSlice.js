@@ -1,6 +1,6 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { HOTEL_URL} from '../../../config/user/host-config';
 
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { HOTEL_URL } from '../../../config/user/host-config';
 
 export const fetchHotels = createAsyncThunk(
     'hotelPage/fetchHotels',
@@ -19,12 +19,30 @@ export const fetchHotels = createAsyncThunk(
     }
 );
 
+export const fetchHotelDetails = createAsyncThunk(
+    'hotelPage/fetchHotelDetails',
+    async (hotelId, thunkAPI) => {
+        const token = JSON.parse(localStorage.getItem('userData')).token;
+        const response = await fetch(`${HOTEL_URL}/${hotelId}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        if (!response.ok) {
+            throw new Error('Failed to fetch hotel details');
+        }
+        const data = await response.json();
+        return data;
+    }
+);
+
 const initialState = {
     hotels: [],
     step: 1,
     loading: false,
     error: null,
     personCount: 1,
+    selectedHotel: null, // 추가된 초기화
 };
 
 const hotelPageSlice = createSlice({
@@ -42,6 +60,7 @@ const hotelPageSlice = createSlice({
         },
         resetHotels: (state) => {
             state.hotels = [];
+            state.selectedHotel = null; // 추가된 초기화
         },
     },
     extraReducers: (builder) => {
@@ -58,6 +77,19 @@ const hotelPageSlice = createSlice({
             .addCase(fetchHotels.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
+            })
+            // fetchHotelDetails 액션 처리 추가
+            .addCase(fetchHotelDetails.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchHotelDetails.fulfilled, (state, action) => {
+                state.selectedHotel = action.payload;
+                state.loading = false;
+            })
+            .addCase(fetchHotelDetails.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
             });
     },
 });
@@ -65,3 +97,4 @@ const hotelPageSlice = createSlice({
 export const { setStep, incrementPersonCount, decrementPersonCount, resetHotels } = hotelPageSlice.actions;
 
 export default hotelPageSlice.reducer;
+

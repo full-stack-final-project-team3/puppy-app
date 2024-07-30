@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import styles from './HotelList.module.scss';
 import { userEditActions } from '../store/user/UserEditSlice';
 
-const HotelList = ({ hotels }) => {
+const HotelList = ({ hotels, onShowProperty }) => {
     const userData = useRouteLoaderData('user-data');
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -42,19 +42,34 @@ const HotelList = ({ hotels }) => {
         <div className={styles.hotelList}>
             {hotels.map((hotel) => (
                 <div key={hotel.id} className={styles.hotel}>
+                  <div className={styles.imageBox}>
+                    <div className={styles.imageGallery}>
+                        {hotel["hotel-images"] && hotel["hotel-images"].map(image => {
+                            const imageUrl = `http://localhost:8888${image.hotelImgUri.replace('/local', '/hotel/images')}`;
+                            console.log(`Loading image from URL: ${imageUrl}`);
+                            return (
+                                <img
+                                    key={image.imageId}
+                                    src={imageUrl}
+                                    alt={`${hotel.name} 이미지`}
+                                    className={styles.image}
+                                />
+                            );
+                        })}
+                      </div>
+                    </div>
                     <h2>{hotel.name}</h2>
                     <p>{hotel.description}</p>
                     <p>{hotel.location}</p>
                     <p>{hotel.phoneNumber}</p>
-                    <div className={styles.imageGallery}>
-                        {hotel['hotel-images'] &&
-                            hotel['hotel-images'].map((image) => {
-                                const imageUrl = `http://localhost:8888${image.hotelImgUri.replace('/local', '/hotel/images')}`;
-                                return <img key={image.imageId} src={imageUrl} alt={`${hotel.name} 이미지`} className={styles.image} />;
-                            })}
-                    </div>
-                    <button onClick={() => handleAddRoom(hotel.id)}>Add Room</button>
                     <button onClick={() => handleAddReview(hotel.id)}>Write Review</button>
+                    <button className={styles.AddRoomButton} onClick={() => handleAddRoom(hotel.id)}>Add Room</button>
+                    <button 
+            className={styles.showPropertyButton} 
+            onClick={() => onShowProperty(hotel.id)}
+          >
+            Show Property
+          </button>
                 </div>
             ))}
         </div>
