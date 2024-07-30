@@ -16,33 +16,46 @@
       font-size: 0.8em;
       text-align: center;
     }
+
+
+    .codeInputContainer {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .h3 {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .codeInput {
+        width: 15%;
+        background-color: #F4E8D3;
+        border: 1px solid #ccc;
+        border-radius: 20px;
+      }
+    }
+
+
   }
 
-
-
-.codeInputContainer {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  gap: 10px;
-  margin: 20px 0;
-}
-
-.codeInput {
-  width: 30px;
-  height: 30px;
-  border: 2px solid #ccc;
-  text-align: center;
-  font-size: 24px;
-  font-weight: bold;
-  margin-right: 10px;
-
-  &:focus {
-    border-color: #007bff;
+  .input {
+    width: 50%;
+    padding: 10px;
+    border: 1px solid #B7AE9E;
+    border-radius: 32px;
+    box-sizing: border-box;
+    background: #F4E8D3;
+  }
+  .input:focus {
     outline: none;
   }
 
-  &::placeholder {
-    color: #ccc;
-  }
-}
+
+
+
+
+

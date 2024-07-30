@@ -3,19 +3,19 @@ import styles from './ValidEmailAndCode.module.scss';
 import { debounce } from "lodash";
 import { AUTH_URL } from "../../../../config/user/host-config";
 
-const ValidEmailAndCode = ({ isClear }) => {
+const ValidEmailAndCode = ({ isClear, getEmail }) => {
     const [emailValid, setEmailValid] = useState(false);
     const [error, setError] = useState('');
-    const [verificationCodeSent, setVerificationCodeSent] = useState(false); // 인증 코드 발송 여부
-    const [verificationCode, setVerificationCode] = useState(''); // 인증 코드 상태
+    const [verificationCodeSent, setVerificationCodeSent] = useState(false);
+    const [verificationCode, setVerificationCode] = useState('');
     const emailRef = useRef();
     const verifiCodeRef = useRef([]);
     const [codes, setCodes] = useState(Array(4).fill(''));
-    const [email, setEmail] = useState(''); // 이메일 상태 추가
+    const [email, setEmail] = useState('');
 
     const changeHandler = e => {
         const email = e.target.value;
-        checkEmail(email); // 이메일 검증 호출
+        checkEmail(email);
     };
 
     const validateEmail = (email) => {
@@ -26,8 +26,9 @@ const ValidEmailAndCode = ({ isClear }) => {
     const onSuccess = (email) => {
         setError('');
         setEmailValid(true);
-        setVerificationCodeSent(true); // 인증 코드 발송 상태로 변경
-        console.log('Valid email:', email);
+        setVerificationCodeSent(true);
+        getEmail(emailRef.current.value);
+        console.log("getMail valid에서 발동, ", email)
     };
 
     const checkEmail = debounce(async (email) => {
@@ -42,7 +43,7 @@ const ValidEmailAndCode = ({ isClear }) => {
         const result = await response.text();
 
         if (response.ok) {
-            setEmail(email); // 이메일 상태 저장
+            setEmail(email);
             setEmailValid(true);
             onSuccess(email);
         } else {
@@ -56,14 +57,12 @@ const ValidEmailAndCode = ({ isClear }) => {
         setVerificationCode(e.target.value);
     };
 
-    // 다음 칸으로 포커스를 이동하는 함수
     const focusNextInput = (index) => {
         if (index < verifiCodeRef.current.length) {
             verifiCodeRef.current[index].focus();
         }
     };
 
-    // 서버에 검증요청 보내기
     const verifyCode = debounce(async (code) => {
         console.log('요청 전송: ', code);
 
@@ -71,71 +70,63 @@ const ValidEmailAndCode = ({ isClear }) => {
         const flag = await response.json();
 
         console.log('코드검증: ', flag);
-        // 검증에 실패했을 때
         if (!flag) {
             setError('유효하지 않거나 만료된 코드입니다. 인증코드를 재발송합니다.');
-            // 기존 인증코드 상태값 비우기
             setCodes(Array(4).fill(''));
             return;
         }
 
-        // 검증 성공 시
         onSuccess();
-        console.log("검증 성공")
+        console.log("검증 성공");
         setError('');
-        isClear(true)
+        isClear(true);
     }, 1500);
 
     const changeCodeHandler = (index, inputValue) => {
         const updatedCodes = [...codes];
         updatedCodes[index - 1] = inputValue;
-        console.log(updatedCodes);
 
-        // codes변수에 입력한 숫자 담아놓기
         setCodes(updatedCodes);
 
-        // 입력이 끝나면 다음 칸으로 포커스 이동
         focusNextInput(index);
 
-        // 입력한 숫자 합치기
         if (updatedCodes.length === 4 && index === 4) {
             const code = updatedCodes.join('');
-            // 서버로 인증코드 검증 요청 전송
             verifyCode(code);
         }
     };
 
     return (
+        <div className={styles.authContainer}>
+            <h3>가입할때 사용하신 이메일을 입력해주세요.</h3>
+            <input
+                ref={emailRef}
+                className={styles.input}
+                type="email"
+                placeholder="Enter your email"
+                onChange={changeHandler}
+            />
+            { !emailValid && <p className={styles.errorMessage}>{error}</p> }
 
-            <div className={styles.authContainer}>
-                <h3>가입할때 사용하신 이메일을 입력해주세요.</h3>
-                <input
-                    ref={emailRef}
-                    type="email"
-                    placeholder="Enter your email"
-                    onChange={changeHandler}
-                />
-                { !emailValid && <p className={styles.errorMessage}>{error}</p> }
-
-                { verificationCodeSent && (
-                    <div className={styles.codeInputContainer}>
-                        <h3>인증 코드를 입력해주세요.</h3>
-                        <div>
-                            {Array.from(new Array(4)).map((_, index) => (
-                                <input
-                                    ref={($input) => verifiCodeRef.current[index] = $input}
-                                    key={index}
-                                    type="text"
-                                    className={styles.codeInput}
-                                    maxLength={1}
-                                    onChange={(e) => changeCodeHandler(index + 1, e.target.value)}
-                                    value={codes[index]}
-                                />
-                            ))}
-                        </div>
+            { verificationCodeSent && (
+                <div className={styles.codeInputContainer}>
+                    <h3 className={styles.h3}>인증 코드를 입력해주세요.</h3>
+                    <div>
+                        {Array.from(new Array(4)).map((_, index) => (
+                            <input
+                                ref={($input) => verifiCodeRef.current[index] = $input}
+                                key={index}
+                                type="text"
+                                className={styles.codeInput}
+                                maxLength={1}
+                                onChange={(e) => changeCodeHandler(index + 1, e.target.value)}
+                                value={codes[index]}
+                            />
+                        ))}
                     </div>
-                )}
-            </div>
+                </div>
+            )}
+        </div>
     );
 };
 
