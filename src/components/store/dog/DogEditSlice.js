@@ -1,8 +1,8 @@
 import {createSlice} from "@reduxjs/toolkit";
 
-
 const initialState = {
     isDogEditMode: false, // 수정 모드 진입 여부
+    dogInfo: {},
 };
 
 const dogEditSlice = createSlice({
@@ -14,6 +14,9 @@ const dogEditSlice = createSlice({
         },
         clearEdit(state) {
             state.isDogEditMode = false;
+        },
+        setDogInfo: (state, action) => { // 강아지 정보 저장
+            state.dogInfo = JSON.parse(action.payload);
         }
     }
 })

@@ -65,7 +65,7 @@ const MyPageMain = () => {
                 <MyPageBody user={userDetail} dogList={dogList} />
             }
             {isUserEditMode && <UserEdit user={userDetail} />}
-            {isDogEditMode && <DogEdit />}
+            {isDogEditMode && <DogEdit user={userDetail}/>}
         </div>
     );
 };

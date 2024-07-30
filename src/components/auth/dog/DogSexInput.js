@@ -8,7 +8,7 @@ const DogSexInput = ({ dogSexValue }) => {
     const sexOptions = [
         {value: 'MALE', label: '수컷'},
         {value: 'FEMALE', label: "암컷"},
-        {value: 'NEUTER', label: '중성'},
+        {value: 'NEUTER', label: '비밀'},
     ]
 
     const sexChange = (e) => {

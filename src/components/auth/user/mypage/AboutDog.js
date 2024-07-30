@@ -1,18 +1,16 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styles from './AboutDog.module.scss';
 import {Link} from "react-router-dom";
-import {useDispatch} from "react-redux";
-import {dogEditActions} from "../../../store/dog/DogEditSlice";
-import {userEditActions} from "../../../store/user/UserEditSlice";
+import DogList from "../../dog/DogList";
+import {useSelector} from "react-redux";
 
-const AboutDog = ({ dogList }) => {
+const AboutDog = () => {
 
-    const dispatch = useDispatch();
+    const userDetail = useSelector(state => state.userEdit.userDetail);
+    const dogList = userDetail.dogList;
 
-    const startEditMode = e => {
-        dispatch(dogEditActions.startEdit())
-        dispatch(userEditActions.startMode())
-    }
+    console.log(dogList)
+
 
     return (
         <div className={styles.wrap}>
@@ -24,16 +22,7 @@ const AboutDog = ({ dogList }) => {
 
             <div className={styles.container}>
                 {dogList.map(dog => (
-                    <div key={dog.id} className={styles.mainContainer}>
-                        <img className={styles.img} src={dog.dogProfileUrl}></img>
-                        <div className={styles.wrapRight}>
-                            <div className={styles.flex}>
-                                <h3 className={styles.nickname}>{dog.dogName}</h3>
-                                <span className={styles.modify} onClick={startEditMode}>수정</span>
-                            </div>
-                            <span className={styles.breed}>{dog.dogBreed}</span>
-                        </div>
-                    </div>
+                    <DogList key={dog.id} dog={dog} />
                 ))}
             </div>
         </div>
