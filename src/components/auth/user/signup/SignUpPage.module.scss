@@ -1,5 +1,4 @@
-
-.signupForm {
+.signUpPage {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
@@ -9,11 +8,15 @@
   margin-top: 120px;
 }
 
+.h1, .h2 {
+  text-align: center;
+}
+
+
 .input, .button {
   width: 50%;
   padding: 20px;
   margin: 5px 0;
-  border-radius: 40px;
   border: 1px solid #ccc;
 }
 
@@ -41,10 +44,60 @@
   transition: opacity 1s ease;
 }
 
-.invalidInput {
-  border-color: #ff0000; // 유효하지 않은 입력을 빨간색 테두리로 표시
+/*
+  (Step 1) - 회원가입 이메일 검증, 인증코드 검증 css
+*/
+.emailBox {
+  width: 55%;
+  margin: 100px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 32px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #F4E8D3;
+  padding: 50px;
 }
 
+.emailInput, .verificationInput {
+  text-align: center;
+  margin: 20px 0;
+  width: 90%;
+  margin: 50px auto 0;
+  background: #F0E1C4;
+  padding-bottom: 20px;
+  border-radius: 32px;
+  padding: 20px;
+}
+
+/*
+  (Step2) - 닉네임 검증, 비밀번호 검증 css
+*/
+.nickPwBox {
+  width: 55%;
+  margin: 100px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 32px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #F4E8D3;
+  padding: 50px;
+}
+
+.passwordInput, .nicknameInput {
+  text-align: center;
+  margin: 20px 0;
+  width: 90%;
+  margin: 50px auto 0;
+  background: #F0E1C4;
+  padding-bottom: 20px;
+  border-radius: 32px;
+  padding: 20px;
+}
+
+
+/*
+  검증 성공, 검증 에러 메시지 css
+*/
 .errorMessage {
   color: #ff0000; // 경고 메시지를 빨간색으로 표시
   font-size: 0.8em;
@@ -57,11 +110,8 @@
   text-align: center;
 }
 
-.codeInputContainer {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin: 20px 0;
+.invalidInput {
+  border-color: #ff0000; // 유효하지 않은 입력을 빨간색 테두리로 표시
 }
 
 .codeInput {
@@ -82,17 +132,12 @@
   }
 }
 
-.timer {
-  font-family: 'Digital', sans-serif; // 디지털 시계 폰트 사용
-  background-color: #fff;
-  color: #000;
-  border-radius: 5px;
-  padding: 5px 10px;
-  font-size: 20px;
+.codeInput {
+  width: 40px;
+  height: 40px;
   text-align: center;
-  margin: 10px 0;
-  display: inline-block;
-  width: auto;
+  font-size: 18px;
+  margin: 0 5px;
 }
 
 .timerHighlight {
@@ -106,4 +151,3 @@
     opacity: 0.5;
   }
 }
-

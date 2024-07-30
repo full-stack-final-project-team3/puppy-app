@@ -3,78 +3,79 @@ import styles from './SignUpPage.module.scss';
 
 const PasswordInput = ({ onSuccess }) => {
 
-  const passwordRef = useRef();
-  const passwordCheckRef = useRef();
+  const passwordRef = useRef(); // 사용할 패스워드
 
-  const [password, setPassword] = useState('');
-  const [passwordCheck, setPasswordCheck] = useState('');
-  const [passwordValid, setPasswordValid] = useState(true);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [success, setSuccess] = useState('');
+  const [password, setPassword] = useState(''); // 패스워드 검증
+  const [passwordValid, setPasswordValid] = useState(false); // 패스워드 형식 검증
+  const [success, setSuccess] = useState(''); // 패스워드 검증 성공 메시지
+  const [error, setError] = useState(''); // 패스워드 검증 에러 메시지
+  const [passwordCheck, setPasswordCheck] = useState(''); // 패스워드 재확인
+  const [checkSuccess, setCheckSuccess] = useState(''); // 패스워드 재확인 성공 메시지 
+  const [checkError, setCheckError] = useState(''); // 패스워드 재확인 에러 메시지
 
+  // 패스워드 형식 검증
   const validatePassword = (password) => {
     const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
     return passwordPattern.test(password);
   };
 
-  const changeHandler = (e) => {
-    const newPassword = e.target.value;
-    setPassword(newPassword);
-    console.log(newPassword)
+  // 패스워드 형식 검증
+  const passwordHandler = (e) => {
+    const myPassword = e.target.value;
+    setPassword(myPassword);
 
-    if (validatePassword(newPassword)) {
+    if (validatePassword(myPassword)) { // 형식 검증 성공
+      setSuccess("사용 가능한 비밀번호입니다");
       setPasswordValid(true);
-      setErrorMessage('');
-      // onSuccess(newPassword, true);
-    } else {
+      setError(''); // 에러 메시지 초기화
+    } else { // 형식 검증 에러
+      setError("비밀번호는 8자 이상이며, 숫자, 문자, 특수문자를 모두 포함해야 합니다");
       setPasswordValid(false);
-      setErrorMessage('비밀번호는 8자 이상이며, 숫자, 문자, 특수문자를 모두 포함해야 합니다.');
-      onSuccess(newPassword, false);
+      setSuccess(''); // 성공 메시지 초기화
     }
   };
 
-  const checkHandler = e => {
-    const checkPassword = e.target.value;
-    setPasswordCheck(checkPassword);
-    console.log(checkPassword)
+  // 패스워드 재확인
+  const passwordCheckHandler = e => {
+    const passwordCheck = e.target.value;
+    setPasswordCheck(passwordCheck);
 
-    if (password === checkPassword) {
-      setSuccess("비번 일치")
-      onSuccess(checkPassword, true);
-      setPasswordValid(true);
-    } else {
-      setErrorMessage("비번틀림");
+    if (password === passwordCheck) { // 비밀번호 재확인 성공
+      setCheckSuccess("비밀번호가 일치합니다")
     }
 
-
-  }
-
+    // 비밀번호 재확인 실패
+    setCheckError("비밀번호가 일치하지 않습니다");
+  };
 
   useEffect(() => {
     passwordRef.current.focus();
   }, []);
 
   return (
-      <>
-        <p>Step 3: 안전한 비밀번호를 설정해주세요.</p>
+      <div className={styles.passwordInput}>
+        <h2>비밀번호</h2>
         <input
             ref={passwordRef}
             type="password"
             value={password}
-            onChange={changeHandler}
+            onChange={passwordHandler}
             className={passwordValid ? '' : styles.invalidInput}
             placeholder="Enter your password"
         />
-        {!passwordValid && <p className={styles.errorMessage}>{errorMessage}</p>}
+        {passwordValid && <p className={styles.successMessage}>{success}</p>}
+        {!passwordValid && <p className={styles.errorMessage}>{error}</p>}
+
+        <h2>비밀번호 확인</h2>
         <input
-            ref={passwordCheckRef}
             type="password"
             value={passwordCheck}
-            onChange={checkHandler}
-            placeholder="Enter your password"
+            onChange={passwordCheckHandler}
+            placeholder="Enter your password again"
         />
-        {passwordCheck && <p className={styles.successMessage}>{success}</p>}
-      </>
+        {passwordCheck && <p className={styles.successMessage}>{checkSuccess}</p>}
+        {!passwordCheck && <p className={styles.errorMessage}>{checkError}</p>}
+      </div>
   );
 };
 
