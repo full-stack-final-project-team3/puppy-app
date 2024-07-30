@@ -5,7 +5,7 @@ import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {userEditActions} from "../../../store/user/UserEditSlice";
 import {dogEditActions} from "../../../store/dog/DogEditSlice";
-import dogEdit from "../../dog/DogEdit";
+
 
 
 const MyPageHeader = () => {

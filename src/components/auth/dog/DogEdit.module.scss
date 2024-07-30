@@ -11,10 +11,8 @@
     height: 45px;
   }
 
-
   .flex {
     display: flex;
-
 
     .left {
       width: 70%;
@@ -28,7 +26,6 @@
       }
 
       .row {
-
         display: flex;
         flex-direction: row;
         margin-bottom: 20px;
@@ -38,7 +35,7 @@
           color: #6c757d;
           text-align: start;
           white-space: pre-wrap;
-          width: 80px;
+          width: 107px;
         }
 
         .sub {
@@ -55,27 +52,39 @@
           box-sizing: border-box;
           background: #F4E8D3;
         }
+
         .input:focus {
           outline: none;
         }
 
         .answer {
+          display: flex;
+          flex-wrap: wrap;
+        }
 
+        .badge {
+          background-color: #F4E8D3;
+          border: 1px solid #B7AE9E;
+          color: #494e53;
+          padding: 5px 10px;
+          border-radius: 15px;
+          margin-right: 5px;
+          margin-bottom: 5px;
+          font-size: 0.8rem;
+          font-weight: 500;
         }
       }
-
     }
+
     .right {
       width: 25%;
       height: 25%;
       overflow: hidden;
       margin-top: 50px;
+
       .dogProfileUrl {
         max-width: 100%;
-
       }
     }
-
   }
-
 }

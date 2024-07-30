@@ -5,9 +5,9 @@ import {userEditActions} from "../../store/user/UserEditSlice";
 import {dogEditActions} from "../../store/dog/DogEditSlice";
 import {DOG_URL} from "../../../config/user/host-config";
 import {useNavigate} from "react-router-dom";
+import {decideGender, decideSize, translateAllergy, translateBreed} from './dogUtil'
 
 const DogEdit = () => {
-
     const dog = useSelector(state => state.dogEdit.dogInfo);
     const userDetail = useSelector(state => state.userEdit.userDetail);
     const navi = useNavigate();
@@ -18,31 +18,6 @@ const DogEdit = () => {
         dispatch(dogEditActions.clearEdit())
     }
 
-    const decideGender = (gender) => {
-        switch (gender) {
-            case "FEMALE":
-                return "암컷";
-            case "MALE":
-                return "수컷";
-            case "NEUTER":
-                return "비밀";
-            default:
-                return "";
-        }
-    }
-
-    const decideSize = (size) => {
-        switch (size) {
-            case "SMALL":
-                return "소형견";
-            case "MEDIUM":
-                return "중형견";
-            case "LARGE":
-                return "대형견";
-            default:
-                return "";
-        }
-    }
 
     const removeHandler = async () => {
         try {
@@ -55,7 +30,6 @@ const DogEdit = () => {
 
             if (response.ok) {
                 alert("삭제 되었습니다.");
-                // userDetail의 dogList에서 삭제된 강아지를 제거
                 const updatedDogList = userDetail.dogList.filter(d => d.id !== dog.id);
                 dispatch(userEditActions.updateUserDetail({ ...userDetail, dogList: updatedDogList }));
                 dispatch(userEditActions.clearMode())
@@ -80,11 +54,12 @@ const DogEdit = () => {
                         <h2 className={styles.title}>{dog.dogName}의 정보</h2>
                         <div className={styles.row}>
                             <div className={styles.item}>견종</div>
-                            <span className={styles.answer}>{dog.dogBreed}</span>
+                            <span className={styles.answer}>{translateBreed(dog.dogBreed)}</span>
                         </div>
                         <div className={styles.row}>
                             <div className={styles.item}>생일</div>
-                            <span className={styles.answer}>{dog.birthday} <span className={styles.sub}>{dog.age}세</span></span>
+                            <span className={styles.answer}>{dog.birthday} <span
+                                className={styles.sub}>{dog.age}세</span></span>
                         </div>
                         <div className={styles.row}>
                             <div className={styles.item}>성별</div>
@@ -92,11 +67,16 @@ const DogEdit = () => {
                         </div>
                         <div className={styles.row}>
                             <div className={styles.item}>체중</div>
-                            <input className={styles.input} value={dog.weight} type="number"/> <span className={styles.sub}>{decideSize(dog.dogSize)}</span>
+                            <input className={styles.input} value={dog.weight} type="number"/> <span
+                            className={styles.sub}>{decideSize(dog.dogSize)}</span>
                         </div>
                         <div className={styles.row}>
                             <div className={styles.item}>보유 알러지</div>
-                            <span className={styles.answer}>{Array.isArray(dog.allergies) ? dog.allergies.join(', ') : dog.allergies}</span>
+                            <div className={styles.answer}>
+                                {Array.isArray(dog.allergies) ? dog.allergies.map((allergy, index) => (
+                                    <span key={index} className={styles.badge}>{translateAllergy(allergy)}</span>
+                                )) : dog.allergies}
+                            </div>
                         </div>
                     </div>
                     <div className={styles.right}>
