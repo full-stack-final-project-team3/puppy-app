@@ -8,18 +8,6 @@
   margin-top: 120px;
 }
 
-.button {
-  background-color: var(--color-primary-700);
-  color: #000;
-  border: 1px solid #000;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #004494;
-  }
-}
-
 .formStep {
   opacity: 0;
   visibility: hidden;
@@ -36,9 +24,9 @@
 /*
   SignUpPage.js css
 */
-.signupBox {
+.signUpBox {
   width: 55%;
-  margin: 100px auto;
+  margin: 0 auto;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 32px;
@@ -48,21 +36,6 @@
 
   > h1, h2 {
     text-align: center;
-  }
-}
-
-// SignUpPage - 모든 회원가입 과정을 완료하면 생기는 버튼
-.signUpBtn {
-  transition: background-color 0.3s ease;
-  width: 30%;
-  padding: 25px;
-  margin: 5px 0;
-  border: 1px solid #ccc;
-  border-radius: 50px;
-  text-align: center;
-
-  &:hover {
-    background-color: #004494;
   }
 }
 
@@ -109,7 +82,7 @@
   회원가입 개인정보를 입력하는 input 박스
 */
 .input {
-  width: 50%;
+  width: 60%;
   padding: 10px;
   border: 1px solid #B7AE9E;
   border-radius: 32px;
@@ -132,6 +105,50 @@
 
   &::placeholder {
     color: #ccc;
+  }
+}
+
+
+/*
+  button css
+*/
+.button {
+  background-color: var(--color-primary-700);
+  color: #000;
+  border: 1px solid #000;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border: none;
+
+  &:hover {
+    background-color: #004494;
+  }
+}
+
+.addressBtn {
+  background-color: var(--color-primary-700);
+  margin-left: 10px;
+  border-radius: 50px;
+  border: 1px solid #000;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #004494;
+  }
+}
+
+.signUpBtn {
+  transition: background-color 0.3s ease;
+  width: 30%;
+  padding: 15px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 50px;
+  text-align: center;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #004494;
   }
 }
 

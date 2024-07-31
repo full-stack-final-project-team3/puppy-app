@@ -51,8 +51,8 @@ const SignUpPage = () => {
   };
 
   // 휴대폰 번호 입력 
-  const PhoneNumberSuccessHandler = (number) => {
-    setEnteredPhoneNumber(number);
+  const phoneNumberSuccessHandler = (phoneNumber) => {
+    setEnteredPhoneNumber(phoneNumber);
   };
 
   // 서버에 회원가입 완료 요청하기
@@ -63,7 +63,7 @@ const SignUpPage = () => {
       nickname: enteredNickname,
       password: enteredPassword,
       address: enteredAddress,
-      number: enteredPhoneNumber
+      phoneNumber: enteredPhoneNumber
     };
 
     const response = await fetch(`${AUTH_URL}/join`, {
@@ -76,16 +76,18 @@ const SignUpPage = () => {
 
     if (result) {
       alert("회원가입에 성공하셨습니다");
-      login(); // 회원가입이 완료되면 로그인 상태로 설정
-      navigate("/add-dog");
+      // login(); // 회원가입이 완료되면 로그인 상태로 설정
+      navigate("/login");
     }
   };
 
   useEffect(() => {
     // 활성화 여부 감시
-    const isActive = enteredEmail && enteredPassword && enteredNickname;
+    const isActive = enteredEmail && enteredPassword 
+    && enteredNickname && enteredPhoneNumber;
+
     setActiveButton(isActive);
-  }, [enteredEmail, enteredPassword, enteredNickname]);
+  }, [enteredEmail, enteredPassword, enteredNickname, enteredPhoneNumber]);
 
   return (
     <form onSubmit={submitHandler}>
@@ -102,14 +104,14 @@ const SignUpPage = () => {
           <PasswordInput onSuccess={passwordSuccessHandler} />
         </div>}
 
-        {step === 3 && <div className={styles.signupBox}>
-          <Link to='/'><button className={styles.button}>나중에 등록하기</button></Link>
-          <AddressInput />
-          <PhoneNumberInput />
+        {step === 3 && <div className={styles.signUpBox}>
+          <Link to='/'><button className={styles.signUpBtn}>나중에 등록하기</button></Link>
+          <AddressInput onSuccess={addressSuccessHandler} />
+          <PhoneNumberInput onSuccess={phoneNumberSuccessHandler} />
         </div>}
 
           {activeButton && (
-            <div>
+            <div className={styles.signUpBtn}>
               <button className={styles.button}>회원가입</button>
             </div>
           )}

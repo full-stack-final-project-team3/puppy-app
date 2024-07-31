@@ -10,14 +10,14 @@ const PhoneNumberInput = ({ onSuccess }) => {
   const [success, setSuccess] = useState(''); // 검증 성공 메시지
   const [error, setError] = useState(''); // 검증 에러 메시지
 
-  const validateNumber = (number) => {
-    const numberPattern = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/ // 휴대폰 번호 패턴 검사
-    return numberPattern.test(number);
+  const validateNumber = (phoneNumber) => {
+    const numberPattern = /^01(?:0|1|[6-9])(?:\d{3}|\d{4})\d{4}$/ // 휴대폰 번호 패턴 검사
+    return numberPattern.test(phoneNumber);
   };
 
   // 휴대폰 번호 검증 처리
-  const checkNumber = debounce(async (number) => {
-    if (!validateNumber(number)) {
+  const checkNumber = debounce(async (phoneNumber) => {
+    if (!validateNumber(phoneNumber)) {
       setError('유효하지 않은 번호입니다');
       return;
     } else {
@@ -25,7 +25,7 @@ const PhoneNumberInput = ({ onSuccess }) => {
     }
 
     // 중복 검사
-    const response = await fetch(`${AUTH_URL}/check-phoneNumber?phoneNumber=${number}`);
+    const response = await fetch(`${AUTH_URL}/check-phoneNumber?phoneNumber=${phoneNumber}`);
     const flag = await response.json();
 
     if (flag) {
@@ -39,7 +39,7 @@ const PhoneNumberInput = ({ onSuccess }) => {
 
     // 휴대폰 번호 중복확인 끝
     setPhoneNumberValid(true);
-    onSuccess(number);
+    onSuccess(phoneNumber);
   }, 1500);
 
   const numberInputHandler = (e) => {
@@ -47,21 +47,16 @@ const PhoneNumberInput = ({ onSuccess }) => {
     checkNumber(number); // 휴대폰 번호 검증 후속 처리
   };
 
-  // 렌더링 되자마자 입력창에 포커싱
-  useEffect(() => {
-    inputRef.current.focus();
-  }, []);
-
   return (
     <>
-      <div className={styles.signupInput}>
+      <div className={styles.signUpInput}>
         <h2 className={styles.h2}>휴대폰 번호</h2>
         <input 
           ref={inputRef}
-          type='number'
+          type='text'
           onChange={numberInputHandler}
           className={styles.input}
-          placeholder='ex) 010-1234-5678'
+          placeholder='ex) 01012345678'
         />
         {phoneNumberValid && <p className={styles.successMessage}>{success}</p>}
         {!phoneNumberValid && <p className={styles.errorMessage}>{error}</p>}
