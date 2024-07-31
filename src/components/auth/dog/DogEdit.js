@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import styles from './DogEdit.module.scss';
 import { useDispatch, useSelector } from "react-redux";
 import { userEditActions } from "../../store/user/UserEditSlice";
@@ -6,18 +6,38 @@ import { dogEditActions } from "../../store/dog/DogEditSlice";
 import { DOG_URL } from "../../../config/user/host-config";
 import { useNavigate } from "react-router-dom";
 import { decideGender, decideSize, translateAllergy, translateBreed } from './dogUtil.js';
-import { LuBadgeX } from "react-icons/lu"; // 세련된 아이콘으로 변경
+import { LuBadgeX } from "react-icons/lu";
 
 const DogEdit = () => {
+
+    const [isModifyMode, setIsModifyMode] = useState(false)
+    const weightRef = useRef();
+
     const dog = useSelector(state => state.dogEdit.dogInfo);
     const userDetail = useSelector(state => state.userEdit.userDetail);
     const navi = useNavigate();
     console.log(dog);
 
+
     const dispatch = useDispatch();
-    const clearEditMode = e => {
+    const clearEditMode =  async e => {
         dispatch(userEditActions.clearMode());
         dispatch(dogEditActions.clearEdit());
+        const weight = weightRef.current.value;
+
+        const payload = {
+            weight
+        }
+
+        const response = await fetch(`${DOG_URL}/${dog.id}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+        })
+        if (response.ok) {
+            alert("수정 되었습니다.")
+        }
+
     };
 
     const removeHandler = async () => {
@@ -76,9 +96,11 @@ const DogEdit = () => {
         }
     };
 
+
+
     return (
         <div>
-            <div className={styles.wrap}>
+            <div className={styles.wrap} >
                 <img className={styles.img} src="/header-logo.png" alt="Header Logo" />
                 <div className={styles.flex}>
                     <div className={styles.left}>
@@ -97,7 +119,11 @@ const DogEdit = () => {
                         </div>
                         <div className={styles.row}>
                             <div className={styles.item}>체중</div>
-                            <input className={styles.input} value={dog.weight} type="number" /> <span className={styles.sub}>{decideSize(dog.dogSize)}</span>
+                            <input  className={styles.input} placeholder={dog.weight} type="number" ref={weightRef}/>
+
+                            {!isModifyMode ? <span className={styles.sub}>{decideSize(dog.dogSize)}</span> :
+                                <button>완료</button>}
+
                         </div>
                         <div className={styles.row}>
                             <div className={styles.item}>보유 알러지</div>
