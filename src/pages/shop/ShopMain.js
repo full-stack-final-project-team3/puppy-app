@@ -15,6 +15,9 @@ const ShopMain = () => {
   const tokenData = useRouteLoaderData("getToken");
   const token = tokenData ? tokenData.token : null; // null 체크 후 token 가져오기
   const navigate = useNavigate();
+  const user = useSelector(state => state.userEdit.userDetail);
+
+  console.log(user);
 
   const fetch = useSelector(state => state.userEdit.userDetail);
   console.log(fetch)
@@ -39,7 +42,7 @@ const ShopMain = () => {
           throw new Error("네트워크 응답이 올바르지 않습니다.");
         }
         const data = await response.json();
-        setDogList(data);
+        setDogList(user.dogList);
         setIsLoggedIn(true);
       } catch (err) {
         setError(err);
@@ -89,12 +92,8 @@ const ShopMain = () => {
     <div className={styles.shopMain}>
       <div className={styles.content}>
         <h1>내 강아지 목록</h1>
-        {dogList.length === 0 ? (
-          isLoggedIn ? (
+        {user.dogList.length === 0 ? (
             <p>등록된 강아지가 없습니다. 강아지를 등록해 주세요.</p>
-          ) : (
-            <p>로그인을 해주세요.</p>
-          )
         ) : (
           <div>
             <label htmlFor="dogSelect">강아지를 선택하세요:</label>
@@ -104,7 +103,7 @@ const ShopMain = () => {
               onChange={handleSelectChange}
             >
               <option value="">-- 선택하세요 --</option>
-              {dogList.map((dog) => (
+              {user.dogList.map((dog) => (
                 <option key={dog.id} value={dog.id}>
                   {dog.dogName}
                 </option>
@@ -114,13 +113,11 @@ const ShopMain = () => {
         )}
         {selectedDogId && <p>선택한 강아지 id: {selectedDogId}</p>}
 
-        {isLoggedIn ? (
+
           <button onClick={handleStartClick} className={styles.startButton}>
             start
           </button>
-        ) : (
-          <button onClick={redirectLogin}>login</button>
-        )}
+
       </div>
     </div>
   );
