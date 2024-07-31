@@ -35,6 +35,7 @@ const MainNavigation = () => {
 
     const logoutHandler = () => {
         localStorage.removeItem('userData');
+        localStorage.removeItem('userDetail');
 
         // 현재 URL을 가져옴
         const currentUrl = window.location.href;
