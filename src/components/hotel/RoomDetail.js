@@ -1,11 +1,12 @@
-import React, { useMemo } from 'react';
+import React, {useMemo} from 'react';
 import PropTypes from 'prop-types';
 import Slider from "react-slick";
 import styles from './RoomDetail.module.scss';
-import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import ReviewList from './ReviewList'; // 리뷰 리스트 컴포넌트 import
 
-const RoomDetail = ({ hotel, onBook }) => {
+const RoomDetail = ({hotel, onBook}) => {
     const sliderSettings = useMemo(() => ({
         dots: true,
         infinite: false,
@@ -32,32 +33,38 @@ const RoomDetail = ({ hotel, onBook }) => {
     };
 
     return (
-        <div className={styles.roomDetail}>
-            {hotel.room.map((room, roomIndex) => (
-                <div key={room['room-id']} className={styles.room}>
-                    <Slider className={styles.slider} {...sliderSettings}>
-                        {room["room-images"] && room["room-images"].map((image, imageIndex) => {
-                            const imageUrl = getImageUrl(image['image-uri']);
-                            if (!imageUrl) {
-                                console.error('Invalid image URI for image', image);
-                                return null;
-                            }
-                            console.log(`Rendering image ${imageIndex}:`, imageUrl);
-                            return (
-                                <div key={image['image-id'] || `${roomIndex}-${imageIndex}`} className={styles.slide}>
-                                    <img src={imageUrl} alt={`${room.name} - ${image['image-uri']}`} />
-                                </div>
-                            );
-                        })}
-                    </Slider>
-                    <h2>{room.name}</h2>
-                    <p>{room.content}</p>
-                    <p>Type: {room.type}</p>
-                    <p>Price: {room.price}</p>
-                    <button onClick={() => onBook(hotel.hotelId)}>Book Now</button> // Book Now 버튼 추가
-                </div>
-            ))}
-        </div>
+        <>
+            <div className={styles.roomDetail}>
+                {hotel.room.map((room, roomIndex) => (
+                    <div key={room['room-id']} className={styles.room}>
+                        <Slider className={styles.slider} {...sliderSettings}>
+                            {room["room-images"] && room["room-images"].map((image, imageIndex) => {
+                                const imageUrl = getImageUrl(image['image-uri']);
+                                if (!imageUrl) {
+                                    console.error('Invalid image URI for image', image);
+                                    return null;
+                                }
+                                console.log(`Rendering image ${imageIndex}:`, imageUrl);
+                                return (
+                                    <div key={image['image-id'] || `${roomIndex}-${imageIndex}`}
+                                         className={styles.slide}>
+                                        <img src={imageUrl} alt={`${room.name} - ${image['image-uri']}`}/>
+                                    </div>
+                                );
+                            })}
+                        </Slider>
+                        <h2>{room.name}</h2>
+                        <p>{room.content}</p>
+                        <p>Type: {room.type}</p>
+                        <p>Price: {room.price}</p>
+                        <button onClick={() => onBook(hotel.hotelId)}>Book Now</button>
+                    </div>
+                ))}
+            </div>
+            <div>
+                <ReviewList hotelId={hotel["hotel-id"]} /> {/* 리뷰 리스트 렌더링 */}
+            </div>
+        </>
     );
 };
 

@@ -8,6 +8,24 @@ const initialState = {
     error: null,
 };
 
+export const fetchReviews = createAsyncThunk(
+    'reviews/fetchReviews',
+    async (hotelId, thunkAPI) => {
+        try {
+            const response = await fetch(`http://localhost:8888/api/reviews?hotelId=${hotelId}`);
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`Failed to fetch reviews: ${errorText}`);
+            }
+            const data = await response.json();
+            console.log("잘가져옴? ",hotelId)
+            return data;
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.message);
+        }
+    }
+);
+
 export const addReview = createAsyncThunk(
     'reviews/addReview',
     async ({ hotelId, reviewContent, rate, userId }, thunkAPI) => {
@@ -61,6 +79,18 @@ const reviewSlice = createSlice({
                 state.rate = 0; // Reset the rate
             })
             .addCase(addReview.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+            .addCase(fetchReviews.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchReviews.fulfilled, (state, action) => {
+                state.loading = false;
+                state.reviews = action.payload;
+            })
+            .addCase(fetchReviews.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             });
