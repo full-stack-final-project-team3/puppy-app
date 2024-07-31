@@ -4,13 +4,13 @@ import AboutDog from "./AboutDog";
 import { Link } from "react-router-dom";
 import styles from "./MyPageBody.module.scss";
 
-const MyPageBody = ({ user, dogList }) => {
+const MyPageBody = ({ dogList }) => {
 
 
 
     return (
         <div className={styles.wrap}>
-            <AboutMe user={user} />
+            <AboutMe  />
             {dogList && dogList.length > 0 ? (
                 <AboutDog dogList={dogList} />
             ) : (

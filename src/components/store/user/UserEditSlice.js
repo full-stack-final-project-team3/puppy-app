@@ -1,18 +1,18 @@
-import {createSlice} from "@reduxjs/toolkit";
-
+// userEditSlice.js
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    isEditMode: false, // 수정 모드 진입 여부
-    userEditMode: false,
-    userDetail: {} // 사용자 정보
+    isEditMode: false,
+    isUserEditMode: false,
+    userDetail: JSON.parse(localStorage.getItem('userDetail')) || {} // 초기 상태를 로컬 저장소에서 불러옴
 };
 
 const userEditSlice = createSlice({
     name: "userEditMode",
-    initialState: initialState,
+    initialState,
     reducers: {
         startMode(state) {
-          state.isEditMode = true;
+            state.isEditMode = true;
         },
         clearMode(state) {
             state.isEditMode = false;
@@ -24,12 +24,11 @@ const userEditSlice = createSlice({
             state.isUserEditMode = false;
         },
         updateUserDetail(state, action) {
-            state.userDetail = action.payload; // 유저의 정보를 갖고 있는 redux
-            console.log(state.userDetail);
+            state.userDetail = action.payload;
+            localStorage.setItem('userDetail', JSON.stringify(state.userDetail)); // 로컬 저장소에 저장
         }
     }
-})
-
+});
 
 export const userEditActions = userEditSlice.actions;
 export default userEditSlice.reducer;
