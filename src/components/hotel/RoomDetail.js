@@ -33,6 +33,7 @@ const RoomDetail = ({hotel, onBook}) => {
     };
 
     return (
+
         <>
             <div className={styles.roomDetail}>
                 {hotel.room.map((room, roomIndex) => (
@@ -65,6 +66,7 @@ const RoomDetail = ({hotel, onBook}) => {
                 <ReviewList hotelId={hotel["hotel-id"]} /> {/* 리뷰 리스트 렌더링 */}
             </div>
         </>
+
     );
 };
 

@@ -28,6 +28,9 @@ const HotelPage = () => {
   const startDate = useSelector(state => state.reservation.startDate);
   const endDate = useSelector(state => state.reservation.endDate);
 
+  const user = useSelector(state => state.userEdit.userDetail);
+  console.log(user)
+
   useEffect(() => {
     if (hotels && hotels.length > 0) {
       console.log('Hotels:', hotels);

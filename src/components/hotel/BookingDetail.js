@@ -51,7 +51,7 @@ const BookingDetail = ({ hotel, personCount, startDate, endDate }) => {
       </div>
       <div className={styles.roomImages}>
         {selectedRoom['room-images'] && selectedRoom['room-images'].map((image, index) => {
-          const imageUrl = getImageUrl(image['image-uri']);
+          const imageUrl = getImageUrl(image['hotelImgUri']);
           console.log(`Rendering image ${index}:`, imageUrl);
           return (
             <img key={index} src={imageUrl} alt={`Room image ${index}`} onError={(e) => console.error('Image failed to load:', e)} />
@@ -61,7 +61,7 @@ const BookingDetail = ({ hotel, personCount, startDate, endDate }) => {
       <div className={styles.policies}>
         <p className={`${styles.policy} ${styles.rulesPolicy}`}>Rules Policy: {rulesPolicy}</p>
         <p className={`${styles.policy} ${styles.cancelPolicy}`}>Cancel Policy: {cancelPolicy}
-          규정 안불러와짐, 규정들, 예약기간 날짜 받아야함, 강아지수받아와서 계산해야함,
+          규정 안불러와짐, 규정들, 예약기간 날짜 받아야함, 강아지수받아
         </p>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, {useContext, useState, useEffect, useRef} from 'react';
 import styles from './LoginForm.module.scss';
 import { Link, useNavigate } from "react-router-dom";
 import UserContext from "../../../context/user-context";
@@ -19,6 +19,14 @@ const LoginForm = () => {
     const [error, setError] = useState(null);
     const navigate = useNavigate();
     const { changeIsLogin, setUser } = useContext(UserContext);
+
+
+
+    const enterHandler = e => {
+        if (e.key === 'Enter') {
+            handleSubmit(e)
+        }
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -46,7 +54,7 @@ const LoginForm = () => {
                 localStorage.setItem('userData', JSON.stringify(responseData));
                 setUser(responseData);
                 changeIsLogin(true); // 상태 업데이트
-                navigate('/'); // 로그인 후 리디렉트할 경로
+                navigate(-1); // 로그인 후 리디렉트할 경로
             } else {
                 const errorData = await response.json();
                 setError(errorData.message || '로그인에 실패했습니다.');
@@ -75,7 +83,7 @@ const LoginForm = () => {
                     localStorage.setItem('userData', JSON.stringify(responseData));
                     setUser(responseData);
                     changeIsLogin(true); // 상태 업데이트
-                    navigate('/'); // 로그인 후 리디렉트할 경로
+                    navigate(-1); // 로그인 후 리디렉트할 경로
                 } else {
                     setError('카카오 로그인에 실패했습니다.');
                 }
@@ -91,7 +99,7 @@ const LoginForm = () => {
     }, []);
 
     return (
-        <div className={styles.whole}>
+        <div className={styles.whole}  onKeyDown={enterHandler}>
             <div className={styles.authContainer}>
                 <div>
                     <div className={styles.wrap}>
