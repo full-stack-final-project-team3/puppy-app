@@ -14,7 +14,6 @@ const WelcomePage = () => {
     let dispatch = useDispatch();
 
 
-    // 리덕스 리팩토링 다시.
 
     console.log(userData)
     const {changeIsLogin, user, setUser} = useContext(UserContext);
