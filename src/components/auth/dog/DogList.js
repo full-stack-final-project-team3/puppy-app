@@ -4,6 +4,7 @@ import {useDispatch} from "react-redux";
 import {dogEditActions} from "../../store/dog/DogEditSlice";
 import {userEditActions} from "../../store/user/UserEditSlice";
 import {DOG_URL} from "../../../config/user/host-config";
+import { translateBreed } from "./dogUtil";
 
 const DogList = ({dog}) => {
     const dispatch = useDispatch();
@@ -43,7 +44,7 @@ const DogList = ({dog}) => {
                     <h3 className={styles.nickname}>{dog.dogName}</h3>
                     <span className={styles.modify} onClick={startEditMode}>수정</span>
                 </div>
-                <span className={styles.breed}>{dog.dogBreed}</span>
+                <span className={styles.breed}>{translateBreed(dog.dogBreed)}</span>
             </div>
         </div>
     );
