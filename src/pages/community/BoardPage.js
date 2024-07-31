@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Link } from "react-router-dom";
 import styles from "./BoardPage.module.scss";
 import { BOARD_URL } from "../../config/user/host-config";
+import {useSelector} from "react-redux";
 
 const BoardPage = () => {
   const [posts, setPosts] = useState([]);
@@ -9,6 +10,10 @@ const BoardPage = () => {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const scrollRef = useRef();
+
+  const user = useSelector(state => state.userEdit.userDetail);
+  console.log(user)
+
 
   const fetchPosts = useCallback(async () => {
     if (loading || !hasMore) return;

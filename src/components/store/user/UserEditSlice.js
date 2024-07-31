@@ -24,7 +24,8 @@ const userEditSlice = createSlice({
             state.isUserEditMode = false;
         },
         updateUserDetail(state, action) {
-            state.userDetail = action.payload;
+            state.userDetail = action.payload; // 유저의 정보를 갖고 있는 redux
+            console.log(state.userDetail);
         }
     }
 })

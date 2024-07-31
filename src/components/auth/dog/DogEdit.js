@@ -5,7 +5,7 @@ import {userEditActions} from "../../store/user/UserEditSlice";
 import {dogEditActions} from "../../store/dog/DogEditSlice";
 import {DOG_URL} from "../../../config/user/host-config";
 import {useNavigate} from "react-router-dom";
-import {decideGender, decideSize, translateAllergy, translateBreed} from './dogUtil'
+import {decideGender, decideSize, translateAllergy, translateBreed} from './dogUtil.js'
 
 const DogEdit = () => {
     const dog = useSelector(state => state.dogEdit.dogInfo);

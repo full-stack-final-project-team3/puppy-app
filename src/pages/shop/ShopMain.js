@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { TREATS_URL } from "../../config/user/host-config";
 import { useRouteLoaderData, useNavigate } from "react-router-dom";
 import styles from "./ShopMain.module.scss";
+import {useSelector} from "react-redux";
 
 const ShopMain = () => {
   const [dogList, setDogList] = useState([]);
@@ -14,6 +15,9 @@ const ShopMain = () => {
   const tokenData = useRouteLoaderData("getToken");
   const token = tokenData ? tokenData.token : null; // null 체크 후 token 가져오기
   const navigate = useNavigate();
+
+  const fetch = useSelector(state => state.userEdit.userDetail);
+  console.log(fetch)
 
   useEffect(() => {
     const fetchDogList = async () => {
