@@ -13,6 +13,7 @@ import UserEdit from "./UserEdit";
 const MyPageMain = () => {
 
     const userData = useRouteLoaderData('user-data2');
+    console.log(userData)
 
 
     const userDetail = useSelector(state => state.userEdit.userDetail);
@@ -24,21 +25,20 @@ const MyPageMain = () => {
 
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        if (!userData) return;
-
-        const fetchData = async () => {
-            try {
-                const response = await fetch(`${AUTH_URL}/${userData.email}`);
-                const userDetailData = await response.json();
-                dispatch(userEditActions.updateUserDetail(userDetailData));
-                console.log(userDetailData);
-            } catch (error) {
-                console.error(error);
-            }
-        };
-        fetchData();
-    }, [userData, dispatch]);
+    // useEffect(() => {
+    //     if (!userData) return;
+    //
+    //     const fetchData = async () => {
+    //         try {
+    //             const response = await fetch(`${AUTH_URL}/${userData.email}`);
+    //             const userDetailData = await response.json();
+    //             dispatch(userEditActions.updateUserDetail(userDetailData));
+    //         } catch (error) {
+    //             console.error(error);
+    //         }
+    //     };
+    //     fetchData();
+    // }, [userData, dispatch]);
 
     const { id } = userDetail;
 
