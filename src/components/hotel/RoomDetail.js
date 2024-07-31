@@ -37,7 +37,7 @@ const RoomDetail = ({ hotel, onBook }) => {
                 <div key={room['room-id']} className={styles.room}>
                     <Slider className={styles.slider} {...sliderSettings}>
                         {room["room-images"] && room["room-images"].map((image, imageIndex) => {
-                            const imageUrl = getImageUrl(image['image-uri']);
+                            const imageUrl = getImageUrl(image['hotelImgUri']);
                             if (!imageUrl) {
                                 console.error('Invalid image URI for image', image);
                                 return null;
@@ -45,7 +45,7 @@ const RoomDetail = ({ hotel, onBook }) => {
                             console.log(`Rendering image ${imageIndex}:`, imageUrl);
                             return (
                                 <div key={image['image-id'] || `${roomIndex}-${imageIndex}`} className={styles.slide}>
-                                    <img src={imageUrl} alt={`${room.name} - ${image['image-uri']}`} />
+                                    <img src={imageUrl} alt={`${room.name} - ${image['hotelImgUri']}`} />
                                 </div>
                             );
                         })}
