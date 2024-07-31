@@ -31,7 +31,7 @@ const TreatsListForDog = () => {
           throw new Error("네트워크 응답이 올바르지 않습니다.");
         }
         const data = await response.json();
-        console.log(data);
+        console.log("이거머얌", data);
         setTreatsList(data.treatsList); // 가져온 간식 리스트 설정
       } catch (err) {
         setError(err);
@@ -98,7 +98,7 @@ const TreatsListForDog = () => {
             </ul>
           )}
         </div>
-        <img src="http://localhost:3000/treats/images/2024/07/31/bb554f82-4752-423d-bfd3-c32550203d42_1200x0.webp" alt="Uploaded Image" />
+        <img src="http://localhost:8888/treats/images/2024/07/31/bb554f82-4752-423d-bfd3-c32550203d42_1200x0.webp" alt="Uploaded Image" />
         <button className={styles.nextButton}>NEXT</button>
       </div>
     </div>
