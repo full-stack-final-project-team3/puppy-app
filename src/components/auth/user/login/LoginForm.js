@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, {useContext, useState, useEffect, useRef} from 'react';
 import styles from './LoginForm.module.scss';
 import { Link, useNavigate } from "react-router-dom";
 import UserContext from "../../../context/user-context";
@@ -19,6 +19,14 @@ const LoginForm = () => {
     const [error, setError] = useState(null);
     const navigate = useNavigate();
     const { changeIsLogin, setUser } = useContext(UserContext);
+
+
+
+    const enterHandler = e => {
+        if (e.key === 'Enter') {
+            handleSubmit(e)
+        }
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -91,7 +99,7 @@ const LoginForm = () => {
     }, []);
 
     return (
-        <div className={styles.whole}>
+        <div className={styles.whole}  onKeyDown={enterHandler}>
             <div className={styles.authContainer}>
                 <div>
                     <div className={styles.wrap}>
