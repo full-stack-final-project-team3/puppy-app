@@ -4,7 +4,7 @@ import Slider from "react-slick";
 import styles from './RoomDetail.module.scss';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import ReviewList from './ReviewList'; // 리뷰 리스트 컴포넌트 import
+import ReviewList from './ReviewList.js'; // 리뷰 리스트 컴포넌트 import
 
 const RoomDetail = ({hotel, onBook}) => {
     const sliderSettings = useMemo(() => ({

@@ -28,7 +28,6 @@ const AboutMe = () => {
         }
     }, [dispatch]);
 
-    console.log(user);
 
     const startEditMode = () => {
         dispatch(userEditActions.startMode());

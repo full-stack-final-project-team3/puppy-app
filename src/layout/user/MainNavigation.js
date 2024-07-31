@@ -7,6 +7,7 @@ import { BiUser } from "react-icons/bi";
 import UserContext from "../../components/context/user-context";
 import {userEditActions} from "../../components/store/user/UserEditSlice";
 import {useDispatch} from "react-redux";
+import {dogEditActions} from "../../components/store/dog/DogEditSlice";
 
 const MainNavigation = () => {
 
@@ -20,6 +21,7 @@ const MainNavigation = () => {
     const clearEditMode = async () => {
         dispatch(userEditActions.clearMode());
         dispatch(userEditActions.clearUserEditMode());
+        dispatch(dogEditActions.clearEdit())
     }
 
     useEffect(() => {
@@ -35,6 +37,7 @@ const MainNavigation = () => {
 
     const logoutHandler = () => {
         localStorage.removeItem('userData');
+        localStorage.removeItem('userDetail');
 
         // 현재 URL을 가져옴
         const currentUrl = window.location.href;

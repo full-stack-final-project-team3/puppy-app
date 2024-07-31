@@ -17,7 +17,10 @@ const dogEditSlice = createSlice({
         },
         setDogInfo: (state, action) => { // 강아지 정보 저장
             state.dogInfo = JSON.parse(action.payload);
-        }
+        },
+        updateDogInfo(state, action) {
+            state.dogInfo = action.payload;
+        },
     }
 })
 

@@ -13,7 +13,6 @@ import UserEdit from "./UserEdit";
 const MyPageMain = () => {
 
     const userData = useRouteLoaderData('user-data2');
-    console.log(userData)
 
 
     const userDetail = useSelector(state => state.userEdit.userDetail);
