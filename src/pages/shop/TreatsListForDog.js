@@ -12,6 +12,7 @@ const TreatsListForDog = () => {
   const [error, setError] = useState(null);
   const [pageNo, setPageNo] = useState(1);
   const [sort, setSort] = useState("default"); // 정렬 기준 설정 (필요에 따라 변경 가능)
+  const [selectedTreats, setSelectedTreats] = useState([]); // 선택한 간식 상태 추가
 
   useEffect(() => {
     const fetchTreatsList = async () => {
@@ -52,22 +53,53 @@ const TreatsListForDog = () => {
     );
   }
 
+  const toggleTreatSelection = (treat) => {
+    setSelectedTreats((prevSelected) => {
+      if (prevSelected.some((item) => item.id === treat.id)) {
+        // 이미 선택된 간식이면 제거
+        return prevSelected.filter((item) => item.id !== treat.id);
+      } else {
+        // 선택되지 않은 간식이면 추가
+        return [...prevSelected, treat];
+      }
+    });
+  };
+
   return (
     <div className={styles.treatsList}>
       <div className={styles.content}>
-        <h1>{dogName ? `${dogName}의` : "강아지"} 간식 리스트</h1>{" "}
+        <h1>{dogName ? `${dogName}` : "강아지"} 맞춤 간식</h1>{" "}
         {/* 강아지 이름 표시 */}
         {treatsList.length === 0 ? (
           <p>등록된 간식이 없습니다.</p>
         ) : (
           <ul className={styles.treatList}>
             {treatsList.map((treat) => (
-              <li className={styles.treat} key={treat.id}>
+              <li
+                className={styles.treat}
+                key={treat.id}
+                onClick={() => toggleTreatSelection(treat)} // 클릭 시 선택 토글
+              >
                 {treat.title}
               </li> // 각 간식 이름 표시
             ))}
           </ul>
         )}
+        {/* 선택한 간식 목록 표시 */}
+        <div className={styles.selectedTreats}>
+          <h2>{dogName ? `${dogName}의` : "강아지"} 간식 리스트</h2>
+          {selectedTreats.length === 0 ? (
+            <p>선택한 간식이 없습니다.</p>
+          ) : (
+            <ul>
+              {selectedTreats.map((treat) => (
+                <li key={treat.id}>{treat.title}</li> // 선택한 간식 이름 표시
+              ))}
+            </ul>
+          )}
+        </div>
+        <img src="http://localhost:3000/treats/images/2024/07/31/bb554f82-4752-423d-bfd3-c32550203d42_1200x0.webp" alt="Uploaded Image" />
+        <button className={styles.nextButton}>NEXT</button>
       </div>
     </div>
   );
