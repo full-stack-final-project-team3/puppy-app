@@ -11,6 +11,8 @@ const DogEdit = () => {
     const dog = useSelector(state => state.dogEdit.dogInfo);
     const userDetail = useSelector(state => state.userEdit.userDetail);
     const navi = useNavigate();
+    console.log(dog)
+
 
     const dispatch = useDispatch();
     const clearEditMode = e => {
@@ -45,6 +47,36 @@ const DogEdit = () => {
         }
     }
 
+
+    const removeAllergy = async e => {
+        const allergy = e.target.dataset.alg;
+
+        try {
+            const response = await fetch(`${DOG_URL}/allergy?allergy=${allergy}&dogId=${dog.id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            });
+
+            if (response.ok) {
+                const updatedAllergies = dog.allergies.filter(a => a !== allergy);
+                const updatedDogList = userDetail.dogList.map(d =>
+                    d.id === dog.id ? { ...d, allergies: updatedAllergies } : d
+                );
+
+                dispatch(userEditActions.updateUserDetail({ ...userDetail, dogList: updatedDogList }));
+                dispatch(dogEditActions.updateDogInfo({ ...dog, allergies: updatedAllergies }));
+                alert("강아지의 건강이 좋아졌나봐요!");
+            } else {
+                console.error('알러지 삭제 실패:', response.statusText);
+            }
+        } catch (error) {
+            console.error('알러지 삭제 중 에러 발생:', error);
+        }
+    };
+
+
     return (
         <div>
             <div className={styles.wrap}>
@@ -74,7 +106,7 @@ const DogEdit = () => {
                             <div className={styles.item}>보유 알러지</div>
                             <div className={styles.answer}>
                                 {Array.isArray(dog.allergies) ? dog.allergies.map((allergy, index) => (
-                                    <span key={index} className={styles.badge}>{translateAllergy(allergy)}</span>
+                                    <span onClick={removeAllergy} data-alg={allergy} key={index} className={styles.badge}>{translateAllergy(allergy)}</span>
                                 )) : dog.allergies}
                             </div>
                         </div>

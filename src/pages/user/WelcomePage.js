@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useRouteLoaderData } from "react-router-dom";
 import UserContext from "../../components/context/user-context";
 import { AUTH_URL } from "../../config/user/host-config";
-import { useDispatch } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { userEditActions } from "../../components/store/user/UserEditSlice";
 
 const WelcomePage = () => {
