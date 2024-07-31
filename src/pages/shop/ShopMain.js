@@ -65,11 +65,15 @@ const ShopMain = () => {
         state: { dogName: selectedDogName },
       });
     } else if (dogList.length === 0) {
-      navigate('/add-dog');
+      navigate("/add-dog");
     } else {
-      alert('강아지를 선택해주세요!');
+      alert("강아지를 선택해주세요!");
     }
   };
+
+  const redirectLogin = () => {
+    navigate('/login')
+  }
 
   if (loading) {
     return <div className={styles.loading}>로딩 중...</div>;
@@ -109,9 +113,14 @@ const ShopMain = () => {
           </div>
         )}
         {selectedDogId && <p>선택한 강아지 id: {selectedDogId}</p>}
-        <button onClick={handleStartClick} className={styles.startButton}>
-          start
-        </button>
+
+        {isLoggedIn ? (
+          <button onClick={handleStartClick} className={styles.startButton}>
+            start
+          </button>
+        ) : (
+          <button onClick={redirectLogin}>login</button>
+        )}
       </div>
     </div>
   );

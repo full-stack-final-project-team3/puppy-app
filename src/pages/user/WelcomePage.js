@@ -16,7 +16,7 @@ const WelcomePage = () => {
 
     // 리덕스 리팩토링 다시.
 
-    // console.log(userData)
+    console.log(userData)
     const {changeIsLogin, user, setUser} = useContext(UserContext);
     useEffect(() => {
         if (userData) {
