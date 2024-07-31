@@ -51,6 +51,15 @@
           border-radius: 10px;
           box-sizing: border-box;
           background: #F4E8D3;
+          transition: background-color 1s ease;
+        }
+
+        .input:hover {
+          background-color: #f5f5f5;
+        }
+
+        .input::placeholder {
+          color: black;
         }
 
         .input:focus {
