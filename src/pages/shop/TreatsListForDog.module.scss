@@ -1,5 +1,27 @@
+// 부트스트랩 SCSS 가져오기
+@import "~bootstrap/scss/functions"; // 함수 가져오기
+@import "~bootstrap/scss/variables"; // 변수 가져오기
+@import "~bootstrap/scss/mixins"; // 믹스인 가져오기
+@import "~bootstrap/scss/card"; // 카드 스타일 가져오기
+
 .treatsList {
-  height: 91vh; // 화면의 91vh
+
+  // 부트스트랩 카드 추가
+  .card {
+    @extend .card; // 부트스트랩 카드 스타일 확장
+    // width: 18rem; // 카드 너비 조정
+    // margin: 20px auto; // 카드 가운데 정렬
+
+    // .card-body {
+    //   padding: 20px; // 카드 내용 패딩
+    // }
+
+    // .card-text {
+    //   font-size: 14px; // 카드 내용 텍스트 크기 조정
+    // }
+  }
+
+  height: 91vh; // 화면의 91vh/path/to/your/i
   background-image: url(https://www.zooplus.co.uk/magazine/wp-content/uploads/2018/03/dachshund.jpg); // 배경 이미지 경로
   background-size: cover; // 배경 이미지 사이즈 조정
   background-position: center; // 배경 이미지 중심 정렬
@@ -19,8 +41,7 @@
 
     h1 {
       text-align: center; // 제목 중앙 정렬
-      margin-top: 40px; // 상단 여백
-      margin-bottom: 20px; // 하단 여백
+      margin: 40px 0 20px; // 상단 및 하단 여백
     }
   }
 
@@ -30,22 +51,16 @@
     margin-bottom: 20px; // 하단 여백
     border-radius: 5px; // 모서리 둥글게
     background-color: rgba(255, 255, 255, 0.8); // 반투명 흰색 배경
-    color: black; // 글자색 검정
-
-    h2 {
-      margin-top: 0; // 상단 여백 없애기
-    }
   }
 
-  .loading {
-    text-align: center; // 중앙 정렬
-    margin-top: 20px; // 상단 여백
-  }
-
+  .loading,
   .error {
     text-align: center; // 중앙 정렬
-    color: red; // 에러 글자색 빨간색
     margin-top: 20px; // 상단 여백
+
+    &.error {
+      color: red; // 에러 글자색 빨간색
+    }
   }
 
   .treatList {
@@ -59,7 +74,6 @@
     border: 1px solid #ccc; // 테두리
     border-radius: 5px; // 모서리 둥글게
     background-color: rgba(255, 255, 255, 0.9); // 선택한 간식 목록 배경 더 밝게
-    color: black; // 글자색 검정
 
     h2 {
       text-align: center; // 제목 중앙 정렬
@@ -74,7 +88,7 @@
       li {
         padding: 10px; // 각 항목 패딩
         border-bottom: 1px solid #ccc; // 구분선
-        
+
         &:last-child {
           border-bottom: none; // 마지막 항목 구분선 제거
         }
@@ -83,7 +97,7 @@
   }
 
   .nextButton {
-    background-color: #4CAF50; // 버튼 배경색
+    background-color: #4caf50; // 버튼 배경색
     color: white; // 텍스트 색상
     border: none; // 테두리 없음
     padding: 10px 20px; // 패딩
@@ -98,5 +112,4 @@
       background-color: #45a049; // 호버 시 배경색 변화
     }
   }
-
 }
