@@ -4,7 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     isEditMode: false,
     isUserEditMode: false,
-    userDetail: JSON.parse(localStorage.getItem('userDetail')) || {} // 초기 상태를 로컬 저장소에서 불러옴
+    userDetail: JSON.parse(localStorage.getItem('userDetail')) || {}, // 초기 상태를 로컬 저장소에서 불러옴
 };
 
 const userEditSlice = createSlice({

@@ -6,21 +6,16 @@ import styles from "./AddDogMain.module.scss";
 import DogSexInput from "./DogSexInput";
 import DogWeightInput from "./DogWeightInput";
 import DogAllergiesInput from "./DogAllergiesInput";
-import {useNavigate} from "react-router-dom";
-import {DOG_URL} from "../../../config/user/host-config";
-import {useSelector} from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { DOG_URL } from "../../../config/user/host-config";
+import { useDispatch, useSelector } from "react-redux";
+import { userEditActions } from "../../store/user/UserEditSlice";
 
 const AddDogMain = () => {
-
     const navigate = useNavigate();
-
-
     const user = useSelector(state => state.userEdit.userDetail);
-
-
+    const dispatch = useDispatch();
     const email = user.email;
-    console.log(email);
-
 
     const [step, setStep] = useState(1);
     const [name, setName] = useState('');
@@ -33,9 +28,7 @@ const AddDogMain = () => {
     // 기본 이미지
     const profileUrl = "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fst2.depositphotos.com%2F5045705%2F11671%2Fv%2F950%2Fdepositphotos_116714982-stock-illustration-little-puppy-icon.jpg&type=a340";
 
-    useEffect(() => {
-
-    }, [step]);
+    useEffect(() => {}, [step]);
 
     const dogNameValue = (dogName) => {
         setName(dogName);
@@ -60,7 +53,6 @@ const AddDogMain = () => {
 
     const dogWeightValue = (weight) => {
         setWeight(weight);
-
         if (weight > 25) {
             setDogSize("LARGE")
         } else if (weight > 10) {
@@ -68,13 +60,10 @@ const AddDogMain = () => {
         } else {
             setDogSize("SMALL")
         }
-
         setStep(6);
     }
 
-
     const dogAllergiesValue = async (allergies) => {
-
         setAllergies(allergies);
 
         const payload = {
@@ -86,10 +75,7 @@ const AddDogMain = () => {
             "weight": weight,
             "allergies": allergies,
             "dogProfileUrl": profileUrl,
-        }
-        console.log(payload)
-
-        console.log(email)
+        };
 
         const response = await fetch(`${DOG_URL}/register/${email}`, {
             method: 'POST',
@@ -97,23 +83,30 @@ const AddDogMain = () => {
             body: JSON.stringify(payload)
         });
 
-        const result = await response.text();
+        const newDog = await response.json();
 
-        if (result) {
+        if (response.ok) {
+            const updatedUserDetail = {
+                ...user,
+                dogList: [...user.dogList, newDog]
+            };
+
+            dispatch(userEditActions.updateUserDetail(updatedUserDetail));
             alert('강아지 등록 성공!');
-            navigate('/mypage')
+            navigate('/mypage');
+        } else {
+            alert('강아지 등록 실패!');
         }
     }
 
-
     return (
         <div className={styles.wrap}>
-            {step === 1 && <DogNameInput dogNameValue={dogNameValue}/>}
+            {step === 1 && <DogNameInput dogNameValue={dogNameValue} />}
             {step === 2 && <DogBreedInput dogBreedValue={dogBreedValue} />}
             {step === 3 && <DogBirthdayInput onDateChange={dogBirthdayValue} />}
-            {step === 4 && <DogSexInput dogSexValue={dogSexValue}/>}
-            {step === 5 && <DogWeightInput dogWeightValue={dogWeightValue}/>}
-            {step === 6 && <DogAllergiesInput onAllergiesChange={dogAllergiesValue}  />}
+            {step === 4 && <DogSexInput dogSexValue={dogSexValue} />}
+            {step === 5 && <DogWeightInput dogWeightValue={dogWeightValue} />}
+            {step === 6 && <DogAllergiesInput onAllergiesChange={dogAllergiesValue} />}
         </div>
     );
 };
