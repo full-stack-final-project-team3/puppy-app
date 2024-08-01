@@ -96,8 +96,8 @@ export const router = createBrowserRouter([
       {
         path: "add-treats",
         element: <AddTreats />,
-        // loader: getUserToken,
-        // id: "getToken"
+        loader: getUserToken,
+        id: "getToken"
       },
       {
         path: "list/:dogId",
@@ -107,8 +107,6 @@ export const router = createBrowserRouter([
       {
         path: "add-dog",
         element: <AddDogMain />,
-        loader: getUserToken,
-        id: "getToken",
       },
       {
         path: "boards",

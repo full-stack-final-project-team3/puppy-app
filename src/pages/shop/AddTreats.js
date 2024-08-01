@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styles from "./AddTreats.module.scss";
 import { allergiesOptions } from "../../components/auth/dog/DogAllergiesInput";
 import { TREATS_URL } from "../../config/user/host-config";
+import { getUserToken } from "../../config/user/auth";
 
 const AddTreats = () => {
   const [title, setTitle] = useState("");
@@ -14,6 +15,8 @@ const AddTreats = () => {
   const [treatsPicsInputs, setTreatsPicsInputs] = useState([0]); // 대표 사진 파일 입력 필드
   const [treatsDetailPicsInputs, setTreatsDetailPicsInputs] = useState([0]); // 상세 사진 파일 입력 필드
 
+  const token = getUserToken();
+
   const handleAllergyChange = (event) => {
     const { value, checked } = event.target;
     if (checked) {
@@ -24,8 +27,6 @@ const AddTreats = () => {
       );
     }
   };
-
-
 
   const handleFileChange = (event, type, index) => {
     const files = Array.from(event.target.files);
@@ -45,28 +46,33 @@ const AddTreats = () => {
   };
 
   const addTreatsDetailPicInput = () => {
-    setTreatsDetailPicsInputs([...treatsDetailPicsInputs, treatsDetailPicsInputs.length]);
+    setTreatsDetailPicsInputs([
+      ...treatsDetailPicsInputs,
+      treatsDetailPicsInputs.length,
+    ]);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     const formData = new FormData();
-    formData.append("treats-title", title);
-    formData.append("treats-type", treatsType);
-    formData.append("treats-weight", treatsWeight);
-    formData.append("dog-size", dogSize);
-    formData.append("treats-allergy", selectedAllergies.join(","));
 
-    treatsPics.forEach((file) => {
+    formData.append("title", title);
+    formData.append("treatsType", treatsType);
+    formData.append("treatsWeight", treatsWeight);
+    formData.append("dogSize", dogSize);
+    formData.append("allergieList", selectedAllergies.join(","));
+
+    treatsPics.forEach((file, index) => {
       if (file) {
-        formData.append("treats-pics", file);
+        formData.append(`treatsPics[${index}].treatsPicFile`, file);
       }
     });
 
-    treatsDetailPics.forEach((file) => {
+    // TreatsDetailPicDto 형태로 treatsDetailPics 파일 추가
+    treatsDetailPics.forEach((file, index) => {
       if (file) {
-        formData.append("treats-detail-pics", file);
+        formData.append(`treatsDetailPics[${index}].treatsDetailPicFile`, file);
       }
     });
 
@@ -74,21 +80,33 @@ const AddTreats = () => {
       const response = await fetch(`${TREATS_URL}`, {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${token}`, // 필요한 경우 토큰을 추가
-      },
+          Authorization: `Bearer ${token}`,
+        },
         body: formData,
       });
 
-      console.log(response)
+      console.log("Response status:", response.status);
 
       if (!response.ok) {
-        throw new Error("서버 응답이 올바르지 않습니다.");
+        const errorMessage = await response.json();
+        throw new Error(`서버 응답이 올바르지 않습니다: ${errorMessage}`);
       }
 
-      const data = await response.json(); // 또는 response.json() 필요에 따라
-      alert(data); // 성공 메시지
+      // 상품 추가 완료 후 입력창 초기화
+      setTitle("");
+      setTreatsType("");
+      setTreatsWeight("");
+      setDogSize("");
+      setSelectedAllergies([]);
+      setTreatsPics([]);
+      setTreatsDetailPics([]);
+      setTreatsPicsInputs([0]); // 초기값으로 한 개의 입력창 설정
+      setTreatsDetailPicsInputs([0]); // 초기값으로 한 개의 입력창 설정
+
+      alert("상품 추가 완료");
     } catch (error) {
-      console.error("상품 추가 실패:", error);
+      console.error("상품 추가 실패");
+
       alert("상품 추가에 실패했습니다.");
     }
   };
