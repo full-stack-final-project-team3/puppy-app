@@ -44,6 +44,7 @@ const DogList = ({dog}) => {
                     <h3 className={styles.nickname}>{dog.dogName}</h3>
                     <span className={styles.modify} onClick={startEditMode}>수정</span>
                 </div>
+                <div className={styles.age}>{dog.age}년 {dog.month}개월</div>
                 <span className={styles.breed}>{translateBreed(dog.dogBreed)}</span>
             </div>
         </div>

@@ -111,7 +111,7 @@ const DogEdit = () => {
                         </div>
                         <div className={styles.row}>
                             <div className={styles.item}>생일</div>
-                            <span className={styles.answer}>{dog.birthday} <span className={styles.sub}>{dog.age}세</span></span>
+                            <span className={styles.answer}>{dog.birthday} <span className={styles.sub}>{dog.age}년 {dog.month}개월</span></span>
                         </div>
                         <div className={styles.row}>
                             <div className={styles.item}>성별</div>
