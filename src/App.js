@@ -5,7 +5,6 @@ import { AuthProvider } from "./components/auth/AuthProvider";
 
 const App = () => {
   return (
-
     <AuthProvider>
       <RouterProvider router={router} />
     </AuthProvider>
