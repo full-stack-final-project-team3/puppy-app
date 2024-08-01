@@ -13,6 +13,7 @@ const MainNavigation = () => {
 
     let navi = useNavigate();
     const [menuOpen, setMenuOpen] = useState(false);
+    const [openNotice, setOpenNotice] = useState(false)
     const { changeIsLogin, user, setUser } = useContext(UserContext);
     const userData = useRouteLoaderData("user-data");
 
@@ -55,6 +56,13 @@ const MainNavigation = () => {
         navi("/login")
     }
 
+    const toggleNotice = () => {
+        setOpenNotice(prevState => !prevState);
+    }
+
+
+
+
     return (
         <header className={styles.header}>
             <nav className={styles.nav}>
@@ -68,9 +76,10 @@ const MainNavigation = () => {
                     { user ? (
                         <>
                             <button className={styles.logout} onClick={logoutHandler}>Logout</button>
-                            <BsBell className={styles.icon} />
+                            <BsBell className={styles.icon} onClick={toggleNotice}></BsBell>
+                            <span className={styles.count}>1</span>
                             <Link to={"/mypage"} onClick={clearEditMode}><BiUser className={styles.icon}/></Link>
-                            <GiHamburgerMenu className={styles.icon} onClick={toggleMenuHandler} />
+                            <GiHamburgerMenu className={styles.icon} onClick={toggleMenuHandler}/>
                         </>
                     ) : (
                         <>
@@ -88,6 +97,11 @@ const MainNavigation = () => {
                         <li><NavLink to='/treats'>Shop</NavLink></li>
                         <li><NavLink to='/boards'>Community</NavLink></li>
                     </ul>
+                </div>
+            )}
+            {openNotice && (
+                <div className={styles.noticeWrap}>
+
                 </div>
             )}
         </header>
