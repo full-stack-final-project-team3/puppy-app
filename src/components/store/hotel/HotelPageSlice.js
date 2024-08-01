@@ -86,7 +86,7 @@ const hotelPageSlice = createSlice({
         },
         setTotalPrice: (state, action) => {
             state.totalPrice = action.payload;
-        }
+        },
         setHotels: (state, action) => {
             state.hotels = action.payload;
         },
