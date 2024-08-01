@@ -83,6 +83,7 @@
     left: 50%; // 수평 중앙 정렬
     transform: translateX(-50%); // 중앙 정렬을 위한 변환
     width: 90%; // 너비 조정
+    // height: 25%;
     max-width: 40vw; // 최대 너비 설정
     opacity: 0.9;
     margin: 0 auto; // 중앙 정렬
@@ -94,43 +95,38 @@
     color: #333;
     z-index: 1000; // 다른 요소 위에 보이게 설정
 
-    h2 {
-      text-align: center;
-      margin-bottom: 20px; // 제목과 리스트 간격 증가
-      font-size: 1.5em; // 제목 크기 증가
-      color: #000000; // 제목 색상 변경
+    .imageBoxContainer {
+      display: flex; // flexbox 사용
+      flex-wrap: wrap; // 줄 바꿈 허용
+      justify-content: center; // 중앙 정렬
+      margin-top: 20px; // 간식 이미지와 제목 간격
     }
 
-    ul {
-      list-style-type: none;
-      padding: 0;
-      margin: 0;
+    .imageBox {
+      width: 100px; // 이미지 박스의 너비
+      height: 100px; // 이미지 박스의 높이
+      margin: 10px; // 이미지 박스 간격
+      border: 1px solid #ccc; // 테두리 추가
+      border-radius: 5px; // 둥글게
+      overflow: hidden; // 넘치는 이미지 부분 숨김
+    }
 
-      li {
-        padding: 15px; // 각 항목 패딩 증가
-        border-bottom: 1px solid #e0e0e0; // 구분선 색상 변경
-        transition: background-color 0.3s; // 배경색 변화 애니메이션
-
-        &:last-child {
-          border-bottom: none;
-        }
-
-        &:hover {
-          background-color: rgba(76, 175, 80, 0.1); // 호버 시 배경색 변화
-        }
-      }
+    .treatImage {
+      width: 100%; // 이미지 너비를 박스에 맞춤
+      opacity: 0.8;
+      height: auto; // 비율 유지
     }
   }
 
   .buttonContainer {
     text-align: center; // 버튼 중앙 정렬
-    margin-top: 20px; // 버튼과 리스트 간의 간격 추가
+    margin-top: 0px; // 버튼과 리스트 간의 간격 추가
   }
 
   .nextButton {
     width: 20%; // 버튼 너비 증가
     margin: 30px auto 0 auto; // 버튼을 수평 가운데 정렬
-    background-color: #4caf50;
+    background-color: rgb(155, 0, 0);
     color: white;
     border: none;
     border-radius: 5px; // 버튼 모서리 둥글게
@@ -141,7 +137,7 @@
     transition: background-color 0.3s, transform 0.2s; // 애니메이션 추가
 
     &:hover {
-      background-color: #45a049;
+      background-color: #550d0d;
       transform: scale(1.05); // 호버 시 약간 확대
     }
 
