@@ -87,6 +87,9 @@ const hotelPageSlice = createSlice({
         setTotalPrice: (state, action) => {
             state.totalPrice = action.payload;
         }
+        setHotels: (state, action) => {
+            state.hotels = action.payload;
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -132,7 +135,8 @@ const hotelPageSlice = createSlice({
     },
 });
 
-export const { setStep, incrementPersonCount, decrementPersonCount, resetHotels, setTotalPrice } = hotelPageSlice.actions;
 
+export const { setStep, incrementPersonCount, decrementPersonCount, resetHotels ,
+    setHotels, setTotalPrice} = hotelPageSlice.actions;
 export default hotelPageSlice.reducer;
 

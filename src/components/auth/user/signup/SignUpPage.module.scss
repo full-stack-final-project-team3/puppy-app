@@ -1,4 +1,4 @@
-.signUpPage {
+.signupPage {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
@@ -6,18 +6,6 @@
   flex-direction: column;
   gap: 10px;
   margin-top: 120px;
-}
-
-.button {
-  background-color: var(--color-primary-700);
-  color: #000;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #004494;
-  }
 }
 
 .formStep {
@@ -34,11 +22,11 @@
 
 
 /*
-  (Step 1) - 회원가입 이메일 검증, 인증코드 검증 css
+  SignUpPage.js css
 */
-.emailBox {
+.signUpBox {
   width: 55%;
-  margin: 100px auto;
+  margin: 0 auto;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 32px;
@@ -49,48 +37,25 @@
   > h1, h2 {
     text-align: center;
   }
-}
-
-.emailInput, .verificationInput {
-  text-align: center;
-  margin: 20px 0;
-  width: 90%;
-  margin: 50px auto 0;
-  background: #F0E1C4;
-  padding-bottom: 20px;
-  border-radius: 32px;
-  padding: 20px;
 }
 
 
 /*
-  (Step2) - 닉네임 검증, 비밀번호 검증 css
+  (Step 1) - 회원가입 이메일 검증, 인증코드 검증 css
+  (Step 2) - 닉네임 검증, 비밀번호 검증 css
+  (Step 3) - 주소 등록, 휴대폰 번호 등록 css
 */
-.nickPwBox {
-  width: 55%;
-  margin: 100px auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 32px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  background-color: #F4E8D3;
-  padding: 40px;
-
-  > h1, h2 {
-    text-align: center;
-  }
-}
-
-.passwordInput, .nicknameInput {
+.signUpInput {
   text-align: center;
   margin: 20px 0;
   width: 90%;
-  margin: 50px auto 0;
+  // margin: 50px auto 0;
   background: #F0E1C4;
   padding-bottom: 20px;
   border-radius: 32px;
   padding: 20px;
 }
+
 
 
 /*
@@ -114,27 +79,10 @@
 
 
 /*
-  모든 회원가입 과정을 완료하면 생기는 버튼
-*/
-.button {
-  transition: background-color 0.3s ease;
-  width: 30%;
-  padding: 25px;
-  margin: 5px 0;
-  border: 1px solid #ccc;
-  border-radius: 50px;
-
-  &:hover {
-    background-color: #004494;
-  }
-}
-
-
-/*
   회원가입 개인정보를 입력하는 input 박스
 */
 .input {
-  width: 50%;
+  width: 60%;
   padding: 10px;
   border: 1px solid #B7AE9E;
   border-radius: 32px;
@@ -157,6 +105,50 @@
 
   &::placeholder {
     color: #ccc;
+  }
+}
+
+
+/*
+  button css
+*/
+.button {
+  background-color: var(--color-primary-700);
+  color: #000;
+  border: 1px solid #000;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border: none;
+
+  &:hover {
+    background-color: #004494;
+  }
+}
+
+.addressBtn {
+  background-color: var(--color-primary-700);
+  margin-left: 10px;
+  border-radius: 50px;
+  border: 1px solid #000;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #004494;
+  }
+}
+
+.signUpBtn {
+  transition: background-color 0.3s ease;
+  width: 30%;
+  padding: 15px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 50px;
+  text-align: center;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #004494;
   }
 }
 

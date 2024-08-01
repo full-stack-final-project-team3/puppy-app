@@ -19,6 +19,8 @@ const allergiesOptions = [
     { value: 'OAT', label: '귀리' },
     { value: 'POTATO', label: '감자' },
     { value: 'TOMATO', label: '토마토' },
+    { value: 'DUCK', label: '오리' },
+    { value: 'SALMON', label: '연어' },
 
 ];
 

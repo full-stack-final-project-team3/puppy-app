@@ -4,11 +4,14 @@ import Slider from "react-slick";
 import styles from './RoomDetail.module.scss';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+
 import ReviewList from './ReviewList'; // 리뷰 리스트 컴포넌트 import
+import {useNavigate} from "react-router-dom"; // 리뷰 리스트 컴포넌트 import
 import MapView from './MapView';
 
 const RoomDetail = ({hotel, onBook, sliderSettings}) => {
     
+    const navigate = useNavigate()
 
     if (!hotel || !hotel.room || hotel.room.length === 0) {
         console.log('RoomDetail: rooms are not defined or empty', hotel);
@@ -25,9 +28,14 @@ const RoomDetail = ({hotel, onBook, sliderSettings}) => {
         return imageUri;
     };
 
+    const modifyHotelHandler = (hotelId) => {
+        navigate(`/modify-hotel/${hotelId}`);
+    }
+
     return (
 
         <>
+            <button onClick={() => modifyHotelHandler(hotel.hotelId)}>호텔 수정하기</button>
             <div className={styles.roomDetail}>
                 {hotel.room.map((room, roomIndex) => (
                     <div key={room['room-id']} className={styles.room}>

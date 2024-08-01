@@ -8,7 +8,7 @@ const DogBreedInput = ({ dogBreedValue }) => {
 
     const breedOptions = [
         { value: 'RETRIEVER', label: '리트리버' },
-        { value: 'JINDO', label: '진돗개' },
+        { value: 'JINDOTGAE', label: '진돗개' },
         { value: 'POMERANIAN', label: '포메라니안' },
         { value: 'CHIHUAHUA', label: '치와와' },
         { value: 'MALTESE', label: '말티즈' },

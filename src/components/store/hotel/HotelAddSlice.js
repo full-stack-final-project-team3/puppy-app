@@ -1,5 +1,5 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { HOTEL_URL, UPLOAD_URL } from '../../../config/user/host-config';
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {HOTEL_URL, UPLOAD_URL} from '../../../config/user/host-config';
 
 const initialHotelAddState = {
     hotelData: {
@@ -11,14 +11,16 @@ const initialHotelAddState = {
         cancelPolicy: '',
         price: '',
         phoneNumber: '',
-        hotelImages: [{ hotelImgUri: '', type: 'HOTEL' }]
+        hotelImages: [{hotelImgUri: '', type: 'HOTEL'}]
     },
+    hotels: [],
     hotelId: null,
     errorMessage: '',
     showConfirmModal: false,
     showRoomModal: false,
 };
 
+// 파일 업로드 비동기
 export const uploadFile = createAsyncThunk(
     'hotelAdd/uploadFile',
     async (file, thunkAPI) => {
@@ -38,9 +40,27 @@ export const uploadFile = createAsyncThunk(
     }
 );
 
+// 호텔 조회 비동기처리
+export const fetchHotelDetails = createAsyncThunk(
+    'hotel/fetchDetails',
+    async (hotelId, thunkAPI) => {
+        try {
+            const response = await fetch(`${HOTEL_URL}/${hotelId}`);
+            if (!response.ok) {
+                const error = await response.json();
+                return thunkAPI.rejectWithValue(error.message);
+            }
+            return await response.json();
+        } catch (error) {
+            return thunkAPI.rejectWithValue('Unable to fetch hotel details');
+        }
+    }
+);
+
+// 호텔 추가 비동기
 export const submitHotel = createAsyncThunk(
     'hotelAdd/submitHotel',
-    async ({ hotelData, token }, thunkAPI) => {
+    async ({hotelData, token}, thunkAPI) => {
         try {
             const response = await fetch(`${HOTEL_URL}`, {
                 method: 'POST',
@@ -77,19 +97,64 @@ export const submitHotel = createAsyncThunk(
     }
 );
 
+// 호텔 삭제 비동기
+export const deleteHotel = createAsyncThunk(
+    'hotelPage/deleteHotel',
+    async (hotelId, { getState, rejectWithValue }) => {
+        const token = JSON.parse(localStorage.getItem('userData')).token;
+        try {
+            const response = await fetch(`${HOTEL_URL}/${hotelId}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (!response.ok) {
+                const errorData = await response.json();
+                return rejectWithValue(errorData.message || 'Failed to delete the hotel');
+            }
+            return hotelId; // 삭제된 호텔 ID 반환
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+// 호텔 수정 비동기
+export const updateHotel = createAsyncThunk(
+    'hotelAdd/updateHotel',
+    async ({hotelId, hotelData}, {getState, rejectWithValue}) => {
+        const token = JSON.parse(localStorage.getItem('userData')).token;
+        try {
+            const response = await fetch(`${HOTEL_URL}/${hotelId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(hotelData)
+            });
+            if (!response.ok) {
+                throw new Error('Failed to update the hotel');
+            }
+            return await response.json();
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
 const hotelAddSlice = createSlice({
     name: 'hotelAdd',
     initialState: initialHotelAddState,
     reducers: {
         updateHotelData: (state, action) => {
-            state.hotelData = { ...state.hotelData, ...action.payload };
+            state.hotelData = {...state.hotelData, ...action.payload};
         },
         updateImage: (state, action) => {
-            const { index, image } = action.payload;
+            const {index, image} = action.payload;
             state.hotelData.hotelImages[index] = image;
         },
         addImage: (state) => {
-            state.hotelData.hotelImages.push({ hotelImgUri: '', type: '' });
+            state.hotelData.hotelImages.push({hotelImgUri: '', type: ''});
         },
         removeImage: (state, action) => {
             state.hotelData.hotelImages = state.hotelData.hotelImages.filter((_, i) => i !== action.payload);
@@ -110,7 +175,7 @@ const hotelAddSlice = createSlice({
                 content: '',
                 type: '',
                 price: '',
-                roomImages: [{ hotelImgUri: '', type: 'ROOM' }],
+                roomImages: [{hotelImgUri: '', type: 'ROOM'}],
             };
         }
     },
@@ -119,7 +184,7 @@ const hotelAddSlice = createSlice({
             .addCase(uploadFile.fulfilled, (state, action) => {
                 const index = state.hotelData.hotelImages.findIndex(img => !img.hotelImgUri);
                 if (index !== -1) {
-                    state.hotelData.hotelImages[index] = { hotelImgUri: action.payload, type: 'image' };
+                    state.hotelData.hotelImages[index] = {hotelImgUri: action.payload, type: 'image'};
                 }
             })
             .addCase(uploadFile.rejected, (state, action) => {
@@ -131,6 +196,38 @@ const hotelAddSlice = createSlice({
             })
             .addCase(submitHotel.rejected, (state, action) => {
                 state.errorMessage = action.payload;
+            })
+            .addCase(deleteHotel.fulfilled, (state, action) => {
+                if (state.hotels) {
+                    state.hotels = state.hotels.filter(hotel => hotel.id !== action.payload);
+                    console.log("삭제가 완료되었습니다.");
+                    console.log("삭제 된 후 호텔스 ",state.hotels)
+                }
+            })
+            .addCase(deleteHotel.rejected, (state, action) => {
+                // 에러 처리
+                state.errorMessage = action.payload;
+            })
+            .addCase(updateHotel.fulfilled, (state, action) => {
+                const index = state.hotels.findIndex(hotel => hotel.id === action.payload.id);
+                if (index !== -1) {
+                    state.hotels[index] = {...state.hotels[index], ...action.payload};
+                }
+            })
+            .addCase(updateHotel.rejected, (state, action) => {
+                state.errorMessage = action.payload;
+            })
+            .addCase(fetchHotelDetails.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchHotelDetails.fulfilled, (state, action) => {
+                state.details = action.payload;
+                state.loading = false;
+            })
+            .addCase(fetchHotelDetails.rejected, (state, action) => {
+                state.error = action.payload;
+                state.loading = false;
             });
     }
 });

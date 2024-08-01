@@ -45,6 +45,8 @@ export const allergyTranslations = {
     OAT: '귀리',
     POTATO: '감자',
     TOMATO: '토마토',
+    DUCK: '오리',
+    SALMON: '연어'
 };
 
 export const translateAllergy = (allergy) => {
@@ -54,7 +56,7 @@ export const translateAllergy = (allergy) => {
 
 export const breedTranslations = {
     RETRIEVER: '리트리버',
-    진돗개: '진돗개',
+    JINDOTGAE: '진돗개',
     CHIHUAHUA: '치와와',
     POMERANIAN: '포메라니안',
     MALTESE: '말티즈',
