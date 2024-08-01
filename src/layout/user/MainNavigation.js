@@ -10,9 +10,9 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { BsBell } from "react-icons/bs";
 import { BiUser } from "react-icons/bi";
 import UserContext from "../../components/context/user-context";
-import {userEditActions} from "../../components/store/user/UserEditSlice";
-import {useDispatch} from "react-redux";
-import {dogEditActions} from "../../components/store/dog/DogEditSlice";
+import { userEditActions } from "../../components/store/user/UserEditSlice";
+import { useDispatch } from "react-redux";
+import { dogEditActions } from "../../components/store/dog/DogEditSlice";
 
 const MainNavigation = () => {
   let navi = useNavigate();
@@ -25,14 +25,13 @@ const MainNavigation = () => {
   const clearEditMode = async () => {
     dispatch(userEditActions.clearMode());
     dispatch(userEditActions.clearUserEditMode());
+    dispatch(dogEditActions.clearEdit());
   };
 
-    // 유저가 회원정보 수정 중 마이페이지를 누르면 화면이 변환되는 함수
-    const dispatch = useDispatch();
-    const clearEditMode = async () => {
-        dispatch(userEditActions.clearMode());
-        dispatch(userEditActions.clearUserEditMode());
-        dispatch(dogEditActions.clearEdit())
+  useEffect(() => {
+    if (userData) {
+      changeIsLogin(true);
+      setUser(userData);
     }
   }, [userData, changeIsLogin, setUser]);
 
@@ -44,9 +43,8 @@ const MainNavigation = () => {
     localStorage.removeItem("userData");
     localStorage.removeItem("userDetail");
 
-    const logoutHandler = () => {
-        localStorage.removeItem('userData');
-        localStorage.removeItem('userDetail');
+    // 현재 URL을 가져옴
+    const currentUrl = window.location.href;
 
     // 현재 URL이 루트 경로가 아닌 경우 루트 경로로 리다이렉트
     if (currentUrl !== "http://localhost:3000/") {
