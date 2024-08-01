@@ -1,25 +1,24 @@
 import React, { useState, useContext, useEffect } from "react";
-import {Link, NavLink, useNavigate, useRouteLoaderData} from "react-router-dom";
+import { Link, NavLink, useNavigate, useRouteLoaderData } from "react-router-dom";
 import styles from "./MainNavigation.module.scss";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { BsBell } from "react-icons/bs";
 import { BiUser } from "react-icons/bi";
 import UserContext from "../../components/context/user-context";
-import {userEditActions} from "../../components/store/user/UserEditSlice";
-import {useDispatch, useSelector} from "react-redux";
-import {dogEditActions} from "../../components/store/dog/DogEditSlice";
-import {userActions} from "../../components/store/user/UserSlice";
+import { userEditActions } from "../../components/store/user/UserEditSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { dogEditActions } from "../../components/store/dog/DogEditSlice";
+import { userActions } from "../../components/store/user/UserSlice";
 
 const MainNavigation = () => {
 
     let navi = useNavigate();
     const [menuOpen, setMenuOpen] = useState(false);
-    const [openNotice, setOpenNotice] = useState(false)
+    const [openNotice, setOpenNotice] = useState(false);
 
     const existNotice = useSelector(state => state.user.existNotice);
     const noticeCount = useSelector(state => state.user.noticeCount);
     const message = useSelector(state => state.user.noticeMessage);
-
 
     const { changeIsLogin, user, setUser } = useContext(UserContext);
     const userData = useRouteLoaderData("user-data");
@@ -29,8 +28,8 @@ const MainNavigation = () => {
     const clearEditMode = async () => {
         dispatch(userEditActions.clearMode());
         dispatch(userEditActions.clearUserEditMode());
-        dispatch(dogEditActions.clearEdit())
-    }
+        dispatch(dogEditActions.clearEdit());
+    };
 
     useEffect(() => {
         if (userData) {
@@ -60,17 +59,19 @@ const MainNavigation = () => {
     };
 
     const loginHandler = () => {
-        navi("/login")
-    }
+        navi("/login");
+    };
 
     const toggleNotice = () => {
         setOpenNotice(prevState => !prevState);
-    }
+    };
 
     const clearNotice = () => {
-        dispatch(userActions.clearExistNotice)
-    }
-
+        dispatch(userActions.clearExistNotice());
+    };
+    console.log(existNotice)
+    console.log(message)
+    console.log(noticeCount)
 
     return (
         <header className={styles.header}>
@@ -110,11 +111,11 @@ const MainNavigation = () => {
             )}
             {openNotice && (
                 <div className={styles.noticeWrap} onClick={clearNotice}>
-                    <div>{message}</div>
+                    <div className={styles.message}>{message}</div>
                 </div>
             )}
         </header>
     );
-}
+};
 
 export default MainNavigation;
