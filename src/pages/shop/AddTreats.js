@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styles from "./AddTreats.module.scss";
 import { allergiesOptions } from "../../components/auth/dog/DogAllergiesInput";
+import { TREATS_URL } from "../../config/user/host-config";
 
 const AddTreats = () => {
   const [title, setTitle] = useState("");
@@ -10,6 +11,8 @@ const AddTreats = () => {
   const [selectedAllergies, setSelectedAllergies] = useState([]);
   const [treatsPics, setTreatsPics] = useState([]);
   const [treatsDetailPics, setTreatsDetailPics] = useState([]);
+  const [treatsPicsInputs, setTreatsPicsInputs] = useState([0]); // 대표 사진 파일 입력 필드
+  const [treatsDetailPicsInputs, setTreatsDetailPicsInputs] = useState([0]); // 상세 사진 파일 입력 필드
 
   const handleAllergyChange = (event) => {
     const { value, checked } = event.target;
@@ -22,44 +25,67 @@ const AddTreats = () => {
     }
   };
 
-  const handleFileChange = (event, type) => {
+
+
+  const handleFileChange = (event, type, index) => {
     const files = Array.from(event.target.files);
     if (type === "treatsPics") {
-      setTreatsPics(files);
+      const newTreatsPics = [...treatsPics];
+      newTreatsPics[index] = files[0]; // 첫 번째 파일만 저장
+      setTreatsPics(newTreatsPics);
     } else {
-      setTreatsDetailPics(files);
+      const newTreatsDetailPics = [...treatsDetailPics];
+      newTreatsDetailPics[index] = files[0]; // 첫 번째 파일만 저장
+      setTreatsDetailPics(newTreatsDetailPics);
     }
+  };
+
+  const addTreatsPicInput = () => {
+    setTreatsPicsInputs([...treatsPicsInputs, treatsPicsInputs.length]);
+  };
+
+  const addTreatsDetailPicInput = () => {
+    setTreatsDetailPicsInputs([...treatsDetailPicsInputs, treatsDetailPicsInputs.length]);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     const formData = new FormData();
-    formData.append("title", title);
-    formData.append("treatsType", treatsType);
-    formData.append("treatsWeight", treatsWeight);
-    formData.append("dogSize", dogSize);
-    formData.append("allergieList", selectedAllergies.join(","));
+    formData.append("treats-title", title);
+    formData.append("treats-type", treatsType);
+    formData.append("treats-weight", treatsWeight);
+    formData.append("dog-size", dogSize);
+    formData.append("treats-allergy", selectedAllergies.join(","));
 
     treatsPics.forEach((file) => {
-      formData.append("treatsPics", file);
+      if (file) {
+        formData.append("treats-pics", file);
+      }
     });
 
     treatsDetailPics.forEach((file) => {
-      formData.append("treatsDetailPics", file);
+      if (file) {
+        formData.append("treats-detail-pics", file);
+      }
     });
 
     try {
-      const response = await fetch("/treats", {
+      const response = await fetch(`${TREATS_URL}`, {
         method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`, // 필요한 경우 토큰을 추가
+      },
         body: formData,
       });
+
+      console.log(response)
 
       if (!response.ok) {
         throw new Error("서버 응답이 올바르지 않습니다.");
       }
 
-      const data = await response.text(); // 또는 response.json() 필요에 따라
+      const data = await response.json(); // 또는 response.json() 필요에 따라
       alert(data); // 성공 메시지
     } catch (error) {
       console.error("상품 추가 실패:", error);
@@ -102,7 +128,6 @@ const AddTreats = () => {
             type="text"
             className={styles.inputField}
             value={treatsWeight}
-            // placeholder="g"
             onChange={(e) => setTreatsWeight(e.target.value)}
             required
           />
@@ -140,23 +165,33 @@ const AddTreats = () => {
         </div>
         <div className={styles.formGroup}>
           <label className={styles.label}>대표 사진</label>
-          <input
-            type="file"
-            multiple
-            className={styles.inputField}
-            onChange={(e) => handleFileChange(e, "treatsPics")}
-            required
-          />
+          {treatsPicsInputs.map((_, index) => (
+            <input
+              key={index}
+              type="file"
+              className={styles.inputField}
+              onChange={(e) => handleFileChange(e, "treatsPics", index)}
+              required
+            />
+          ))}
+          <button type="button" onClick={addTreatsPicInput}>
+            추가 사진
+          </button>
         </div>
         <div className={styles.formGroup}>
           <label className={styles.label}>상세 사진</label>
-          <input
-            type="file"
-            multiple
-            className={styles.inputField}
-            onChange={(e) => handleFileChange(e, "treatsDetailPics")}
-            required
-          />
+          {treatsDetailPicsInputs.map((_, index) => (
+            <input
+              key={index}
+              type="file"
+              className={styles.inputField}
+              onChange={(e) => handleFileChange(e, "treatsDetailPics", index)}
+              required
+            />
+          ))}
+          <button type="button" onClick={addTreatsDetailPicInput}>
+            추가 사진
+          </button>
         </div>
         <button type="submit" className={styles.submitButton}>
           상품 등록

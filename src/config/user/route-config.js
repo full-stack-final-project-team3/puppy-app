@@ -107,6 +107,8 @@ export const router = createBrowserRouter([
       {
         path: "add-dog",
         element: <AddDogMain />,
+        loader: getUserToken,
+        id: "getToken",
       },
       {
         path: "boards",
