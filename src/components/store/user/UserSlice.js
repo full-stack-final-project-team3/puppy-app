@@ -3,7 +3,8 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
     userInfo: {},
     existNotice: false,
-    noticeCount: 0
+    noticeCount: 0,
+    noticeMessage: '', // 알람 메시지
 }
 
 const userSlice = createSlice({
@@ -22,6 +23,9 @@ const userSlice = createSlice({
         clearExistNotice: (state) => {
             state.existNotice = false;
             state.noticeCount = 0;
+        },
+        setNoticeMessage: (state, action) => {
+            state.noticeMessage = action.payload;
         }
     }
 })

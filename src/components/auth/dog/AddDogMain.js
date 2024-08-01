@@ -95,6 +95,7 @@ const AddDogMain = () => {
 
             dispatch(userEditActions.updateUserDetail(updatedUserDetail));
             alert('강아지 등록 성공!');
+            dispatch(userActions.setNoticeMessage(`${name}이 등록 되었습니다~`))
             dispatch(userActions.setExistNotice())
             navigate('/mypage');
         } else {

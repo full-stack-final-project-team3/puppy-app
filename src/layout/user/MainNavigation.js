@@ -18,6 +18,7 @@ const MainNavigation = () => {
 
     const existNotice = useSelector(state => state.user.existNotice);
     const noticeCount = useSelector(state => state.user.noticeCount);
+    const message = useSelector(state => state.user.noticeMessage);
 
 
     const { changeIsLogin, user, setUser } = useContext(UserContext);
@@ -109,7 +110,7 @@ const MainNavigation = () => {
             )}
             {openNotice && (
                 <div className={styles.noticeWrap} onClick={clearNotice}>
-
+                    <div>{message}</div>
                 </div>
             )}
         </header>
