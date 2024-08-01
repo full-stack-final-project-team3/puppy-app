@@ -79,12 +79,13 @@ const TreatsListForDog = () => {
                 >
                   <img
                     src="http://localhost:8888/treats/images/2024/07/31/bb554f82-4752-423d-bfd3-c32550203d42_1200x0.webp"
-                    className="card-img-top"
+                    className={`${styles.cardImageTop} img-fluid`}
                     alt={treat.title}
                   />
                   <div className={styles.cardBody}>
                     <h4 className={styles.cardTitle}>{treat.title}</h4>
                   </div>
+                  <button className={styles.addBtn}>add</button>
                 </div>
               ))}
             </div>
@@ -93,7 +94,7 @@ const TreatsListForDog = () => {
 
         {/* 선택한 간식 목록 표시 */}
         <div className={styles.selectedTreats}>
-          <h2>{dogName ? `${dogName}의` : "강아지"} 간식 리스트</h2>
+          {/* <h2>{dogName ? `${dogName}의` : "강아지"} 간식 리스트</h2> */}
           <div className={styles.imageBoxContainer}>
             {[...Array(5)].map((_, index) => (
               <div className={styles.imageBox} key={index}>
