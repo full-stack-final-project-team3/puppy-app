@@ -77,7 +77,7 @@ const VerificationInput = ({ email, onSuccess }) => {
   }, []);
 
   return (
-    <div className={styles.verificationInput}>
+    <div className={styles.signUpInput}>
       <h2 className={styles.h2}>인증코드</h2>
       <div className={styles.codeInputContainer}>
         {Array.from(new Array(4)).map((_, index) => (

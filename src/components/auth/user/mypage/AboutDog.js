@@ -6,6 +6,8 @@ import {useSelector} from "react-redux";
 
 const AboutDog = () => {
 
+    // 유저의 상태가 바뀌면 redux에서 다시 업데이트 해줘야 한다.
+
     const userDetail = useSelector(state => state.userEdit.userDetail);
     const dogList = userDetail.dogList;
 

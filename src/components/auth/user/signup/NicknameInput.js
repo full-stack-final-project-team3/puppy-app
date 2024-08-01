@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./SignUpPage.module.scss";
 import { AUTH_URL } from "../../../../config/user/host-config";
 import { debounce } from "lodash";
@@ -40,10 +40,14 @@ const NicknameInput = ({ onSuccess }) => {
     nextStep();
   };
 
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
+
   return (
     <>
       <h1 className={styles.h1}>Step 2</h1>
-      <div className={styles.nicknameInput}>
+      <div className={styles.signUpInput}>
         <h2>닉네임</h2>
         <input
           ref={inputRef}

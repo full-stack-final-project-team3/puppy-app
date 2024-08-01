@@ -1,57 +1,45 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useRouteLoaderData } from "react-router-dom";
 import UserContext from "../../components/context/user-context";
-import {AUTH_URL} from "../../config/user/host-config";
+import { AUTH_URL } from "../../config/user/host-config";
 import {useDispatch, useSelector} from "react-redux";
-import {userActions} from "../../components/store/user/UserSlice";
-import {userEditActions} from "../../components/store/user/UserEditSlice";
+import { userEditActions } from "../../components/store/user/UserEditSlice";
 
 const WelcomePage = () => {
-
     const userData = useRouteLoaderData('user-data3');
-    console.log(userData)
+    const dispatch = useDispatch();
+    const { changeIsLogin, user, setUser } = useContext(UserContext);
+    const [userDetail, setUserDetail] = useState({});
 
-    let dispatch = useDispatch();
-
-
-
-    console.log(userData)
-    const {changeIsLogin, user, setUser} = useContext(UserContext);
+    // 로그인 상태 설정 및 사용자 데이터 설정
     useEffect(() => {
         if (userData) {
             changeIsLogin(true);
+            setUser(userData);
 
-            const userDataJson = localStorage.getItem('userData');
-            setUser(userData)
+            // 사용자 세부 정보 가져오기
+            const fetchUserDetail = async () => {
+                try {
+                    const response = await fetch(`${AUTH_URL}/${userData.email}`);
+                    if (response.ok) {
+                        const userDetailData = await response.json();
+                        dispatch(userEditActions.updateUserDetail(userDetailData));
+                        setUserDetail(userDetailData);
+                    } else {
+                        console.error('Failed to fetch user details:', response.statusText);
+                    }
+                } catch (error) {
+                    console.error('Error fetching user details:', error);
+                }
+            };
+            fetchUserDetail();
         }
-    }, [userData, changeIsLogin]); // 종속성 배열 추가
-
-    const [userDetail, setUserDetail] = useState({});
-    useEffect(() => {
-
-        if (!userData) return;
-
-        const fetchData = async () => {
-            try {
-                const response = await fetch(`${AUTH_URL}/${userData.email}`);
-                const userDetailData = await response.json();
-
-                // dispatch(userActions.setUserInfo(userDetailData));
-                dispatch(userEditActions.updateUserDetail(userDetailData));
-                setUserDetail(userDetailData);
-            } catch (error) {
-                console.error(error);
-            }
-        };
-        fetchData();
-    }, []);
-
-
+    }, [userData, changeIsLogin, setUser, dispatch]);
 
     return (
-        <>
+        <div>
             {user ? <div>Welcome {userDetail.nickname}~</div> : <div>Welcome ~</div>}
-        </>
+        </div>
     );
 };
 
