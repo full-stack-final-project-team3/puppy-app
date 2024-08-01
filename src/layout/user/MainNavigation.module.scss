@@ -75,7 +75,6 @@
   }
 }
 
-
 .dropdownMenu {
   position: absolute;
   top: 80px; // header 높이 만큼 내려오기
@@ -115,11 +114,23 @@
   background: #ffffff;
   border: 1px solid black;
   border-radius: 32px;
+  overflow: scroll;
 
   .message {
-    width: 90%;
+    width: 300px;
     margin: 10px auto;
-    border: 1px solid black;
+    border-bottom: 1px solid gray;
+    color: black;
+    padding: 10px 4px;
+  }
+
+  .time {
+    margin-top: 5px;
+    font-size: 0.7rem;
+    color: gray;
+  }
+
+  .clicked {
+    color: gray;
   }
 }
-

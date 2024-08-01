@@ -14,11 +14,11 @@ const MainNavigation = () => {
     let navi = useNavigate();
     const [menuOpen, setMenuOpen] = useState(false);
     const [openNotice, setOpenNotice] = useState(false);
-    const [clickedMessages, setClickedMessages] = useState({}); // 메시지 클릭 상태를 추적
 
     const existNotice = useSelector(state => state.user.existNotice);
     const noticeCount = useSelector(state => state.user.noticeCount);
     const messages = useSelector(state => state.user.noticeMessage);
+    const clickedMessages = useSelector(state => state.user.clickedMessages);
 
     const { changeIsLogin, user, setUser } = useContext(UserContext);
     const userData = useRouteLoaderData("user-data");
@@ -62,8 +62,7 @@ const MainNavigation = () => {
     };
 
     const clearNotice = (index) => {
-        setClickedMessages(prev => ({ ...prev, [index]: true }));
-        dispatch(userActions.clearExistNotice());
+        dispatch(userActions.clearExistNotice(index));
     };
 
     return (
@@ -80,7 +79,7 @@ const MainNavigation = () => {
                         <>
                             <button className={styles.logout} onClick={logoutHandler}>Logout</button>
                             <BsBell className={styles.icon} onClick={toggleNotice}></BsBell>
-                            {existNotice && <span className={styles.count}>{noticeCount}</span>}
+                            {noticeCount !== 0 ? <span className={styles.count}>{noticeCount}</span>: undefined}
                             <Link to={"/mypage"} onClick={clearEditMode}><BiUser className={styles.icon}/></Link>
                             <GiHamburgerMenu className={styles.icon} onClick={toggleMenuHandler}/>
                         </>
@@ -104,13 +103,14 @@ const MainNavigation = () => {
             )}
             {openNotice && (
                 <div className={styles.noticeWrap}>
-                    {Array.isArray(messages) && messages.map((message, index) => (
+                    {Array.isArray(messages) && messages.slice().reverse().map((message, index) => (
                         <div
                             key={index}
                             onClick={() => clearNotice(index)}
                             className={`${styles.message} ${clickedMessages[index] ? styles.clicked : ''}`}
                         >
-                            {message}
+                            {message.message}
+                            <div className={styles.time}>{message.time}</div>
                         </div>
                     ))}
                 </div>
