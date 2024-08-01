@@ -28,16 +28,19 @@
 
   .roomImages {
     display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+    justify-content: center;
     margin: 20px 0;
 
-    img {
-      width: 200px;
-      height: 150px;
-      object-fit: cover;
-      border-radius: 4px;
-      border: 1px solid #ccc;
+    .imageContainer {
+      width: 100%;
+      max-width: 800px;
+
+      img {
+        width: 100%;
+        height: auto;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+      }
     }
   }
 

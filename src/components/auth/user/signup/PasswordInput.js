@@ -49,12 +49,12 @@ const PasswordInput = ({ onSuccess }) => {
     setCheckError("비밀번호가 일치하지 않습니다");
   };
 
-  useEffect(() => {
-    passwordRef.current.focus();
-  }, []);
+  // useEffect(() => {
+  //   passwordRef.current.focus();
+  // }, []);
 
   return (
-      <div className={styles.passwordInput}>
+      <div className={styles.signUpInput}>
         <h2>비밀번호</h2>
         <input
             ref={passwordRef}

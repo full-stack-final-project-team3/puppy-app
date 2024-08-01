@@ -1,5 +1,12 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link, NavLink, useNavigate, useRouteLoaderData } from "react-router-dom";
+import {
+  Link,
+  NavLink,
+  useNavigate,
+  useRouteLoaderData,
+} from "react-router-dom";
+
 import styles from "./MainNavigation.module.scss";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { BsBell } from "react-icons/bs";
@@ -29,23 +36,41 @@ const MainNavigation = () => {
         dispatch(userEditActions.clearUserEditMode());
         dispatch(dogEditActions.clearEdit());
     };
+import { useDispatch } from "react-redux";
+import { dogEditActions } from "../../components/store/dog/DogEditSlice";
 
-    useEffect(() => {
-        if (userData) {
-            changeIsLogin(true);
-            setUser(userData);
-        }
-    }, [userData, changeIsLogin, setUser]);
+const MainNavigation = () => {
+  let navi = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const { changeIsLogin, user, setUser } = useContext(UserContext);
+  const userData = useRouteLoaderData("user-data");
 
-    const toggleMenuHandler = () => {
-        setMenuOpen(prevState => !prevState);
-    };
+  // 유저가 회원정보 수정 중 마이페이지를 누르면 화면이 변환되는 함수
+  const dispatch = useDispatch();
+  const clearEditMode = async () => {
+    dispatch(userEditActions.clearMode());
+    dispatch(userEditActions.clearUserEditMode());
+    dispatch(dogEditActions.clearEdit());
+  };
 
-    const logoutHandler = () => {
-        localStorage.removeItem('userData');
-        localStorage.removeItem('userDetail');
+  useEffect(() => {
+    if (userData) {
+      changeIsLogin(true);
+      setUser(userData);
+    }
+  }, [userData, changeIsLogin, setUser]);
 
-        const currentUrl = window.location.href;
+  const toggleMenuHandler = () => {
+    setMenuOpen((prevState) => !prevState);
+  };
+
+  const logoutHandler = () => {
+    localStorage.removeItem("userData");
+    localStorage.removeItem("userDetail");
+
+    // 현재 URL을 가져옴
+    const currentUrl = window.location.href;
+
         if (currentUrl !== 'http://localhost:3000/') {
             window.location.href = 'http://localhost:3000/';
         } else {
@@ -117,6 +142,7 @@ const MainNavigation = () => {
             )}
         </header>
     );
+
 };
 
 export default MainNavigation;
