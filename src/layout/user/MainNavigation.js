@@ -6,14 +6,20 @@ import { BsBell } from "react-icons/bs";
 import { BiUser } from "react-icons/bi";
 import UserContext from "../../components/context/user-context";
 import {userEditActions} from "../../components/store/user/UserEditSlice";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {dogEditActions} from "../../components/store/dog/DogEditSlice";
+import {userActions} from "../../components/store/user/UserSlice";
 
 const MainNavigation = () => {
 
     let navi = useNavigate();
     const [menuOpen, setMenuOpen] = useState(false);
     const [openNotice, setOpenNotice] = useState(false)
+
+    const existNotice = useSelector(state => state.user.existNotice);
+    const noticeCount = useSelector(state => state.user.noticeCount);
+
+
     const { changeIsLogin, user, setUser } = useContext(UserContext);
     const userData = useRouteLoaderData("user-data");
 
@@ -60,7 +66,9 @@ const MainNavigation = () => {
         setOpenNotice(prevState => !prevState);
     }
 
-
+    const clearNotice = () => {
+        dispatch(userActions.clearExistNotice)
+    }
 
 
     return (
@@ -77,7 +85,7 @@ const MainNavigation = () => {
                         <>
                             <button className={styles.logout} onClick={logoutHandler}>Logout</button>
                             <BsBell className={styles.icon} onClick={toggleNotice}></BsBell>
-                            <span className={styles.count}>1</span>
+                            {existNotice && <span className={styles.count}>{noticeCount}</span>}
                             <Link to={"/mypage"} onClick={clearEditMode}><BiUser className={styles.icon}/></Link>
                             <GiHamburgerMenu className={styles.icon} onClick={toggleMenuHandler}/>
                         </>
@@ -100,7 +108,7 @@ const MainNavigation = () => {
                 </div>
             )}
             {openNotice && (
-                <div className={styles.noticeWrap}>
+                <div className={styles.noticeWrap} onClick={clearNotice}>
 
                 </div>
             )}
