@@ -5,9 +5,10 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { BsBell } from "react-icons/bs";
 import { BiUser } from "react-icons/bi";
 import UserContext from "../../components/context/user-context";
-import {userEditActions} from "../../components/store/user/UserEditSlice";
-import {useDispatch} from "react-redux";
-import {dogEditActions} from "../../components/store/dog/DogEditSlice";
+import { userEditActions } from "../../components/store/user/UserEditSlice";
+import { useDispatch, useSelector} from "react-redux";
+import { dogEditActions } from "../../components/store/dog/DogEditSlice";
+import { userActions } from "../../components/store/user/UserSlice";
 
 const MainNavigation = () => {
 
@@ -17,6 +18,10 @@ const MainNavigation = () => {
     const { changeIsLogin, user, setUser } = useContext(UserContext);
     const userData = useRouteLoaderData("user-data");
 
+    const existNotice = useSelector(state => state.user.existNotice);
+    const noticeCount = useSelector(state => state.user.noticeCount);
+    const messages = useSelector(state => state.user.noticeMessage);
+    const clickedMessages = useSelector(state => state.user.clickedMessages);
     // 유저가 회원정보 수정 중 마이페이지를 누르면 화면이 변환되는 함수
     const dispatch = useDispatch();
     const clearEditMode = async () => {
@@ -43,25 +48,26 @@ const MainNavigation = () => {
         // 현재 URL을 가져옴
         const currentUrl = window.location.href;
 
-        // 현재 URL이 루트 경로가 아닌 경우 루트 경로로 리다이렉트
-        if (currentUrl !== 'http://localhost:3000/') {
-            window.location.href = 'http://localhost:3000/';
-        } else {
-            // 현재 페이지를 새로고침
-            window.location.reload();
-        }
-    };
+    // 현재 URL이 루트 경로가 아닌 경우 루트 경로로 리다이렉트
+    if (currentUrl !== "http://localhost:3000/") {
+      window.location.href = "http://localhost:3000/";
+    } else {
+      // 현재 페이지를 새로고침
+      window.location.reload();
+    }
+  };
 
     const loginHandler = () => {
-        navi("/login")
-    }
+        navi("/login");
+    };
 
     const toggleNotice = () => {
         setOpenNotice(prevState => !prevState);
-    }
+    };
 
-
-
+    const clearNotice = (index) => {
+        dispatch(userActions.clearExistNotice(index));
+    };
 
     return (
         <header className={styles.header}>
@@ -77,7 +83,7 @@ const MainNavigation = () => {
                         <>
                             <button className={styles.logout} onClick={logoutHandler}>Logout</button>
                             <BsBell className={styles.icon} onClick={toggleNotice}></BsBell>
-                            <span className={styles.count}>1</span>
+                            {noticeCount !== 0 ? <span className={styles.count}>{noticeCount}</span>: undefined}
                             <Link to={"/mypage"} onClick={clearEditMode}><BiUser className={styles.icon}/></Link>
                             <GiHamburgerMenu className={styles.icon} onClick={toggleMenuHandler}/>
                         </>
@@ -101,11 +107,21 @@ const MainNavigation = () => {
             )}
             {openNotice && (
                 <div className={styles.noticeWrap}>
-
+                    {Array.isArray(messages) && messages.slice().reverse().map((message, index) => (
+                        <div
+                            key={index}
+                            onClick={() => clearNotice(index)}
+                            className={`${styles.message} ${clickedMessages[index] ? styles.clicked : ''}`}
+                        >
+                            {message.message}
+                            <div className={styles.time}>{message.time}</div>
+                        </div>
+                    ))}
                 </div>
             )}
         </header>
     );
-}
+
+};
 
 export default MainNavigation;

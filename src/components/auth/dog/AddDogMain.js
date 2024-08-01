@@ -10,11 +10,13 @@ import { useNavigate } from "react-router-dom";
 import { DOG_URL } from "../../../config/user/host-config";
 import { useDispatch, useSelector } from "react-redux";
 import { userEditActions } from "../../store/user/UserEditSlice";
+import {userActions} from "../../store/user/UserSlice";
 
 const AddDogMain = () => {
     const navigate = useNavigate();
     const user = useSelector(state => state.userEdit.userDetail);
     const dispatch = useDispatch();
+
     const email = user.email;
 
     const [step, setStep] = useState(1);
@@ -93,6 +95,8 @@ const AddDogMain = () => {
 
             dispatch(userEditActions.updateUserDetail(updatedUserDetail));
             alert('강아지 등록 성공!');
+            dispatch(userActions.setNoticeMessage(`당신의 강아지 ${name} 등록 되었습니다~`))
+            dispatch(userActions.setExistNotice())
             navigate('/mypage');
         } else {
             alert('강아지 등록 실패!');
