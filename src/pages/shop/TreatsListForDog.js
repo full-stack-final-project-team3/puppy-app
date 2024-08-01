@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom"; // useLocation 추가
 import { TREATS_URL } from "../../config/user/host-config"; // API URL 설정
 import styles from "./TreatsListForDog.module.scss"; // SCSS 파일 import
+import '../../styles/'; // SCSS 파일 임포트
 
 const TreatsListForDog = () => {
   const { dogId } = useParams(); // URL에서 dogId 가져오기
@@ -98,7 +99,7 @@ const TreatsListForDog = () => {
             </ul>
           )}
         </div>
-        <img src="http://localhost:8888/treats/images/2024/07/31/bb554f82-4752-423d-bfd3-c32550203d42_1200x0.webp" alt="Uploaded Image" />
+        {/* <img src="http://localhost:8888/treats/images/2024/07/31/bb554f82-4752-423d-bfd3-c32550203d42_1200x0.webp" alt="Uploaded Image" /> */}
         <button className={styles.nextButton}>NEXT</button>
       </div>
     </div>
