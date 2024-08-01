@@ -1,11 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { saveToLocalStorage, loadFromLocalStorage, removeFromLocalStorage } from './LocalStorageUtils';
+import {
+    saveToLocalStorage,
+    loadFromLocalStorage,
+    removeFromLocalStorage,
+    decrementLocalStorageValue
+} from './LocalStorageUtils';
 
 const initialState = {
     userInfo: {},
     existNotice: loadFromLocalStorage('existNotice') || false,
     noticeCount: loadFromLocalStorage('noticeCount') || 0,
-    noticeMessage: loadFromLocalStorage('noticeMessage') || '',
+    noticeMessage: loadFromLocalStorage('noticeMessage') || [],
 };
 
 const userSlice = createSlice({
@@ -23,13 +28,19 @@ const userSlice = createSlice({
             saveToLocalStorage('noticeCount', state.noticeCount);
         },
         clearExistNotice: (state) => { // 알림 삭제
-            state.existNotice = false;
-            state.noticeCount = 0;
-            removeFromLocalStorage('existNotice');
-            removeFromLocalStorage('noticeCount');
+            state.noticeCount = decrementLocalStorageValue('noticeCount');
+            if (state.noticeCount === 0) {
+                state.existNotice = false;
+                removeFromLocalStorage('existNotice');
+                removeFromLocalStorage('noticeCount');
+            }
         },
         setNoticeMessage: (state, action) => {
-            state.noticeMessage = action.payload;
+            if (Array.isArray(state.noticeMessage)) {
+                state.noticeMessage = [...state.noticeMessage, action.payload];
+            } else {
+                state.noticeMessage = [action.payload];
+            }
             saveToLocalStorage('noticeMessage', state.noticeMessage);
         }
     }

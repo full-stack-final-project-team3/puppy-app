@@ -11,19 +11,18 @@ import { dogEditActions } from "../../components/store/dog/DogEditSlice";
 import { userActions } from "../../components/store/user/UserSlice";
 
 const MainNavigation = () => {
-
     let navi = useNavigate();
     const [menuOpen, setMenuOpen] = useState(false);
     const [openNotice, setOpenNotice] = useState(false);
+    const [clickedMessages, setClickedMessages] = useState({}); // 메시지 클릭 상태를 추적
 
     const existNotice = useSelector(state => state.user.existNotice);
     const noticeCount = useSelector(state => state.user.noticeCount);
-    const message = useSelector(state => state.user.noticeMessage);
+    const messages = useSelector(state => state.user.noticeMessage);
 
     const { changeIsLogin, user, setUser } = useContext(UserContext);
     const userData = useRouteLoaderData("user-data");
 
-    // 유저가 회원정보 수정 중 마이페이지를 누르면 화면이 변환되는 함수
     const dispatch = useDispatch();
     const clearEditMode = async () => {
         dispatch(userEditActions.clearMode());
@@ -46,14 +45,10 @@ const MainNavigation = () => {
         localStorage.removeItem('userData');
         localStorage.removeItem('userDetail');
 
-        // 현재 URL을 가져옴
         const currentUrl = window.location.href;
-
-        // 현재 URL이 루트 경로가 아닌 경우 루트 경로로 리다이렉트
         if (currentUrl !== 'http://localhost:3000/') {
             window.location.href = 'http://localhost:3000/';
         } else {
-            // 현재 페이지를 새로고침
             window.location.reload();
         }
     };
@@ -66,12 +61,10 @@ const MainNavigation = () => {
         setOpenNotice(prevState => !prevState);
     };
 
-    const clearNotice = () => {
+    const clearNotice = (index) => {
+        setClickedMessages(prev => ({ ...prev, [index]: true }));
         dispatch(userActions.clearExistNotice());
     };
-    console.log(existNotice)
-    console.log(message)
-    console.log(noticeCount)
 
     return (
         <header className={styles.header}>
@@ -110,8 +103,16 @@ const MainNavigation = () => {
                 </div>
             )}
             {openNotice && (
-                <div className={styles.noticeWrap} onClick={clearNotice}>
-                    <div className={styles.message}>{message}</div>
+                <div className={styles.noticeWrap}>
+                    {Array.isArray(messages) && messages.map((message, index) => (
+                        <div
+                            key={index}
+                            onClick={() => clearNotice(index)}
+                            className={`${styles.message} ${clickedMessages[index] ? styles.clicked : ''}`}
+                        >
+                            {message}
+                        </div>
+                    ))}
                 </div>
             )}
         </header>
