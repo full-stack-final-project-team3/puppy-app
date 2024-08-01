@@ -37,9 +37,9 @@ const RoomDetail = ({hotel, onBook}) => {
     };
 
     const modifyHotelHandler = (hotelId) => {
-        navigate(`/modify-hotel/${hotelId}`);p
+        navigate(`/modify-hotel/${hotelId}`);
     }
-
+p
     return (
 
         <>
