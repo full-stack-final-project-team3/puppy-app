@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useLocation } from "react-router-dom"; // useLocation 추가
-import { TREATS_URL } from "../../config/user/host-config"; // API URL 설정
-import styles from "./TreatsListForDog.module.scss"; // SCSS 파일 import
+import { useParams, useLocation } from "react-router-dom";
+import { TREATS_URL } from "../../config/user/host-config";
+import styles from "./TreatsListForDog.module.scss";
 
 const TreatsListForDog = () => {
-  const { dogId } = useParams(); // URL에서 dogId 가져오기
-  const location = useLocation(); // location 훅 사용
-  const dogName = location.state?.dogName; // 전달된 강아지 이름 가져오기
+  const { dogId } = useParams();
+  const location = useLocation();
+  const dogName = location.state?.dogName;
   const [treatsList, setTreatsList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [pageNo, setPageNo] = useState(1);
-  const [sort, setSort] = useState("default"); // 정렬 기준 설정 (필요에 따라 변경 가능)
-  const [selectedTreats, setSelectedTreats] = useState([]); // 선택한 간식 상태 추가
+  const [sort, setSort] = useState("default");
+  const [selectedTreats, setSelectedTreats] = useState([]);
 
   useEffect(() => {
     const fetchTreatsList = async () => {
@@ -20,7 +20,6 @@ const TreatsListForDog = () => {
         const response = await fetch(
           `${TREATS_URL}/list/${dogId}?pageNo=${pageNo}&sort=${sort}`,
           {
-            // API 호출
             method: "GET",
             headers: {
               "Content-Type": "application/json",
@@ -31,8 +30,8 @@ const TreatsListForDog = () => {
           throw new Error("네트워크 응답이 올바르지 않습니다.");
         }
         const data = await response.json();
-        console.log("이거머얌", data);
-        setTreatsList(data.treatsList); // 가져온 간식 리스트 설정
+        console.log(data.treatsList);
+        setTreatsList(data.treatsList);
       } catch (err) {
         setError(err);
       } finally {
@@ -41,7 +40,7 @@ const TreatsListForDog = () => {
     };
 
     fetchTreatsList();
-  }, [dogId, pageNo, sort]); // dogId와 pageNo, sort가 변경될 때마다 호출
+  }, [dogId, pageNo, sort]);
 
   if (loading) {
     return <div className={styles.loading}>로딩 중...</div>;
@@ -56,52 +55,71 @@ const TreatsListForDog = () => {
   const toggleTreatSelection = (treat) => {
     setSelectedTreats((prevSelected) => {
       if (prevSelected.some((item) => item.id === treat.id)) {
-        // 이미 선택된 간식이면 제거
         return prevSelected.filter((item) => item.id !== treat.id);
       } else {
-        // 선택되지 않은 간식이면 추가
         return [...prevSelected, treat];
       }
     });
   };
 
   return (
-    <div className={styles.treatsList}>
-      <div className={styles.content}>
-        <h1>{dogName ? `${dogName}` : "강아지"} 맞춤 간식</h1>{" "}
-        {/* 강아지 이름 표시 */}
-        {treatsList.length === 0 ? (
-          <p>등록된 간식이 없습니다.</p>
-        ) : (
-          <ul className={styles.treatList}>
-            {treatsList.map((treat) => (
-              <li
-                className={styles.treat}
-                key={treat.id}
-                onClick={() => toggleTreatSelection(treat)} // 클릭 시 선택 토글
-              >
-                {treat.title}
-              </li> // 각 간식 이름 표시
-            ))}
-          </ul>
-        )}
-        {/* 선택한 간식 목록 표시 */}
-        <div className={styles.selectedTreats}>
-          <h2>{dogName ? `${dogName}의` : "강아지"} 간식 리스트</h2>
-          {selectedTreats.length === 0 ? (
-            <p>선택한 간식이 없습니다.</p>
+    <>
+      <div className={styles.treatsList}>
+        <div className={styles.content}>
+          <h1>{dogName ? `${dogName}` : "강아지"} 맞춤 간식</h1>
+          {treatsList.length === 0 ? (
+            <p>등록된 간식이 없습니다.</p>
           ) : (
-            <ul>
-              {selectedTreats.map((treat) => (
-                <li key={treat.id}>{treat.title}</li> // 선택한 간식 이름 표시
+            <div className={styles.cardContainer}>
+              {treatsList.map((treat) => (
+                <div
+                  className={styles.card}
+                  key={treat.id}
+                  onClick={() => toggleTreatSelection(treat)}
+                >
+                  <img
+                    src="http://localhost:8888/treats/images/2024/07/31/bb554f82-4752-423d-bfd3-c32550203d42_1200x0.webp"
+                    className={`${styles.cardImageTop} img-fluid`}
+                    alt={treat.title}
+                  />
+                  <div className={styles.cardBody}>
+                    <h4 className={styles.cardTitle}>{treat.title}</h4>
+                  </div>
+                  <button className={styles.addBtn}>add</button>
+                </div>
               ))}
-            </ul>
+            </div>
           )}
         </div>
-        <img src="http://localhost:8888/treats/images/2024/07/31/bb554f82-4752-423d-bfd3-c32550203d42_1200x0.webp" alt="Uploaded Image" />
-        <button className={styles.nextButton}>NEXT</button>
+
+        {/* 선택한 간식 목록 표시 */}
+        <div className={styles.selectedTreats}>
+          {/* <h2>{dogName ? `${dogName}의` : "강아지"} 간식 리스트</h2> */}
+          <div className={styles.imageBoxContainer}>
+            {[...Array(5)].map((_, index) => (
+              <div className={styles.imageBox} key={index}>
+                {selectedTreats[index] ? (
+                  <img
+                    src={`http://localhost:8888/treats/images/${selectedTreats[index].image}`} // 선택된 간식의 이미지 URL 설정
+                    alt={selectedTreats[index].title}
+                    className={styles.treatImage}
+                  />
+                ) : (
+                  <img
+                    src="https://cdn-icons-png.flaticon.com/512/8212/8212741.png"
+                    alt={`가상의 간식 ${index + 1}`}
+                    className={styles.treatImage}
+                  />
+                )}
+              </div>
+            ))}
+          </div>
+          {/* <div className={styles.buttonContainer}>
+            <button className={styles.nextButton}>NEXT</button>
+          </div> */}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './DogAllergiesInput.module.scss';
 
-const allergiesOptions = [
+export const allergiesOptions = [
     { value: 'BEEF', label: '소고기' },
     { value: 'CHICKEN', label: '닭고기' },
     { value: 'CORN', label: '옥수수' },
