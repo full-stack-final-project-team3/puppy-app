@@ -114,9 +114,9 @@ const TreatsListForDog = () => {
               </div>
             ))}
           </div>
-          <div className={styles.buttonContainer}>
+          {/* <div className={styles.buttonContainer}>
             <button className={styles.nextButton}>NEXT</button>
-          </div>
+          </div> */}
         </div>
       </div>
     </>
