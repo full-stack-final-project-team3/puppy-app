@@ -62,6 +62,9 @@ const hotelPageSlice = createSlice({
             state.hotels = [];
             state.selectedHotel = null; // 추가된 초기화
         },
+        setHotels: (state, action) => {
+            state.hotels = action.payload;
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -94,7 +97,8 @@ const hotelPageSlice = createSlice({
     },
 });
 
-export const { setStep, incrementPersonCount, decrementPersonCount, resetHotels } = hotelPageSlice.actions;
+export const { setStep, incrementPersonCount, decrementPersonCount, resetHotels ,
+    setHotels} = hotelPageSlice.actions;
 
 export default hotelPageSlice.reducer;
 

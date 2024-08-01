@@ -4,9 +4,16 @@ import Slider from "react-slick";
 import styles from './RoomDetail.module.scss';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import ReviewList from './ReviewList.js'; // 리뷰 리스트 컴포넌트 import
+
+import ReviewList from './ReviewList';
+import {useNavigate} from "react-router-dom"; // 리뷰 리스트 컴포넌트 import
+
+
 
 const RoomDetail = ({hotel, onBook}) => {
+
+    const navigate = useNavigate()
+
     const sliderSettings = useMemo(() => ({
         dots: true,
         infinite: false,
@@ -32,9 +39,14 @@ const RoomDetail = ({hotel, onBook}) => {
         return imageUri;
     };
 
+    const modifyHotelHandler = (hotelId) => {
+        navigate(`/modify-hotel/${hotelId}`);
+    }
+
     return (
 
         <>
+            <button onClick={() => modifyHotelHandler(hotel.hotelId)}>호텔 수정하기</button>
             <div className={styles.roomDetail}>
                 {hotel.room.map((room, roomIndex) => (
                     <div key={room['room-id']} className={styles.room}>

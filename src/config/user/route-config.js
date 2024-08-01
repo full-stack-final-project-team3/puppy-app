@@ -18,6 +18,7 @@ import BoardDetailPage from "../../pages/community/BoardDetailPage";
 
 import AddRoomPage from "../../pages/hotel/AddRoomPage";
 import AddReviewPage from "../../pages/hotel/AddReviewPage";
+import ModifyHotelPage from "../../pages/hotel/ModifyHotelPage";
 
 import ForgotSection from "../../components/auth/user/forgot-info/ForgotSection";
 import ShopMain from "../../pages/shop/ShopMain";
@@ -79,6 +80,11 @@ export const router = createBrowserRouter([
       {
         path: "add-room/:hotelId",
         element: <AddRoomPage />,
+        loader: authCheckLoader,
+      },
+      {
+        path: "modify-hotel/:hotelId",
+        element: <ModifyHotelPage />,
         loader: authCheckLoader,
       },
       {
