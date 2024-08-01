@@ -19,6 +19,23 @@ export const fetchHotels = createAsyncThunk(
     }
 );
 
+export const fetchRooms = createAsyncThunk(
+    'hotelPage/fetchRooms',
+    async (roomId, thunkAPI) => {
+        const token = JSON.parse(localStorage.getItem('userData')).token;
+        const response = await fetch(`${HOTEL_URL}/${roomId}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        if (!response.ok) {
+            throw new Error('Failed to fetch hotels');
+        }
+        const data = await response.json();
+        return data.rooms;
+    }
+);
+
 export const fetchHotelDetails = createAsyncThunk(
     'hotelPage/fetchHotelDetails',
     async (hotelId, thunkAPI) => {
@@ -43,6 +60,7 @@ const initialState = {
     error: null,
     personCount: 1,
     selectedHotel: null, // 추가된 초기화
+    selectedRoom: null,
 };
 
 const hotelPageSlice = createSlice({
@@ -61,7 +79,14 @@ const hotelPageSlice = createSlice({
         resetHotels: (state) => {
             state.hotels = [];
             state.selectedHotel = null; // 추가된 초기화
+            state.selectedRoom = null; // 추가된 초기화
         },
+        setSelectedRoom: (state, action) => {
+            state.selectedRoom = action.payload;
+        },
+        setTotalPrice: (state, action) => {
+            state.totalPrice = action.payload;
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -90,11 +115,24 @@ const hotelPageSlice = createSlice({
             .addCase(fetchHotelDetails.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
+            })
+            .addCase(fetchRooms.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchRooms.fulfilled, (state, action) => {
+                state.rooms = action.payload;
+                state.loading = false;
+                state.step = 4;
+            })
+            .addCase(fetchRooms.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
             });
     },
 });
 
-export const { setStep, incrementPersonCount, decrementPersonCount, resetHotels } = hotelPageSlice.actions;
+export const { setStep, incrementPersonCount, decrementPersonCount, resetHotels, setTotalPrice } = hotelPageSlice.actions;
 
 export default hotelPageSlice.reducer;
 

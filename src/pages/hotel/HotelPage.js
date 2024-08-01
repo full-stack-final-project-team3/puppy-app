@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState, useMemo } from 'react'; // useState 추가
 import { useLoaderData } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,13 +8,15 @@ import {
   incrementPersonCount,
   decrementPersonCount,
   resetHotels,
-  fetchHotelDetails
+  fetchHotelDetails,
+  setTotalPrice
 } from '../../components/store/hotel/HotelPageSlice';
 import StepIndicator from '../../components/hotel/StepIndicator';
 import HotelList from '../../components/hotel/HotelList';
 import HotelSearchForm from '../../components/hotel/HotelSearchForm';
 import RoomDetail from '../../components/hotel/RoomDetail';
-import BookingDetail from '../../components/hotel/BookingDetail'; // 새로운 컴포넌트 임포트
+import BookingDetail from '../../components/hotel/BookingDetail';
+import HotelConfirmation from '../../components/hotel/HotelConfirmation';
 import styles from './HotelPage.module.scss';
 import './HotelPageAnimations.scss';
 import dayjs from 'dayjs';
@@ -24,12 +26,13 @@ const HotelPage = () => {
   const isAdmin = userData && userData.role === 'ADMIN';
 
   const dispatch = useDispatch();
-  const { hotels, step, loading, error, personCount, selectedHotel } = useSelector(state => state.hotelPage);
+  const { hotels, step, loading, error, personCount, selectedHotel, selectedRooms, totalPrice } = useSelector(state => state.hotelPage);
   const startDate = useSelector(state => state.reservation.startDate);
   const endDate = useSelector(state => state.reservation.endDate);
-
   const user = useSelector(state => state.userEdit.userDetail);
   console.log(user)
+
+  const [selectedRoom, setSelectedRoom] = useState(null);
 
   useEffect(() => {
     if (hotels && hotels.length > 0) {
@@ -40,6 +43,10 @@ const HotelPage = () => {
   useEffect(() => {
     console.log('Selected Hotel:', selectedHotel);
   }, [selectedHotel]);
+
+  useEffect(() => {
+    console.log('Selected Room: ', selectedRooms);
+  }, [selectedRooms]);
 
   const formatDate = (date) => {
     return dayjs(date).format('YYYY / MM / DD ddd'); // 날짜를 원하는 형식으로 변환합니다.
@@ -52,6 +59,17 @@ const HotelPage = () => {
     'url(https://example.com/image4.jpg)', // Step 4
     'url(https://example.com/image5.jpg)'  // Step 5
   ];
+
+
+  const sliderSettings = useMemo(() => ({
+    dots: true,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: true,
+    cssEase: 'linear'
+  }), []);
 
   const handleSearch = (location) => {
     dispatch(fetchHotels(location));
@@ -80,11 +98,21 @@ const HotelPage = () => {
     });
   };
 
-  const handleBook = (hotelId) => {
-    dispatch(fetchHotelDetails(hotelId)).then(() => {
-      dispatch(setStep(4)); // Step 4로 이동
+  const handleBook = (hotel, room) => {
+    setSelectedRoom(room); // 선택된 방 정보를 상태에 저장
+    dispatch(fetchHotelDetails(hotel.id)).then(() => {
+      dispatch(setStep(4));
     });
   };
+
+  const handlePayment = (hotel, room, totalPrice) => {
+    setSelectedRoom(room); // 선택된 방 정보를 상태에 저장
+    dispatch(setTotalPrice(totalPrice));
+    dispatch(fetchHotelDetails(hotel.id)).then(() => {
+      dispatch(setStep(5));
+    });
+  };
+
 
   const nodeRef = useRef(null);
 
@@ -126,7 +154,9 @@ const HotelPage = () => {
                 ) : error ? (
                   <p>Error: {error}</p>
                 ) : (
-                  <HotelList hotels={hotels} onShowProperty={handleShowProperty} />
+                  <HotelList 
+                  hotels={hotels} 
+                  onShowProperty={handleShowProperty} />
                 )}
                 <button onClick={handlePreviousStep}>뒤로가기</button>
               </div>
@@ -139,7 +169,11 @@ const HotelPage = () => {
                   {`${formatDate(startDate)} - ${formatDate(endDate)}`}
                 </button>
                 {selectedHotel ? (
-                  <RoomDetail hotel={selectedHotel} onBook={handleBook}/> // onBook 핸들러 추가
+                  <RoomDetail 
+                  hotel={selectedHotel} 
+                  onBook={handleBook}
+                  sliderSettings={sliderSettings}
+                  />
                 ) : (
                   <p>Loading...</p>
                 )}
@@ -147,11 +181,24 @@ const HotelPage = () => {
             ) : step === 4 ? ( // Step 4 추가
               <BookingDetail 
                 hotel={selectedHotel} 
+                selectedRoom={selectedRoom} 
                 personCount={personCount} 
                 startDate={startDate} 
                 endDate={endDate}
+                sliderSettings={sliderSettings}
+                onPay={handlePayment}
+                user={user}
               />
-            ) : null /* 다른 단계에 대한 컴포넌트를 추가할 수 있습니다. */}
+            ) : step === 5 ? ( // Step 5 추가
+              <HotelConfirmation 
+                hotel={selectedHotel} 
+                selectedRoom={selectedRoom} 
+                startDate={startDate} 
+                endDate={endDate}
+                totalPrice={totalPrice}
+                user={user}
+              />
+            ) : null}
           </div>
         </CSSTransition>
       </TransitionGroup>
