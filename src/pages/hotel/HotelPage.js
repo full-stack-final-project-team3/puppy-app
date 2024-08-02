@@ -106,8 +106,10 @@ const HotelPage = () => {
     };
 
     const handleBook = (hotel, room) => {
+        console.log('hotelid: ' ,hotel['hotel-id']);
         dispatch(setSelectedRoom(room));
-        dispatch(fetchHotelDetails(hotel.id)).then(() => {
+        dispatch(fetchHotelDetails(hotel['hotel-id'])).then(() => {
+            console.log('hotelid: ' ,hotel['hotel-id']);
             dispatch(setStep(4));
         });
     };

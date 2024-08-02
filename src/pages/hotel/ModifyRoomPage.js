@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateRoom, uploadFile } from '../../components/store/hotel/RoomAddSlice';
 import { fetchRooms } from '../../components/store/hotel/HotelPageSlice';
@@ -7,17 +7,23 @@ import styles from './ModifyRoomPage.module.scss';
 
 const ModifyRoomPage = () => {
     const { roomId } = useParams();
+    const location = useLocation();
+    const { hotel, room: initialRoomData } = location.state || {};
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const room = useSelector(state => state.roomAdd.rooms.find(room => room['room-id'] === roomId) || {});
-
+    
+    console.log('room: ', room);
     const [roomData, setRoomData] = useState({
         name: '',
         content: '',
         type: '',
         price: '',
-        roomImages: [] // 초기값을 빈 배열로 설정
+        roomImages: [], // 초기값을 빈 배열로 설정
+        hotelId: hotel ? hotel['hotel-id'] : ''
     });
+
+    console.log('hotel: ', roomData.hotelId);
 
     useEffect(() => {
         if (!room || Object.keys(room).length === 0) {
@@ -25,10 +31,22 @@ const ModifyRoomPage = () => {
         } else {
             setRoomData({
                 ...room,
-                roomImages: room['room-images'] || [] // roomImages가 undefined일 경우 빈 배열 사용
+                roomImages: room['room-images'] || [], // roomImages가 undefined일 경우 빈 배열 사용
+                hotelId: hotel ? hotel['hotel-id'] : room['hotel-id']
             });
         }
-    }, [dispatch, roomId, room]);
+    }, [dispatch, roomId, room, hotel]);
+
+    useEffect(() => {
+        if (initialRoomData) {
+            setRoomData({
+                ...initialRoomData,
+                roomImages: initialRoomData['room-images'] || [],
+                hotelId: hotel ? hotel['hotel-id'] : initialRoomData['hotel-id']
+            });
+        }
+    }, [initialRoomData, hotel]);
+
 
     const handleChange = (e) => {
         if (e.target.name === 'roomImages') {
@@ -67,7 +85,9 @@ const ModifyRoomPage = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(updateRoom({ roomId, roomData }))
+        const roomDataWithHotelId = { ...roomData, hotelId: hotel ? hotel['hotel-id'] : room['hotel-id'] };
+        console.log('Submitting room data:', roomDataWithHotelId); // 디버깅용 로그 추가
+        dispatch(updateRoom({ roomId, roomData: roomDataWithHotelId }))
             .unwrap()
             .then(() => {
                 alert('방 수정 성공');
