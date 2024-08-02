@@ -121,7 +121,7 @@ export const deleteHotel = createAsyncThunk(
 // 호텔 수정 비동기
 export const updateHotel = createAsyncThunk(
     'hotelAdd/updateHotel',
-    async ({hotelId, hotelData}, {getState, rejectWithValue}) => {
+    async ({ hotelId, hotelData }, { rejectWithValue }) => {
         const token = JSON.parse(localStorage.getItem('userData')).token;
         try {
             const response = await fetch(`${HOTEL_URL}/${hotelId}`, {
@@ -130,17 +130,36 @@ export const updateHotel = createAsyncThunk(
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify(hotelData)
+                body: JSON.stringify({
+                    'hotel-name': hotelData.name,
+                    'description': hotelData.description,
+                    'business-owner': hotelData.businessOwner,
+                    'location': hotelData.location,
+                    'rules-policy': hotelData.rulesPolicy,
+                    'cancel-policy': hotelData.cancelPolicy,
+                    'price': hotelData.price,
+                    'phone-number': hotelData.phoneNumber,
+                    'hotel-images': hotelData.hotelImages.map(image => ({
+                        hotelImgUri: image.hotelImgUri,
+                        type: 'HOTEL'
+                    }))
+                })
             });
+
             if (!response.ok) {
-                throw new Error('Failed to update the hotel');
+                const errorData = await response.text(); // 오류 응답을 텍스트로 받음
+                throw new Error(errorData || 'Failed to update the hotel');
             }
-            return await response.json();
+
+            return await response.text();
         } catch (error) {
+            console.error("호텔 업데이트 오류:", error.message);
             return rejectWithValue(error.message);
         }
     }
 );
+
+
 
 const hotelAddSlice = createSlice({
     name: 'hotelAdd',

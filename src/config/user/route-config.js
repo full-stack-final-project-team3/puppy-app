@@ -23,6 +23,7 @@ import ModifyHotelPage from "../../pages/hotel/ModifyHotelPage";
 import ForgotSection from "../../components/auth/user/forgot-info/ForgotSection";
 import ShopMain from "../../pages/shop/ShopMain";
 import TreatsListForDog from "../../pages/shop/TreatsListForDog";
+import AddTreats from "../../pages/shop/AddTreats";
 
 const homeRouter = [
   {
@@ -95,6 +96,12 @@ export const router = createBrowserRouter([
       {
         path: "treats",
         element: <ShopMain />,
+        // loader: getUserToken,
+        // id: "getToken"
+      },
+      {
+        path: "add-treats",
+        element: <AddTreats />,
         loader: getUserToken,
         id: "getToken"
       },

@@ -1,0 +1,77 @@
+.addTreats {
+  padding: 30px; // 패딩 증가
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin: 40px auto; // 상하 마진 추가로 중앙 정렬
+  max-width: 600px; // 최대 너비 설정
+
+  h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center; // 중앙 정렬
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+
+    .formGroup {
+      margin-bottom: 20px; // 하단 여백 증가
+    }
+
+    .label {
+      display: block;
+      font-size: 16px;
+      color: #555;
+      margin: 5px 0px;
+    }
+
+    .inputField {
+      width: 50%;
+      margin-right: 5px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+      transition: border-color 0.3s;
+
+      &:focus {
+        border-color: rgb(155, 0, 0);;
+        outline: none;
+      }
+    }
+
+    .checkboxGroup {
+      display: flex;
+      flex-wrap: wrap; // 줄바꿈 가능
+      margin-bottom: 10px; // 하단 여백 추가
+    }
+
+    .checkboxItem {
+      flex: 0 0 25%; // 4개를 가로로 배치하기 위해 너비를 25%로 설정
+      display: flex;
+      align-items: center; // 체크박스와 레이블 정렬
+
+      input[type="checkbox"] {
+        margin-right: 10px; // 체크박스와 텍스트 간 간격 증가
+      }
+    }
+
+    .submitButton {
+      padding: 10px 15px;
+      background-color: rgb(155, 0, 0);;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: #550d0d;
+      }
+    }
+  }
+}
