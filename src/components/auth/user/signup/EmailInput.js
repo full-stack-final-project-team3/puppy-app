@@ -16,11 +16,10 @@ const EmailInput = ({ onSuccess }) => {
     return emailPattern.test(email);
   };
 
-  // 이메일 검증 후속 처리
+  // 이메일 검증 처리
   const checkEmail = debounce(async (email) => {
     if (!validateEmail(email)) {
-      // 에러메시지 세팅
-      setError("이메일 형식이 유효하지 않습니다");
+      setError("유효하지 않은 이메일입니다");
       return;
     } else {
       setSuccess("사용가능한 이메일입니다");
@@ -48,7 +47,7 @@ const EmailInput = ({ onSuccess }) => {
   const changeHandler = (e) => {
     const email = e.target.value;
 
-    checkEmail(email); // 이메일 검증 후속처리
+    checkEmail(email); // 이메일 검증 후속 처리
   };
 
   // 렌더링 되자마자 입력창에 포커싱
@@ -59,7 +58,7 @@ const EmailInput = ({ onSuccess }) => {
   return (
     <>
       <h1 className={styles.h1}>Step 1</h1>
-      <div className={styles.emailInput}>
+      <div className={styles.signUpInput}>
         <h2 className={styles.h2}>이메일</h2>
         <input
           ref={inputRef}

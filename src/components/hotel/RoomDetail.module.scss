@@ -21,11 +21,13 @@
       font-size: 1.5em;
       
     }
+    
 
     p {
       margin: 5px 0;
       
     }
+    
 
     .slider {
       margin-top: 10px;
@@ -81,4 +83,14 @@
       right: 10px;
     }
   }
+
+  
+}
+
+.description {
+  color: black;
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

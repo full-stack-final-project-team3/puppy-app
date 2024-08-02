@@ -8,6 +8,7 @@ import userReducer from "./user/UserSlice";
 import reservationReducer from "./hotel/ReservationSlice"
 import hotelPageReducer from "./hotel/HotelPageSlice";
 import reviewReducer from "./hotel/HotelReviewSlice";
+import favoriteReducer from "./hotel/FavoriteSlice";
 
 
 const store = configureStore({
@@ -20,7 +21,7 @@ const store = configureStore({
         hotelPage: hotelPageReducer,
         reviews: reviewReducer,
         user: userReducer,
-
+        favorites: favoriteReducer,
     }
 });
 

@@ -18,10 +18,12 @@ import BoardDetailPage from "../../pages/community/BoardDetailPage";
 
 import AddRoomPage from "../../pages/hotel/AddRoomPage";
 import AddReviewPage from "../../pages/hotel/AddReviewPage";
+import ModifyHotelPage from "../../pages/hotel/ModifyHotelPage";
 
 import ForgotSection from "../../components/auth/user/forgot-info/ForgotSection";
 import ShopMain from "../../pages/shop/ShopMain";
 import TreatsListForDog from "../../pages/shop/TreatsListForDog";
+import AddTreats from "../../pages/shop/AddTreats";
 
 const homeRouter = [
   {
@@ -82,6 +84,11 @@ export const router = createBrowserRouter([
         loader: authCheckLoader,
       },
       {
+        path: "modify-hotel/:hotelId",
+        element: <ModifyHotelPage />,
+        loader: authCheckLoader,
+      },
+      {
         path: "add-review/:hotelId", // 새로 추가된 경로
         element: <AddReviewPage />,
         loader: authCheckLoader,
@@ -89,6 +96,12 @@ export const router = createBrowserRouter([
       {
         path: "treats",
         element: <ShopMain />,
+        // loader: getUserToken,
+        // id: "getToken"
+      },
+      {
+        path: "add-treats",
+        element: <AddTreats />,
         loader: getUserToken,
         id: "getToken"
       },
