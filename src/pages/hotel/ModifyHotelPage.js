@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
-import { fetchHotelDetails, updateHotel } from '../../components/store/hotel/HotelAddSlice';
+import { fetchHotelDetails, updateHotel, uploadFile } from '../../components/store/hotel/HotelAddSlice';
 import styles from "../../components/hotel/HotelList.module.scss";
-import formStyles from "./ModifyHotelPage.module.scss"; // 새로운 스타일 모듈 추가
+import formStyles from "./ModifyHotelPage.module.scss";
 
 function ModifyHotelPage() {
     const { hotelId } = useParams();
@@ -36,13 +36,17 @@ function ModifyHotelPage() {
 
     const handleChange = (e) => {
         if (e.target.name === 'hotelImages') {
-            const newImages = Array.from(e.target.files).map(file => ({
-                hotelImgUri: URL.createObjectURL(file),
-                type: 'LOCAL' // 로컬 이미지를 구분하기 위해 type을 LOCAL로 설정
-            }));
-            setHotelData({
-                ...hotelData,
-                hotelImages: [...hotelData.hotelImages, ...newImages]
+            const files = Array.from(e.target.files);
+            files.forEach(file => {
+                dispatch(uploadFile(file)).then(response => {
+                    setHotelData(prevState => ({
+                        ...prevState,
+                        hotelImages: [...prevState.hotelImages, {
+                            hotelImgUri: response.payload,
+                            type: 'HOTEL'
+                        }]
+                    }));
+                });
             });
         } else {
             setHotelData({
@@ -61,17 +65,7 @@ function ModifyHotelPage() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        // FormData를 만든 후 디버깅
-        const formData = {
-            ...hotelData,
-            hotelImages: hotelData.hotelImages.map(img => ({
-                type: img.type,
-                hotelImgUri: img.hotelImgUri
-            }))
-        };
-
-        dispatch(updateHotel({ hotelId, hotelData: formData }))
+        dispatch(updateHotel({ hotelId, hotelData }))
             .unwrap()
             .then(() => {
                 alert('호텔 수정 성공');
@@ -82,7 +76,6 @@ function ModifyHotelPage() {
                 alert('호텔 수정 실패: ' + error.message);
             });
     };
-
 
     return (
         <div className={formStyles.modifyHotelPage}>

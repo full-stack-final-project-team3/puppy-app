@@ -1,25 +1,31 @@
-import React, {useMemo} from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Slider from "react-slick";
 import styles from './RoomDetail.module.scss';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
-import ReviewList from './ReviewList'; // 리뷰 리스트 컴포넌트 import
-import {useNavigate} from "react-router-dom"; // 리뷰 리스트 컴포넌트 import
+import { useDispatch, useSelector } from 'react-redux';
+import ReviewList from './ReviewList';
+import { useNavigate } from "react-router-dom";
 import MapView from './MapView';
+import { deleteRoom, setRooms } from '../store/hotel/RoomAddSlice';
+import store from "../store";
 
-const RoomDetail = ({hotel, onBook, sliderSettings}) => {
+const RoomDetail = ({ hotel, onBook, sliderSettings }) => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const hotelId = hotel['hotel-id'];
+    const rooms = useSelector(state => state.roomAdd.rooms);
 
-    const navigate = useNavigate()
+    useEffect(() => {
+        if (hotel && hotel.room) {
+            dispatch(setRooms(hotel.room));
+        }
+    }, [dispatch, hotel]);
 
-    if (!hotel || !hotel.room || hotel.room.length === 0) {
-        console.log('RoomDetail: rooms are not defined or empty', hotel);
+    if (!hotel || !rooms.length) {
         return <p>No rooms available</p>;
     }
-
-    console.log('RoomDetail: rendering rooms', hotel.room);
-    console.log('RoomDetail: room-images', hotel.room.flatMap(room => room["room-images"]));
 
     const getImageUrl = (imageUri) => {
         if (imageUri && imageUri.startsWith('/local/')) {
@@ -29,21 +35,33 @@ const RoomDetail = ({hotel, onBook, sliderSettings}) => {
     };
 
     const modifyHotelHandler = () => {
-        if (hotel && hotel['hotel-id']) {
-            navigate(`/modify-hotel/${hotel['hotel-id']}`);
-            console.log("Navigating to modify hotel ID:", hotel['hotel-id']);
+        if (hotel && hotelId) {
+            navigate(`/modify-hotel/${hotelId}`);
         } else {
             console.log("Hotel ID is undefined");
         }
     };
 
-    return (
+    const handleDeleteRoom = async (roomId) => {
+        try {
+            const actionResult = await dispatch(deleteRoom(roomId));
+            if (actionResult.type.endsWith('fulfilled')) {
+                const currentRooms = store.getState().roomAdd.rooms;
+                const updatedRooms = currentRooms.filter(room => room['room-id'] !== roomId);
+                dispatch(setRooms(updatedRooms));
+            }
+        } catch (e) {
+            console.error("룸 삭제 실패", e);
+        }
+    };
 
+    return (
         <>
             <button onClick={modifyHotelHandler}>호텔 수정하기</button>
             <div className={styles.roomDetail}>
-            {hotel.room.map((room, roomIndex) => (
+                {rooms.map((room, roomIndex) => (
                     <div key={room['room-id']} className={styles.room}>
+                        <button onClick={() => handleDeleteRoom(room['room-id'])}>Delete room</button>
                         <Slider className={styles.slider} {...sliderSettings}>
                             {room["room-images"] && room["room-images"].map((image, imageIndex) => {
                                 const imageUrl = getImageUrl(image['hotelImgUri']);
@@ -51,7 +69,6 @@ const RoomDetail = ({hotel, onBook, sliderSettings}) => {
                                     console.error('Invalid image URI for image', image);
                                     return null;
                                 }
-                                console.log(`Rendering image ${imageIndex}:`, imageUrl);
                                 return (
                                     <div key={image['image-id'] || `${roomIndex}-${imageIndex}`}
                                          className={styles.slide}>
@@ -64,12 +81,12 @@ const RoomDetail = ({hotel, onBook, sliderSettings}) => {
                         <p>{room.content}</p>
                         <p>Type: {room.type}</p>
                         <p>Price: {room.price}</p>
-                        <button onClick={() => onBook(hotel, room)}>Book Now</button>{/* hotelId와 roomId를 전달 */}
+                        <button onClick={() => onBook(hotel, room)}>Book Now</button>
                     </div>
                 ))}
             </div>
             <div>
-                <ReviewList hotelId={hotel["hotel-id"]} /> {/* 리뷰 리스트 렌더링 */}
+                <ReviewList hotelId={hotelId} />
             </div>
             <div>
                 <div className={styles.description}>
@@ -80,19 +97,12 @@ const RoomDetail = ({hotel, onBook, sliderSettings}) => {
                 </div>
             </div>
             <div className={styles.description}>
-                <MapView
-                location={hotel['location']}
-                title={hotel['hotel-name']}
-                /> {/* 지도 렌더링 */}
-
+                <MapView location={hotel['location']} title={hotel['hotel-name']} />
             </div>
-            <div
-                className={styles.description}>
+            <div className={styles.description}>
                 주소 : {hotel['location']}
             </div>
-
         </>
-
     );
 };
 
@@ -116,6 +126,7 @@ RoomDetail.propTypes = {
         ).isRequired,
     }).isRequired,
     onBook: PropTypes.func.isRequired,
+    sliderSettings: PropTypes.object.isRequired,
 };
 
 export default RoomDetail;
