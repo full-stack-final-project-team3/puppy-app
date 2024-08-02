@@ -19,6 +19,7 @@ import BoardDetailPage from "../../pages/community/BoardDetailPage";
 import AddRoomPage from "../../pages/hotel/AddRoomPage";
 import AddReviewPage from "../../pages/hotel/AddReviewPage";
 import ModifyHotelPage from "../../pages/hotel/ModifyHotelPage";
+import ModifyRoomPage from "../../pages/hotel/ModifyRoomPage";
 
 import ForgotSection from "../../components/auth/user/forgot-info/ForgotSection";
 import ShopMain from "../../pages/shop/ShopMain";
@@ -91,6 +92,11 @@ export const router = createBrowserRouter([
       {
         path: "add-review/:hotelId", // 새로 추가된 경로
         element: <AddReviewPage />,
+        loader: authCheckLoader,
+      },
+      {
+        path: "modify-room/:roomId",
+        element: <ModifyRoomPage />,
         loader: authCheckLoader,
       },
       {

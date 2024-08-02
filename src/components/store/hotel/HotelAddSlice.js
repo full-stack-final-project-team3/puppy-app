@@ -219,8 +219,7 @@ const hotelAddSlice = createSlice({
             .addCase(deleteHotel.fulfilled, (state, action) => {
                 if (state.hotels) {
                     state.hotels = state.hotels.filter(hotel => hotel.id !== action.payload);
-                    console.log("삭제가 완료되었습니다.");
-                    console.log("삭제 된 후 호텔스 ",state.hotels)
+                    alert("호텔이 삭제되었습니다.")
                 }
             })
             .addCase(deleteHotel.rejected, (state, action) => {
