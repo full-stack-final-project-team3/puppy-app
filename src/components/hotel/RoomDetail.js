@@ -10,7 +10,7 @@ import {useNavigate} from "react-router-dom"; // 리뷰 리스트 컴포넌트 i
 import MapView from './MapView';
 
 const RoomDetail = ({hotel, onBook, sliderSettings}) => {
-    
+
     const navigate = useNavigate()
 
     if (!hotel || !hotel.room || hotel.room.length === 0) {
@@ -28,16 +28,21 @@ const RoomDetail = ({hotel, onBook, sliderSettings}) => {
         return imageUri;
     };
 
-    const modifyHotelHandler = (hotelId) => {
-        navigate(`/modify-hotel/${hotelId}`);
-    }
+    const modifyHotelHandler = () => {
+        if (hotel && hotel['hotel-id']) {
+            navigate(`/modify-hotel/${hotel['hotel-id']}`);
+            console.log("Navigating to modify hotel ID:", hotel['hotel-id']);
+        } else {
+            console.log("Hotel ID is undefined");
+        }
+    };
 
     return (
 
         <>
-            <button onClick={() => modifyHotelHandler(hotel.hotelId)}>호텔 수정하기</button>
+            <button onClick={modifyHotelHandler}>호텔 수정하기</button>
             <div className={styles.roomDetail}>
-                {hotel.room.map((room, roomIndex) => (
+            {hotel.room.map((room, roomIndex) => (
                     <div key={room['room-id']} className={styles.room}>
                         <Slider className={styles.slider} {...sliderSettings}>
                             {room["room-images"] && room["room-images"].map((image, imageIndex) => {
@@ -75,17 +80,17 @@ const RoomDetail = ({hotel, onBook, sliderSettings}) => {
                 </div>
             </div>
             <div className={styles.description}>
-                <MapView 
+                <MapView
                 location={hotel['location']}
                 title={hotel['hotel-name']}
                 /> {/* 지도 렌더링 */}
-                
+
             </div>
-            <div 
+            <div
                 className={styles.description}>
                 주소 : {hotel['location']}
             </div>
-            
+
         </>
 
     );
