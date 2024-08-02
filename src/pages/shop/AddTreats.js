@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import styles from "./AddTreats.module.scss";
 import { allergiesOptions } from "../../components/auth/dog/DogAllergiesInput";
 import { TREATS_URL } from "../../config/user/host-config";
@@ -14,6 +14,8 @@ const AddTreats = () => {
   const [treatsDetailPics, setTreatsDetailPics] = useState([]);
   const [treatsPicsInputs, setTreatsPicsInputs] = useState([0]); // 대표 사진 파일 입력 필드
   const [treatsDetailPicsInputs, setTreatsDetailPicsInputs] = useState([0]); // 상세 사진 파일 입력 필드
+  const treatsPicsInputRefs = useRef([]);
+  const treatsDetailPicsInputRefs = useRef([]);
 
   const token = getUserToken();
 
@@ -32,25 +34,25 @@ const AddTreats = () => {
     const files = Array.from(event.target.files);
     if (type === "treatsPics") {
       const newTreatsPics = [...treatsPics];
-      newTreatsPics[index] = files[0]; // 첫 번째 파일만 저장
+      newTreatsPics[index] = files; // 모든 파일을 저장
       setTreatsPics(newTreatsPics);
     } else {
       const newTreatsDetailPics = [...treatsDetailPics];
-      newTreatsDetailPics[index] = files[0]; // 첫 번째 파일만 저장
+      newTreatsDetailPics[index] = files; // 모든 파일을 저장
       setTreatsDetailPics(newTreatsDetailPics);
     }
   };
 
-  const addTreatsPicInput = () => {
-    setTreatsPicsInputs([...treatsPicsInputs, treatsPicsInputs.length]);
-  };
+  // const addTreatsPicInput = () => {
+  //   setTreatsPicsInputs([...treatsPicsInputs, treatsPicsInputs.length]);
+  // };
 
-  const addTreatsDetailPicInput = () => {
-    setTreatsDetailPicsInputs([
-      ...treatsDetailPicsInputs,
-      treatsDetailPicsInputs.length,
-    ]);
-  };
+  // const addTreatsDetailPicInput = () => {
+  //   setTreatsDetailPicsInputs([
+  //     ...treatsDetailPicsInputs,
+  //     treatsDetailPicsInputs.length,
+  //   ]);
+  // };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -63,17 +65,24 @@ const AddTreats = () => {
     formData.append("dogSize", dogSize);
     formData.append("allergieList", selectedAllergies.join(","));
 
-    treatsPics.forEach((file, index) => {
-      if (file) {
-        formData.append(`treatsPics[${index}].treatsPicFile`, file);
-      }
+    treatsPics.forEach((fileArray, index) => {
+      fileArray.forEach((file) => {
+        if (file) {
+          formData.append(`treatsPics[${index}].treatsPicFile`, file);
+        }
+      });
     });
 
     // TreatsDetailPicDto 형태로 treatsDetailPics 파일 추가
-    treatsDetailPics.forEach((file, index) => {
-      if (file) {
-        formData.append(`treatsDetailPics[${index}].treatsDetailPicFile`, file);
-      }
+    treatsDetailPics.forEach((fileArray, index) => {
+      fileArray.forEach((file) => {
+        if (file) {
+          formData.append(
+            `treatsDetailPics[${index}].treatsDetailPicFile`,
+            file
+          );
+        }
+      });
     });
 
     try {
@@ -100,8 +109,14 @@ const AddTreats = () => {
       setSelectedAllergies([]);
       setTreatsPics([]);
       setTreatsDetailPics([]);
-      setTreatsPicsInputs([0]); // 초기값으로 한 개의 입력창 설정
-      setTreatsDetailPicsInputs([0]); // 초기값으로 한 개의 입력창 설정
+
+      // 파일 입력 필드 초기화
+      treatsPicsInputRefs.current.forEach((ref) => {
+        if (ref) ref.value = null;
+      });
+      treatsDetailPicsInputRefs.current.forEach((ref) => {
+        if (ref) ref.value = null;
+      });
 
       alert("상품 추가 완료");
     } catch (error) {
@@ -190,11 +205,10 @@ const AddTreats = () => {
               className={styles.inputField}
               onChange={(e) => handleFileChange(e, "treatsPics", index)}
               required
+              ref={(el) => treatsPicsInputRefs.current[index] = el} // ref 추가
+              multiple
             />
           ))}
-          <button type="button" onClick={addTreatsPicInput}>
-            추가 사진
-          </button>
         </div>
         <div className={styles.formGroup}>
           <label className={styles.label}>상세 사진</label>
@@ -205,11 +219,10 @@ const AddTreats = () => {
               className={styles.inputField}
               onChange={(e) => handleFileChange(e, "treatsDetailPics", index)}
               required
+              ref={(el) => treatsDetailPicsInputRefs.current[index] = el} // ref 추가
+              multiple
             />
           ))}
-          <button type="button" onClick={addTreatsDetailPicInput}>
-            추가 사진
-          </button>
         </div>
         <button type="submit" className={styles.submitButton}>
           상품 등록

@@ -6,11 +6,13 @@ import { useSelector } from "react-redux";
 const ShopMain = () => {
   const [selectedDogId, setSelectedDogId] = useState("");
   const [selectedDogName, setSelectedDogName] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태 관리
+  const [isLoggedIn, setIsLoggedIn] = useState(false); 
   const navigate = useNavigate();
   const user = useSelector((state) => state.userEdit.userDetail);
   const dogList = isLoggedIn ? user.dogList || [] : []; // 로그인 상태에 따라 강아지 목록 설정
+
   console.log(user);
+  
   useEffect(() => {
     // 로그인 상태 확인 및 업데이트
     setIsLoggedIn(user && Object.keys(user).length > 0);
