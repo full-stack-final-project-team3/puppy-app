@@ -19,6 +19,8 @@ const MainNavigation = () => {
 
     const { changeIsLogin, user, setUser } = useContext(UserContext);
     const userData = useRouteLoaderData("user-data");
+    const noticeList = useSelector(state => state.userEdit.userNotice);
+    const userDetail = useSelector(state => state.userEdit.userDetail);
 
     const dispatch = useDispatch();
 
@@ -84,6 +86,8 @@ const MainNavigation = () => {
         dispatch(userEditActions.clearUserEditMode());
         dispatch(dogEditActions.clearEdit());
     };
+    console.log(noticeList)
+
 
     return (
         <header className={styles.header}>
@@ -99,7 +103,7 @@ const MainNavigation = () => {
                         <>
                             <button className={styles.logout} onClick={logoutHandler}>Logout</button>
                             <BsBell className={styles.icon} onClick={toggleNotice}></BsBell>
-                            {/*{noticeCount !== 0 ? <span className={styles.count}>{noticeCount}</span> : undefined}*/}
+                            {noticeList.length !== 0 ? <span className={styles.count}>{userDetail.noticeCount}</span> : undefined}
                             <Link to={"/mypage"} onClick={clearEditMode}><BiUser className={styles.icon} /></Link>
                             <GiHamburgerMenu className={styles.icon} onClick={toggleMenuHandler} />
                         </>
@@ -123,7 +127,11 @@ const MainNavigation = () => {
             )}
             {openNotice && (
                 <div className={styles.noticeWrap}>
-
+                    {noticeList.map((notice, index) => (
+                        <div key={index} className={styles.message}>
+                            {notice.message}
+                        </div>
+                    ))}
                 </div>
             )}
         </header>
