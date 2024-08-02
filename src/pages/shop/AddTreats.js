@@ -43,17 +43,6 @@ const AddTreats = () => {
     }
   };
 
-  // const addTreatsPicInput = () => {
-  //   setTreatsPicsInputs([...treatsPicsInputs, treatsPicsInputs.length]);
-  // };
-
-  // const addTreatsDetailPicInput = () => {
-  //   setTreatsDetailPicsInputs([
-  //     ...treatsDetailPicsInputs,
-  //     treatsDetailPicsInputs.length,
-  //   ]);
-  // };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -124,6 +113,19 @@ const AddTreats = () => {
 
       alert("상품 추가에 실패했습니다.");
     }
+  };
+
+  const addTreatsPicInput = () => {
+    setTreatsPicsInputs([
+      ...treatsPicsInputs,
+       treatsPicsInputs.length]);
+  };
+
+  const addTreatsDetailPicInput = () => {
+    setTreatsDetailPicsInputs([
+      ...treatsDetailPicsInputs,
+      treatsDetailPicsInputs.length,
+    ]);
   };
 
   return (
@@ -205,10 +207,13 @@ const AddTreats = () => {
               className={styles.inputField}
               onChange={(e) => handleFileChange(e, "treatsPics", index)}
               required
-              ref={(el) => treatsPicsInputRefs.current[index] = el} // ref 추가
+              ref={(el) => (treatsPicsInputRefs.current[index] = el)} // ref 추가
               multiple
             />
           ))}
+          <button type="button" onClick={addTreatsPicInput}>
+            대표 사진 추가
+          </button>
         </div>
         <div className={styles.formGroup}>
           <label className={styles.label}>상세 사진</label>
@@ -219,10 +224,13 @@ const AddTreats = () => {
               className={styles.inputField}
               onChange={(e) => handleFileChange(e, "treatsDetailPics", index)}
               required
-              ref={(el) => treatsDetailPicsInputRefs.current[index] = el} // ref 추가
+              ref={(el) => (treatsDetailPicsInputRefs.current[index] = el)} // ref 추가
               multiple
             />
           ))}
+          <button type="button" onClick={addTreatsDetailPicInput}>
+            상세 사진 추가
+          </button>
         </div>
         <button type="submit" className={styles.submitButton}>
           상품 등록
