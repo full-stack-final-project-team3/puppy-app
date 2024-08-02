@@ -70,9 +70,8 @@ const RoomDetail = ({ hotel, onBook, sliderSettings }) => {
                                     return null;
                                 }
                                 return (
-                                    <div key={image['image-id'] || `${roomIndex}-${imageIndex}`}
-                                         className={styles.slide}>
-                                        <img src={imageUrl} alt={`${room.name} - ${image['hotelImgUri']}`}/>
+                                    <div key={image['image-id'] || `${roomIndex}-${imageIndex}`} className={styles.slide}>
+                                        <img src={imageUrl} alt={`${room.name} - ${image['hotelImgUri']}`} />
                                     </div>
                                 );
                             })}
@@ -119,7 +118,7 @@ RoomDetail.propTypes = {
                     PropTypes.shape({
                         'image-id': PropTypes.string,
                         'hotelImgUri': PropTypes.string.isRequired,
-                        'image-type': PropTypes.string.isRequired,
+                        'image-type': PropTypes.string, // 선택적 속성으로 변경
                     }).isRequired
                 ),
             }).isRequired

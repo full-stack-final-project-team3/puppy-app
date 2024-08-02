@@ -1,6 +1,16 @@
-
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { HOTEL_URL } from '../../../config/user/host-config';
+
+const initialState = {
+    hotels: [],
+    step: 1,
+    loading: false,
+    error: null,
+    personCount: 1,
+    selectedHotel: null,
+    selectedRoom: null,
+    totalPrice: 0
+};
 
 export const fetchHotels = createAsyncThunk(
     'hotelPage/fetchHotels',
@@ -29,7 +39,7 @@ export const fetchRooms = createAsyncThunk(
             }
         });
         if (!response.ok) {
-            throw new Error('Failed to fetch hotels');
+            throw new Error('Failed to fetch rooms');
         }
         const data = await response.json();
         return data.rooms;
@@ -53,16 +63,6 @@ export const fetchHotelDetails = createAsyncThunk(
     }
 );
 
-const initialState = {
-    hotels: [],
-    step: 1,
-    loading: false,
-    error: null,
-    personCount: 1,
-    selectedHotel: null, // 추가된 초기화
-    selectedRoom: null,
-};
-
 const hotelPageSlice = createSlice({
     name: 'hotelPage',
     initialState,
@@ -78,8 +78,8 @@ const hotelPageSlice = createSlice({
         },
         resetHotels: (state) => {
             state.hotels = [];
-            state.selectedHotel = null; // 추가된 초기화
-            state.selectedRoom = null; // 추가된 초기화
+            state.selectedHotel = null;
+            state.selectedRoom = null;
         },
         setSelectedRoom: (state, action) => {
             state.selectedRoom = action.payload;
@@ -106,7 +106,6 @@ const hotelPageSlice = createSlice({
                 state.loading = false;
                 state.error = action.error.message;
             })
-            // fetchHotelDetails 액션 처리 추가
             .addCase(fetchHotelDetails.pending, (state) => {
                 state.loading = true;
                 state.error = null;
@@ -135,8 +134,14 @@ const hotelPageSlice = createSlice({
     },
 });
 
+export const {
+    setStep,
+    incrementPersonCount,
+    decrementPersonCount,
+    resetHotels,
+    setSelectedRoom,
+    setTotalPrice,
+    setHotels
+} = hotelPageSlice.actions;
 
-export const { setStep, incrementPersonCount, decrementPersonCount, resetHotels ,
-    setHotels, setTotalPrice} = hotelPageSlice.actions;
 export default hotelPageSlice.reducer;
-
