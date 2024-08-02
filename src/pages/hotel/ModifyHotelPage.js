@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchHotelDetails, updateHotel, uploadFile } from '../../components/store/hotel/HotelAddSlice';
-import styles from './ModifyHotelPage.module.scss';
+import { useParams, useNavigate } from 'react-router-dom';
+import { fetchHotelDetails, updateHotel } from '../../components/store/hotel/HotelAddSlice';
+import styles from "../../components/hotel/HotelList.module.scss";
+import formStyles from "./ModifyHotelPage.module.scss"; // 새로운 스타일 모듈 추가
 
-const ModifyHotelPage = () => {
+function ModifyHotelPage() {
     const { hotelId } = useParams();
-    const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { hotelData, errorMessage } = useSelector(state => state.hotelAdd);
-    const [formData, setFormData] = useState({
+    const navigate = useNavigate();
+    const hotel = useSelector(state => state.hotelPage.hotels.find(h => h.id === hotelId) || {});
+
+    const [hotelData, setHotelData] = useState({
         name: '',
         description: '',
         businessOwner: '',
@@ -18,89 +20,175 @@ const ModifyHotelPage = () => {
         cancelPolicy: '',
         price: '',
         phoneNumber: '',
-        hotelImages: [{hotelImgUri: '', type: 'HOTEL'}]
+        hotelImages: [] // 초기값을 빈 배열로 설정
     });
 
     useEffect(() => {
-        if (hotelId) {
-            console.log(hotelId)
-            dispatch(fetchHotelDetails(hotelId)).then(data => {
-                setFormData(prev => ({ ...prev, ...data }));
+        if (!hotel || Object.keys(hotel).length === 0) {
+            dispatch(fetchHotelDetails(hotelId));
+        } else {
+            setHotelData({
+                ...hotel,
+                hotelImages: hotel["hotel-images"] || [] // hotelImages가 undefined일 경우 빈 배열 사용
             });
         }
-    }, [dispatch, hotelId]);
+    }, [dispatch, hotelId, hotel]);
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
-    };
-
-    const handleImageUpload = async (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const result = await dispatch(uploadFile(file));
-            if (result.type === 'hotel/uploadFile/fulfilled') {
-                setFormData(prev => ({
-                    ...prev,
-                    hotelImages: [...prev.hotelImages, { hotelImgUri: result.payload, type: 'HOTEL' }]
-                }));
-            }
+    const handleChange = (e) => {
+        if (e.target.name === 'hotelImages') {
+            const newImages = Array.from(e.target.files).map(file => ({
+                hotelImgUri: URL.createObjectURL(file),
+                type: 'LOCAL' // 로컬 이미지를 구분하기 위해 type을 LOCAL로 설정
+            }));
+            setHotelData({
+                ...hotelData,
+                hotelImages: [...hotelData.hotelImages, ...newImages]
+            });
+        } else {
+            setHotelData({
+                ...hotelData,
+                [e.target.name]: e.target.value
+            });
         }
     };
 
-    const handleSubmit = async (e) => {
+    const handleDeleteImage = (index) => {
+        setHotelData({
+            ...hotelData,
+            hotelImages: hotelData.hotelImages.filter((_, imgIndex) => imgIndex !== index)
+        });
+    };
+
+    const handleSubmit = (e) => {
         e.preventDefault();
-        const result = await dispatch(updateHotel({ hotelId, hotelData: formData }));
-        if (result.type === 'hotel/updateHotel/fulfilled') {
-            navigate(`/hotel/${hotelId}`);
-        }
+
+        // FormData를 만든 후 디버깅
+        const formData = {
+            ...hotelData,
+            hotelImages: hotelData.hotelImages.map(img => ({
+                type: img.type,
+                hotelImgUri: img.hotelImgUri
+            }))
+        };
+
+        dispatch(updateHotel({ hotelId, hotelData: formData }))
+            .unwrap()
+            .then(() => {
+                alert('호텔 수정 성공');
+                navigate('/hotel');
+            })
+            .catch((error) => {
+                console.error("업데이트 실패:", error);
+                alert('호텔 수정 실패: ' + error.message);
+            });
     };
+
 
     return (
-        <div className={styles.modifyHotelPage}>
-            <h1>호텔 정보 수정</h1>
+        <div className={formStyles.modifyHotelPage}>
+            <h1>Modify Hotel</h1>
             <form onSubmit={handleSubmit}>
-                <label>
-                    호텔 이름:
-                    <input type="text" name="name" value={formData.name} onChange={handleInputChange} />
-                </label>
-                <label>
-                    설명:
-                    <textarea name="description" value={formData.description} onChange={handleInputChange} />
-                </label>
-                <label>
-                    사업자 정보:
-                    <input type="text" name="businessOwner" value={formData.businessOwner} onChange={handleInputChange} />
-                </label>
-                <label>
-                    위치:
-                    <input type="text" name="location" value={formData.location} onChange={handleInputChange} />
-                </label>
-                <label>
-                    규칙 및 정책:
-                    <textarea name="rulesPolicy" value={formData.rulesPolicy} onChange={handleInputChange} />
-                </label>
-                <label>
-                    취소 정책:
-                    <textarea name="cancelPolicy" value={formData.cancelPolicy} onChange={handleInputChange} />
-                </label>
-                <label>
-                    가격:
-                    <input type="number" name="price" value={formData.price} onChange={handleInputChange} />
-                </label>
-                <label>
-                    전화번호:
-                    <input type="text" name="phoneNumber" value={formData.phoneNumber} onChange={handleInputChange} />
-                </label>
-                <label>
-                    이미지 추가:
-                    <input type="file" onChange={handleImageUpload} />
-                </label>
-                <button type="submit">저장하기</button>
+                <div>
+                    <label>Name:</label>
+                    <input
+                        type="text"
+                        name="name"
+                        required
+                        value={hotelData.name}
+                        onChange={handleChange}
+                    />
+                </div>
+                <div>
+                    <label>Description:</label>
+                    <textarea
+                        name="description"
+                        required
+                        value={hotelData.description}
+                        onChange={handleChange}
+                    />
+                </div>
+                <div>
+                    <label>Business Owner:</label>
+                    <input
+                        type="text"
+                        name="businessOwner"
+                        value={hotelData.businessOwner}
+                        onChange={handleChange}
+                    />
+                </div>
+                <div>
+                    <label>Location:</label>
+                    <input
+                        type="text"
+                        name="location"
+                        required
+                        value={hotelData.location}
+                        onChange={handleChange}
+                    />
+                </div>
+                <div>
+                    <label>Rules Policy:</label>
+                    <input
+                        type="text"
+                        name="rulesPolicy"
+                        value={hotelData.rulesPolicy}
+                        onChange={handleChange}
+                    />
+                </div>
+                <div>
+                    <label>Cancel Policy:</label>
+                    <input
+                        type="text"
+                        name="cancelPolicy"
+                        value={hotelData.cancelPolicy}
+                        onChange={handleChange}
+                    />
+                </div>
+                <div>
+                    <label>Price:</label>
+                    <input
+                        type="number"
+                        name="price"
+                        value={hotelData.price}
+                        onChange={handleChange}
+                    />
+                </div>
+                <div>
+                    <label>Phone Number:</label>
+                    <input
+                        type="text"
+                        name="phoneNumber"
+                        value={hotelData.phoneNumber}
+                        onChange={handleChange}
+                    />
+                </div>
+                <div>
+                    <label>Hotel Images:</label>
+                    <input type="file" name="hotelImages" multiple onChange={handleChange} />
+                    <div className={styles.imageGallery}>
+                        {hotelData.hotelImages.map((image, index) => {
+                            const imageUrl = image.type === 'LOCAL'
+                                ? image.hotelImgUri
+                                : `http://localhost:8888${image.hotelImgUri.replace('/local', '/hotel/images')}`;
+                            return (
+                                <div key={index} className={styles.imageContainer}>
+                                    <img
+                                        src={imageUrl}
+                                        alt={`${hotelData.name} 이미지`}
+                                        className={styles.image}
+                                    />
+                                    <button type="button" onClick={() => handleDeleteImage(index)}>
+                                        Delete
+                                    </button>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+                <button type="submit">Save Changes</button>
             </form>
-            {errorMessage && <p className={styles.error}>{errorMessage}</p>}
         </div>
     );
-};
+}
 
 export default ModifyHotelPage;

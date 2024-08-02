@@ -17,6 +17,8 @@ const HotelList = ({onShowProperty}) => {
     const favorites = useSelector((state) => state.favorites.favorites);
     const hotels = useSelector((state) => state.hotelPage.hotels);
 
+    console.log("예? 오ㅔ없어요?", hotels)
+
     useEffect(() => {
         if (userData) {
             dispatch(userEditActions.updateUserDetail(userData));

@@ -61,6 +61,20 @@
     }
   }
 
+  .imageGallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+
+    .image {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+  }
+
   .error {
     color: #b30000;
     margin-top: 10px;
