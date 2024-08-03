@@ -1,13 +1,46 @@
 .wrap {
   width: 60%;
-  margin: 100px auto 0;
+  margin: 50px auto 0;
   border: 1px solid black;
   height: 500px;
   border-radius: 32px;
   overflow: scroll;
 }
 
-
 .wrap::-webkit-scrollbar {
   display: none;
+}
+
+.stepWrap {
+  width: 100%;
+  height: 100px;
+  background: #F1F1F1;
+  display: flex;
+  justify-content: center;
+
+  .subWrap {
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .step {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: #D3D3D3;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    color: white;
+  }
+
+  .stepLine {
+    flex: 1;
+    height: 2px;
+    background: lightgray;
+    margin: 0 10px;
+  }
 }

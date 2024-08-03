@@ -143,14 +143,31 @@ const AddDogMain = () => {
     }
 
     return (
-        <div className={styles.wrap}>
-            {step === 1 && <DogNameInput dogNameValue={dogNameValue} />}
-            {step === 2 && <DogBreedInput dogBreedValue={dogBreedValue} />}
-            {step === 3 && <DogBirthdayInput onDateChange={dogBirthdayValue} />}
-            {step === 4 && <DogSexInput dogSexValue={dogSexValue} />}
-            {step === 5 && <DogWeightInput dogWeightValue={dogWeightValue} />}
-            {step === 6 && <DogAllergiesInput onAllergiesChange={dogAllergiesValue} />}
-        </div>
+        <>
+            <div className={styles.stepWrap}>
+                <div className={styles.subWrap}>
+                    <div className={styles.step}>1</div>
+                    <div className={styles.stepLine}></div>
+                    <div className={styles.step}>2</div>
+                    <div className={styles.stepLine}></div>
+                    <div className={styles.step}>3</div>
+                    <div className={styles.stepLine}></div>
+                    <div className={styles.step}>4</div>
+                    <div className={styles.stepLine}></div>
+                    <div className={styles.step}>5</div>
+                    <div className={styles.stepLine}></div>
+                    <div className={styles.step}>6</div>
+                </div>
+            </div>
+            <div className={styles.wrap}>
+                {step === 1 && <DogNameInput dogNameValue={dogNameValue}/>}
+                {step === 2 && <DogBreedInput dogBreedValue={dogBreedValue}/>}
+                {step === 3 && <DogBirthdayInput onDateChange={dogBirthdayValue}/>}
+                {step === 4 && <DogSexInput dogSexValue={dogSexValue}/>}
+                {step === 5 && <DogWeightInput dogWeightValue={dogWeightValue}/>}
+                {step === 6 && <DogAllergiesInput onAllergiesChange={dogAllergiesValue}/>}
+            </div>
+        </>
     );
 };
 
