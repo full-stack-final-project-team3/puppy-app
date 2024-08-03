@@ -168,7 +168,7 @@ const AddDogMain = () => {
                     <div className={`${styles.stepLine} ${step >= 5 ? styles.finishStep : ''}`}></div>
                     <div className={`${styles.step} ${step >= 5 ? styles.finishStep : ''}`} onClick={() => switchStep(5)}>5</div>
                     <div className={`${styles.stepLine} ${step >= 6 ? styles.finishStep : ''}`}></div>
-                    <div className={`${styles.step} ${step >= 6 ? styles.finishStep : ''}`}>6</div>
+                    <div className={`${styles.step} ${step >= 6 ? styles.finishStep : ''}`} onClick={() => switchStep(6)}>6</div>
                 </div>
             </div>
             <div className={styles.wrap}>

@@ -21,7 +21,6 @@ export const allergiesOptions = [
     { value: 'TOMATO', label: '토마토' },
     { value: 'DUCK', label: '오리' },
     { value: 'SALMON', label: '연어' },
-
 ];
 
 const DogAllergiesInput = ({ onAllergiesChange }) => {
@@ -54,18 +53,18 @@ const DogAllergiesInput = ({ onAllergiesChange }) => {
             <h3 className={styles.h3}>강아지의 알러지를 체크해주세요!</h3>
             <div className={styles.allergies}>
                 <div className={styles.subWrap}>
-                {allergiesOptions.map((option) => (
-                    <label key={option.value} className={`${styles.label} ${selectedAllergy.includes(option.value) ? styles.selected : ''}`}>
-                        <input
-                            type="checkbox"
-                            value={option.value}
-                            checked={selectedAllergy.includes(option.value)}
-                            onChange={handleCheckboxChange}
-                            className={styles.checkbox}
-                        />
-                        {option.label}
-                    </label>
-                ))}
+                    {allergiesOptions.map((option) => (
+                        <label key={option.value} className={`${styles.label} ${selectedAllergy.includes(option.value) ? styles.selected : ''}`}>
+                            <input
+                                type="checkbox"
+                                value={option.value}
+                                checked={selectedAllergy.includes(option.value)}
+                                onChange={handleCheckboxChange}
+                                className={styles.checkbox}
+                            />
+                            {option.label}
+                        </label>
+                    ))}
                 </div>
             </div>
             <div className={styles.buttons}>
