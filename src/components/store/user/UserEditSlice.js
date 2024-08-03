@@ -5,6 +5,7 @@ const initialState = {
     isEditMode: false,
     isUserEditMode: false,
     userDetail: JSON.parse(localStorage.getItem('userDetail')) || {}, // 초기 상태를 로컬 저장소에서 불러옴
+    userNotice: []
 };
 
 const userEditSlice = createSlice({
@@ -26,6 +27,18 @@ const userEditSlice = createSlice({
         updateUserDetail(state, action) {
             state.userDetail = action.payload;
             localStorage.setItem('userDetail', JSON.stringify(state.userDetail)); // 로컬 저장소에 저장
+        },
+        saveUserNotice(state, action) {
+            state.userNotice = action.payload;
+        },
+        addUserNotice(state, action) {
+            state.userNotice.push(action.payload);
+        },
+        updateUserNotice(state, action) {
+            const updatedNotice = state.userNotice.map(notice =>
+                notice.id === action.payload.noticeId ? { ...notice, isClicked: true } : notice
+            );
+            state.userNotice = updatedNotice;
         }
     }
 });

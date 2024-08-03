@@ -2,10 +2,11 @@ import React, { useContext, useState, useEffect, useRef } from "react";
 import styles from "./LoginForm.module.scss";
 import { Link, useNavigate } from "react-router-dom";
 import UserContext from "../../../context/user-context";
-import { AUTH_URL } from "../../../../config/user/host-config";
+import {AUTH_URL, NOTICE_URL} from "../../../../config/user/host-config";
 import { RiKakaoTalkFill } from "react-icons/ri";
 import { userEditActions } from "../../../store/user/UserEditSlice";
 import { useDispatch } from "react-redux";
+import userEdit from "../mypage/UserEdit";
 
 const APP_KEY = process.env.REACT_APP_KAKAO_APP_KEY;
 const REDIRECT_URL = process.env.REACT_APP_KAKAO_REDIRECT_URL;
@@ -51,6 +52,9 @@ const LoginForm = () => {
       if (response.ok) {
         const response1 = await fetch(`${AUTH_URL}/${email}`);
         const userDetailData = await response1.json();
+        const fetchNotice = await fetch(`${NOTICE_URL}/user/${userDetailData.id}`)
+        const noticeData = await fetchNotice.json();
+        dispatch(userEditActions.saveUserNotice(noticeData))
         dispatch(userEditActions.updateUserDetail(userDetailData));
 
         const responseData = await response.json();

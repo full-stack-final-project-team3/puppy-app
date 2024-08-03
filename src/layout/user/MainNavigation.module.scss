@@ -38,7 +38,6 @@
       text-align: center;
       align-items: center;
     }
-
   }
 
   .center {
@@ -74,7 +73,6 @@
     text-decoration: none;
   }
 }
-
 
 .dropdownMenu {
   position: absolute;
@@ -115,5 +113,26 @@
   background: #ffffff;
   border: 1px solid black;
   border-radius: 32px;
-}
+  overflow-y: auto;
 
+  .message {
+    width: 100%;
+    padding-top: 14px;
+    text-indent: 10px;
+    color: black;
+    cursor: pointer;
+    padding-bottom: 3px;
+  }
+
+  .time {
+    border-bottom: 1px solid black;
+    text-indent: 10px;
+    padding-bottom: 14px;
+    font-size: 0.8rem;
+  }
+
+  .clickedMessage {
+    color: #989898;
+    cursor: default;
+  }
+}

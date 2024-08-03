@@ -7,10 +7,10 @@ import DogSexInput from "./DogSexInput";
 import DogWeightInput from "./DogWeightInput";
 import DogAllergiesInput from "./DogAllergiesInput";
 import { useNavigate } from "react-router-dom";
-import { DOG_URL } from "../../../config/user/host-config";
+import { DOG_URL, NOTICE_URL } from "../../../config/user/host-config";
 import { useDispatch, useSelector } from "react-redux";
 import { userEditActions } from "../../store/user/UserEditSlice";
-import {userActions} from "../../store/user/UserSlice";
+import { userActions } from "../../store/user/UserSlice";
 
 const AddDogMain = () => {
     const navigate = useNavigate();
@@ -79,27 +79,70 @@ const AddDogMain = () => {
             "dogProfileUrl": profileUrl,
         };
 
-        const response = await fetch(`${DOG_URL}/register/${email}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        });
+        try {
+            const response = await fetch(`${DOG_URL}/register/${email}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
 
-        const newDog = await response.json();
+            const newDog = await response.json();
 
-        if (response.ok) {
-            const updatedUserDetail = {
-                ...user,
-                dogList: [...user.dogList, newDog]
-            };
+            if (response.ok) {
+                const updatedUserDetail = {
+                    ...user,
+                    dogList: [...user.dogList, newDog]
+                };
 
-            dispatch(userEditActions.updateUserDetail(updatedUserDetail));
-            alert('강아지 등록 성공!');
-            dispatch(userActions.setNoticeMessage(`당신의 강아지 ${name} 등록 되었습니다~`))
-            dispatch(userActions.setExistNotice())
-            navigate('/mypage');
-        } else {
-            alert('강아지 등록 실패!');
+                dispatch(userEditActions.updateUserDetail(updatedUserDetail));
+
+                // 알림 추가 요청
+                const noticePayload = {
+                    "userId": user.id,
+                    "message": `${name}이(가) 등록되었습니다!`
+                };
+
+                try {
+                    const noticeResponse = await fetch(`${NOTICE_URL}/add`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(noticePayload)
+                    });
+
+                    const noticeResponseText = await noticeResponse.text();
+
+                    console.log(noticeResponseText);
+
+
+                    let newNotice;
+                    try {
+                        newNotice = JSON.parse(noticeResponseText);
+                    } catch (jsonError) {
+                        alert('강아지 등록은 성공했으나 알림 추가에 실패했습니다.');
+                        return;
+                    }
+
+                    if (noticeResponse.ok) {
+                        dispatch(userEditActions.addUserNotice(newNotice));
+                        const updatedUserDetailWithNoticeCount = {
+                            ...user,
+                            noticeCount: user.noticeCount + 1
+                        };
+                        dispatch(userEditActions.updateUserDetail(updatedUserDetailWithNoticeCount));
+                        alert('강아지 등록 성공!');
+                    } else {
+                        alert('강아지 등록은 성공했으나 알림 추가에 실패했습니다.');
+                    }
+
+                } catch (error) {
+                    alert('강아지 등록은 성공했으나 알림 추가 중 오류가 발생했습니다.');
+                }
+                navigate('/mypage');
+            } else {
+                alert('강아지 등록 실패!');
+            }
+        } catch (error) {
+            alert('강아지 등록 중 오류가 발생했습니다.');
         }
     }
 
