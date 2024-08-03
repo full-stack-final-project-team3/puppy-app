@@ -11,7 +11,8 @@ import MapView from './MapView';
 import { deleteRoom, setRooms } from '../store/hotel/RoomAddSlice';
 import store from "../store";
 
-const RoomDetail = ({ hotel, onBook, sliderSettings }) => {
+const RoomDetail = ({ hotel, onBook, sliderSettings, onModifyRoom }) => {
+    console.log('hotelid: ' ,hotel['hotel-id']);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const hotelId = hotel['hotel-id'];

@@ -8,10 +8,15 @@ import "slick-carousel/slick/slick-theme.css";
 import { useNavigate } from "react-router-dom";
 
 const BookingDetail = ({ hotel, startDate, endDate, onPay }) => {
+    console.log('hotelid: ' ,hotel['hotel-id']);
     const [roomCount, setRoomCount] = React.useState(1);
     const personCount = useSelector(state => state.reservation.personCount);
     const selectedRoom = useSelector(state => state.hotelPage.selectedRoom);
     const navigate = useNavigate();
+
+    const handleModifyRoom = () => {
+        navigate(`/modify-room/${selectedRoom['room-id']}`, { state: { hotel, room: selectedRoom } });
+    };
 
     if (!hotel) {
         console.log('No hotel data available');
@@ -71,9 +76,9 @@ const BookingDetail = ({ hotel, startDate, endDate, onPay }) => {
         slidesToScroll: 1
     };
 
-    const handleModifyRoom = () => {
-        navigate(`/modify-room/${selectedRoom['room-id']}`);
-    };
+    // const handleModifyRoom = () => {
+    //     navigate(`/modify-room/${selectedRoom['room-id']}`);
+    // };
 
     return (
         <>
