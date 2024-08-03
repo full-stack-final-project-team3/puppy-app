@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import styles from './DogBreedInput.module.scss';
 
 const DogBreedInput = ({ dogBreedValue }) => {
-
-
-    const [selectedBreed, setSelectedBreed] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filteredBreeds, setFilteredBreeds] = useState([]);
 
     const breedOptions = [
         { value: 'RETRIEVER', label: '리트리버' },
@@ -29,24 +28,44 @@ const DogBreedInput = ({ dogBreedValue }) => {
         { value: 'SAMOYED', label: '사모예드' },
     ];
 
-    const handleBreedChange = (event) => {
-        const breed = event.target.value;
-        setSelectedBreed(breed);
-        dogBreedValue(breed);
-        console.log(breed)
+    const handleInputChange = (event) => {
+        const value = event.target.value;
+        setSearchTerm(value);
+        if (value) {
+            const filtered = breedOptions.filter(breed =>
+                breed.label.includes(value)
+            );
+            setFilteredBreeds(filtered);
+        } else {
+            setFilteredBreeds([]);
+        }
+    };
+
+    const handleBreedSelect = (breed) => {
+        setSearchTerm(breed.label);
+        setFilteredBreeds([]);
+        dogBreedValue(breed.value);
     };
 
     return (
         <div className={styles.wrap}>
             <h3 className={styles.h3}>강아지 견종을 선택해주세요!</h3>
-            <select className={styles.select} value={selectedBreed} onChange={handleBreedChange}>
-                <option value="">선택하세요</option>
-                {breedOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                        {option.label}
-                    </option>
-                ))}
-            </select>
+            <input
+                type="text"
+                className={styles.input}
+                value={searchTerm}
+                onChange={handleInputChange}
+                placeholder="견종을 검색하세요"
+            />
+            {filteredBreeds.length > 0 && (
+                <ul className={styles.dropdown}>
+                    {filteredBreeds.map((breed) => (
+                        <li key={breed.value} onClick={() => handleBreedSelect(breed)}>
+                            {breed.label}
+                        </li>
+                    ))}
+                </ul>
+            )}
         </div>
     );
 };

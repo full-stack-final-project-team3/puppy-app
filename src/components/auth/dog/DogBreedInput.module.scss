@@ -12,13 +12,36 @@
     align-items: center;
   }
 
-  .select {
+  .input {
     width: 30%;
     height: 40px;
     border-radius: 32px;
     background: #F0E2C8;
+    border: 1px solid black;
     margin: 0 auto;
     justify-content: center;
     text-align: center;
+    padding: 0 10px;
+    outline: none;
+  }
+
+  .dropdown {
+    width: 30%;
+    margin: 20px auto 0;
+    list-style: none;
+    padding: 0;
+    border-radius: 8px;
+    background: white;
+    border: 1px solid #ccc;
+    max-height: 150px;
+    overflow-y: auto;
+
+    li {
+      padding: 10px;
+      cursor: pointer;
+      &:hover {
+        background: #F0E2C8;
+      }
+    }
   }
 }

@@ -15,8 +15,11 @@ const AddDogMain = () => {
     const navigate = useNavigate();
     const user = useSelector(state => state.userEdit.userDetail);
     const dispatch = useDispatch();
-
     const email = user.email;
+
+    // 갔다온 적이 있나? 로 막아버리기
+    const [visitedSteps, setVisitedSteps] = useState([1]);
+
 
     const [step, setStep] = useState(1);
     const [name, setName] = useState('');
@@ -28,25 +31,30 @@ const AddDogMain = () => {
     const [allergies, setAllergies] = useState([]);
     const profileUrl = "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fst2.depositphotos.com%2F5045705%2F11671%2Fv%2F950%2Fdepositphotos_116714982-stock-illustration-little-puppy-icon.jpg&type=a340";
 
+
     const dogNameValue = (dogName) => {
         setName(dogName);
         setStep(2);
+        setVisitedSteps([1,2])
     };
 
     const dogBreedValue = (dogBreed) => {
         setBreed(dogBreed);
         setStep(3);
+        setVisitedSteps([1,2,3])
     };
 
     const dogBirthdayValue = (date) => {
         const formatDate = date.format('YYYY-MM-DD');
         setBirthday(formatDate);
         setStep(4);
+        setVisitedSteps([1,2,3,4])
     };
 
     const dogSexValue = (sex) => {
         setGender(sex);
         setStep(5);
+        setVisitedSteps([1,2,3,4,5])
     }
 
     const dogWeightValue = (weight) => {
@@ -142,19 +150,23 @@ const AddDogMain = () => {
         }
     }
 
+    const switchStep = (num) => {
+        if (visitedSteps.length >= num) setStep(num)
+    }
+
     return (
         <>
             <div className={styles.stepWrap}>
                 <div className={styles.subWrap}>
-                    <div className={`${styles.step} ${styles.finishStep}`}>1</div>
+                    <div className={`${styles.step} ${step >= 1 ? styles.finishStep : ''}`} onClick={() => switchStep(1)}>1</div>
                     <div className={`${styles.stepLine} ${step >= 2 ? styles.finishStep : ''}`}></div>
-                    <div className={`${styles.step} ${step >= 2 ? styles.finishStep : ''}`}>2</div>
+                    <div className={`${styles.step} ${step >= 2 ? styles.finishStep : ''}`} onClick={() => switchStep(2)}>2</div>
                     <div className={`${styles.stepLine} ${step >= 3 ? styles.finishStep : ''}`}></div>
-                    <div className={`${styles.step} ${step >= 3 ? styles.finishStep : ''}`}>3</div>
+                    <div className={`${styles.step} ${step >= 3 ? styles.finishStep : ''}`} onClick={() => switchStep(3)}>3</div>
                     <div className={`${styles.stepLine} ${step >= 4 ? styles.finishStep : ''}`}></div>
-                    <div className={`${styles.step} ${step >= 4 ? styles.finishStep : ''}`}>4</div>
+                    <div className={`${styles.step} ${step >= 4 ? styles.finishStep : ''}`} onClick={() => switchStep(4)}>4</div>
                     <div className={`${styles.stepLine} ${step >= 5 ? styles.finishStep : ''}`}></div>
-                    <div className={`${styles.step} ${step >= 5 ? styles.finishStep : ''}`}>5</div>
+                    <div className={`${styles.step} ${step >= 5 ? styles.finishStep : ''}`} onClick={() => switchStep(5)}>5</div>
                     <div className={`${styles.stepLine} ${step >= 6 ? styles.finishStep : ''}`}></div>
                     <div className={`${styles.step} ${step >= 6 ? styles.finishStep : ''}`}>6</div>
                 </div>
