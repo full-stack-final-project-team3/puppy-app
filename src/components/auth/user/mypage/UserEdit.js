@@ -12,6 +12,7 @@ const UserEdit = ({ user }) => {
     const [address, setAddress] = useState(user.address);
     const [phoneNum, setPhoneNum] = useState(user.phoneNumber);
     const [name, setName] = useState(user.realName);
+    const [point, setPoint] = useState(user.point);
 
     const [passwordMatch, setPasswordMatch] = useState(false);
     const [passwordMessage, setPasswordMessage] = useState('');
@@ -35,6 +36,11 @@ const UserEdit = ({ user }) => {
             setIsSubmitDisabled(true);
         }
     };
+
+    const pointHandler = (e) => {
+        setPoint(e.target.value);
+        setIsSubmitDisabled(false);
+    }
 
     const nameHandler = (e) => {
         setName(e.target.value);
@@ -64,6 +70,7 @@ const UserEdit = ({ user }) => {
             nickname,
             phoneNumber: phoneNum,
             realName: name,
+            point: point,
         };
 
         try {
@@ -165,7 +172,19 @@ const UserEdit = ({ user }) => {
                         onChange={handlePhoneNumChange}
                     />
                 </div>
+                <div className={styles.section}>
+                    <label htmlFor="point">포인트</label>
+                    <input
+                        id="phone"
+                        type="number"
+                        value={point}
+                        className={styles.input}
+                        placeholder={"0"}
+                        onChange={pointHandler}
+                    />
+                </div>
             </div>
+
             <div className={styles.section}>
                 <label htmlFor="address" className={styles.address}>주소</label>
                 <input
