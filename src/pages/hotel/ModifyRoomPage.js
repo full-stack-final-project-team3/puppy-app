@@ -3,6 +3,7 @@ import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateRoom, uploadFile } from '../../components/store/hotel/RoomAddSlice';
 import { fetchRooms } from '../../components/store/hotel/HotelPageSlice';
+import { ROOM_URL } from '../../config/user/host-config';
 import styles from './ModifyRoomPage.module.scss';
 
 const ModifyRoomPage = () => {
@@ -52,10 +53,9 @@ const ModifyRoomPage = () => {
         if (e.target.name === 'roomImages') {
             const files = Array.from(e.target.files);
             files.forEach((file) => {
-                dispatch(uploadFile(file)).then(response => {
-                    // 서버에서 반환하는 파일 URL이 올바른지 확인
-                    const imageUrl = response.payload; // 서버가 URL을 반환한다고 가정
-
+                dispatch(uploadFile({ file })).then(response => {
+                    const imageUrl = response.payload.data; // 서버에서 반환된 URL
+    
                     setRoomData(prevState => ({
                         ...prevState,
                         roomImages: [...prevState.roomImages, {
@@ -74,6 +74,7 @@ const ModifyRoomPage = () => {
             });
         }
     };
+    
 
 
     const handleDeleteImage = (index) => {
@@ -85,19 +86,27 @@ const ModifyRoomPage = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const roomDataWithHotelId = { ...roomData, hotelId: hotel ? hotel['hotel-id'] : room['hotel-id'] };
-        console.log('Submitting room data:', roomDataWithHotelId); // 디버깅용 로그 추가
+        const roomDataWithHotelId = {
+            ...roomData,
+            hotelId: hotel ? hotel['hotel-id'] : room['hotel-id']
+        };
+    
+        console.log('Submitting room data:', JSON.stringify(roomDataWithHotelId, null, 2));
+        console.log('Request URL:', `${ROOM_URL}/${roomId}`);
+    
         dispatch(updateRoom({ roomId, roomData: roomDataWithHotelId }))
             .unwrap()
             .then(() => {
                 alert('방 수정 성공');
-                navigate('/rooms');
+                navigate('/hotel'); // 이동 경로 수정
             })
             .catch((error) => {
                 console.error("업데이트 실패:", error);
                 alert('방 수정 실패: ' + error.message);
             });
     };
+    
+    
 
     return (
         <div className={styles.modifyRoomPage}>
@@ -150,7 +159,7 @@ const ModifyRoomPage = () => {
                     <input type="file" name="roomImages" multiple onChange={handleChange} />
                     <div className={styles.imageGallery}>
                         {roomData.roomImages.map((image, index) => {
-                            const imageUrl = image.type === 'LOCAL' || image.hotelImgUri.startsWith('/local')
+                            const imageUrl = (typeof image.hotelImgUri === 'string' && image.hotelImgUri.startsWith('/local')) || image.type === 'LOCAL'
                                 ? `http://localhost:8888${image.hotelImgUri.replace('/local', '/hotel/images')}`
                                 : image.hotelImgUri;
                             console.log(`Generated Image URL for ${image.type}: ${imageUrl}`); // 이미지 URL 확인

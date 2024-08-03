@@ -14,28 +14,19 @@ const initialRoomAddState = {
 
 export const uploadFile = createAsyncThunk(
     'roomAdd/uploadFile',
-    async ({ file, index }, thunkAPI) => {
+    async ({ file }, thunkAPI) => {
         const formData = new FormData();
-        formData.append('file', file); // 'file'이 서버에서 요구하는 필드 이름인지 확인하세요.
+        formData.append('file', file);
 
         try {
             const response = await fetch(`${UPLOAD_URL}`, {
                 method: 'POST',
                 body: formData,
-                headers: {
-                    "Accept": "application/json",
-                    // "Content-Type": "multipart/form-data" 는 자동으로 설정됩니다. 수동으로 설정하지 마세요.
-                },
             });
-            if (!response.ok) {
-                const errorResponse = await response.json();
-                console.error('Upload error response:', errorResponse);
-                return thunkAPI.rejectWithValue(`Server responded with ${response.status}: ${errorResponse.message}`);
-            }
-            const data = await response.json();
-            return { data, index };
+            const data = await response.text();
+            return { data };
         } catch (e) {
-            return thunkAPI.rejectWithValue('Error uploading file: ' + e.message);
+            return thunkAPI.rejectWithValue('Error uploading file');
         }
     }
 );
@@ -59,8 +50,7 @@ export const submitRoom = createAsyncThunk(
                     'room-images': roomData.roomImages.map(image => ({
                         hotelImgUri: image.hotelImgUri,
                         type: 'ROOM'
-                    })),
-                    'hotel-id': hotelId
+                    }))
                 })
             });
 
@@ -84,8 +74,10 @@ export const submitRoom = createAsyncThunk(
 export const updateRoom = createAsyncThunk(
     'roomAdd/updateRoom',
     async ({ roomData, roomId }, { getState, rejectWithValue }) => {
-        const token = localStorage.getItem('token');
+        const token = JSON.parse(localStorage.getItem('userData')).token;
+        console.log(`Token: ${token}`);
         try {
+            console.log(`Request URL: ${ROOM_URL}/${roomId}`);
             const response = await fetch(`${ROOM_URL}/${roomId}`, {
                 method: 'PATCH',
                 headers: {
@@ -98,22 +90,30 @@ export const updateRoom = createAsyncThunk(
                     'room-type': roomData.type,
                     'room-price': roomData.price,
                     'room-images': roomData.roomImages.map(image => ({
-                        hotelImgUri: image.hotelImgUri,
-                        type: 'ROOM'
-                    }))
+                        hotelImgUri: typeof image.hotelImgUri === 'string' ? image.hotelImgUri : '',
+                        type: image.type || 'ROOM'  // type이 없는 경우 기본값 설정
+                    })),
+                    'hotel-id': roomData.hotelId // hotelId가 있는지 확인
                 })
             });
             if (!response.ok) {
                 const errorData = await response.text();
-                throw new Error(errorData.message);
+                throw new Error(errorData);
             }
 
-            return await response.json();
+            const responseData = await response.text();
+            try {
+                return JSON.parse(responseData);
+            } catch (e) {
+                return responseData;
+            }
         } catch (e) {
-            return rejectWithValue('Error updating room');
+            return rejectWithValue('Error updating room: ' + e.message);
         }
     }
 );
+
+
 
 
 export const deleteRoom = createAsyncThunk(
@@ -164,12 +164,8 @@ const roomAddSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(uploadFile.fulfilled, (state, action) => {
-                const { data, index } = action.payload;
-                if (index >= 0 && index < state.roomImages.length) {
-                    state.roomImages[index] = { hotelImgUri: data, type: 'ROOM' };
-                } else {
-                    console.error('Invalid index: ', index);
-                }
+                const { data } = action.payload;
+                state.roomImages.push({ hotelImgUri: data, type: 'ROOM' });
             })
             .addCase(uploadFile.rejected, (state, action) => {
                 state.errorMessage = action.payload;
