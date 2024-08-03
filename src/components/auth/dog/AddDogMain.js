@@ -146,17 +146,17 @@ const AddDogMain = () => {
         <>
             <div className={styles.stepWrap}>
                 <div className={styles.subWrap}>
-                    <div className={styles.step}>1</div>
-                    <div className={styles.stepLine}></div>
-                    <div className={styles.step}>2</div>
-                    <div className={styles.stepLine}></div>
-                    <div className={styles.step}>3</div>
-                    <div className={styles.stepLine}></div>
-                    <div className={styles.step}>4</div>
-                    <div className={styles.stepLine}></div>
-                    <div className={styles.step}>5</div>
-                    <div className={styles.stepLine}></div>
-                    <div className={styles.step}>6</div>
+                    <div className={`${styles.step} ${styles.finishStep}`}>1</div>
+                    <div className={`${styles.stepLine} ${step >= 2 ? styles.finishStep : ''}`}></div>
+                    <div className={`${styles.step} ${step >= 2 ? styles.finishStep : ''}`}>2</div>
+                    <div className={`${styles.stepLine} ${step >= 3 ? styles.finishStep : ''}`}></div>
+                    <div className={`${styles.step} ${step >= 3 ? styles.finishStep : ''}`}>3</div>
+                    <div className={`${styles.stepLine} ${step >= 4 ? styles.finishStep : ''}`}></div>
+                    <div className={`${styles.step} ${step >= 4 ? styles.finishStep : ''}`}>4</div>
+                    <div className={`${styles.stepLine} ${step >= 5 ? styles.finishStep : ''}`}></div>
+                    <div className={`${styles.step} ${step >= 5 ? styles.finishStep : ''}`}>5</div>
+                    <div className={`${styles.stepLine} ${step >= 6 ? styles.finishStep : ''}`}></div>
+                    <div className={`${styles.step} ${step >= 6 ? styles.finishStep : ''}`}>6</div>
                 </div>
             </div>
             <div className={styles.wrap}>
