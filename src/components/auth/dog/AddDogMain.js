@@ -10,7 +10,6 @@ import { useNavigate } from "react-router-dom";
 import { DOG_URL, NOTICE_URL } from "../../../config/user/host-config";
 import { useDispatch, useSelector } from "react-redux";
 import { userEditActions } from "../../store/user/UserEditSlice";
-import { userActions } from "../../store/user/UserSlice";
 
 const AddDogMain = () => {
     const navigate = useNavigate();
