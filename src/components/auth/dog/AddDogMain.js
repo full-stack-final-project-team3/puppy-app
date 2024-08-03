@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import DogNameInput from "./DogNameInput";
 import DogBirthdayInput from "./DogBirthdayInput";
 import DogBreedInput from "./DogBreedInput";
@@ -26,10 +26,7 @@ const AddDogMain = () => {
     const [weight, setWeight] = useState('');
     const [dogSize, setDogSize] = useState('');
     const [allergies, setAllergies] = useState([]);
-    // 기본 이미지
     const profileUrl = "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fst2.depositphotos.com%2F5045705%2F11671%2Fv%2F950%2Fdepositphotos_116714982-stock-illustration-little-puppy-icon.jpg&type=a340";
-
-    useEffect(() => {}, [step]);
 
     const dogNameValue = (dogName) => {
         setName(dogName);
@@ -55,11 +52,11 @@ const AddDogMain = () => {
     const dogWeightValue = (weight) => {
         setWeight(weight);
         if (weight > 25) {
-            setDogSize("LARGE")
+            setDogSize("LARGE");
         } else if (weight > 10) {
-            setDogSize("MEDIUM")
+            setDogSize("MEDIUM");
         } else {
-            setDogSize("SMALL")
+            setDogSize("SMALL");
         }
         setStep(6);
     }
@@ -68,14 +65,14 @@ const AddDogMain = () => {
         setAllergies(allergies);
 
         const payload = {
-            "dogName": name,
-            "dogBreed": breed,
-            "birthday": birthday,
-            "dogSex": gender,
-            "dogSize": dogSize,
-            "weight": weight,
-            "allergies": allergies,
-            "dogProfileUrl": profileUrl,
+            dogName: name,
+            dogBreed: breed,
+            birthday: birthday,
+            dogSex: gender,
+            dogSize: dogSize,
+            weight: weight,
+            allergies: allergies,
+            dogProfileUrl: profileUrl,
         };
 
         try {
@@ -95,10 +92,9 @@ const AddDogMain = () => {
 
                 dispatch(userEditActions.updateUserDetail(updatedUserDetail));
 
-                // 알림 추가 요청
                 const noticePayload = {
-                    "userId": user.id,
-                    "message": `${name}이(가) 등록되었습니다!`
+                    userId: user.id,
+                    message: `${name}이(가) 등록되었습니다!`
                 };
 
                 try {
@@ -111,7 +107,6 @@ const AddDogMain = () => {
                     const noticeResponseText = await noticeResponse.text();
 
                     console.log(noticeResponseText);
-
 
                     let newNotice;
                     try {
@@ -136,7 +131,9 @@ const AddDogMain = () => {
                 } catch (error) {
                     alert('강아지 등록은 성공했으나 알림 추가 중 오류가 발생했습니다.');
                 }
-                navigate('/mypage');
+
+                // navigate 호출을 상태 업데이트 후에 실행
+                navigate('/mypage', { state: { newDog }, replace: true });
             } else {
                 alert('강아지 등록 실패!');
             }
@@ -146,14 +143,31 @@ const AddDogMain = () => {
     }
 
     return (
-        <div className={styles.wrap}>
-            {step === 1 && <DogNameInput dogNameValue={dogNameValue} />}
-            {step === 2 && <DogBreedInput dogBreedValue={dogBreedValue} />}
-            {step === 3 && <DogBirthdayInput onDateChange={dogBirthdayValue} />}
-            {step === 4 && <DogSexInput dogSexValue={dogSexValue} />}
-            {step === 5 && <DogWeightInput dogWeightValue={dogWeightValue} />}
-            {step === 6 && <DogAllergiesInput onAllergiesChange={dogAllergiesValue} />}
-        </div>
+        <>
+            <div className={styles.stepWrap}>
+                <div className={styles.subWrap}>
+                    <div className={`${styles.step} ${styles.finishStep}`}>1</div>
+                    <div className={`${styles.stepLine} ${step >= 2 ? styles.finishStep : ''}`}></div>
+                    <div className={`${styles.step} ${step >= 2 ? styles.finishStep : ''}`}>2</div>
+                    <div className={`${styles.stepLine} ${step >= 3 ? styles.finishStep : ''}`}></div>
+                    <div className={`${styles.step} ${step >= 3 ? styles.finishStep : ''}`}>3</div>
+                    <div className={`${styles.stepLine} ${step >= 4 ? styles.finishStep : ''}`}></div>
+                    <div className={`${styles.step} ${step >= 4 ? styles.finishStep : ''}`}>4</div>
+                    <div className={`${styles.stepLine} ${step >= 5 ? styles.finishStep : ''}`}></div>
+                    <div className={`${styles.step} ${step >= 5 ? styles.finishStep : ''}`}>5</div>
+                    <div className={`${styles.stepLine} ${step >= 6 ? styles.finishStep : ''}`}></div>
+                    <div className={`${styles.step} ${step >= 6 ? styles.finishStep : ''}`}>6</div>
+                </div>
+            </div>
+            <div className={styles.wrap}>
+                {step === 1 && <DogNameInput dogNameValue={dogNameValue}/>}
+                {step === 2 && <DogBreedInput dogBreedValue={dogBreedValue}/>}
+                {step === 3 && <DogBirthdayInput onDateChange={dogBirthdayValue}/>}
+                {step === 4 && <DogSexInput dogSexValue={dogSexValue}/>}
+                {step === 5 && <DogWeightInput dogWeightValue={dogWeightValue}/>}
+                {step === 6 && <DogAllergiesInput onAllergiesChange={dogAllergiesValue}/>}
+            </div>
+        </>
     );
 };
 
