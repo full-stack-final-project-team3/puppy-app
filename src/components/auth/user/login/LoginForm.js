@@ -54,9 +54,8 @@ const LoginForm = () => {
         const userDetailData = await response1.json();
         const fetchNotice = await fetch(`${NOTICE_URL}/user/${userDetailData.id}`)
         const noticeData = await fetchNotice.json();
-        dispatch(userEditActions.updateUserNotice(noticeData))
+        dispatch(userEditActions.saveUserNotice(noticeData))
         dispatch(userEditActions.updateUserDetail(userDetailData));
-
 
         const responseData = await response.json();
         localStorage.setItem("userData", JSON.stringify(responseData));

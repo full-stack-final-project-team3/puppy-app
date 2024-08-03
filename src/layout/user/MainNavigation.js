@@ -8,14 +8,13 @@ import UserContext from "../../components/context/user-context";
 import { userEditActions } from "../../components/store/user/UserEditSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { dogEditActions } from "../../components/store/dog/DogEditSlice";
-import { userActions } from "../../components/store/user/UserSlice";
+import { NOTICE_URL } from "../../config/user/host-config";
 
 const MainNavigation = () => {
     const navi = useNavigate();
     const [menuOpen, setMenuOpen] = useState(false);
     const [openNotice, setOpenNotice] = useState(false);
     const noticeRef = useRef(null);
-
 
     const { changeIsLogin, user, setUser } = useContext(UserContext);
     const userData = useRouteLoaderData("user-data");
@@ -24,7 +23,6 @@ const MainNavigation = () => {
 
     const dispatch = useDispatch();
 
-    // 사용자 데이터가 있을 경우 로그인 상태로 설정하고 사용자 데이터를 업데이트
     useEffect(() => {
         if (userData) {
             changeIsLogin(true);
@@ -32,7 +30,6 @@ const MainNavigation = () => {
         }
     }, [userData, changeIsLogin, setUser]);
 
-    // 외부 클릭을 감지하여 알림 창을 닫기 위한 이벤트 리스너 설정
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (noticeRef.current && !noticeRef.current.contains(event.target)) {
@@ -51,12 +48,35 @@ const MainNavigation = () => {
         };
     }, [openNotice]);
 
-    // 메뉴 토글 핸들러
+    const fetchNotices = async () => {
+        try {
+            const response = await fetch(`${NOTICE_URL}/user/${userDetail.id}`);
+            if (response.ok) {
+                const data = await response.json();
+                dispatch(userEditActions.saveUserNotice(data));
+            }
+        } catch (error) {
+            console.error('An error occurred while fetching notices:', error);
+        }
+    };
+
+    useEffect(() => {
+        if (userDetail.id) {
+            fetchNotices();
+        }
+    }, [userDetail.id, dispatch]);
+
+    // userDetail의 noticeCount가 변경될 때마다 알림을 가져옵니다.
+    useEffect(() => {
+        if (userDetail.id) {
+            fetchNotices();
+        }
+    }, [userDetail.noticeCount]);
+
     const toggleMenuHandler = () => {
         setMenuOpen(prevState => !prevState);
     };
 
-    // 로그아웃 핸들러
     const logoutHandler = () => {
         localStorage.removeItem("userData");
         localStorage.removeItem("userDetail");
@@ -68,25 +88,46 @@ const MainNavigation = () => {
         }
     };
 
-    // 로그인 핸들러
     const loginHandler = () => {
         navi("/login");
     };
 
-    // 알림 창 토글 핸들러
     const toggleNotice = () => {
         setOpenNotice(prevState => !prevState);
     };
 
-
-
-    // 회원 정보 수정 중 마이페이지를 누르면 화면이 변환되는 함수
     const clearEditMode = async () => {
         dispatch(userEditActions.clearMode());
         dispatch(userEditActions.clearUserEditMode());
         dispatch(dogEditActions.clearEdit());
     };
-    console.log(noticeList)
+
+    const checkNotice = async (noticeId) => {
+        try {
+            const response = await fetch(`${NOTICE_URL}/click/${noticeId}/${userDetail.id}`, {
+                method: 'POST',
+            });
+
+            if (response.ok) {
+                const updatedNotices = noticeList.map(notice =>
+                    notice.id === noticeId ? { ...notice, isClicked: true } : notice
+                );
+                dispatch(userEditActions.saveUserNotice(updatedNotices));
+                dispatch(userEditActions.updateUserDetail({
+                    ...userDetail,
+                    noticeCount: userDetail.noticeCount - 1
+                }));
+                console.log('Notice clicked successfully.');
+            } else {
+                console.error('Failed to click notice.');
+            }
+        } catch (error) {
+            console.error('An error occurred while clicking notice:', error);
+        }
+    };
+
+    console.log(noticeList);
+
 
 
     return (
@@ -103,7 +144,7 @@ const MainNavigation = () => {
                         <>
                             <button className={styles.logout} onClick={logoutHandler}>Logout</button>
                             <BsBell className={styles.icon} onClick={toggleNotice}></BsBell>
-                            {noticeList.length !== 0 ? <span className={styles.count}>{userDetail.noticeCount}</span> : undefined}
+                            {Array.isArray(noticeList) && userDetail.noticeCount !== 0 && <span className={styles.count}>{userDetail.noticeCount}</span>}
                             <Link to={"/mypage"} onClick={clearEditMode}><BiUser className={styles.icon} /></Link>
                             <GiHamburgerMenu className={styles.icon} onClick={toggleMenuHandler} />
                         </>
@@ -126,12 +167,22 @@ const MainNavigation = () => {
                 </div>
             )}
             {openNotice && (
-                <div className={styles.noticeWrap}>
-                    {noticeList.map((notice, index) => (
-                        <div key={index} className={styles.message}>
-                            {notice.message}
-                        </div>
-                    ))}
+                <div className={styles.noticeWrap} ref={noticeRef}>
+                    {Array.isArray(noticeList) && noticeList.length > 0 && noticeList.slice()
+                        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // 시간 순서대로 정렬
+                        .map((notice) => (
+                            <React.Fragment key={notice.id}>
+                                <div
+                                    className={`${styles.message} ${notice.clicked ? styles.clickedMessage : ''}`}
+                                    onClick={!notice.clicked ? () => checkNotice(notice.id) : undefined}
+                                >
+                                    {notice.message}
+                                </div>
+                                <div className={styles.time}>
+                                    {new Date(notice.createdAt.replace(' ', 'T')).toLocaleString()}
+                                </div>
+                            </React.Fragment>
+                        ))}
                 </div>
             )}
         </header>
