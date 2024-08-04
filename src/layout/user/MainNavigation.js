@@ -179,7 +179,7 @@ const MainNavigation = () => {
                                     {notice.message}
                                 </div>
                                 <div className={styles.time}>
-                                    {new Date(notice.createdAt.replace(' ', 'T')).toLocaleString()}
+                                    {new Date((notice.createdAt || '').replace(' ', 'T')).toLocaleString()}
                                 </div>
                             </React.Fragment>
                         ))}

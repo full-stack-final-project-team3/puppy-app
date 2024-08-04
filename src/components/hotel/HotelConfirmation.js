@@ -1,41 +1,59 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import styles from './HotelConfirmation.module.scss';
-import { useNavigate } from 'react-router-dom';
-import { submitReservation } from '../store/hotel/HotelReservationSlice';
+import {useNavigate} from 'react-router-dom';
+import {submitReservation} from '../store/hotel/HotelReservationSlice';
 
-const HotelConfirmation = ({ hotel, selectedRoom, startDate, endDate, totalPrice, user }) => {
+const HotelConfirmation = ({hotel, selectedRoom, startDate, endDate, totalPrice, user}) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const personCount = useSelector(state => state.hotelPage.personCount);
-    console.log('user: ', user);
+    const email = user.email;
+    const token = JSON.parse(localStorage.getItem('userData')).token;
 
+    console.log("유저아이디", user.userId)
+    console.log('user: ', user);
+    console.log("토큰 있음? ", localStorage.getItem('token'));
     const handleConfirmBooking = () => {
+        if (!user) {
+            alert("사용자 정보가 없습니다.");
+            return;
+        }
+
+        if (!token) {
+            alert("로그인이 필요합니다.");
+            navigate('/login'); // 로그인 페이지로 이동
+            return;
+        }
+
         dispatch(submitReservation({
             hotelId: hotel['hotel-id'],
             roomId: selectedRoom['room-id'],
             startDate,
             endDate,
             userId: user.userId,
-            totalPrice
+            totalPrice,
+            user,
+            email,
+            token,
+            createdAt: new Date().toISOString()
         }))
             .unwrap()
             .then((response) => {
                 console.log('Reservation succeeded:', response);
-                // 성공 시 예약 완료 페이지로 이동
-                navigate('/hotel', { state: { reservation: response } });
-                alert("예약이 완료되었습니다.")
+                navigate('/hotel', {state: {reservation: response}});
+                alert("예약이 완료되었습니다.");
             })
             .catch((error) => {
                 console.error('Reservation failed:', error);
-                alert("예약이 되어있는 객실입니다.")
+                alert("예약이 되어있는 객실입니다.");
             });
     };
 
     const formatDate = (dateStr) => {
         const date = new Date(dateStr);
-        const options = { weekday: 'short', year: 'numeric', month: '2-digit', day: '2-digit' };
+        const options = {weekday: 'short', year: 'numeric', month: '2-digit', day: '2-digit'};
         return date.toLocaleDateString('en-US', options).replace(',', '').replace(/\//g, ' / ');
     };
 
