@@ -1,12 +1,11 @@
-import React from "react";
 import { createBrowserRouter } from "react-router-dom";
 import RootLayout from "../../layout/user/RootLayout";
 import Home from "../../pages/hotel/Home";
 import WelcomePage from "../../pages/user/WelcomePage";
 import LoginForm from "../../components/auth/user/login/LoginForm";
 import SignUpPage from "../../components/auth/user/signup/SignUpPage";
-import HotelPage from "../../pages/hotel/HotelPage"; // 새로 추가된 HotelPage
-import AddHotelPage from "../../pages/hotel/AddHotelPage"; // 새로 추가된 AddHotelPage
+import HotelPage from "../../pages/hotel/HotelPage";
+import AddHotelPage from "../../pages/hotel/AddHotelPage";
 import { logoutAction } from "../../pages/user/Logout";
 import UserProvider from "../../components/context/UserProvider";
 import { userDataLoader, authCheckLoader, getUserToken } from "./auth";
@@ -22,7 +21,7 @@ import ForgotSection from "../../components/auth/user/forgot-info/ForgotSection"
 import ShopMain from "../../pages/shop/ShopMain";
 import TreatsListForDog from "../../pages/shop/TreatsListForDog";
 import AddTreats from "../../pages/shop/AddTreats";
-import ErrorPage from "../../pages/user/ErrorPage"; // ErrorPage import 추가
+import ErrorPage from "../../pages/user/ErrorPage";
 
 const homeRouter = [
   {
@@ -57,7 +56,7 @@ export const router = createBrowserRouter([
     ),
     loader: userDataLoader,
     id: "user-data",
-    errorElement: <ErrorPage />, // 잘못된 URL에 대한 에러 페이지 설정
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "",
@@ -134,7 +133,7 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: "*", // 이상한 경로 다 여기로 보냄
-    element: <ErrorPage />, //
+    path: "*",
+    element: <ErrorPage />,
   },
 ]);
