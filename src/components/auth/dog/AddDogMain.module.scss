@@ -19,7 +19,7 @@
   justify-content: center;
 
   .subWrap {
-    width: 90%;
+    width: 96%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -46,5 +46,6 @@
 
   .finishStep {
     background: #9B0000;
+    cursor: pointer;
   }
 }

@@ -13,25 +13,45 @@
   }
 
   .intro {
-    margin-bottom: 10px;
+    margin-bottom: 30px;
     font-weight: 300;
 
   }
 
-  .input {
-    width: 10%;
-    height: 40px;
-    border-radius: 32px;
-    background: #F0E2C8;
-    margin: 0 auto;
+  .inputContainer {
+    display: flex;
+    align-items: center;
     justify-content: center;
-    border: 1px solid black;
-    text-align: center;
 
-    .input:focus {
-      outline: none;
+    .input {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: #F0E2C8;
+      border: 1px solid #D1C4A8;
+      margin: 0 5px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+
+      &:focus {
+        outline: none;
+        border-color: #A1887F;
+      }
     }
 
-}}
+    .dot {
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+    }
 
-
+    .unit {
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+      margin-left: 5px;
+    }
+  }
+}

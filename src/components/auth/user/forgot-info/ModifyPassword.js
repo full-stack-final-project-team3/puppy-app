@@ -1,32 +1,30 @@
-import React, {useRef, useState} from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import styles from './ModifyPassword.module.scss';
-import {AUTH_URL} from "../../../../config/user/host-config";
-import {useNavigate} from "react-router-dom";
+import { AUTH_URL } from "../../../../config/user/host-config";
+import { useNavigate } from "react-router-dom";
 
 const ModifyPassword = ({ email }) => {
-
-
-    console.log(email) // email이 undefined
-
-
     const navi = useNavigate();
     const passwordRef = useRef();
     const confirmPasswordRef = useRef();
 
     const [passwordMatch, setPasswordMatch] = useState(false);
-    const [passwordMessage, setPasswordMessage] = useState('');
+    const [passwordMessage, setPasswordMessage] = useState(' ');
     const [password, setPassword] = useState('');
-
-
-
     const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+
+    useEffect(() => {
+        if (!email) {
+            navi('/');  // 이메일이 없으면 홈으로 리다이렉트
+        }
+    }, [email, navi]);
 
     const handlePasswordChange = () => {
         if (passwordRef.current.value && confirmPasswordRef.current.value) {
             if (passwordRef.current.value === confirmPasswordRef.current.value) {
                 setPasswordMatch(true);
                 setPasswordMessage('비밀번호가 일치합니다.');
-                setPassword(passwordRef.current.value)
+                setPassword(passwordRef.current.value);
                 setIsSubmitDisabled(false);
             } else {
                 setPasswordMatch(false);
@@ -40,21 +38,14 @@ const ModifyPassword = ({ email }) => {
     };
 
     const submitHandler = async () => {
-        // 패치 보냄
-
-        // gksrlqja3#
-        console.log(email) // email이 null
-        console.log(password)
-
         const response = await fetch(`${AUTH_URL}/password?password=${password}&email=${email}`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
-
         });
         const result = await response.text();
         console.log(result);
         navi("/");
-    }
+    };
 
     return (
         <div className={styles.authContainer}>
@@ -67,7 +58,7 @@ const ModifyPassword = ({ email }) => {
                     type="password"
                     ref={passwordRef}
                     onChange={handlePasswordChange}
-                    placeholder={"바꾸실 비밀번호를 입력해주세요."}
+                    placeholder="바꾸실 비밀번호를 입력해주세요."
                 />
             </div>
             <div className={styles.section}>
@@ -78,6 +69,7 @@ const ModifyPassword = ({ email }) => {
                     type="password"
                     ref={confirmPasswordRef}
                     onChange={handlePasswordChange}
+                    placeholder="비밀번호를 다시 입력해주세요."
                 />
                 {passwordMessage && (
                     <p className={passwordMatch ? styles.successMessage : styles.errorMessage}>
