@@ -1,0 +1,55 @@
+// Importing a CSS file in SCSS
+@import './common/common.css';
+
+
+.review_text{
+    width: 500px;
+    height: 350px;
+    resize: none;
+}
+
+.review_common_box button{
+    padding: 10px 20px;
+    border: 2px solid #000;
+    background-color: rgb(196, 231, 55);
+}
+.review_common_box button:hover {
+    background-color: transparent;
+}
+
+.review_editor_box{
+  outline: 3px;
+}
+
+.review_page_box{
+  background-color: transparent;
+}
+
+
+.review_list_box {
+    // review_list_box 안에 있는 li들에 대한 스타일 정의
+    list-style: none; // li 요소의 기본 리스트 스타일을 제거합니다.
+    padding: 0; // 필요에 따라 기본 padding을 제거합니다.
+    
+    // li 요소에 대한 추가 스타일을 정의할 수 있습니다.
+    li {
+      padding: 10px; // 예: 각 li 항목에 패딩을 추가합니다.
+      border-bottom: 1px solid #ddd; // 예: 각 li 항목에 하단 경계선을 추가합니다.
+      outline: 2px solid #777;
+      margin-bottom: 20px;
+      cursor: pointer;
+      
+      &:last-child {
+        border-bottom: none; // 마지막 li 항목에서 하단 경계선을 제거합니다.
+      }
+      
+      &:hover {
+        background-color: #f0f0f0; // 예: 마우스 오버 시 배경색 변경
+      }
+    }
+  }
+
+
+.review_common_box.review_editor_box .review_list_box{
+    outline: 3px solid red;
+  }
