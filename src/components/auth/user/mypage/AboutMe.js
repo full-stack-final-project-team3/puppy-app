@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './AboutMe.module.scss';
 import { useDispatch, useSelector } from "react-redux";
 import { userEditActions } from "../../../store/user/UserEditSlice";
@@ -7,6 +8,7 @@ import { AUTH_URL } from "../../../../config/user/host-config";
 const AboutMe = () => {
     const user = useSelector(state => state.userEdit.userDetail);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     useEffect(() => {
         // 로컬 저장소에서 상태를 복원
@@ -18,16 +20,23 @@ const AboutMe = () => {
             const fetchUserData = async () => {
                 try {
                     const response = await fetch(`${AUTH_URL}/user`);
-                    const userData = await response.json();
-                    dispatch(userEditActions.updateUserDetail(userData));
+                    if (response.status === 400) {
+                        navigate('/error', { state: { status: 400 } }); // 에러 페이지로 리다이렉트
+                    } else if (response.status === 404) {
+                        navigate('/error', { state: { status: 404 } }); // 404 에러 처리
+                    } else if (response.ok) {
+                        const userData = await response.json();
+                        dispatch(userEditActions.updateUserDetail(userData));
+                    } else {
+                        console.error('Failed to fetch user data:', response.status);
+                    }
                 } catch (error) {
                     console.error('Failed to fetch user data:', error);
                 }
             };
             fetchUserData();
         }
-    }, [dispatch]);
-
+    }, [dispatch, navigate]);
 
     const startEditMode = () => {
         dispatch(userEditActions.startMode());
@@ -38,7 +47,9 @@ const AboutMe = () => {
         <div className={styles.wrap}>
             <div className={styles.me}>Me</div>
             <div className={styles.mainContainer}>
-                <img className={styles.img} src={user.profileUrl} alt="Profile" />
+                <div className={styles.img}>
+                    <img className={styles.image} src={user.profileUrl} alt="Profile" />
+                </div>
                 <div className={styles.wrapRight}>
                     <div className={styles.flex}>
                         <h3 className={styles.nickname}>{user.nickname}</h3>

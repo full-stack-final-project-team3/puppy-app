@@ -1,61 +1,71 @@
+.authContainer {
+  width: 44%;
+  margin: 100px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 32px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #F4E8D3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-  .authContainer {
-    width: 44%;
-    margin: 100px auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 32px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    background-color: #F4E8D3;
+  .errorMessage {
+    color: red;
+    font-size: 0.8em;
+    text-align: center;
+  }
+
+  .codeInputContainer {
     display: flex;
+    justify-content: center;
     flex-direction: column;
-    align-items: center;
-
-    .errorMessage {
-      color: red;
-      font-size: 0.8em;
-      text-align: center;
-    }
-
-
-    .codeInputContainer {
-      display: flex;
-      justify-content: center;
-      flex-direction: column;
-      gap: 10px;
-      margin: 20px 0;
-    }
+    gap: 10px;
+    margin: 20px 0;
 
     .h3 {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-
-      .codeInput {
-        width: 15%;
-        background-color: #F4E8D3;
-        border: 1px solid #ccc;
-        border-radius: 20px;
-      }
+      text-align: center;
+      margin-bottom: 10px;
     }
 
+    .codeInputWrapper {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
 
-  }
+      .codeInput {
+        width: 40px;
+        height: 40px;
+        text-align: center;
+        font-size: 1.2em;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #FFF;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        transition: all 0.2s ease-in-out;
 
-  .input {
-    width: 50%;
-    padding: 10px;
-    border: 1px solid #B7AE9E;
-    border-radius: 32px;
-    box-sizing: border-box;
-    background: #F4E8D3;
+        &:focus {
+          border-color: #B7AE9E;
+          outline: none;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+      }
+    }
   }
-  .input:focus {
+}
+
+.input {
+  width: 50%;
+  padding: 10px;
+  border: 1px solid #B7AE9E;
+  border-radius: 32px;
+  box-sizing: border-box;
+  background: #F4E8D3;
+  margin-bottom: 10px;
+
+  &:focus {
     outline: none;
+    border-color: #A68968;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
-
-
-
-
-
-
+}

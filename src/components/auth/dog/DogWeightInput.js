@@ -31,7 +31,7 @@ const DogWeightInput = ({ dogWeightValue }) => {
         <div className={styles.wrap}>
             <h3 className={styles.h3}>강아지 체중</h3>
             <div className={styles.intro}>입력 후 'enter'를 눌러주세요.</div>
-            <div className={styles.div}>
+            <div className={styles.inputContainer}>
                 <input
                     ref={firstRef}
                     onKeyDown={(e) => handleKeyDown(e, firstRef, () => {})}
@@ -39,14 +39,15 @@ const DogWeightInput = ({ dogWeightValue }) => {
                     className={styles.input}
                     placeholder={"0"}
                 />
-                <span className={styles.span}>.</span>
+                <span className={styles.dot}>.</span>
                 <input
                     ref={secondRef}
                     onKeyDown={(e) => handleKeyDown(e, secondRef, () => {})}
                     onChange={(e) => handleChange(e, secondRef)}
                     className={styles.input}
                     placeholder={"0"}
-                />kg
+                />
+                <span className={styles.unit}>kg</span>
             </div>
         </div>
     );
