@@ -9,12 +9,14 @@ const initialRoomAddState = {
     type: '',
     price: '',
     roomImages: [{ hotelImgUri: '', type: 'ROOM' }],
-    errorMessage: ''
+    errorMessage: '',
+    isUploading: false,
+    
 };
 
 export const uploadFile = createAsyncThunk(
     'roomAdd/uploadFile',
-    async ({ file }, thunkAPI) => {
+    async ({ file, index }, thunkAPI) => {
         const formData = new FormData();
         formData.append('file', file);
 
@@ -22,14 +24,20 @@ export const uploadFile = createAsyncThunk(
             const response = await fetch(`${UPLOAD_URL}`, {
                 method: 'POST',
                 body: formData,
+                headers: {
+                    "Accept": "application/json",
+                    // "Content-Type": "multipart/form-data" 는 자동으로 설정됩니다. 수동으로 설정하지 마세요.
+                },
             });
-            const data = await response.text();
-            return { data };
+
+            const responseText = await response.text();
+            return { data: responseText, index };
         } catch (e) {
-            return thunkAPI.rejectWithValue('Error uploading file');
+            return thunkAPI.rejectWithValue('Error uploading file: ' + e.message);
         }
     }
 );
+
 
 
 export const submitRoom = createAsyncThunk(
@@ -50,7 +58,8 @@ export const submitRoom = createAsyncThunk(
                     'room-images': roomData.roomImages.map(image => ({
                         hotelImgUri: image.hotelImgUri,
                         type: 'ROOM'
-                    }))
+                    })),
+                    'hotel-id': hotelId
                 })
             });
 
@@ -163,12 +172,21 @@ const roomAddSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
+        .addCase(uploadFile.pending, (state) => {
+                state.isUploading = true;
+            })
             .addCase(uploadFile.fulfilled, (state, action) => {
-                const { data } = action.payload;
-                state.roomImages.push({ hotelImgUri: data, type: 'ROOM' });
+                const { data, index } = action.payload;
+                if (index !== undefined) {
+                    state.roomImages[index].hotelImgUri = data;
+                } else {
+                    state.roomImages.push({ hotelImgUri: data, type: 'ROOM' });
+                }
+                state.isUploading = false;
             })
             .addCase(uploadFile.rejected, (state, action) => {
                 state.errorMessage = action.payload;
+                state.isUploading = false;
             })
             .addCase(submitRoom.fulfilled, (state, action) => {
                 state.roomId = action.payload;

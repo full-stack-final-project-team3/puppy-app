@@ -5,6 +5,7 @@
   max-width: 1300px;
   margin: 0 auto; /* Center the list */
   justify-content: center; /* Center items */
+  
 }
 
 .hotel {
@@ -29,16 +30,45 @@
   }
 
   .imageGallery {
-    display: flex;
-    flex-wrap: wrap;
     width: 100%;
-    height: 400px; /* Fixed height for better layout */
+    .slick-slide {
+      height: auto;
+    }
+    .slick-list {
+      height: 400px; /* Fixed height for better layout */
+    }
+    .slick-track {
+      display: flex;
+      align-items: center;
+    }
   }
 
   .image {
     width: 100%;
-    height: 100%;
-    object-fit: fill; /* Better image fit */
+    height: 400px;
+    object-fit: cover; /* Better image fit */
+  }
+  
+  .deleteButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-weight: normal;
+    font-size: 2rem;
+    position: relative;
+    right: 8%;
+    color: #868686; /* Change color as needed */
+  }
+
+  .favoriteButton {
+    position: relative;
+    left: 94%;
+    margin-bottom: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 2rem;
+    color: #868686; /* 색상은 필요에 따라 변경 */
   }
 
   .ListButton {
@@ -81,4 +111,20 @@
   &:hover {
     background-color: #0056b3;
   }
+}
+
+/* react-slick 기본 스타일 적용 */
+.slick-prev, .slick-next {
+  z-index: 1;
+  width: 100px;
+  height: 100px;
+}
+
+.slick-prev:before, .slick-next:before {
+  font-size: 50px ;
+  color: #343333 ;
+}
+
+.slick-dots {
+  bottom: 10px;
 }

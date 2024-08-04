@@ -62,6 +62,7 @@ function ModifyHotelPage() {
             hotelImages: hotelData.hotelImages.filter((_, imgIndex) => imgIndex !== index)
         });
     };
+    
 
     const handleSubmit = (e) => {
         e.preventDefault();

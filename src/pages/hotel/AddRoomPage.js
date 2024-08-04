@@ -13,14 +13,17 @@ const AddRoomPage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const roomData = useSelector((state) => state.roomAdd);
-
+    const isUploading = useSelector((state) => state.roomAdd.isUploading);
+    
     const handleRoomChange = (e) => {
         const { name, value } = e.target;
         dispatch(updateRoomData({ [name]: value }));
     };
 
     const handleAddImage = () => {
-        dispatch(addRoomImage());
+        if (!isUploading) {
+            dispatch(addRoomImage());
+        }
     };
 
     const handleRemoveImage = (index) => {
@@ -85,18 +88,18 @@ const AddRoomPage = () => {
                 />
                 {roomData.roomImages.map((image, index) => (
                     <div key={index}>
-                        <input
-                            type="file"
-                            onChange={(e) => handleFileChange(e, index)}
-                            required
-                        />
-                        {image.hotelImgUri && (
-                            <>
-                                <img src={`${ROOM_URL}/images/${image.hotelImgUri}`} alt="Hotel" />
-                                <button type="button" onClick={() => handleRemoveImage(index)}>Remove</button>
-                            </>
-                        )}
-                    </div>
+                    <input
+                        type="file"
+                        onChange={(e) => handleFileChange(e, index)}
+                        required
+                    />
+                    {image.hotelImgUri && (
+                        <>
+                            <img src={`${ROOM_URL}/images/${image.hotelImgUri}`} alt="Hotel" />
+                            <button type="button" onClick={() => handleRemoveImage(index)}>Remove</button>
+                        </>
+                    )}
+                </div>
                 ))}
                 <button type="button" onClick={handleAddImage}>Add Image</button>
                 <button type="submit">Save Room</button>

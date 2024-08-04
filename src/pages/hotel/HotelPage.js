@@ -68,15 +68,16 @@ const HotelPage = () => {
         'url(https://example.com/image5.jpg)'  // Step 5
     ];
 
-    const sliderSettings = useMemo(() => ({
+    // 슬라이드 개수에 따라 sliderSettings를 동적으로 설정
+    const getSliderSettings = (imageCount) => ({
         dots: true,
-        infinite: false,
+        infinite: imageCount > 1,
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1,
         arrows: true,
         cssEase: 'linear'
-    }), []);
+    });
 
     const handleSearch = (location) => {
         dispatch(fetchHotels(location));
@@ -151,6 +152,7 @@ const HotelPage = () => {
                             </div>
                         ) : step === 2 ? (
                             <div className={styles.hotelListContainer}>
+                                <h1 className={styles.selectedDate}>Selected date</h1>
                                 <button
                                     className={styles.dateButton}
                                     onClick={() => handleStepClick(1)}
@@ -164,12 +166,16 @@ const HotelPage = () => {
                                 ) : (
                                     <HotelList
                                         hotels={hotels}
-                                        onShowProperty={handleShowProperty}/>
+                                        onShowProperty={handleShowProperty}
+                                        getSliderSettings={getSliderSettings} 
+                                        />
+                                        
                                 )}
-                                <button onClick={handlePreviousStep}>뒤로가기</button>
+                                <button className={styles.back} onClick={handlePreviousStep}>&laquo;</button>
                             </div>
                         ) : step === 3 ? (
                             <div className={styles.hotelDetailContainer}>
+                                <h1 className={styles.selectedDate}>Selected date</h1>
                                 <button
                                     className={styles.dateButton}
                                     onClick={() => handleStepClick(2)}
@@ -180,11 +186,12 @@ const HotelPage = () => {
                                     <RoomDetail
                                         hotel={selectedHotel}
                                         onBook={handleBook}
-                                        sliderSettings={sliderSettings}
+                                        getSliderSettings={getSliderSettings}
                                     />
                                 ) : (
                                     <p>Loading...</p>
                                 )}
+                                <button className={styles.back} onClick={handlePreviousStep}>&laquo;</button>
                             </div>
                         ) : step === 4 ? (
                             <BookingDetail

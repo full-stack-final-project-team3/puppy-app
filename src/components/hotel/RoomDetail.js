@@ -11,7 +11,7 @@ import MapView from './MapView';
 import { deleteRoom, setRooms } from '../store/hotel/RoomAddSlice';
 import store from "../store";
 
-const RoomDetail = ({ hotel, onBook, sliderSettings, onModifyRoom }) => {
+const RoomDetail = ({ hotel, onBook, getSliderSettings, onModifyRoom }) => {
     console.log('hotelid: ' ,hotel['hotel-id']);
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -63,20 +63,20 @@ const RoomDetail = ({ hotel, onBook, sliderSettings, onModifyRoom }) => {
                 {rooms.map((room, roomIndex) => (
                     <div key={room['room-id']} className={styles.room}>
                         <button onClick={() => handleDeleteRoom(room['room-id'])}>Delete room</button>
-                        <Slider className={styles.slider} {...sliderSettings}>
-                            {room["room-images"] && room["room-images"].map((image, imageIndex) => {
-                                const imageUrl = getImageUrl(image['hotelImgUri']);
-                                if (!imageUrl) {
-                                    console.error('Invalid image URI for image', image);
-                                    return null;
-                                }
-                                return (
-                                    <div key={image['image-id'] || `${roomIndex}-${imageIndex}`} className={styles.slide}>
-                                        <img src={imageUrl} alt={`${room.name} - ${image['hotelImgUri']}`} />
-                                    </div>
-                                );
-                            })}
-                        </Slider>
+                        <Slider className={styles.slider} {...getSliderSettings(room["room-images"].length)}>
+            {room["room-images"] && room["room-images"].map((image, imageIndex) => {
+                const imageUrl = getImageUrl(image['hotelImgUri']);
+                if (!imageUrl) {
+                    console.error('Invalid image URI for image', image);
+                    return null;
+                }
+                return (
+                    <div key={image['image-id'] || `${roomIndex}-${imageIndex}`} className={styles.slide}>
+                        <img src={imageUrl} alt={`${room.name} - ${image['hotelImgUri']}`} />
+                    </div>
+                );
+            })}
+        </Slider>
                         <h2>{room.name}</h2>
                         <p>{room.content}</p>
                         <p>Type: {room.type}</p>
