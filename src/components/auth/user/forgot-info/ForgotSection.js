@@ -20,9 +20,9 @@ const ForgotSection = () => {
 
     return (
         <div className={styles.whole}>
-            { !clearValid ?
-                <ValidEmailAndCode isClear={isClear} getEmail={getEmail} />
-                : <ModifyPassword email={email}/>}
+            {/*{ !clearValid ?*/}
+            {/*    <ValidEmailAndCode isClear={isClear} getEmail={getEmail} />*/}
+                 <ModifyPassword email={email}/>
         </div>
     );
 };

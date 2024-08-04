@@ -106,12 +106,12 @@ const ValidEmailAndCode = ({ isClear, getEmail }) => {
                 placeholder="Enter your email"
                 onChange={changeHandler}
             />
-            { !emailValid && <p className={styles.errorMessage}>{error}</p> }
+            {!emailValid && <p className={styles.errorMessage}>{error}</p>}
 
-            { verificationCodeSent && (
+            {verificationCodeSent && (
                 <div className={styles.codeInputContainer}>
                     <h3 className={styles.h3}>인증 코드를 입력해주세요.</h3>
-                    <div>
+                    <div className={styles.codeInputWrapper}>
                         {Array.from(new Array(4)).map((_, index) => (
                             <input
                                 ref={($input) => verifiCodeRef.current[index] = $input}
