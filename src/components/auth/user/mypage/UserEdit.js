@@ -7,13 +7,13 @@ import { AUTH_URL } from "../../../../config/user/host-config";
 const UserEdit = ({ user }) => {
     const passwordRef = useRef();
     const confirmPasswordRef = useRef();
-
+    const fileInputRef = useRef();
+    const [profileUrl, setProfileUrl] = useState(user.profileUrl);
     const [nickname, setNickname] = useState(user.nickname);
     const [address, setAddress] = useState(user.address);
     const [phoneNum, setPhoneNum] = useState(user.phoneNumber);
     const [name, setName] = useState(user.realName);
     const [point, setPoint] = useState(user.point);
-
     const [passwordMatch, setPasswordMatch] = useState(false);
     const [passwordMessage, setPasswordMessage] = useState('');
     const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
@@ -37,29 +37,27 @@ const UserEdit = ({ user }) => {
         }
     };
 
-    const pointHandler = (e) => {
-        setPoint(e.target.value);
-        setIsSubmitDisabled(false);
-    }
-
-    const nameHandler = (e) => {
-        setName(e.target.value);
+    const handleInputChange = (setter) => (e) => {
+        setter(e.target.value);
         setIsSubmitDisabled(false);
     };
 
-    const handleNicknameChange = (e) => {
-        setNickname(e.target.value);
-        setIsSubmitDisabled(false);
+    const handleImageClick = () => {
+        fileInputRef.current.click();
     };
 
-    const handleAddressChange = (e) => {
-        setAddress(e.target.value);
-        setIsSubmitDisabled(false);
-    };
-
-    const handlePhoneNumChange = (e) => {
-        setPhoneNum(e.target.value);
-        setIsSubmitDisabled(false);
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setProfileUrl(reader.result);
+            };
+            console.log(file)
+            console.log(profileUrl)
+            reader.readAsDataURL(file);
+            setIsSubmitDisabled(false);
+        }
     };
 
     const clearEditMode = async () => {
@@ -71,6 +69,7 @@ const UserEdit = ({ user }) => {
             phoneNumber: phoneNum,
             realName: name,
             point: point,
+            profileUrl: profileUrl,
         };
 
         try {
@@ -81,21 +80,13 @@ const UserEdit = ({ user }) => {
             });
 
             const result = await response.text();
-            try {
-                const jsonResult = JSON.parse(result);
-                dispatch(userEditActions.updateUserDetail({ ...user, ...jsonResult }));
+            if (result === "success") {
+                dispatch(userEditActions.updateUserDetail({ ...user, ...payload }));
                 dispatch(userEditActions.clearMode());
                 dispatch(userEditActions.clearUserEditMode());
                 alert("변경 성공!");
-            } catch (e) {
-                if (result === "success") {
-                    dispatch(userEditActions.updateUserDetail({ ...user, ...payload }));
-                    dispatch(userEditActions.clearMode());
-                    dispatch(userEditActions.clearUserEditMode());
-                    alert("변경 성공!");
-                } else {
-                    alert("알 수 없는 응답 형식: " + result);
-                }
+            } else {
+                alert("변경 실패!");
             }
         } catch (error) {
             console.error("Error during fetch:", error);
@@ -105,118 +96,114 @@ const UserEdit = ({ user }) => {
 
     return (
         <div className={styles.wrap}>
-            <img className={styles.img} src="/header-logo.png" alt="Header Logo"/>
             <h2 className={styles.title}>회원 정보 수정</h2>
-
-            <div className={styles.flex}>
-                <div className={styles.section}>
-                    <label htmlFor="email">이메일</label>
-                    <input id="email" type="text" className={styles.input} value={user.email} readOnly/>
-                </div>
-                <div className={styles.section}>
-                    <label htmlFor="name">이름</label>
-                    <input
-                        id="name"
-                        type="text"
-                        className={styles.input}
-                        value={name}
-                        onChange={nameHandler}
-                    />
-                </div>
-                <div className={styles.section}>
-                    <label htmlFor="password">비밀번호 변경</label>
-                    <input
-                        id="password"
-                        type="password"
-                        className={styles.input}
-                        ref={passwordRef}
-                        onChange={handlePasswordChange}
-                        placeholder={"바꾸실 비밀번호를 입력해주세요."}
-                    />
-                </div>
-
-                <div className={styles.section}>
-                    <label htmlFor="nickname">닉네임</label>
-                    <input
-                        id="nickname"
-                        type="text"
-                        className={styles.input}
-                        value={nickname}
-                        onChange={handleNicknameChange}
-                    />
-                </div>
-                <div className={styles.section}>
-                    <label htmlFor="confirmPassword">비밀번호 확인</label>
-                    <input
-                        id="confirmPassword"
-                        type="password"
-                        className={styles.input}
-                        ref={confirmPasswordRef}
-                        onChange={handlePasswordChange}
-                    />
-                    {passwordMessage && (
-                        <p className={passwordMatch ? styles.successMessage : styles.errorMessage}>
-                            {passwordMessage}
-                        </p>
-                    )}
-                </div>
-
-                <div className={styles.section}>
-                    <label htmlFor="phone">휴대전화</label>
-                    <input
-                        id="phone"
-                        type="text"
-                        value={phoneNum}
-                        className={styles.input}
-                        placeholder={"ex) 01055551111"}
-                        onChange={handlePhoneNumChange}
-                    />
-                </div>
-                <div className={styles.section}>
-                    <label htmlFor="point">포인트</label>
-                    <input
-                        id="phone"
-                        type="number"
-                        value={point}
-                        className={styles.input}
-                        placeholder={"0"}
-                        onChange={pointHandler}
-                    />
-                </div>
-            </div>
-
-            <div className={styles.section}>
-                <label htmlFor="address" className={styles.address}>주소</label>
+            <div className={styles.profileContainer}>
+                <img className={styles.profile} src={profileUrl} alt="Profile" onClick={handleImageClick} />
+                <div className={styles.hoverText} onClick={handleImageClick}>프로필사진 교체하기</div>
                 <input
-                    id="address"
-                    type="text"
-                    className={styles.addressName}
-                    value={address}
-                    onChange={handleAddressChange}
+                    type="file"
+                    ref={fileInputRef}
+                    style={{ display: 'none' }}
+                    onChange={handleFileChange}
                 />
             </div>
-            {/*<div >*/}
-            {/*    <div >*/}
-            {/*        <img src="/assets/img/image-add.png" alt="프로필 썸네일"/>*/}
-            {/*        <span ></span>*/}
-            {/*    </div>*/}
-
-            {/*    <label>프로필 이미지 추가</label>*/}
-
-            {/*    <input*/}
-            {/*        type="file"*/}
-            {/*        id="profile-img"*/}
-            {/*        accept="image/*"*/}
-            {/*        name="profileImage"*/}
-            {/*    />*/}
-            {/*</div>*/}
-            <button
-                className={styles.submitButton}
-                onClick={clearEditMode}
-                disabled={isSubmitDisabled}
-            >
-                완료
-            </button>
+            <div className={styles.form}>
+                <div className={styles.section}>
+                    <label htmlFor="email">이메일</label>
+                    <input id="email" type="text" className={styles.input} value={user.email} readOnly />
+                </div>
+                <div className={styles.doubleSection}>
+                    <div className={styles.section}>
+                        <label htmlFor="password">비밀번호 변경</label>
+                        <input
+                            id="password"
+                            type="password"
+                            className={styles.input}
+                            ref={passwordRef}
+                            onChange={handlePasswordChange}
+                            placeholder="바꾸실 비밀번호를 입력해주세요."
+                        />
+                    </div>
+                    <div className={styles.section}>
+                        <label htmlFor="nickname">닉네임</label>
+                        <input
+                            id="nickname"
+                            type="text"
+                            className={styles.input}
+                            value={nickname}
+                            onChange={handleInputChange(setNickname)}
+                        />
+                    </div>
+                </div>
+                <div className={styles.doubleSection}>
+                    <div className={styles.section}>
+                        <label htmlFor="confirmPassword">비밀번호 확인</label>
+                        <input
+                            id="confirmPassword"
+                            type="password"
+                            className={styles.input}
+                            ref={confirmPasswordRef}
+                            onChange={handlePasswordChange}
+                        />
+                        {passwordMessage && (
+                            <p className={passwordMatch ? styles.successMessage : styles.errorMessage}>
+                                {passwordMessage}
+                            </p>
+                        )}
+                    </div>
+                    <div className={styles.section}>
+                        <label htmlFor="name">이름</label>
+                        <input
+                            id="name"
+                            type="text"
+                            className={styles.input}
+                            value={name}
+                            onChange={handleInputChange(setName)}
+                        />
+                    </div>
+                </div>
+                <div className={styles.doubleSection}>
+                    <div className={styles.section}>
+                        <label htmlFor="phone">휴대전화</label>
+                        <input
+                            id="phone"
+                            type="text"
+                            value={phoneNum}
+                            className={styles.input}
+                            placeholder="ex) 01055551111"
+                            onChange={handleInputChange(setPhoneNum)}
+                        />
+                    </div>
+                    <div className={styles.section}>
+                        <label htmlFor="point">포인트</label>
+                        <input
+                            id="point"
+                            type="number"
+                            value={point}
+                            className={styles.input}
+                            placeholder="0"
+                            onChange={handleInputChange(setPoint)}
+                        />
+                    </div>
+                </div>
+                <div className={styles.section}>
+                    <label htmlFor="address" className={styles.address}>주소</label>
+                    <input
+                        id="address"
+                        type="text"
+                        className={styles.input}
+                        value={address}
+                        onChange={handleInputChange(setAddress)}
+                    />
+                </div>
+                <button
+                    className={styles.submitButton}
+                    onClick={clearEditMode}
+                    disabled={isSubmitDisabled}
+                >
+                    완료
+                </button>
+            </div>
         </div>
     );
 };

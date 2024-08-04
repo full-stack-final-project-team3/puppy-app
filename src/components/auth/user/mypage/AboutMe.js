@@ -47,7 +47,9 @@ const AboutMe = () => {
         <div className={styles.wrap}>
             <div className={styles.me}>Me</div>
             <div className={styles.mainContainer}>
-                <img className={styles.img} src={user.profileUrl} alt="Profile" />
+                <div className={styles.img}>
+                    <img className={styles.image} src={user.profileUrl} alt="Profile" />
+                </div>
                 <div className={styles.wrapRight}>
                     <div className={styles.flex}>
                         <h3 className={styles.nickname}>{user.nickname}</h3>
