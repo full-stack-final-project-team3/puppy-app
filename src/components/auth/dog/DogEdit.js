@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useRef, useState } from 'react';
 import styles from './DogEdit.module.scss';
 import { useDispatch, useSelector } from "react-redux";
 import { userEditActions } from "../../store/user/UserEditSlice";
@@ -9,44 +9,37 @@ import { decideGender, decideSize, translateAllergy, translateBreed } from './do
 import { LuBadgeX } from "react-icons/lu";
 
 const DogEdit = () => {
-
-    const [isModifyMode, setIsModifyMode] = useState(false)
+    const [isModifyMode, setIsModifyMode] = useState(false);
     const weightRef = useRef();
+    const fileInputRef = useRef(); // 파일 입력에 대한 참조 추가
 
     const dog = useSelector(state => state.dogEdit.dogInfo);
     const userDetail = useSelector(state => state.userEdit.userDetail);
     const navi = useNavigate();
-    console.log(dog);
-
-
     const dispatch = useDispatch();
-    const clearEditMode =  async e => {
+
+    const clearEditMode = async e => {
         dispatch(userEditActions.clearMode());
         dispatch(dogEditActions.clearEdit());
         const weight = weightRef.current.value;
 
-        const payload = {
-            weight
-        }
+        const payload = { weight };
 
         const response = await fetch(`${DOG_URL}/${dog.id}`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),
-        })
+        });
         if (response.ok) {
-            alert("수정 되었습니다.")
+            alert("수정 되었습니다.");
         }
-
     };
 
     const removeHandler = async () => {
         try {
             const response = await fetch(`${DOG_URL}/${dog.id}`, {
                 method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
             });
 
             if (response.ok) {
@@ -67,16 +60,12 @@ const DogEdit = () => {
     };
 
     const removeAllergy = async e => {
-
         const allergy = e.target.dataset.alg;
-        console.log(allergy)
 
         try {
             const response = await fetch(`${DOG_URL}/allergy?allergy=${allergy}&dogId=${dog.id}`, {
                 method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
             });
 
             if (response.ok) {
@@ -96,11 +85,24 @@ const DogEdit = () => {
         }
     };
 
+    const handleImageClick = () => {
+        fileInputRef.current.click(); // 파일 입력을 클릭하도록 트리거
+    };
 
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                dispatch(dogEditActions.updateDogInfo({ ...dog, dogProfileUrl: reader.result }));
+            };
+            reader.readAsDataURL(file);
+        }
+    };
 
     return (
         <div>
-            <div className={styles.wrap} >
+            <div className={styles.wrap}>
                 <img className={styles.img} src="/header-logo.png" alt="Header Logo" />
                 <div className={styles.flex}>
                     <div className={styles.left}>
@@ -119,17 +121,14 @@ const DogEdit = () => {
                         </div>
                         <div className={styles.row}>
                             <div className={styles.item}>체중</div>
-                            <input  className={styles.input} placeholder={dog.weight} type="number" ref={weightRef}/>
-
-                            {!isModifyMode ? <span className={styles.sub}>{decideSize(dog.dogSize)}</span> :
-                                <button>완료</button>}
-
+                            <input className={styles.input} placeholder={dog.weight} type="number" ref={weightRef} />
+                            {!isModifyMode ? <span className={styles.sub}>{decideSize(dog.dogSize)}</span> : <button>완료</button>}
                         </div>
                         <div className={styles.row}>
                             <div className={styles.item}>보유 알러지</div>
                             <div className={styles.answer}>
                                 {Array.isArray(dog.allergies) ? dog.allergies.map((allergy, index) => (
-                                    <span  key={index} className={styles.badge}>
+                                    <span key={index} className={styles.badge}>
                                         {translateAllergy(allergy)}
                                         <LuBadgeX className={styles.icon} onClick={removeAllergy} data-alg={allergy} />
                                     </span>
@@ -137,8 +136,15 @@ const DogEdit = () => {
                             </div>
                         </div>
                     </div>
-                    <div className={styles.right}>
+                    <div className={styles.right} onClick={handleImageClick}>
                         <img className={styles.dogProfileUrl} src={dog.dogProfileUrl} alt="Dog Profile" />
+                        <div className={styles.hoverText}>강아지 사진 변경</div>
+                        <input
+                            type="file"
+                            ref={fileInputRef}
+                            style={{ display: 'none' }}
+                            onChange={handleFileChange}
+                        />
                     </div>
                 </div>
                 <button onClick={removeHandler}>삭제</button>
