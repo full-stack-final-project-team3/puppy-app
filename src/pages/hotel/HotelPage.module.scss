@@ -1,11 +1,14 @@
 
-
+body{
+  background: #073608;
+}
 .hotelReservationPage {
   height: 91vh;
   background-image: url(https://www.zooplus.co.uk/magazine/wp-content/uploads/2018/03/dachshund.jpg);
   background-size: cover;
   background-position: center;
   color: white;
+  background: #e6e6e6;
 
   .stepContent {
     display: flex;
@@ -67,7 +70,12 @@
       }
     }
   }
-  
+  .selectedDate {
+    color: #2c2c2c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
   
   .dateButton {
     display: block;
@@ -75,20 +83,35 @@
     padding: 10px 20px;
     font-size: 20px;
     background: none;
-    color: #000000;
+    color: #818181;
+    font-weight: bold;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
   
     &:hover {
-      background-color: #0056b3;
+      color: #b91c1c;
     }
   }
   .date {
     display: block;
     margin: 0 auto 20px;
   }
+}
+.back {
+  background: none;
+  border-radius: 25px;
+  position: fixed;
+  color: #818181;
+  border: none;
+  font-size: 4em;
+  top: 50%;
+  left: 40px;
+  cursor: pointer;
+}
+.back:hover {
+  color: #921515;
 }
 
 

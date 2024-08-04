@@ -3,21 +3,23 @@ import PropTypes from 'prop-types';
 import {useLoaderData, useNavigate, useRouteLoaderData} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import styles from './HotelList.module.scss';
+import Slider from 'react-slick';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes, faBookmark as filledBookmark } from '@fortawesome/free-solid-svg-icons';
+import { faBookmark as emptyBookmark } from '@fortawesome/free-regular-svg-icons';
 import {userEditActions} from '../store/user/UserEditSlice';
 import {addFavorite, fetchFavorites, removeFavorite} from '../store/hotel/FavoriteSlice';
 import {deleteHotel, updateHotel} from "../store/hotel/HotelAddSlice";
 import store from "../store";
 import {setHotels} from "../store/hotel/HotelPageSlice";
 
-const HotelList = ({onShowProperty}) => {
+const HotelList = ({onShowProperty, getSliderSettings }) => {
     const userData = useRouteLoaderData('user-data');
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const userDetail = useSelector((state) => state.userEdit.userDetail);
     const favorites = useSelector((state) => state.favorites.favorites);
     const hotels = useSelector((state) => state.hotelPage.hotels);
-
-    console.log("예? 오ㅔ없어요?", hotels)
 
     useEffect(() => {
         if (userData) {
@@ -85,9 +87,18 @@ const HotelList = ({onShowProperty}) => {
         <div className={styles.hotelList}>
             {hotels.map((hotel) => (
                 <div key={hotel.id} className={styles.hotel}>
-                    <button onClick={() => handleDeleteHotel(hotel.id)}>Delete Hotel</button>
+                    <button
+                        onClick={() => isFavorite(hotel.id) ? handleRemoveFavorite(hotel.id) : handleAddFavorite(hotel.id)}
+                        className={styles.favoriteButton}
+                    >
+                        <FontAwesomeIcon icon={isFavorite(hotel.id) ? filledBookmark : emptyBookmark} />
+                    </button>
+                    <button onClick={() => handleDeleteHotel(hotel.id)} className={styles.deleteButton}>
+                        <FontAwesomeIcon icon={faTimes} />
+                    </button>
                     <div className={styles.imageBox}>
-                        <div className={styles.imageGallery}>
+                        {/* Slider 적용 */}
+                        <Slider {...getSliderSettings(hotel["hotel-images"].length)} className={styles.imageGallery}>
                             {hotel["hotel-images"] && hotel["hotel-images"].map(image => {
                                 const imageUrl = `http://localhost:8888${image.hotelImgUri.replace('/local', '/hotel/images')}`;
                                 return (
@@ -99,17 +110,11 @@ const HotelList = ({onShowProperty}) => {
                                     />
                                 );
                             })}
-                        </div>
-                    </div>
-                    <h2>{hotel.name}</h2>
-                    <p>{hotel.description}</p>
+                        </Slider>
+                    </div><br></br>
+                    <h2>{hotel.name}</h2><br></br>
+                    <p>{hotel.description}</p><br></br>
                     <p>{hotel.location}</p>
-                    <p>{hotel.phoneNumber}</p>
-                    {isFavorite(hotel.id) ? (
-                        <button onClick={() => handleRemoveFavorite(hotel.id)}>즐겨찾기 제거</button>
-                    ) : (
-                        <button onClick={() => handleAddFavorite(hotel.id)}>즐겨찾기 추가</button>
-                    )}
 
                     <button className={styles.ListButton} onClick={() => handleAddReview(hotel.id)}>Write Review</button>
                     <button className={styles.ListButton} onClick={() => handleAddRoom(hotel.id)}>Add Room</button>
