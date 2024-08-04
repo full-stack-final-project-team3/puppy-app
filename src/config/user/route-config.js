@@ -12,19 +12,17 @@ import UserProvider from "../../components/context/UserProvider";
 import { userDataLoader, authCheckLoader, getUserToken } from "./auth";
 import MyPageMain from "../../components/auth/user/mypage/MyPageMain";
 import AddDogMain from "../../components/auth/dog/AddDogMain";
-import DogEdit from "../../components/auth/dog/DogEdit";
 import BoardPage from "../../pages/community/BoardPage";
 import BoardDetailPage from "../../pages/community/BoardDetailPage";
-
 import AddRoomPage from "../../pages/hotel/AddRoomPage";
 import AddReviewPage from "../../pages/hotel/AddReviewPage";
 import ModifyHotelPage from "../../pages/hotel/ModifyHotelPage";
 import ModifyRoomPage from "../../pages/hotel/ModifyRoomPage";
-
 import ForgotSection from "../../components/auth/user/forgot-info/ForgotSection";
 import ShopMain from "../../pages/shop/ShopMain";
 import TreatsListForDog from "../../pages/shop/TreatsListForDog";
 import AddTreats from "../../pages/shop/AddTreats";
+import ErrorPage from "../../pages/user/ErrorPage"; // ErrorPage import 추가
 
 const homeRouter = [
   {
@@ -53,12 +51,13 @@ export const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <UserProvider>
-        <RootLayout />
-      </UserProvider>
+        <UserProvider>
+          <RootLayout />
+        </UserProvider>
     ),
     loader: userDataLoader,
     id: "user-data",
+    errorElement: <ErrorPage />, // 잘못된 URL에 대한 에러 페이지 설정
     children: [
       {
         path: "",
@@ -72,12 +71,12 @@ export const router = createBrowserRouter([
       {
         path: "hotel",
         element: <HotelPage />,
-        loader: authCheckLoader, // 로그인 정보를 확인하는 loader 추가
+        loader: authCheckLoader,
       },
       {
         path: "add-hotel",
         element: <AddHotelPage />,
-        loader: authCheckLoader, // 로그인 정보를 확인하는 loader 추가
+        loader: authCheckLoader,
       },
       {
         path: "add-room/:hotelId",
@@ -90,7 +89,7 @@ export const router = createBrowserRouter([
         loader: authCheckLoader,
       },
       {
-        path: "add-review/:hotelId", // 새로 추가된 경로
+        path: "add-review/:hotelId",
         element: <AddReviewPage />,
         loader: authCheckLoader,
       },
@@ -102,14 +101,12 @@ export const router = createBrowserRouter([
       {
         path: "treats",
         element: <ShopMain />,
-        // loader: getUserToken,
-        // id: "getToken"
       },
       {
         path: "add-treats",
         element: <AddTreats />,
         loader: getUserToken,
-        id: "getToken"
+        id: "getToken",
       },
       {
         path: "list/:dogId",
@@ -126,14 +123,18 @@ export const router = createBrowserRouter([
         loader: authCheckLoader,
       },
       {
-        path: "board/:id", // 게시글 상세 페이지 경로 추가
+        path: "board/:id",
         element: <BoardDetailPage />,
-        loader: authCheckLoader, // 로그인 정보를 확인하는 loader 추가
+        loader: authCheckLoader,
       },
       {
         path: "forgot-info",
         element: <ForgotSection />,
       },
     ],
+  },
+  {
+    path: "*", // 이상한 경로 다 여기로 보냄
+    element: <ErrorPage />, //
   },
 ]);

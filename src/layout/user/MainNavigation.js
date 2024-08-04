@@ -126,7 +126,7 @@ const MainNavigation = () => {
         }
     };
 
-    console.log(noticeList);
+    // console.log(noticeList);
 
 
 

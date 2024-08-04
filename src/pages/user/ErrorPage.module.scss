@@ -1,0 +1,23 @@
+.wrap {
+  width: 70%;
+  margin: 0 auto;
+  align-items: center;
+  display: flex;
+  height: 400px;
+  .right {
+    width: 50%;
+
+    .button {
+      background: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 32px;
+      cursor: pointer;
+    }
+
+  }
+  .left {
+    width: 50%;
+  }
+
+}

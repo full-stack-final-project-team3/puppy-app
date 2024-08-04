@@ -102,7 +102,7 @@ const AddDogMain = () => {
 
                 const noticePayload = {
                     userId: user.id,
-                    message: `${name}이(가) 등록되었습니다!`
+                    message: `${name}가(이) 등록되었습니다!`
                 };
 
                 try {
