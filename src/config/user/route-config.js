@@ -25,6 +25,10 @@ import ForgotSection from "../../components/auth/user/forgot-info/ForgotSection"
 import ShopMain from "../../pages/shop/ShopMain";
 import TreatsListForDog from "../../pages/shop/TreatsListForDog";
 import AddTreats from "../../pages/shop/AddTreats";
+import ReviewPage from '../../pages/shop/review/ReviewPage'; //리뷰페이지
+import WriteReviewPage from '../../pages/shop/review/WriteReviewPage'; // 글쓰기 페이지
+import EditReviewPage from '../../pages/shop/review/EditReviewPage'; // 수정 페이지
+import ReviewDetailPage from "../../pages/shop/review/ReviewDetailPage"; //리뷰 상세 
 
 const homeRouter = [
   {
@@ -133,6 +137,28 @@ export const router = createBrowserRouter([
       {
         path: "forgot-info",
         element: <ForgotSection />,
+      },
+      {
+        path: 'review-page',
+        element: <ReviewPage />,
+        loader: authCheckLoader, // 리뷰페이지 추가
+      },
+      {
+        path: 'review-page/write-review',
+        element: <WriteReviewPage />,
+        loader: authCheckLoader, // 글쓰기 페이지 추가
+      },
+      {
+        path: '/review-page/review-detail/:reviewId',
+        element: <ReviewDetailPage />,
+        loader: authCheckLoader, // 상세 페이지 추가
+      },
+      {
+          //path: 'review-page/edit-review/:id',
+          //path: 'review-page/edit-review/:reviewId', // EditReviewPage 경로 츄가
+          path: '/review-page/edit-review/:reviewId',
+          element: <EditReviewPage />,
+          loader: authCheckLoader, // 수정 페이지 추가
       },
     ],
   },

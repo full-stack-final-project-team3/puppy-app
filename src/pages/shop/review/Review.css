@@ -1,0 +1,27 @@
+
+@import './common/common.css';
+
+
+.review_text{
+    width: 500px;
+    height: 350px;
+    resize: none;
+}
+
+.review_common_box button{
+    padding: 10px 20px;
+    border: 2px solid #000;
+    background-color: rgb(70, 122, 89);
+}
+.review_common_box button:hover {
+    background-color: transparent;
+}
+
+
+
+.Review_review_common_box__d42hW .review_list_box{
+    outline: 3px solid red;
+  }
+
+
+  
