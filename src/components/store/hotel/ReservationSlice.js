@@ -22,11 +22,8 @@ const ReservationSlice = createSlice({
         setEndDate(state, action) {
             state.endDate = action.payload; // 문자열로 저장
         },
-        incrementPersonCount(state) {
-            state.personCount += 1;
-        },
-        decrementPersonCount(state) {
-            state.personCount -= 1;
+        setPersonCount(state, action) { // personCount를 설정하는 액션 추가
+            state.personCount = action.payload;
         },
         setShowWarning(state, action) {
             state.showWarning = action.payload;
@@ -38,9 +35,8 @@ export const {
     setSelectedCity,
     setStartDate,
     setEndDate,
-    incrementPersonCount,
-    decrementPersonCount,
     setShowWarning,
+    setPersonCount
 } = ReservationSlice.actions;
 
 export default ReservationSlice.reducer;

@@ -116,9 +116,9 @@ const HotelList = ({onShowProperty, getSliderSettings }) => {
                     <p>{hotel.description}</p><br></br>
                     <p>{hotel.location}</p>
 
-                    <button className={styles.ListButton} onClick={() => handleAddReview(hotel.id)}>Write Review</button>
-                    <button className={styles.ListButton} onClick={() => handleAddRoom(hotel.id)}>Add Room</button>
-                    <button className={styles.ListButton} onClick={() => onShowProperty(hotel.id)}>Show Property</button>
+                    <button className={styles.ListButton} onClick={() => handleAddReview(hotel.id)}>리뷰 작성</button>
+                    <button className={styles.ListButton} onClick={() => handleAddRoom(hotel.id)}>방 추가</button>
+                    <button className={styles.ListButton} onClick={() => onShowProperty(hotel.id)}>선택</button>
                 </div>
             ))}
         </div>

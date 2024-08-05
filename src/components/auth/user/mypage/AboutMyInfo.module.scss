@@ -1,0 +1,71 @@
+.wrap {
+  width: 90%;
+  margin: 0 auto;
+  background: #F1E1C4;
+  padding-bottom: 20px;
+  padding-top: 20px;
+
+  .subWrap {
+    width: 80%;
+    margin: 20px auto;
+    display: flex;
+    justify-content: space-between;
+
+    .suggest {
+      width: 36%;
+      padding: 20px;
+      border: 1px solid #ccc;
+      text-align: center;
+      border-radius: 32px;
+      background: #F4E9D3;
+      cursor: pointer;
+      transition: background-color 0.7s ease, color 0.7s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #555;
+    }
+
+    .suggest:hover {
+      background: #E8D7C3;
+      color: #333;
+    }
+
+    .hotelIcon {
+      font-size: 24px;
+      color: #888;
+    }
+
+    .snackIcon {
+      font-size: 24px;
+      color: #fff;
+    }
+
+    .bookmarkIcon {
+      font-size: 24px;
+      color: #fff;
+    }
+
+    .starIcon {
+      font-size: 24px;
+      color: #fbfb21;
+    }
+
+    .penIcon {
+      font-size: 24px;
+      color: #000;
+    }
+
+    .heartIcon {
+      font-size: 24px;
+      color: #e32020;
+    }
+
+    .suggest:hover .icon {
+      color: #555;
+    }
+  }
+}
