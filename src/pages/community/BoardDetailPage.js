@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styles from "./BoardDetailPage.module.scss";
 import { BOARD_URL } from "../../config/user/host-config";
+import { BsChat, BsEye, BsPerson } from "react-icons/bs";
 
 const BoardDetailPage = () => {
   const [post, setPost] = useState(null);
@@ -57,11 +58,15 @@ const BoardDetailPage = () => {
     <div className={styles.postDetailPage}>
       <h1 className={styles.postTitle}>{post.boardTitle}</h1>
       <div className={styles.postMeta}>
-        <span className={styles.author}>{post.user?.name || "익명"}</span>
+        <span className={styles.author}>
+          <BsPerson /> {post.user?.name || "익명"}
+        </span>
         <span className={styles.date}>
           {new Date(post.boardCreatedAt).toLocaleDateString()}
         </span>
-        <span className={styles.viewCount}>👀 {post.viewCount}</span>
+        <span className={styles.viewCount}>
+          <BsEye /> {post.viewCount}
+        </span>
       </div>
       <div className={styles.postContent}>{post.boardContent}</div>
       {post.image && (
@@ -70,12 +75,14 @@ const BoardDetailPage = () => {
         </div>
       )}
       <div className={styles.commentsSection}>
-        <h2>댓글</h2>
+        <h2>
+          <BsChat /> 댓글
+        </h2>
         <form onSubmit={handleCommentSubmit} className={styles.commentForm}>
           <textarea
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
-            placeholder="댓글을 입력하세요..."
+            placeholder="댓글을 입력해주세요"
             required
           />
           <button type="submit">댓글 작성</button>
