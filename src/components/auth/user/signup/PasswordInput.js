@@ -42,7 +42,9 @@ const PasswordInput = ({ onSuccess }) => {
 
     if (password === passwordCheck) { // 비밀번호 재확인 성공
       setCheckSuccess("비밀번호가 일치합니다");
-      onSuccess(passwordCheck, true);
+      setTimeout(() => {
+        onSuccess(passwordCheck, true);
+      }, 1500);
     }
 
     // 비밀번호 재확인 실패
