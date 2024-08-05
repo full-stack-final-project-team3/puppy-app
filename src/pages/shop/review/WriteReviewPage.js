@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import RatingInput from './RatingInput';
 import styles from './Review.module.scss';
 import { userEditActions } from "../../../components/store/user/UserEditSlice";
-import { NOTICE_URL } from "../../../config/user/host-config"
+import { NOTICE_URL } from "../../../config/user/host-config";
 
 const WriteReviewPage = () => {
   const [reviewContent, setReviewContent] = useState('');
@@ -103,7 +103,7 @@ const WriteReviewPage = () => {
       <h1>리뷰 작성하기</h1>
       <p>닉네임: {user.nickname}</p>
       <p>이메일: {user.email}</p>
-      <p>Treats ID: {treatsId}</p> {/* 실제 Treats ID 값 표시 */}
+      <p>Treats ID: {treatsId}</p>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="review">리뷰</label>
