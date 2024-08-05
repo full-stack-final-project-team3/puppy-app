@@ -8,18 +8,21 @@ const BoardDetailPage = () => {
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { id } = useParams();
 
   useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("userData"));
+    setIsLoggedIn(!!userData && !!userData.token);
+
     const fetchPostDetail = async () => {
       try {
-        const response = await fetch(`${BOARD_URL}/${id}`, {
-          headers: {
-            Authorization: `Bearer ${
-              JSON.parse(localStorage.getItem("userData")).token
-            }`,
-          },
-        });
+        const headers = {};
+        if (isLoggedIn) {
+          headers.Authorization = `Bearer ${userData.token}`;
+        }
+
+        const response = await fetch(`${BOARD_URL}/${id}`, { headers });
         const data = await response.json();
         setPost(data);
         setComments(data.comments || []);
@@ -29,10 +32,15 @@ const BoardDetailPage = () => {
     };
 
     fetchPostDetail();
-  }, [id]);
+  }, [id, isLoggedIn]);
 
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
+    if (!isLoggedIn) {
+      alert("댓글을 작성하려면 로그인이 필요합니다.");
+      return;
+    }
+
     try {
       const response = await fetch(`${BOARD_URL}/${id}/comments`, {
         method: "POST",
@@ -78,15 +86,21 @@ const BoardDetailPage = () => {
         <h2>
           <BsChat /> 댓글
         </h2>
-        <form onSubmit={handleCommentSubmit} className={styles.commentForm}>
-          <textarea
-            value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}
-            placeholder="댓글을 입력해주세요"
-            required
-          />
-          <button type="submit">댓글 작성</button>
-        </form>
+        {isLoggedIn ? (
+          <form onSubmit={handleCommentSubmit} className={styles.commentForm}>
+            <textarea
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              placeholder="댓글을 입력해주세요"
+              required
+            />
+            <button type="submit">댓글 작성</button>
+          </form>
+        ) : (
+          <p className={styles.loginPrompt}>
+            댓글을 작성하려면 로그인이 필요합니다.
+          </p>
+        )}
         <ul className={styles.commentList}>
           {comments.map((comment) => (
             <li key={comment.id} className={styles.commentItem}>

@@ -15,30 +15,15 @@ const BoardPage = () => {
 
   const user = useSelector((state) => state.userEdit.userDetail);
 
-  // console.log(user);
-  console.log(BOARD_URL);
   const fetchPosts = useCallback(async () => {
     if (loading || !hasMore) return;
     setLoading(true);
     try {
-      const userData = JSON.parse(localStorage.getItem("userData"));
-      if (!userData || !userData.token) {
-        throw new Error("인증 토큰이 없습니다.");
-      }
-
       const response = await fetch(
-        `${BOARD_URL}?sort=date&page=${page}&limit=5`,
-        {
-          headers: {
-            Authorization: `Bearer ${userData.token}`,
-          },
-        }
+        `${BOARD_URL}?sort=date&page=${page}&limit=5`
       );
 
       if (!response.ok) {
-        if (response.status === 401) {
-          throw new Error("인증에 실패했습니다. 다시 로그인해주세요.");
-        }
         throw new Error(`서버 오류! 상태 코드: ${response.status}`);
       }
 
@@ -90,7 +75,12 @@ const BoardPage = () => {
   }, [loading, hasMore, fetchPosts]);
 
   const handleWritePost = () => {
-    navigate("/board/create");
+    if (user) {
+      navigate("/board/create");
+    } else {
+      alert("글을 작성하려면 로그인이 필요합니다.");
+      navigate("/login");
+    }
   };
 
   return (
