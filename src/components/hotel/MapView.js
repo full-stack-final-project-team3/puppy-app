@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Map, MapMarker } from 'react-kakao-maps-sdk';
+import { Map, MapMarker, ZoomControl } from 'react-kakao-maps-sdk';
 
 const MapView = ({ location, title }) => {
   const [coords, setCoords] = useState({ lat: 37.506320759000715, lng: 127.05368251210247 });
@@ -41,29 +41,32 @@ const MapView = ({ location, title }) => {
     <div>
       <Map
         center={coords}
+        level={3} // The zoom level
         style={{
-          width: '600px',
+          width: '1300px',
           height: '500px',
-          borderRadius: '20px',
         }}
+        draggable={false} // Disable dragging
       >
         <MapMarker
-          style={{ border: 'transparent' }}
+          style={{ border: '2px solid #9971ff' }}
           position={coords}
         >
           <div
             style={{
               color: '#9971ff',
-              fontSize: '19px',
+              fontSize: '18px',
               fontWeight: '700',
-              border: '4px solid #9971ff',
-              borderRadius: '10px',
-              padding: '2.5px',
+              border: '2px solid #9971ff',
+              borderRadius: '5px',
+              padding: '5px 10px', // Adjust padding to fit the border
+              background: '#ffffff', // Background color to match the map
             }}
           >
             {title}
           </div>
         </MapMarker>
+        <ZoomControl position={window.kakao.maps.ControlPosition.TOPRIGHT} />
       </Map>
     </div>
   );

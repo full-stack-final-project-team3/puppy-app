@@ -1,41 +1,66 @@
 .reviewList {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  max-width: 1300px;
-  margin: 0 auto; /* Center the list */
-  justify-content: center; /* Center items */
-
-  .review {
-    border: 1px solid #ccc;
-    color: #000;
-    padding: 20px;
-    margin: 10px;
-    border-radius: 8px;
-    background-color: #f3f3f3;
-    flex: 1 1 calc(50% - 40px); /* Adjusted to fit 2 items in a row */
-    max-width: calc(50% - 100px); /* Ensure it doesn't grow larger */
-    box-sizing: border-box;
-
-    p {
-      margin: 5px 0;
-
+    width: 100%;
+    max-width: 1300px;
+    margin: 50px auto;
+  
+    .swiper {
+      width: 100%;
+      height: 100%;
     }
-
-    .review-content {
-      font-size: 1.2em;
-      margin-bottom: 10px;
+  
+    .swiper-slide {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-sizing: border-box;
+      width: calc(50% - 20px); /* 두 슬라이드가 화면에 정확히 맞도록 너비 설정, spaceBetween의 절반 값을 뺌 */
     }
-
-    .review-details {
-      font-size: 0.9em;
-      color: #555;
-
-      .review-date,
-      .review-user,
-      .review-rate {
-        margin-top: 5px;
+  
+    .review {
+      background-color: #f3f3f3;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      color: #000;
+      width: 100%; /* 슬라이드 안에 꽉 차도록 설정 */
+      max-width: 600px; /* 슬라이드의 최대 너비 설정 */
+  
+      &Content {
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+  
+      &Details {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+  
+      &Rate {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+      }
+  
+      &Date,
+      &User {
+        font-size: 14px;
+        color: #888;
+        margin-bottom: 3px;
+      }
+  
+      .starIcon {
+        color: #ffc107;
+        margin-right: 5px;
       }
     }
-  }
+  
+    
 }
+  
+    .swiperButtonPrev,
+    .swiperButtonNext {
+      color: #860e0e !important; /* Change the color of the navigation buttons */
+    }
+
+    
