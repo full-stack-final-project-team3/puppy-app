@@ -2,15 +2,13 @@ import React, {useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styles from './HotelSearchForm.module.scss';
-import PersonCount from './PersonCount';
 import DualDatePickers from './Hoteldates';
 import {
   setSelectedCity,
   setStartDate,
   setEndDate,
-  incrementPersonCount,
-  decrementPersonCount,
   setShowWarning,
+  setPersonCount
 } from '../../components/store/hotel/ReservationSlice';
 import dayjs from 'dayjs';
 
@@ -18,7 +16,12 @@ const cities = ["서울", "부산", "인천", "대구", "대전", "광주", "수
 
 const HotelSearchForm = ({ isAdmin, handleNextStep, onSearch }) => {
   const dispatch = useDispatch();
-  const { selectedCity, startDate, endDate, personCount, showWarning } = useSelector((state) => state.reservation);
+  const { selectedCity, startDate, endDate, showWarning } = useSelector((state) => state.reservation);
+  
+  useEffect(() => {
+    // Set default person count to 1
+    dispatch(setPersonCount(1));
+}, [dispatch]);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -48,7 +51,7 @@ const HotelSearchForm = ({ isAdmin, handleNextStep, onSearch }) => {
             </div>
         )}
         <form onSubmit={handleSearch}>
-          <label>
+          <label className={styles.location}>
             Location
             <select value={selectedCity} onChange={(e) => dispatch(setSelectedCity(e.target.value))}>
               <option value="">Select a city</option>
@@ -65,13 +68,6 @@ const HotelSearchForm = ({ isAdmin, handleNextStep, onSearch }) => {
                 setEndDate={(date) => dispatch(setEndDate(date.toISOString()))}
             />
           </label>
-          <div className={styles.personCountWrapper}>
-            <PersonCount
-                personCount={personCount}
-                incrementPersonCount={() => dispatch(incrementPersonCount())}
-                decrementPersonCount={() => dispatch(decrementPersonCount())}
-            />
-          </div>
           <button className={styles.next} type="submit">Search</button>
           {showWarning && (
               <p className={styles.warning}>

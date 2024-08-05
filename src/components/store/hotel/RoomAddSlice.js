@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { ROOM_URL, UPLOAD_URL } from '../../../config/user/host-config';
+import { ROOM_URL, UPLOAD_URL, HOTEL_URL } from '../../../config/user/host-config';
 import {updateHotel} from "./HotelAddSlice";
 
 const initialRoomAddState = {
@@ -38,6 +38,22 @@ export const uploadFile = createAsyncThunk(
     }
 );
 
+export const fetchRooms = createAsyncThunk(
+    'roomAdd/fetchRooms',
+    async (roomId, thunkAPI) => {
+        const token = JSON.parse(localStorage.getItem('userData')).token;
+        const response = await fetch(`${HOTEL_URL}/${roomId}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        if (!response.ok) {
+            throw new Error('Failed to fetch rooms');
+        }
+        const data = await response.json();
+        return data.rooms;
+    }
+);
 
 
 export const submitRoom = createAsyncThunk(
@@ -210,6 +226,19 @@ const roomAddSlice = createSlice({
             })
             .addCase(updateRoom.rejected, (state, action) => {
                 state.errorMessage = action.payload;
+            })
+            .addCase(fetchRooms.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchRooms.fulfilled, (state, action) => {
+                state.rooms = action.payload;
+                state.loading = false;
+                state.step = 4;
+            })
+            .addCase(fetchRooms.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
             });
     }
 });

@@ -29,22 +29,7 @@ export const fetchHotels = createAsyncThunk(
     }
 );
 
-export const fetchRooms = createAsyncThunk(
-    'hotelPage/fetchRooms',
-    async (roomId, thunkAPI) => {
-        const token = JSON.parse(localStorage.getItem('userData')).token;
-        const response = await fetch(`${HOTEL_URL}/${roomId}`, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
-        if (!response.ok) {
-            throw new Error('Failed to fetch rooms');
-        }
-        const data = await response.json();
-        return data.rooms;
-    }
-);
+
 
 export const fetchHotelDetails = createAsyncThunk(
     'hotelPage/fetchHotelDetails',
@@ -115,19 +100,6 @@ const hotelPageSlice = createSlice({
                 state.loading = false;
             })
             .addCase(fetchHotelDetails.rejected, (state, action) => {
-                state.loading = false;
-                state.error = action.error.message;
-            })
-            .addCase(fetchRooms.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(fetchRooms.fulfilled, (state, action) => {
-                state.rooms = action.payload;
-                state.loading = false;
-                state.step = 4;
-            })
-            .addCase(fetchRooms.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
             });
