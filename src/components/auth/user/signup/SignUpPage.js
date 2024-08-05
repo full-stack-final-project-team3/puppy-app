@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { CSSTransition } from "react-transition-group";
 import styles from "./SignUpPage.module.scss";
 import EmailInput from "./EmailInput";
 import VerificationInput from "./VerificationInput";
@@ -17,12 +17,13 @@ const SignUpPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { login } = useAuth(); // 로그인 함수 가져오기
-  const nodeRef = useRef  (null);
+  const nodeRef = useRef(null);
 
-  const [step, setStep] = useState(1); // 현재 몇 단계가 진행되고 있는지
+  const [step, setStep] = useState(1); // 현재 단계
   const [enteredEmail, setEnteredEmail] = useState(""); // 입력된 이메일
+  const [emailVerified, setEmailVerified] = useState(false); // 이메일 검증 여부
   const [enteredPassword, setEnteredPassword] = useState(""); // 입력된 패스워드
-  const [passwordIsVaild, setPasswordIsValid] = useState(false);
+  const [passwordIsValid, setPasswordIsValid] = useState(false);
   const [enteredNickname, setEnteredNickname] = useState(""); // 입력된 닉네임
   const [enteredAddress, setEnteredAddress] = useState(""); // 입력된 주소
   const [enteredPhoneNumber, setEnteredPhoneNumber] = useState(""); // 입력된 휴대폰 번호
@@ -33,29 +34,30 @@ const SignUpPage = () => {
     setStep((prevStep) => prevStep + 1);
   };
 
-  // 이메일 입력
+  // 이메일 입력 성공 핸들러
   const emailSuccessHandler = (email) => {
     setEnteredEmail(email);
+    setEmailVerified(true); // 이메일 검증 완료 상태로 변경
   };
 
-  // 닉네임 입력
+  // 닉네임 입력 성공 핸들러
   const nicknameSuccessHandler = (nickname) => {
     setEnteredNickname(nickname);
   };
 
-  // 패스워드 입력
+  // 패스워드 입력 성공 핸들러
   const passwordSuccessHandler = (password, isValid) => {
     setEnteredPassword(password);
     setPasswordIsValid(isValid);
     nextStep();
   };
 
-  // 주소 입력
+  // 주소 입력 성공 핸들러
   const addressSuccessHandler = (address) => {
     setEnteredAddress(address);
   };
 
-  // 휴대폰 번호 입력
+  // 휴대폰 번호 입력 성공 핸들러
   const phoneNumberSuccessHandler = (phoneNumber) => {
     setEnteredPhoneNumber(phoneNumber);
   };
@@ -67,7 +69,6 @@ const SignUpPage = () => {
       email: enteredEmail,
       nickname: enteredNickname,
       password: enteredPassword,
-      // address: enteredAddress,
       phoneNumber: enteredPhoneNumber,
     };
 
@@ -81,7 +82,6 @@ const SignUpPage = () => {
 
     if (result) {
       alert("회원가입에 성공하셨습니다");
-      // login(); // 회원가입이 완료되면 로그인 상태로 설정
       navigate("/login");
     }
   };
@@ -97,9 +97,6 @@ const SignUpPage = () => {
   const handleStepClick = (num) => {
     if (num < step) {
       dispatch(setStep(num));
-      if (num === 1) {
-        dispatch();
-      }
     }
   };
 
@@ -119,10 +116,12 @@ const SignUpPage = () => {
               {step === 1 && (
                 <div className={styles.signUpBox}>
                   <EmailInput onSuccess={emailSuccessHandler} />
-                  <VerificationInput
-                    email={enteredEmail}
-                    onSuccess={() => nextStep()}
-                  />
+                  {emailVerified && (
+                    <VerificationInput
+                      email={enteredEmail}
+                      onSuccess={() => nextStep()}
+                    />
+                  )}
                 </div>
               )}
 
@@ -135,17 +134,17 @@ const SignUpPage = () => {
 
               {step === 3 && (
                 <div className={styles.signUpBox}>
-                    <button className={styles.signUpBtn}>
-                      나중에 등록하기
-                    </button>
+                  <button className={styles.signUpBtn}>
+                    나중에 등록하기
+                  </button>
                   <AddressInput onSuccess={addressSuccessHandler} />
                   <PhoneNumberInput onSuccess={phoneNumberSuccessHandler} />
                   <button
-                      className={`${styles.button} ${activeButton ? styles.active : styles.inactive}`}
-                      disabled={!activeButton}
-                    >
-                      회원가입
-                    </button>
+                    className={`${styles.button} ${activeButton ? styles.active : styles.inactive}`}
+                    disabled={!activeButton}
+                  >
+                    회원가입
+                  </button>
                 </div>
               )}
 
