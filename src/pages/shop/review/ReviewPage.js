@@ -21,6 +21,7 @@ const ReviewPage = () => {
         }
         const data = await response.json(); // JSON 형식으로 응답 데이터 파싱
         setReviews(data); // 리뷰 데이터를 상태에 저장
+        console.log(data);
       } catch (error) {
         // 오류 발생 시 콘솔에 로그 출력
         console.error('리뷰 조회 오류:', error);
