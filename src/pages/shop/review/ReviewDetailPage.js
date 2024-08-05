@@ -10,7 +10,6 @@ const ReviewDetailPage = () => {
   const [review, setReview] = useState(null);
   const navigate = useNavigate();
   const user = useSelector((state) => state.userEdit.userDetail);
-  
 
   useEffect(() => {
     const fetchReview = async () => {
@@ -59,7 +58,6 @@ const ReviewDetailPage = () => {
           console.log('Image URL:', imageUrl); // 로그 추가
           return (
             <img key={index} src={`http://localhost:8888/shop/reviews/review-img/${pic.reviewPic}`} alt={`Review Pic ${index + 1}`} className={styles.review_image} />
-          
           );
         })}
       </div>
