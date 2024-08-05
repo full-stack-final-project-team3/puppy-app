@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom"; 
 import { TREATS_URL } from "../../config/user/host-config";
 import styles from "./TreatsListForDog.module.scss";
 import CreateBundle from "../../components/shop/CreateBundle";
+import Modal from "./TreatsDetailModal";
+import TreatsDetail from "./TreatsDetail";
 
 const TreatsListForDog = () => {
   const { dogId } = useParams();
@@ -14,6 +16,8 @@ const TreatsListForDog = () => {
   const [pageNo, setPageNo] = useState(1);
   const [sort, setSort] = useState("default");
   const [selectedTreats, setSelectedTreats] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentTreatId, setCurrentTreatId] = useState(null); // treatId 상태 추가
 
   useEffect(() => {
     const fetchTreatsList = async () => {
@@ -32,6 +36,7 @@ const TreatsListForDog = () => {
         }
         const data = await response.json();
         setTreatsList(data.treatsList);
+        console.log(data);
       } catch (err) {
         setError(err);
       } finally {
@@ -53,7 +58,6 @@ const TreatsListForDog = () => {
   }
 
   const toggleTreatSelection = (treat) => {
-    console.log(treat);
     setSelectedTreats((prevSelected) => {
       if (prevSelected.some((item) => item.id === treat.id)) {
         return prevSelected.filter((item) => item.id !== treat.id);
@@ -61,6 +65,16 @@ const TreatsListForDog = () => {
         return [...prevSelected, treat];
       }
     });
+  };
+
+  const openModal = (treat) => {
+    setCurrentTreatId(treat.id);
+    setIsModalOpen(true)
+  };
+  
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setCurrentTreatId(null); // treatId 초기화
   };
 
   return (
@@ -87,9 +101,15 @@ const TreatsListForDog = () => {
                       src={imageUrl}
                       className={`${styles.cardImageTop} img-fluid`}
                       alt={treat.title}
+                      onClick={() => openModal(treat)} // 클릭 시 모달 열기
                     />
                     <div className={styles.cardBody}>
-                      <h4 className={styles.cardTitle}>{treat.title}</h4>
+                      <h4 
+                        className={styles.cardTitle} 
+                        onClick={() => openModal(treat)} // 타이틀 클릭 시 모달 열기
+                      >
+                        {treat.title}
+                      </h4>
                     </div>
                     <button
                       className={styles.addBtn}
@@ -130,6 +150,11 @@ const TreatsListForDog = () => {
         </div>
       </div>
       <CreateBundle selectedTreats={selectedTreats} dogId={dogId} />
+                  
+      {/* 모달 컴포넌트 사용 */}
+      <Modal isOpen={isModalOpen} onClose={closeModal} treatsId={currentTreatId}>
+        {/* <TreatsDetail treatId={currentTreatId} /> */}
+      </Modal>
     </>
   );
 };
