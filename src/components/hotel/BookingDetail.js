@@ -49,8 +49,15 @@ const BookingDetail = ({ hotel, startDate, endDate, onPay }) => {
     const handleIncrement = () => setRoomCount(roomCount + 1);
     const handleDecrement = () => setRoomCount(Math.max(1, roomCount - 1));
 
-    const totalPrice = selectedRoom.price * roomCount * personCount;
+    const roomPrice = selectedRoom['room-price'] || 0;
+    const finalPersonCount = personCount || 1;
+    const totalPrice = roomPrice * roomCount * finalPersonCount;
 
+
+    console.log("selectedRoom", roomPrice);
+    console.log("roomCount", roomCount);
+    console.log("personCount", personCount);
+    console.log("totalPrice", totalPrice);
     const getImageUrl = (imageUri) => {
         if (imageUri && imageUri.startsWith('/local/')) {
             return `http://localhost:8888${imageUri.replace('/local', '/hotel/images')}`;
@@ -68,18 +75,7 @@ const BookingDetail = ({ hotel, startDate, endDate, onPay }) => {
         return date.toLocaleDateString('en-US', options).replace(',', '').replace(/\//g, ' / ');
     };
 
-    const sliderSettings = {
-        dots: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1
-    };
-
-    // const handleModifyRoom = () => {
-    //     navigate(`/modify-room/${selectedRoom['room-id']}`);
-    // };
-
+    console.log("룸 멀까여여여여", selectedRoom)
     return (
         <>
             <button onClick={handleModifyRoom}>객실 수정하기</button>
@@ -101,8 +97,8 @@ const BookingDetail = ({ hotel, startDate, endDate, onPay }) => {
                     )}
                 </div>
                 <h2>Title: {hotel['hotel-name']}</h2>
-                <p>Room Type: {translateType(selectedRoom.type)}</p>
-                <p>Price: {selectedRoom.price}</p>
+                <p>Room Type: {translateType(selectedRoom['room-type'])}</p>
+                <p>Price: {selectedRoom['room-price']}</p>
                 <p>Location: {hotel['location']}</p>
                 <p>Date: {formatDate(startDate)} - {formatDate(endDate)}</p>
                 <div className={styles.roomCount}>
