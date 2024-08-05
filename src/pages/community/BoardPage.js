@@ -4,6 +4,7 @@ import styles from "./BoardPage.module.scss";
 import { BOARD_URL } from "../../config/user/host-config";
 import { useSelector } from "react-redux";
 import { BsChat, BsEye, BsPerson } from "react-icons/bs";
+import { HiOutlineHeart } from "react-icons/hi2";
 
 const BoardPage = () => {
   const [posts, setPosts] = useState([]);
@@ -116,6 +117,9 @@ const BoardPage = () => {
                       </span>
                       <span className={styles.viewCount}>
                         <BsEye /> {post.viewCount}
+                      </span>
+                      <span className={styles.likes}>
+                        <HiOutlineHeart /> 0
                       </span>
                     </div>
                   </div>
