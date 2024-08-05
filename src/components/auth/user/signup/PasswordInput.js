@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import styles from './SignUpPage.module.scss';
+import { debounce } from 'lodash';
 
 const PasswordInput = ({ onSuccess }) => {
 
@@ -36,17 +37,19 @@ const PasswordInput = ({ onSuccess }) => {
   };
 
   // 패스워드 재확인
-  const passwordCheckHandler = e => {
+  const passwordCheckHandler = (e) => {
     const passwordCheck = e.target.value;
     setPasswordCheck(passwordCheck);
 
     if (password === passwordCheck) { // 비밀번호 재확인 성공
       setCheckSuccess("비밀번호가 일치합니다");
-      onSuccess(passwordCheck, true);
+      setTimeout(() => {
+        onSuccess(passwordCheck, true);
+      }, 1500);
+    } else {
+      setCheckSuccess('');
+      setCheckError("비밀번호가 일치하지 않습니다"); // 비밀번호 재확인 실패
     }
-
-    // 비밀번호 재확인 실패
-    setCheckError("비밀번호가 일치하지 않습니다");
   };
 
   // useEffect(() => {

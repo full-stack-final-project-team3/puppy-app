@@ -61,7 +61,7 @@ const LoginForm = () => {
         localStorage.setItem("userData", JSON.stringify(responseData));
         setUser(responseData);
         changeIsLogin(true); // 상태 업데이트
-        navigate(-1); // 로그인 후 리디렉트할 경로
+        navigate("/"); // 로그인 후 리디렉트할 경로
       } else {
         const errorData = await response.json();
         setError(errorData.message || "로그인에 실패했습니다.");
