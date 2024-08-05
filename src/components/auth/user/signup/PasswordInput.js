@@ -41,6 +41,13 @@ const PasswordInput = ({ onSuccess }) => {
     const passwordCheck = e.target.value;
     setPasswordCheck(passwordCheck);
 
+    if (passwordCheck === '') {
+      // 비밀번호 확인 입력 값이 비어있는 경우
+      setCheckSuccess('');
+      setCheckError('');
+      return;
+    }
+
     if (password === passwordCheck) { // 비밀번호 재확인 성공
       setCheckSuccess("비밀번호가 일치합니다");
       setTimeout(() => {

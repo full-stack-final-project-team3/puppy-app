@@ -28,6 +28,7 @@
     background-color: lightgray;
     color: white;
     cursor: default;
+    pointer-events: none;
 
     &.active {
       background-color: rgb(155, 0, 0);

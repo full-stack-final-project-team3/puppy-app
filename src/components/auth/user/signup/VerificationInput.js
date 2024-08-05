@@ -39,8 +39,10 @@ const VerificationInput = ({ email, onSuccess }) => {
       }
 
       // 검증 성공 시
-      onSuccess();
       setSuccess("인증이 완료되었습니다");
+      setTimeout(() => {
+        onSuccess();
+      }, 1500);
   }, 1500);
 
   const changeHandler = (index, inputValue) => {

@@ -61,7 +61,7 @@ const EmailInput = ({ onSuccess }) => {
         <input
           ref={inputRef}
           type="email"
-          placeholder="Enter your email"
+          placeholder="ex) abc1234@naver.com"
           onChange={changeHandler}
           className={styles.input}
         />

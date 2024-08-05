@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { CSSTransition } from "react-transition-group";
 import styles from "./SignUpPage.module.scss";
 import EmailInput from "./EmailInput";
 import VerificationInput from "./VerificationInput";
@@ -7,6 +7,7 @@ import PasswordInput from "./PasswordInput";
 import NicknameInput from "./NicknameInput";
 import AddressInput from "./AddressInput";
 import PhoneNumberInput from "./PhoneNumberInput";
+import AddDogInput from "./AddDogInput";
 import { AUTH_URL } from "../../../../config/user/host-config";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../AuthProvider";
@@ -17,45 +18,47 @@ const SignUpPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { login } = useAuth(); // 로그인 함수 가져오기
-  const nodeRef = useRef  (null);
+  const nodeRef = useRef(null);
 
-  const [step, setStep] = useState(1); // 현재 몇 단계가 진행되고 있는지
+  const [step, setStep] = useState(1); // 현재 단계
   const [enteredEmail, setEnteredEmail] = useState(""); // 입력된 이메일
+  const [emailVerified, setEmailVerified] = useState(false); // 이메일 검증 여부
   const [enteredPassword, setEnteredPassword] = useState(""); // 입력된 패스워드
-  const [passwordIsVaild, setPasswordIsValid] = useState(false);
+  const [passwordIsValid, setPasswordIsValid] = useState(false);
   const [enteredNickname, setEnteredNickname] = useState(""); // 입력된 닉네임
   const [enteredAddress, setEnteredAddress] = useState(""); // 입력된 주소
   const [enteredPhoneNumber, setEnteredPhoneNumber] = useState(""); // 입력된 휴대폰 번호
-  const [activeButton, setActiveButton] = useState(false); // 회원가입 버튼 활성화 여부
+  const [step2Button, setStep2Button] = useState(false); // step2 버튼 활성화 여부
+  const [step3Button, setStep3Button] = useState(false); // step3 버튼 활성화 여부
 
   // 다음 단계로 넘어가는 함수
   const nextStep = () => {
     setStep((prevStep) => prevStep + 1);
   };
 
-  // 이메일 입력
+  // 이메일 입력 성공 핸들러
   const emailSuccessHandler = (email) => {
     setEnteredEmail(email);
+    setEmailVerified(true); // 이메일 검증 완료 상태로 변경
   };
 
-  // 닉네임 입력
+  // 닉네임 입력 성공 핸들러
   const nicknameSuccessHandler = (nickname) => {
     setEnteredNickname(nickname);
   };
 
-  // 패스워드 입력
+  // 패스워드 입력 성공 핸들러
   const passwordSuccessHandler = (password, isValid) => {
     setEnteredPassword(password);
     setPasswordIsValid(isValid);
-    nextStep();
   };
 
-  // 주소 입력
+  // 주소 입력 성공 핸들러
   const addressSuccessHandler = (address) => {
     setEnteredAddress(address);
   };
 
-  // 휴대폰 번호 입력
+  // 휴대폰 번호 입력 성공 핸들러
   const phoneNumberSuccessHandler = (phoneNumber) => {
     setEnteredPhoneNumber(phoneNumber);
   };
@@ -67,7 +70,7 @@ const SignUpPage = () => {
       email: enteredEmail,
       nickname: enteredNickname,
       password: enteredPassword,
-      // address: enteredAddress,
+      address: enteredAddress,
       phoneNumber: enteredPhoneNumber,
     };
 
@@ -81,25 +84,44 @@ const SignUpPage = () => {
 
     if (result) {
       alert("회원가입에 성공하셨습니다");
-      // login(); // 회원가입이 완료되면 로그인 상태로 설정
       navigate("/login");
     }
   };
 
+  // 스텝2 가입완료 버튼, 스텝2 추가정보 등록 버튼
+  // 이메일, 닉네임, 비밀번호 입력 완료되면 활성화
   useEffect(() => {
     // 활성화 여부 감시
     const isActive =
-      enteredEmail && enteredPassword && enteredNickname && enteredPhoneNumber;
+      enteredEmail && enteredPassword && enteredNickname 
+      ;
 
-    setActiveButton(isActive);
+    setStep2Button(isActive);
+  }, [enteredEmail, enteredPassword, enteredNickname]);
+
+  // 스텝3 추가정보 등록 완료 버튼, 스텝3 강아지 등록하기 버튼
+  // 이메일, 닉네임, 비밀번호, 주소, 전화번호 입력 완료되면 활성화
+  useEffect(() => {
+    // 활성화 여부 감시
+    const isActive = enteredEmail && enteredPassword 
+    && enteredNickname && enteredPhoneNumber;
+
+    setStep3Button(isActive);
   }, [enteredEmail, enteredPassword, enteredNickname, enteredPhoneNumber]);
 
   const handleStepClick = (num) => {
     if (num < step) {
       dispatch(setStep(num));
-      if (num === 1) {
-        dispatch();
-      }
+    }
+  };
+
+  // 자동 로그인
+  const autoLoginHandler = async () => {
+    try {
+      await login(enteredEmail, enteredPassword); // 자동 로그인 수행
+      navigate("/add-dog"); // 로그인 성공 후 이동할 페이지로 변경
+    } catch (error) {
+      alert("에러 발생");
     }
   };
 
@@ -119,10 +141,12 @@ const SignUpPage = () => {
               {step === 1 && (
                 <div className={styles.signUpBox}>
                   <EmailInput onSuccess={emailSuccessHandler} />
-                  <VerificationInput
-                    email={enteredEmail}
-                    onSuccess={() => nextStep()}
-                  />
+                  {emailVerified && (
+                    <VerificationInput
+                      email={enteredEmail}
+                      onSuccess={() => nextStep()}
+                    />
+                  )}
                 </div>
               )}
 
@@ -130,22 +154,41 @@ const SignUpPage = () => {
                 <div className={styles.signUpBox}>
                   <NicknameInput onSuccess={nicknameSuccessHandler} />
                   <PasswordInput onSuccess={passwordSuccessHandler} />
+                  <button
+                    type="submit"
+                    className={`${styles.button} ${step2Button ? styles.active : styles.inactive}`}
+                    disabled={!step2Button}
+                  >가입 완료</button>
+                  <button
+                    type="submit"
+                    className={`${styles.button} ${step2Button ? styles.active : styles.inactive}`}
+                    disabled={!step2Button}
+                    onClick={() => nextStep()}
+                    >추가정보 등록</button>
                 </div>
               )}
 
               {step === 3 && (
                 <div className={styles.signUpBox}>
-                    <button className={styles.signUpBtn}>
-                      나중에 등록하기
-                    </button>
                   <AddressInput onSuccess={addressSuccessHandler} />
                   <PhoneNumberInput onSuccess={phoneNumberSuccessHandler} />
-                  <button
-                      className={`${styles.button} ${activeButton ? styles.active : styles.inactive}`}
-                      disabled={!activeButton}
-                    >
-                      회원가입
-                    </button>
+                    <button
+                      type="submit"
+                      className={`${styles.button} ${step3Button ? styles.active : styles.inactive}`}
+                      disabled={!step3Button}
+                    >추가정보 등록 완료</button>
+                    <button 
+                      type="button"
+                      className={`${styles.button} ${step3Button ? styles.active : styles.inactive}`}
+                      disabled={!step3Button}
+                      onClick={autoLoginHandler}
+                      >강아지 등록하기</button>
+                </div>
+              )}
+
+              {step === 4 && (
+                <div className={styles.signUpBox}> 
+                  <AddDogInput />
                 </div>
               )}
 
