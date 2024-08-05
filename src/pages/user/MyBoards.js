@@ -11,19 +11,20 @@ const MyBoards = () => {
 
     console.log(userDetail)
 
-    // useEffect(() => {
-    //     const fetchList = async () => {
-    //         if (!userDetail.id) return; // userDetail.id가 존재하지 않을 때 방지
-    //
-    //         const response = await fetch(`${BOARD_URL}/boardList/${userDetail.id}`);
-    //         if (response.ok) {
-    //             const result = await response.json();
-    //             setData(result);
-    //         }
-    //     };
-    //
-    //     fetchList();
-    // }, [userDetail.id]);
+    useEffect(() => {
+        const fetchList = async () => {
+            if (!userDetail.id) return; // userDetail.id가 존재하지 않을 때 방지
+
+            const response = await fetch(`${BOARD_URL}/boardList/${userDetail.id}`);
+            if (response.ok) {
+                const result = await response.json();
+                setData(result);
+            }
+        };
+
+        fetchList();
+    }, [userDetail.id]);
+    console.log(data)
 
     return (
         <div className={styles.wrap}>
