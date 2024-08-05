@@ -1,4 +1,4 @@
-import React, {useRef, useEffect, useMemo} from 'react';
+import React, {useRef, useEffect} from 'react';
 import {useLoaderData} from 'react-router-dom';
 import {CSSTransition, TransitionGroup} from 'react-transition-group';
 import {useDispatch, useSelector} from 'react-redux';
