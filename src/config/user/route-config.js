@@ -39,6 +39,7 @@ import MyLikeBoards from "../../pages/user/MyLikeBoards";
 import MyLikeHotel from "../../pages/user/MyLikeHotel";
 import MyLikeSnack from "../../pages/user/MyLikeSnack";
 import SnackRecords from "../../pages/user/SnackRecords";
+import OrderPage from "../../pages/shop/order/OrderPage"; //쇼핑몰오더 
 
 
 
@@ -199,6 +200,11 @@ export const router = createBrowserRouter([
       {
         path: "/snack-record",
         element: <SnackRecords/>
+      },
+      {
+        path: '/order-page',
+        element: <OrderPage />,
+        loader: authCheckLoader, // 오더
       },
     ],
   },
