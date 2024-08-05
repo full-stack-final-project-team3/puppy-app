@@ -9,11 +9,16 @@ import { NOTICE_URL } from "../../../config/user/host-config"
 const WriteReviewPage = () => {
   const [reviewContent, setReviewContent] = useState('');
   const [rate, setRate] = useState(5);
+  const [reviewPics, setReviewPics] = useState([]);
   const navigate = useNavigate();
   const user = useSelector((state) => state.userEdit.userDetail);
   const dispatch = useDispatch();
 
   const treatsId = 'b1c2d3e4-f5g6-7890-ab12-c3d4e5f67891'; // 실제 treatsId 값
+
+  const handleFileChange = (event) => {
+    setReviewPics(Array.from(event.target.files));
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -29,17 +34,21 @@ const WriteReviewPage = () => {
     }
 
     try {
+      const formData = new FormData();
+      formData.append('reviewSaveDto', new Blob([JSON.stringify({
+        reviewContent,
+        rate,
+        userId: user.id,
+        treatsId: treatsId
+      })], { type: "application/json" }));
+
+      reviewPics.forEach((pic, index) => {
+        formData.append('reviewPics', pic);
+      });
+
       const response = await fetch('http://localhost:8888/shop/reviews', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          reviewContent,
-          rate,
-          userId: user.id, // Redux에서 가져온 user id
-          treatsId: treatsId // 실제 treatsId 값 설정
-        }),
+        body: formData
       });
 
       if (!response.ok) {
@@ -90,28 +99,38 @@ const WriteReviewPage = () => {
   };
 
   return (
-      <div className={`${styles.review_common_box} ${styles.review_writer_box}`}>
-        <h1>리뷰 작성하기</h1>
-        <p>닉네임: {user.nickname}</p>
-        <p>이메일: {user.email}</p>
-        <p>Treats ID: {treatsId}</p> {/* 실제 Treats ID 값 표시 */}
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="review">리뷰</label>
-            <textarea
-                id="review"
-                className={styles.review_text}
-                value={reviewContent}
-                onChange={(e) => setReviewContent(e.target.value)}
-            ></textarea>
-          </div>
-          <div>
-            <label htmlFor="rate">별점</label>
-            <RatingInput value={rate} onChange={setRate} />
-          </div>
-          <button type="submit">작성하기</button>
-        </form>
-      </div>
+    <div className={`${styles.review_common_box} ${styles.review_writer_box}`}>
+      <h1>리뷰 작성하기</h1>
+      <p>닉네임: {user.nickname}</p>
+      <p>이메일: {user.email}</p>
+      <p>Treats ID: {treatsId}</p> {/* 실제 Treats ID 값 표시 */}
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="review">리뷰</label>
+          <textarea
+            id="review"
+            className={styles.review_text}
+            value={reviewContent}
+            onChange={(e) => setReviewContent(e.target.value)}
+          ></textarea>
+        </div>
+        <div>
+          <label htmlFor="rate">별점</label>
+          <RatingInput value={rate} onChange={setRate} />
+        </div>
+        <div>
+          <label htmlFor="reviewPics">이미지 업로드</label>
+          <input
+            type="file"
+            id="reviewPics"
+            multiple
+            accept="image/*"
+            onChange={handleFileChange}
+          />
+        </div>
+        <button type="submit">작성하기</button>
+      </form>
+    </div>
   );
 };
 
