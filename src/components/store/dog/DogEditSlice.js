@@ -16,7 +16,7 @@ const dogEditSlice = createSlice({
             state.isDogEditMode = false;
         },
         setDogInfo: (state, action) => { // 강아지 정보 저장
-            state.dogInfo = JSON.parse(action.payload);
+            state.dogInfo = action.payload;
         },
         updateDogInfo(state, action) {
             state.dogInfo = action.payload;

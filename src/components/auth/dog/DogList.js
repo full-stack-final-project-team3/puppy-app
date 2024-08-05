@@ -1,17 +1,18 @@
 import React from 'react';
 import styles from "../user/mypage/AboutDog.module.scss";
-import {useDispatch} from "react-redux";
-import {dogEditActions} from "../../store/dog/DogEditSlice";
-import {userEditActions} from "../../store/user/UserEditSlice";
-import {DOG_URL} from "../../../config/user/host-config";
+import { useDispatch, useSelector } from "react-redux";
+import { dogEditActions } from "../../store/dog/DogEditSlice";
+import { userEditActions } from "../../store/user/UserEditSlice";
+import { DOG_URL } from "../../../config/user/host-config";
 import { translateBreed } from "./dogUtil";
 
-const DogList = ({dog}) => {
+const DogList = () => {
     const dispatch = useDispatch();
+    const dogList = useSelector(state => state.userEdit.userDetail.dogList);
 
-    const startEditMode = async () => {
+    const startEditMode = async (dogId) => {
         try {
-            const response = await fetch(`${DOG_URL}/${dog.id}`, {
+            const response = await fetch(`${DOG_URL}/${dogId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -19,12 +20,7 @@ const DogList = ({dog}) => {
             });
 
             if (response.ok) {
-                const result = await response.json();
-                console.log(result);
-
-                // 여기에 JSON 파싱을 수행
-                const dogInfo = JSON.stringify(result);
-
+                const dogInfo = await response.json();
                 dispatch(dogEditActions.setDogInfo(dogInfo));
                 dispatch(dogEditActions.startEdit());
                 dispatch(userEditActions.startMode());
@@ -34,20 +30,28 @@ const DogList = ({dog}) => {
         } catch (error) {
             console.error('Error fetching dog info:', error);
         }
-    }
+    };
 
     return (
-        <div key={dog.id} className={styles.mainContainer} >
-            <img className={styles.img} src={dog.dogProfileUrl} alt="Dog Profile" />
-            <div className={styles.wrapRight}>
-                <div className={styles.flex}>
-                    <h3 className={styles.nickname}>{dog.dogName}</h3>
-                    <span className={styles.modify} onClick={startEditMode}>수정</span>
-                </div>
-                <div className={styles.age}>{dog.age}년 {dog.month}개월</div>
-                <span className={styles.breed}>{translateBreed(dog.dogBreed)}</span>
-            </div>
-        </div>
+        <>
+            {dogList && dogList.length > 0 ? (
+                dogList.map(dog => (
+                    <div key={dog.id} className={styles.mainContainer}>
+                        <img className={styles.img} src={dog.dogProfileUrl} alt="Dog Profile" />
+                        <div className={styles.wrapRight}>
+                            <div className={styles.flex}>
+                                <h3 className={styles.nickname}>{dog.dogName}</h3>
+                                <span className={styles.modify} onClick={() => startEditMode(dog.id)}>수정</span>
+                            </div>
+                            <div className={styles.age}>{dog.age}년 {dog.month}개월</div>
+                            <span className={styles.breed}>{translateBreed(dog.dogBreed)}</span>
+                        </div>
+                    </div>
+                ))
+            ) : (
+                <div>강아지가 없습니다.</div>
+            )}
+        </>
     );
 };
 

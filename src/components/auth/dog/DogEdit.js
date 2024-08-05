@@ -28,39 +28,32 @@ const DogEdit = () => {
             const reader = new FileReader();
             reader.onloadend = () => {
                 setDogProfileUrl(reader.result);
-                const updatedDog = { ...dog, dogProfileUrl: reader.result };
-                const updatedDogList = userDetail.dogList.map(d => d.id === dog.id ? updatedDog : d);
-                dispatch(dogEditActions.updateDogInfo(updatedDog));
+                const updatedDogList = userDetail.dogList.map(d => d.id === dog.id ? { ...d, dogProfileUrl: reader.result } : d);
                 dispatch(userEditActions.updateUserDetail({ ...userDetail, dogList: updatedDogList }));
+                dispatch(dogEditActions.updateDogInfo({ ...dog, dogProfileUrl: reader.result }));
             };
             reader.readAsDataURL(file);
         }
     };
 
-    const clearEditMode = async () => {
+    const clearEditMode = async e => {
         const weight = weightRef.current.value;
         const payload = {
             weight,
-            dogProfileUrl
+            dogProfileUrl: dogProfileUrl || dog.dogProfileUrl
         };
 
-        console.log("Payload to be sent:", payload); // Payload 로그 출력
-
-        try {
-            const response = await fetch(`${DOG_URL}/${dog.id}`, {
-                method: "PATCH",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload),
-            });
-            if (response.ok) {
-                alert("수정 되었습니다.");
-                dispatch(userEditActions.clearMode());
-                dispatch(dogEditActions.clearEdit());
-            } else {
-                console.error('Failed to update dog info:', response.statusText);
-            }
-        } catch (error) {
-            console.error('Error updating dog info:', error);
+        const response = await fetch(`${DOG_URL}/${dog.id}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+        });
+        if (response.ok) {
+            alert("수정 되었습니다.");
+            const updatedDogList = userDetail.dogList.map(d => d.id === dog.id ? { ...d, weight, dogProfileUrl: payload.dogProfileUrl } : d);
+            dispatch(userEditActions.updateUserDetail({ ...userDetail, dogList: updatedDogList }));
+            dispatch(userEditActions.clearMode());
+            dispatch(dogEditActions.clearEdit());
         }
     };
 
@@ -75,19 +68,20 @@ const DogEdit = () => {
                 alert("삭제 되었습니다.");
                 const updatedDogList = userDetail.dogList.filter(d => d.id !== dog.id);
                 dispatch(userEditActions.updateUserDetail({ ...userDetail, dogList: updatedDogList }));
+                dispatch(userEditActions.clearMode());
                 dispatch(dogEditActions.clearEdit());
                 navigate("/mypage");
             } else {
                 alert("삭제에 실패했습니다.");
-                console.error('Failed to delete dog:', response.statusText);
+                console.error('삭제 실패:', response.statusText);
             }
         } catch (error) {
-            console.error('Error deleting dog:', error);
+            console.error('에러 발생:', error);
             alert("삭제 중 에러가 발생했습니다.");
         }
     };
 
-    const removeAllergy = async (e) => {
+    const removeAllergy = async e => {
         const allergy = e.target.dataset.alg;
 
         try {
@@ -98,10 +92,12 @@ const DogEdit = () => {
 
             if (response.ok) {
                 const updatedAllergies = dog.allergies.filter(a => a !== allergy);
-                const updatedDog = { ...dog, allergies: updatedAllergies };
-                const updatedDogList = userDetail.dogList.map(d => d.id === dog.id ? updatedDog : d);
+                const updatedDogList = userDetail.dogList.map(d =>
+                    d.id === dog.id ? { ...d, allergies: updatedAllergies } : d
+                );
+
                 dispatch(userEditActions.updateUserDetail({ ...userDetail, dogList: updatedDogList }));
-                dispatch(dogEditActions.updateDogInfo(updatedDog));
+                dispatch(dogEditActions.updateDogInfo({ ...dog, allergies: updatedAllergies }));
                 alert("강아지의 건강이 좋아졌나봐요!");
             } else {
                 console.error('알러지 삭제 실패:', response.statusText);
@@ -153,7 +149,7 @@ const DogEdit = () => {
                     </div>
                 </div>
                 <div className={styles.right} onClick={handleImageClick}>
-                    <img className={styles.dogProfileUrl} src={dogProfileUrl || dog.dogProfileUrl} alt="Dog Profile" />
+                    <img className={styles.dogProfileUrl} src={dog.dogProfileUrl} alt="Dog Profile" />
                     <div className={styles.hoverText}>강아지 사진 변경</div>
                     <input
                         type="file"
