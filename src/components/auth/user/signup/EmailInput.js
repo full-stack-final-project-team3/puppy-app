@@ -27,9 +27,8 @@ const EmailInput = ({ onSuccess }) => {
 
     // 중복 검사
     const response = await fetch(`${AUTH_URL}/check-email?email=${email}`);
-    // console.log('response: ', response);
     const flag = await response.json();
-    // console.log('flag: ', flag);
+
     if (flag) {
       setEmailValid(false);
       setError("이메일이 중복되었습니다");
@@ -46,7 +45,6 @@ const EmailInput = ({ onSuccess }) => {
 
   const changeHandler = (e) => {
     const email = e.target.value;
-
     checkEmail(email); // 이메일 검증 후속 처리
   };
 

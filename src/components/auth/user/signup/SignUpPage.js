@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 import styles from "./SignUpPage.module.scss";
 import EmailInput from "./EmailInput";
 import VerificationInput from "./VerificationInput";
@@ -7,12 +8,16 @@ import NicknameInput from "./NicknameInput";
 import AddressInput from "./AddressInput";
 import PhoneNumberInput from "./PhoneNumberInput";
 import { AUTH_URL } from "../../../../config/user/host-config";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../AuthProvider";
+import StepIndicator from "./StepIndicator";
+import { useDispatch } from "react-redux";
 
 const SignUpPage = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { login } = useAuth(); // 로그인 함수 가져오기
+  const nodeRef = useRef  (null);
 
   const [step, setStep] = useState(1); // 현재 몇 단계가 진행되고 있는지
   const [enteredEmail, setEnteredEmail] = useState(""); // 입력된 이메일
@@ -45,12 +50,12 @@ const SignUpPage = () => {
     nextStep();
   };
 
-  // 주소 입력 
+  // 주소 입력
   const addressSuccessHandler = (address) => {
     setEnteredAddress(address);
   };
 
-  // 휴대폰 번호 입력 
+  // 휴대폰 번호 입력
   const phoneNumberSuccessHandler = (phoneNumber) => {
     setEnteredPhoneNumber(phoneNumber);
   };
@@ -62,8 +67,8 @@ const SignUpPage = () => {
       email: enteredEmail,
       nickname: enteredNickname,
       password: enteredPassword,
-      address: enteredAddress,
-      phoneNumber: enteredPhoneNumber
+      // address: enteredAddress,
+      phoneNumber: enteredPhoneNumber,
     };
 
     const response = await fetch(`${AUTH_URL}/join`, {
@@ -83,42 +88,72 @@ const SignUpPage = () => {
 
   useEffect(() => {
     // 활성화 여부 감시
-    const isActive = enteredEmail && enteredPassword 
-    && enteredNickname && enteredPhoneNumber;
+    const isActive =
+      enteredEmail && enteredPassword && enteredNickname && enteredPhoneNumber;
 
     setActiveButton(isActive);
   }, [enteredEmail, enteredPassword, enteredNickname, enteredPhoneNumber]);
 
+  const handleStepClick = (num) => {
+    if (num < step) {
+      dispatch(setStep(num));
+      if (num === 1) {
+        dispatch();
+      }
+    }
+  };
+
   return (
-    <form onSubmit={submitHandler}>
-      <div className={styles.signupPage}>
-        <div className={styles.formStepActive}>
+    <>
+      <StepIndicator step={step} onStepClick={handleStepClick} />
+      <CSSTransition
+        key={step}
+        timeout={300}
+        classNames="page"
+        nodeRef={nodeRef}
+      >
+        <form onSubmit={submitHandler}>
+          <div className={styles.signUpPage}>
+            <div className={styles.formStepActive}>
 
-        {step === 1 && <div className={styles.signupBox}>
-          <EmailInput onSuccess={emailSuccessHandler} />
-          <VerificationInput email={enteredEmail} onSuccess={() => nextStep()} />
-        </div>}
-        
-        {step === 2 && <div className={styles.signupBox}>
-          <NicknameInput onSuccess={nicknameSuccessHandler} />
-          <PasswordInput onSuccess={passwordSuccessHandler} />
-        </div>}
+              {step === 1 && (
+                <div className={styles.signUpBox}>
+                  <EmailInput onSuccess={emailSuccessHandler} />
+                  <VerificationInput
+                    email={enteredEmail}
+                    onSuccess={() => nextStep()}
+                  />
+                </div>
+              )}
 
-        {step === 3 && <div className={styles.signUpBox}>
-          <Link to='/'><button className={styles.signUpBtn}>나중에 등록하기</button></Link>
-          <AddressInput onSuccess={addressSuccessHandler} />
-          <PhoneNumberInput onSuccess={phoneNumberSuccessHandler} />
-        </div>}
+              {step === 2 && (
+                <div className={styles.signUpBox}>
+                  <NicknameInput onSuccess={nicknameSuccessHandler} />
+                  <PasswordInput onSuccess={passwordSuccessHandler} />
+                </div>
+              )}
 
-          {activeButton && (
-            <div className={styles.signUpBtn}>
-              <button className={styles.button}>회원가입</button>
+              {step === 3 && (
+                <div className={styles.signUpBox}>
+                    <button className={styles.signUpBtn}>
+                      나중에 등록하기
+                    </button>
+                  <AddressInput onSuccess={addressSuccessHandler} />
+                  <PhoneNumberInput onSuccess={phoneNumberSuccessHandler} />
+                  <button
+                      className={`${styles.button} ${activeButton ? styles.active : styles.inactive}`}
+                      disabled={!activeButton}
+                    >
+                      회원가입
+                    </button>
+                </div>
+              )}
+
             </div>
-          )}
-
-        </div>
-      </div>
-    </form>
+          </div>
+        </form>
+      </CSSTransition>
+    </>
   );
 };
 

@@ -22,7 +22,8 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 
     input,
-    textarea {
+    textarea,
+    select {
       margin-bottom: 15px;
       padding: 10px;
       border: 1px solid #ccc;
@@ -32,6 +33,10 @@
 
     textarea {
       resize: vertical;
+    }
+
+    select {
+      height: 45px; /* 높이를 키워서 옵션 태그 크기를 키움 */
     }
 
     .imageContainer {

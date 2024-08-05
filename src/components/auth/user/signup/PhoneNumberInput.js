@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styles from "./SignUpPage.module.scss";
 import { AUTH_URL } from "../../../../config/user/host-config";
 import { debounce } from 'lodash';
@@ -10,8 +10,9 @@ const PhoneNumberInput = ({ onSuccess }) => {
   const [success, setSuccess] = useState(''); // 검증 성공 메시지
   const [error, setError] = useState(''); // 검증 에러 메시지
 
+   // 휴대폰 번호 패턴 검증
   const validateNumber = (phoneNumber) => {
-    const numberPattern = /^01(?:0|1|[6-9])(?:\d{3}|\d{4})\d{4}$/ // 휴대폰 번호 패턴 검사
+    const numberPattern = /^01(?:0|1|[6-9])(?:\d{3}|\d{4})\d{4}$/;
     return numberPattern.test(phoneNumber);
   };
 
@@ -43,15 +44,15 @@ const PhoneNumberInput = ({ onSuccess }) => {
   }, 1500);
 
   const numberInputHandler = (e) => {
-    const number = e.target.value;
-    checkNumber(number); // 휴대폰 번호 검증 후속 처리
+    const phoneNumber = e.target.value;
+    checkNumber(phoneNumber); // 휴대폰 번호 검증 후속 처리
   };
 
   return (
     <>
       <div className={styles.signUpInput}>
         <h2 className={styles.h2}>휴대폰 번호</h2>
-        <input 
+        <input
           ref={inputRef}
           type='text'
           onChange={numberInputHandler}

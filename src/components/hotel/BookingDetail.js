@@ -8,7 +8,6 @@ import "slick-carousel/slick/slick-theme.css";
 import { useNavigate } from "react-router-dom";
 
 const BookingDetail = ({ hotel, startDate, endDate, onPay }) => {
-    console.log('hotelid: ' ,hotel['hotel-id']);
     const [roomCount, setRoomCount] = React.useState(1);
     const personCount = useSelector(state => state.reservation.personCount);
     const selectedRoom = useSelector(state => state.hotelPage.selectedRoom);
@@ -49,7 +48,9 @@ const BookingDetail = ({ hotel, startDate, endDate, onPay }) => {
     const handleIncrement = () => setRoomCount(roomCount + 1);
     const handleDecrement = () => setRoomCount(Math.max(1, roomCount - 1));
 
-    const totalPrice = selectedRoom.price * roomCount * personCount;
+    const roomPrice = selectedRoom['room-price'] || 0;
+    const finalPersonCount = personCount || 1;
+    const totalPrice = roomPrice * roomCount * finalPersonCount;
 
     const getImageUrl = (imageUri) => {
         if (imageUri && imageUri.startsWith('/local/')) {
@@ -68,17 +69,9 @@ const BookingDetail = ({ hotel, startDate, endDate, onPay }) => {
         return date.toLocaleDateString('en-US', options).replace(',', '').replace(/\//g, ' / ');
     };
 
-    const sliderSettings = {
-        dots: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1
+    const formatPrice = (price) => {
+        return new Intl.NumberFormat('ko-KR').format(price);
     };
-
-    // const handleModifyRoom = () => {
-    //     navigate(`/modify-room/${selectedRoom['room-id']}`);
-    // };
 
     return (
         <>
@@ -90,10 +83,8 @@ const BookingDetail = ({ hotel, startDate, endDate, onPay }) => {
                             <img
                                 src={firstImageUrl}
                                 alt="Room image"
-                                onLoad={() => console.log('Image loaded successfully')}
                                 onError={(e) => {
                                     e.target.onerror = null;
-                                    console.log('Image load error');
                                 }}
                                 className={styles.sliderImage}
                             />
@@ -101,8 +92,8 @@ const BookingDetail = ({ hotel, startDate, endDate, onPay }) => {
                     )}
                 </div>
                 <h2>Title: {hotel['hotel-name']}</h2>
-                <p>Room Type: {translateType(selectedRoom.type)}</p>
-                <p>Price: {selectedRoom.price}</p>
+                <p>Room Type: {translateType(selectedRoom['room-type'])}</p>
+                <p>Price: {selectedRoom['room-price']}</p>
                 <p>Location: {hotel['location']}</p>
                 <p>Date: {formatDate(startDate)} - {formatDate(endDate)}</p>
                 <div className={styles.roomCount}>
@@ -113,7 +104,7 @@ const BookingDetail = ({ hotel, startDate, endDate, onPay }) => {
                 <span className={styles.priceLabel}>Selected Dog Count: {personCount}</span>
                 <div className={styles.priceDetails}>
                     <span className={styles.priceLabel}>Total Price: </span>
-                    <span className={styles.priceValue}>{totalPrice}</span>
+                    <span className={styles.priceValue}>{formatPrice(totalPrice)}</span>
                 </div>
                 <div className={styles.policies}>
                     <p className={`${styles.policy} ${styles.rulesPolicy}`}>Rules Policy: {hotel['rules-policy']}</p>

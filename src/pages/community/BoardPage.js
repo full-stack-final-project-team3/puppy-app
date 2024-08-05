@@ -99,9 +99,15 @@ const BoardPage = () => {
                     <h2 className={styles.postTitle}>{post.boardTitle}</h2>
                     <p className={styles.postExcerpt}>{post.boardContent}</p>
                     <div className={styles.postMeta}>
+                      <img
+                        className={styles.image}
+                        src={post.user.profileUrl}
+                        alt="Profile"
+                      />
                       <span className={styles.author}>
-                        <BsPerson /> {post.userName || "익명"}
+                        <BsPerson /> {post.user.nickname || "익명의강아지주인"}
                       </span>
+
                       <span className={styles.date}>
                         {new Date(post.boardCreatedAt).toLocaleDateString()}
                       </span>
