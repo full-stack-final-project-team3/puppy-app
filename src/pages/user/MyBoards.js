@@ -3,6 +3,8 @@ import MyPageHeader from "../../components/auth/user/mypage/MyPageHeader";
 import styles from './MyBoards.module.scss'
 import {BOARD_URL} from "../../config/user/host-config";
 import {useSelector} from "react-redux";
+import {Link} from "react-router-dom";
+import {BsChat, BsEye, BsPerson} from "react-icons/bs";
 
 const MyBoards = () => {
 
@@ -30,7 +32,51 @@ const MyBoards = () => {
         <div className={styles.wrap}>
             <MyPageHeader/>
             <div className={styles.subWrap}>
-                내가 적은 게시글~
+                {data.length > 0 ?
+                    <>
+                        <h1 className={styles.h1}>{userDetail.nickname}의 게시글</h1>
+                        <ul className={styles.postList}>
+                            {data.map((post) => (
+                                <li key={post.id} className={styles.postItem}>
+                                    <Link to={`/board/${post.id}`} className={styles.postLink}>
+                                        <div className={styles.postContent}>
+                                            <h2 className={styles.postTitle}>{post.boardTitle}</h2>
+                                            <p className={styles.postExcerpt}>{post.boardContent}</p>
+                                            <div className={styles.postMeta}>
+                                                <img
+                                                    className={styles.image}
+                                                    src={userDetail.profileUrl}
+                                                    alt="Profile"
+                                                />
+                                                <span className={styles.author}>
+                        <BsPerson/> {userDetail.nickname }
+                      </span>
+
+                                                <span className={styles.date}>
+                        {new Date(post.boardCreatedAt).toLocaleDateString()}
+                      </span>
+                                                <span className={styles.comments}>
+                        <BsChat/> {post.replyCount || 0}
+                      </span>
+                                                <span className={styles.viewCount}>
+                        <BsEye/> {post.viewCount}
+                      </span>
+                                            </div>
+                                        </div>
+                                        {post.image && (
+                                            <div className={styles.postImage}>
+                                                <img src={post.image} alt={post.boardTitle}/>
+                                            </div>
+                                        )}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </>
+
+                    : <div>등록된 게시글이 없습니다.</div>
+                }
+
             </div>
         </div>
     );
