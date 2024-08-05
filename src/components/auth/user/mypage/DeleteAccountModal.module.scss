@@ -18,6 +18,15 @@
   width: 400px;
   text-align: center;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  .success {
+    margin: 0;
+    color: green;
+  }
+  .error {
+    margin: 0;
+    color: red;
+  }
 }
 
 .h2 {
@@ -56,7 +65,7 @@
 .flex {
   display: flex;
   width: 80%;
-  margin: 0 auto;
+  margin: 40px auto 10px;
   justify-content: space-around;
 
   .confirmButton {
@@ -82,4 +91,8 @@
       cursor: not-allowed;
     }
   }
+  .confirmButton:disabled {
+    background-color: #f4e8d3;
+  }
+
 }
