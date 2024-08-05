@@ -20,6 +20,7 @@ const ReviewDetailPage = () => {
           throw new Error('네트워크 응답이 실패했습니다.');
         }
         const data = await response.json();
+        console.log('Fetched review data:', data); 
         setReview(data);
       } catch (error) {
         console.error('리뷰 조회 오류:', error);
@@ -42,7 +43,7 @@ const ReviewDetailPage = () => {
       <h1>리뷰 상세 보기</h1>
       <div>
         <p>프로필 이미지</p>
-        <img />
+        <img className={styles.image} src={user.profileUrl} alt="Profile" />
       </div>
       <p> 닉네임 : {user.nickname} </p> 
       <p> 이메일 : {user.email} </p> 
@@ -57,7 +58,8 @@ const ReviewDetailPage = () => {
           const imageUrl = `${SHOP_URL}/review-img/${pic.reviewPic}`;
           console.log('Image URL:', imageUrl); // 로그 추가
           return (
-            <img key={index} src={imageUrl} alt={`Review Pic ${index + 1}`} className={styles.review_image} />
+            <img key={index} src={`http://localhost:8888/shop/reviews/review-img/${pic.reviewPic}`} alt={`Review Pic ${index + 1}`} className={styles.review_image} />
+          
           );
         })}
       </div>
