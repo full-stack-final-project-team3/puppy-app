@@ -145,7 +145,8 @@ const MainNavigation = () => {
                             <button className={styles.logout} onClick={logoutHandler}>Logout</button>
                             <BsBell className={styles.icon} onClick={toggleNotice}></BsBell>
                             {Array.isArray(noticeList) && userDetail.noticeCount !== 0 && <span className={styles.count}>{userDetail.noticeCount}</span>}
-                            <Link to={"/mypage"} onClick={clearEditMode}><BiUser className={styles.icon} /></Link>
+                            {/*<Link to={"/mypage"} onClick={clearEditMode}><BiUser className={styles.icon} /></Link>*/}
+                            <Link to={"/mypage"} onClick={clearEditMode}><img className={styles.profile} src={userDetail.profileUrl}/></Link>
                             <GiHamburgerMenu className={styles.icon} onClick={toggleMenuHandler} />
                         </>
                     ) : (

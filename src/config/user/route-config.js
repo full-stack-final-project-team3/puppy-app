@@ -32,6 +32,15 @@ import ReviewDetailPage from "../../pages/shop/review/ReviewDetailPage"; //리�
 import ErrorPage from "../../pages/user/ErrorPage";
 
 import BoardPostPage from "../../pages/community/BoardPostPage";
+import MyBoards from "../../pages/user/MyBoards";
+import checkMyInfo from "../../pages/user/MyBoards";
+import HotelRecords from "../../pages/user/HotelRecords";
+import MyLikeBoards from "../../pages/user/MyLikeBoards";
+import MyLikeHotel from "../../pages/user/MyLikeHotel";
+import MyLikeSnack from "../../pages/user/MyLikeSnack";
+import SnackRecords from "../../pages/user/SnackRecords";
+
+
 
 const homeRouter = [
   {
@@ -166,6 +175,30 @@ export const router = createBrowserRouter([
         path: "/review-page/edit-review/:reviewId",
         element: <EditReviewPage />,
         loader: authCheckLoader, // 수정 페이지 추가
+      },
+      {
+        path: "/my-boards",
+        element: <MyBoards/>
+      },
+      {
+        path: "/hotel-record",
+        element: <HotelRecords/>
+      },
+      {
+        path: "/like-boards",
+        element: <MyLikeBoards/>
+      },
+      {
+        path: "/like-hotel",
+        element: <MyLikeHotel/>
+      },
+      {
+        path: "/like-snack",
+        element: <MyLikeSnack/>
+      },
+      {
+        path: "/snack-record",
+        element: <SnackRecords/>
       },
     ],
   },

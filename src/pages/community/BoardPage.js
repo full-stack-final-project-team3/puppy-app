@@ -82,7 +82,8 @@ const BoardPage = () => {
       navigate("/login");
     }
   };
-  console.log(posts);
+
+  console.log(posts)
   return (
     <div className={styles.boardPageWrapper}>
       <div className={styles.boardPage} ref={scrollRef}>

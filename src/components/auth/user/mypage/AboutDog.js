@@ -31,9 +31,8 @@ const AboutDog = () => {
             </div>
             <div className={styles.container}>
                 {dogList && dogList.length > 0 ? (
-                    dogList.map(dog => (
-                        <DogList key={dog.id} dog={dog} />
-                    ))
+
+                        <DogList  />
                 ) : (
                     <div className={styles.add}>
                         <Link to={"/add-dog"} className={styles.addDog}>강아지 등록하기</Link>
