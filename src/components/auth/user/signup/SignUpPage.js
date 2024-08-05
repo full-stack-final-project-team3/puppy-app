@@ -7,6 +7,7 @@ import PasswordInput from "./PasswordInput";
 import NicknameInput from "./NicknameInput";
 import AddressInput from "./AddressInput";
 import PhoneNumberInput from "./PhoneNumberInput";
+import AddDogInput from "./AddDogInput";
 import { AUTH_URL } from "../../../../config/user/host-config";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../AuthProvider";
@@ -27,7 +28,8 @@ const SignUpPage = () => {
   const [enteredNickname, setEnteredNickname] = useState(""); // 입력된 닉네임
   const [enteredAddress, setEnteredAddress] = useState(""); // 입력된 주소
   const [enteredPhoneNumber, setEnteredPhoneNumber] = useState(""); // 입력된 휴대폰 번호
-  const [activeButton, setActiveButton] = useState(false); // 회원가입 버튼 활성화 여부
+  const [step2Button, setStep2Button] = useState(false); // step2 버튼 활성화 여부
+  const [step3Button, setStep3Button] = useState(false); // step3 버튼 활성화 여부
 
   // 다음 단계로 넘어가는 함수
   const nextStep = () => {
@@ -49,7 +51,6 @@ const SignUpPage = () => {
   const passwordSuccessHandler = (password, isValid) => {
     setEnteredPassword(password);
     setPasswordIsValid(isValid);
-    nextStep();
   };
 
   // 주소 입력 성공 핸들러
@@ -69,6 +70,7 @@ const SignUpPage = () => {
       email: enteredEmail,
       nickname: enteredNickname,
       password: enteredPassword,
+      address: enteredAddress,
       phoneNumber: enteredPhoneNumber,
     };
 
@@ -86,17 +88,40 @@ const SignUpPage = () => {
     }
   };
 
+  // 스텝2 가입완료 버튼, 스텝2 추가정보 등록 버튼
+  // 이메일, 닉네임, 비밀번호 입력 완료되면 활성화
   useEffect(() => {
     // 활성화 여부 감시
     const isActive =
-      enteredEmail && enteredPassword && enteredNickname && enteredPhoneNumber;
+      enteredEmail && enteredPassword && enteredNickname 
+      ;
 
-    setActiveButton(isActive);
+    setStep2Button(isActive);
+  }, [enteredEmail, enteredPassword, enteredNickname]);
+
+  // 스텝3 추가정보 등록 완료 버튼, 스텝3 강아지 등록하기 버튼
+  // 이메일, 닉네임, 비밀번호, 주소, 전화번호 입력 완료되면 활성화
+  useEffect(() => {
+    // 활성화 여부 감시
+    const isActive = enteredEmail && enteredPassword 
+    && enteredNickname && enteredPhoneNumber;
+
+    setStep3Button(isActive);
   }, [enteredEmail, enteredPassword, enteredNickname, enteredPhoneNumber]);
 
   const handleStepClick = (num) => {
     if (num < step) {
       dispatch(setStep(num));
+    }
+  };
+
+  // 자동 로그인
+  const autoLoginHandler = async () => {
+    try {
+      await login(enteredEmail, enteredPassword); // 자동 로그인 수행
+      navigate("/add-dog"); // 로그인 성공 후 이동할 페이지로 변경
+    } catch (error) {
+      alert("에러 발생");
     }
   };
 
@@ -129,22 +154,41 @@ const SignUpPage = () => {
                 <div className={styles.signUpBox}>
                   <NicknameInput onSuccess={nicknameSuccessHandler} />
                   <PasswordInput onSuccess={passwordSuccessHandler} />
+                  <button
+                    type="submit"
+                    className={`${styles.button} ${step2Button ? styles.active : styles.inactive}`}
+                    disabled={!step2Button}
+                  >가입 완료</button>
+                  <button
+                    type="submit"
+                    className={`${styles.button} ${step2Button ? styles.active : styles.inactive}`}
+                    disabled={!step2Button}
+                    onClick={() => nextStep()}
+                    >추가정보 등록</button>
                 </div>
               )}
 
               {step === 3 && (
                 <div className={styles.signUpBox}>
-                  <button className={styles.signUpBtn}>
-                    나중에 등록하기
-                  </button>
                   <AddressInput onSuccess={addressSuccessHandler} />
                   <PhoneNumberInput onSuccess={phoneNumberSuccessHandler} />
-                  <button
-                    className={`${styles.button} ${activeButton ? styles.active : styles.inactive}`}
-                    disabled={!activeButton}
-                  >
-                    회원가입
-                  </button>
+                    <button
+                      type="submit"
+                      className={`${styles.button} ${step3Button ? styles.active : styles.inactive}`}
+                      disabled={!step3Button}
+                    >추가정보 등록 완료</button>
+                    <button 
+                      type="button"
+                      className={`${styles.button} ${step3Button ? styles.active : styles.inactive}`}
+                      disabled={!step3Button}
+                      onClick={autoLoginHandler}
+                      >강아지 등록하기</button>
+                </div>
+              )}
+
+              {step === 4 && (
+                <div className={styles.signUpBox}> 
+                  <AddDogInput />
                 </div>
               )}
 
