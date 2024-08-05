@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Slider from "react-slick";
 import styles from './RoomDetail.module.scss';
@@ -10,19 +10,37 @@ import { useNavigate } from "react-router-dom";
 import MapView from './MapView';
 import { deleteRoom, setRooms } from '../store/hotel/RoomAddSlice';
 import store from "../store";
+import { fetchAvailableRooms } from '../store/hotel/ReservationSlice';
 
 const RoomDetail = ({ hotel, onBook, getSliderSettings, onModifyRoom }) => {
-    console.log('hotelid: ' ,hotel['hotel-id']);
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const hotelId = hotel['hotel-id'];
     const rooms = useSelector(state => state.roomAdd.rooms);
+    const startDate = useSelector(state => state.reservation.startDate);
+    const endDate = useSelector(state => state.reservation.endDate);
+
+    const [availableRooms, setAvailableRooms] = useState([]);
 
     useEffect(() => {
         if (hotel && hotel.room) {
             dispatch(setRooms(hotel.room));
         }
     }, [dispatch, hotel]);
+
+    useEffect(() => {
+        if (hotelId && startDate && endDate) {
+            dispatch(fetchAvailableRooms({ city: hotelId, startDate, endDate }))
+                .unwrap()
+                .then(rooms => {
+                    setAvailableRooms(rooms);
+                })
+                .catch(error => {
+                    console.error("Error fetching available rooms:", error);
+                });
+        }
+    }, [dispatch, hotelId, startDate, endDate]);
 
     if (!hotel || !rooms.length) {
         return <p>No rooms available</p>;
@@ -60,27 +78,27 @@ const RoomDetail = ({ hotel, onBook, getSliderSettings, onModifyRoom }) => {
         <>
             <button onClick={modifyHotelHandler}>호텔 수정하기</button>
             <div className={styles.roomDetail}>
-                {rooms.map((room, roomIndex) => (
+                {availableRooms.map((room, roomIndex) => (
                     <div key={room['room-id']} className={styles.room}>
                         <button onClick={() => handleDeleteRoom(room['room-id'])}>Delete room</button>
                         <Slider className={styles.slider} {...getSliderSettings(room["room-images"].length)}>
-            {room["room-images"] && room["room-images"].map((image, imageIndex) => {
-                const imageUrl = getImageUrl(image['hotelImgUri']);
-                if (!imageUrl) {
-                    console.error('Invalid image URI for image', image);
-                    return null;
-                }
-                return (
-                    <div key={image['image-id'] || `${roomIndex}-${imageIndex}`} className={styles.slide}>
-                        <img src={imageUrl} alt={`${room.name} - ${image['hotelImgUri']}`} />
-                    </div>
-                );
-            })}
-        </Slider>
+                            {room["room-images"] && room["room-images"].map((image, imageIndex) => {
+                                const imageUrl = getImageUrl(image['hotelImgUri']);
+                                if (!imageUrl) {
+                                    console.error('Invalid image URI for image', image);
+                                    return null;
+                                }
+                                return (
+                                    <div key={image['image-id'] || `${roomIndex}-${imageIndex}`} className={styles.slide}>
+                                        <img src={imageUrl} alt={`${room.name} - ${image['hotelImgUri']}`} />
+                                    </div>
+                                );
+                            })}
+                        </Slider>
                         <h2>{room.name}</h2>
                         <p>{room.content}</p>
-                        <p>Type: {room.type}</p>
-                        <p>Price: {room.price}</p>
+                        <p>Type: {room['room-type']}</p>
+                        <p>Price: {room['room-price']}</p>
                         <button onClick={() => onBook(hotel, room)}>Book Now</button>
                     </div>
                 ))}
@@ -119,14 +137,14 @@ RoomDetail.propTypes = {
                     PropTypes.shape({
                         'image-id': PropTypes.string,
                         'hotelImgUri': PropTypes.string.isRequired,
-                        'image-type': PropTypes.string, // 선택적 속성으로 변경
+                        'image-type': PropTypes.string,
                     }).isRequired
                 ),
             }).isRequired
         ).isRequired,
     }).isRequired,
     onBook: PropTypes.func.isRequired,
-    sliderSettings: PropTypes.object.isRequired,
+    getSliderSettings: PropTypes.object.isRequired,
 };
 
 export default RoomDetail;
