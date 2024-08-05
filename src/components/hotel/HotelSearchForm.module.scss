@@ -1,4 +1,6 @@
 .stepContent {
+  margin: 0 auto;
+  
   label {
     margin-bottom: 20px;
     color: black;
@@ -8,11 +10,13 @@
     font-size: 16px;
     width: 100%;
   }
+  
 
   select,
   .custom-text-field {
     width: 100%;
-    padding: 10px;
+    padding: 15px;
+    font-size: 20px;
     margin-top: 10px;
     margin-bottom: 20px;
     border: 1px solid #ccc;
@@ -20,9 +24,14 @@
     box-sizing: border-box;
   }
 
+  .location { 
+    margin-top: 20px;
+  }
+
   .next {
     width: 100%;
-    padding: 10px;
+    padding: 20px;
+    margin-top: 30px;
     background-color: rgb(155, 0, 0);
     color: white;
     border: none;

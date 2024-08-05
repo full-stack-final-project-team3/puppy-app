@@ -1,6 +1,5 @@
 .stepIndicator {
   display: flex;
-  
   height: 90px;
   width: 100%;
   background: #f1f1f1;
@@ -29,8 +28,17 @@
     color: white;
     cursor: default;
 
-    &.active {
+    &.active,
+    &.completed {
       background-color: rgb(155, 0, 0);
+      color: white;
+    }
+
+    &:not(.active):not(.completed) {
+      background-color: transparent;
+      border: 2px solid lightgray;
+      width: 20px;
+      height: 20px;
     }
   }
   .stepLabel {

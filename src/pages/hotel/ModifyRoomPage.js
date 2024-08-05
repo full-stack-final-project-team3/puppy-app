@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateRoom, uploadFile } from '../../components/store/hotel/RoomAddSlice';
-import { fetchRooms } from '../../components/store/hotel/HotelPageSlice';
+import { fetchRooms } from '../../components/store/hotel/RoomAddSlice';
 import { ROOM_URL } from '../../config/user/host-config';
 import styles from './ModifyRoomPage.module.scss';
 

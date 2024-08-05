@@ -6,20 +6,18 @@ const StepIndicator = ({ step, onStepClick }) => {
 
   return (
     <div className={styles.stepIndicator}>
-      {[1, 2, 3, 4, 5].map((num, idx) => (
-        <React.Fragment key={num}>
-          {idx > 0 && <div className={`${styles.stepLine} ${step > num - 1 ? styles.active : ''}`} />}
-          <div
-            className={`${styles.stepContainer}`}
-          >
+      {stepLabels.map((label, idx) => (
+        <React.Fragment key={idx + 1}>
+          {idx > 0 && <div className={`${styles.stepLine} ${step > idx + 1 ? styles.active : ''}`} />}
+          <div className={styles.stepContainer}>
             <div
-              className={`${styles.stepNumber} ${step >= num ? styles.active : ''}`}
-              onClick={num < step ? () => onStepClick(num) : null}
-              style={{ cursor: num < step ? 'pointer' : 'default' }}
+              className={`${styles.stepNumber} ${step >= idx + 1 ? styles.active : ''} ${step > idx + 1 ? styles.completed : ''}`}
+              onClick={idx < step - 1 ? () => onStepClick(idx + 1) : null}
+              style={{ cursor: idx < step - 1 ? 'pointer' : 'default' }}
             >
-              {num}
+              {step >= idx + 1 ? idx + 1 : ''}
             </div>
-            <div className={styles.stepLabel}>{stepLabels[num - 1]}</div>
+            <div className={styles.stepLabel}>{label}</div>
           </div>
         </React.Fragment>
       ))}
