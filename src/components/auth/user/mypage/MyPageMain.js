@@ -8,6 +8,7 @@ import DogEdit from "../../dog/DogEdit";
 import { useDispatch, useSelector } from "react-redux";
 import { userEditActions } from "../../../store/user/UserEditSlice";
 import UserEdit from "./UserEdit";
+import AboutMyInfo from "./AboutMyInfo";
 
 
 const MyPageMain = () => {
@@ -65,6 +66,7 @@ const MyPageMain = () => {
             }
             {isUserEditMode && <UserEdit user={userDetail} />}
             {isDogEditMode && <DogEdit user={userDetail}/>}
+            <AboutMyInfo/>
         </div>
     );
 };
