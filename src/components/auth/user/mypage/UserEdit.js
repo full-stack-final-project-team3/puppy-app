@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { userEditActions } from "../../../store/user/UserEditSlice";
 import styles from "./UserEdit.module.scss";
 import { AUTH_URL } from "../../../../config/user/host-config";
+import DeleteAccountModal from "./DeleteAccountModal"; // 모달 컴포넌트 import
 
 const UserEdit = ({ user }) => {
     const passwordRef = useRef();
@@ -17,6 +18,7 @@ const UserEdit = ({ user }) => {
     const [passwordMatch, setPasswordMatch] = useState(false);
     const [passwordMessage, setPasswordMessage] = useState('');
     const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
 
     const dispatch = useDispatch();
 
@@ -94,6 +96,14 @@ const UserEdit = ({ user }) => {
         }
     };
 
+    const dropUserHandler = () => {
+        setIsModalOpen(true); // 모달 열기
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false); // 모달 닫기
+    };
+
     return (
         <div className={styles.wrap}>
             <h2 className={styles.title}>회원 정보 수정</h2>
@@ -110,7 +120,7 @@ const UserEdit = ({ user }) => {
             <div className={styles.form}>
                 <div className={styles.section}>
                     <label htmlFor="email">이메일</label>
-                    <input id="email" type="text" className={styles.input} value={user.email} readOnly />
+                    <input id="email" type="text" className={styles.input} value={user.email} readOnly/>
                 </div>
                 <div className={styles.doubleSection}>
                     <div className={styles.section}>
@@ -196,14 +206,23 @@ const UserEdit = ({ user }) => {
                         onChange={handleInputChange(setAddress)}
                     />
                 </div>
-                <button
-                    className={styles.submitButton}
-                    onClick={clearEditMode}
-                    disabled={isSubmitDisabled}
-                >
-                    완료
-                </button>
+                <div className={styles.flex}>
+                    <button
+                        className={styles.submitButton}
+                        onClick={clearEditMode}
+                        disabled={isSubmitDisabled}
+                    >
+                        완료
+                    </button>
+                    <button
+                        className={styles.submitButton}
+                        onClick={dropUserHandler}
+                    >
+                        회원탈퇴
+                    </button>
+                </div>
             </div>
+            {isModalOpen && <DeleteAccountModal onClose={closeModal} />} {/* 모달 컴포넌트 추가 */}
         </div>
     );
 };
