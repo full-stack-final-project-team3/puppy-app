@@ -9,11 +9,9 @@ import ReviewList from './ReviewList';
 import { useNavigate } from "react-router-dom";
 import MapView from './MapView';
 import { deleteRoom, setRooms } from '../store/hotel/RoomAddSlice';
-import store from "../store";
 import { fetchAvailableRooms } from '../store/hotel/ReservationSlice';
 
 const RoomDetail = ({ hotel, onBook, getSliderSettings, onModifyRoom }) => {
-
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const hotelId = hotel['hotel-id'];
@@ -42,6 +40,10 @@ const RoomDetail = ({ hotel, onBook, getSliderSettings, onModifyRoom }) => {
         }
     }, [dispatch, hotelId, startDate, endDate]);
 
+    useEffect(() => {
+        setAvailableRooms(rooms);
+    }, [rooms]);
+
     if (!hotel || !rooms.length) {
         return <p>No rooms available</p>;
     }
@@ -65,8 +67,8 @@ const RoomDetail = ({ hotel, onBook, getSliderSettings, onModifyRoom }) => {
         try {
             const actionResult = await dispatch(deleteRoom(roomId));
             if (actionResult.type.endsWith('fulfilled')) {
-                const currentRooms = store.getState().roomAdd.rooms;
-                const updatedRooms = currentRooms.filter(room => room['room-id'] !== roomId);
+                const updatedRooms = availableRooms.filter(room => room['room-id'] !== roomId);
+                setAvailableRooms(updatedRooms);
                 dispatch(setRooms(updatedRooms));
             }
         } catch (e) {
@@ -144,7 +146,7 @@ RoomDetail.propTypes = {
         ).isRequired,
     }).isRequired,
     onBook: PropTypes.func.isRequired,
-    getSliderSettings: PropTypes.object.isRequired,
+    getSliderSettings: PropTypes.func.isRequired,
 };
 
 export default RoomDetail;

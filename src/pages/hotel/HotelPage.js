@@ -40,20 +40,20 @@ const HotelPage = () => {
     const startDate = useSelector(state => state.reservation.startDate);
     const endDate = useSelector(state => state.reservation.endDate);
     const user = useSelector(state => state.userEdit.userDetail);
-    console.log(user);
 
+    // console.log("Asdsadsad", user)
     useEffect(() => {
         if (hotels && hotels.length > 0) {
-            console.log('Hotels:', hotels);
+            // console.log('Hotels:', hotels);
         }
     }, [hotels]);
 
     useEffect(() => {
-        console.log('Selected Hotel:', selectedHotel);
+        // console.log('Selected Hotel:', selectedHotel);
     }, [selectedHotel]);
 
     useEffect(() => {
-        console.log('Selected Room: ', selectedRoom);
+        // console.log('Selected Room: ', selectedRoom);
     }, [selectedRoom]);
 
     const formatDate = (date) => {
@@ -107,10 +107,8 @@ const HotelPage = () => {
     };
 
     const handleBook = (hotel, room) => {
-        console.log('hotelid: ' ,hotel['hotel-id']);
         dispatch(setSelectedRoom(room));
         dispatch(fetchHotelDetails(hotel['hotel-id'])).then(() => {
-            console.log('hotelid: ' ,hotel['hotel-id']);
             dispatch(setStep(4));
         });
     };
@@ -118,7 +116,7 @@ const HotelPage = () => {
     const handlePayment = (hotel, room, totalPrice) => {
         dispatch(setSelectedRoom(room));
         dispatch(setTotalPrice(totalPrice));
-        dispatch(fetchHotelDetails(hotel.id)).then(() => {
+        dispatch(fetchHotelDetails(hotel['hotel-id'])).then(() => {
             dispatch(setStep(5));
         });
     };
