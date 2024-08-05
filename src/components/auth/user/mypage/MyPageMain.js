@@ -3,12 +3,11 @@ import styles from './MyPageMain.module.scss';
 import MyPageHeader from "./MyPageHeader";
 import MyPageBody from "./MyPageBody";
 import {useRouteLoaderData} from "react-router-dom";
-import { AUTH_URL, DOG_URL } from "../../../../config/user/host-config";
+import { DOG_URL } from "../../../../config/user/host-config";
 import DogEdit from "../../dog/DogEdit";
 import { useDispatch, useSelector } from "react-redux";
-import { userEditActions } from "../../../store/user/UserEditSlice";
 import UserEdit from "./UserEdit";
-import AboutMyInfo from "./AboutMyInfo";
+import AboutMyInfo from "./AboutMyInfo.js";
 
 
 const MyPageMain = () => {
@@ -66,7 +65,7 @@ const MyPageMain = () => {
             }
             {isUserEditMode && <UserEdit user={userDetail} />}
             {isDogEditMode && <DogEdit user={userDetail}/>}
-            <AboutMyInfo/>
+            { !isEditMode && <AboutMyInfo/>}
         </div>
     );
 };
