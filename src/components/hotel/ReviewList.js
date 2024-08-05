@@ -7,7 +7,6 @@ import styles from './ReviewList.module.scss';
 const ReviewList = ({ hotelId }) => {
     const dispatch = useDispatch();
     const { loading, reviews, error } = useSelector((state) => state.reviews);
-    console.log("이게머임", reviews)
 
     useEffect(() => {
         dispatch(fetchReviews(hotelId));
