@@ -24,6 +24,10 @@ const MyPageHeader = () => {
     }
 
     const backHandler = () => {
+        const currentUrl = window.location.href;
+        if (currentUrl !== 'http://localhost:3000/mypage') {
+            navigate("/mypage")
+        }
         if (isEditMode) dispatch(userEditActions.clearMode())
         if (isUserEditMode) dispatch(userEditActions.clearUserEditMode())
         if (isDogEditMode) dispatch(dogEditActions.clearEdit())

@@ -18,7 +18,6 @@ export const fetchReviews = createAsyncThunk(
                 throw new Error(`Failed to fetch reviews: ${errorText}`);
             }
             const data = await response.json();
-            console.log("잘가져옴? ",hotelId)
             return data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error.message);

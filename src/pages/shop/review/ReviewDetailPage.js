@@ -1,24 +1,26 @@
-// src/components/Review/ReviewDetailPage.js
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Rating from '@mui/material/Rating';
 import styles from './Review.module.scss';
+import { SHOP_URL } from '../../../config/user/host-config'; // SHOP_URL을 import
 
 const ReviewDetailPage = () => {
   const { reviewId } = useParams();
   const [review, setReview] = useState(null);
   const navigate = useNavigate();
   const user = useSelector((state) => state.userEdit.userDetail);
+  
 
   useEffect(() => {
     const fetchReview = async () => {
       try {
-        const response = await fetch(`http://localhost:8888/shop/reviews/${reviewId}`);
+        const response = await fetch(`${SHOP_URL}/reviews/${reviewId}`);
         if (!response.ok) {
           throw new Error('네트워크 응답이 실패했습니다.');
         }
         const data = await response.json();
+        console.log('Fetched review data:', data); 
         setReview(data);
       } catch (error) {
         console.error('리뷰 조회 오류:', error);
@@ -39,6 +41,10 @@ const ReviewDetailPage = () => {
   return (
     <div className={`${styles.review_common_box} ${styles.review_detail_box}`}>
       <h1>리뷰 상세 보기</h1>
+      <div>
+        <p>프로필 이미지</p>
+        <img className={styles.image} src={user.profileUrl} alt="Profile" />
+      </div>
       <p> 닉네임 : {user.nickname} </p> 
       <p> 이메일 : {user.email} </p> 
       <div>
@@ -48,9 +54,14 @@ const ReviewDetailPage = () => {
           <p> 닉네임 : {review.user.nickname} /// 이메일 : {review.user.email} </p>
         )}
         <p> 작성 일자 : {new Date(review.createdAt).toLocaleString()} </p>
-        {review.reviewPicUrls && review.reviewPicUrls.map((url, index) => (
-          <img key={index} src={url} alt={`Review Pic ${index + 1}`} className={styles.review_image} />
-        ))}
+        {review.reviewPics && review.reviewPics.map((pic, index) => {
+          const imageUrl = `${SHOP_URL}/review-img/${pic.reviewPic}`;
+          console.log('Image URL:', imageUrl); // 로그 추가
+          return (
+            <img key={index} src={`http://localhost:8888/shop/reviews/review-img/${pic.reviewPic}`} alt={`Review Pic ${index + 1}`} className={styles.review_image} />
+          
+          );
+        })}
       </div>
       <button onClick={handleEditClick}>수정하기</button>
       <button onClick={() => navigate('/review-page')}>리뷰 목록으로 돌아가기</button>

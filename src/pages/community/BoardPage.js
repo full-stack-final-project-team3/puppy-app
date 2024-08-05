@@ -4,6 +4,7 @@ import styles from "./BoardPage.module.scss";
 import { BOARD_URL } from "../../config/user/host-config";
 import { useSelector } from "react-redux";
 import { BsChat, BsEye, BsPerson } from "react-icons/bs";
+import { HiOutlineHeart } from "react-icons/hi2";
 
 const BoardPage = () => {
   const [posts, setPosts] = useState([]);
@@ -83,6 +84,7 @@ const BoardPage = () => {
     }
   };
 
+  console.log(posts)
   return (
     <div className={styles.boardPageWrapper}>
       <div className={styles.boardPage} ref={scrollRef}>
@@ -98,9 +100,15 @@ const BoardPage = () => {
                     <h2 className={styles.postTitle}>{post.boardTitle}</h2>
                     <p className={styles.postExcerpt}>{post.boardContent}</p>
                     <div className={styles.postMeta}>
+                      <img
+                        className={styles.image}
+                        src={post.user.profileUrl}
+                        alt="Profile"
+                      />
                       <span className={styles.author}>
-                        <BsPerson /> {post.userName || "익명"}
+                        <BsPerson /> {post.user.nickname || "익명의강아지주인"}
                       </span>
+
                       <span className={styles.date}>
                         {new Date(post.boardCreatedAt).toLocaleDateString()}
                       </span>
@@ -109,6 +117,9 @@ const BoardPage = () => {
                       </span>
                       <span className={styles.viewCount}>
                         <BsEye /> {post.viewCount}
+                      </span>
+                      <span className={styles.likes}>
+                        <HiOutlineHeart /> 0
                       </span>
                     </div>
                   </div>

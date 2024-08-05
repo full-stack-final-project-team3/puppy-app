@@ -6,7 +6,7 @@ import {
     addRoomImage, removeRoomImage, setErrorMessage, resetRoomData
 } from '../../components/store/hotel/RoomAddSlice';
 import styles from './AddRoomPage.module.scss';
-import {ROOM_URL} from "../../config/user/host-config";
+import { ROOM_URL } from "../../config/user/host-config";
 
 const AddRoomPage = () => {
     const { hotelId } = useParams();
@@ -14,7 +14,7 @@ const AddRoomPage = () => {
     const navigate = useNavigate();
     const roomData = useSelector((state) => state.roomAdd);
     const isUploading = useSelector((state) => state.roomAdd.isUploading);
-    
+
     const handleRoomChange = (e) => {
         const { name, value } = e.target;
         dispatch(updateRoomData({ [name]: value }));
@@ -70,14 +70,17 @@ const AddRoomPage = () => {
                     value={roomData.content}
                     onChange={handleRoomChange}
                 />
-                <input
-                    type="text"
+                <select
                     name="type"
-                    placeholder="Room Type"
                     value={roomData.type}
                     onChange={handleRoomChange}
                     required
-                />
+                >
+                    <option value="" disabled>Select Room Type</option>
+                    <option value="SMALL_DOG">Small Dog</option>
+                    <option value="MEDIUM_DOG">Medium Dog</option>
+                    <option value="LARGE_DOG">Large Dog</option>
+                </select>
                 <input
                     type="number"
                     name="price"
@@ -88,18 +91,18 @@ const AddRoomPage = () => {
                 />
                 {roomData.roomImages.map((image, index) => (
                     <div key={index}>
-                    <input
-                        type="file"
-                        onChange={(e) => handleFileChange(e, index)}
-                        required
-                    />
-                    {image.hotelImgUri && (
-                        <>
-                            <img src={`${ROOM_URL}/images/${image.hotelImgUri}`} alt="Hotel" />
-                            <button type="button" onClick={() => handleRemoveImage(index)}>Remove</button>
-                        </>
-                    )}
-                </div>
+                        <input
+                            type="file"
+                            onChange={(e) => handleFileChange(e, index)}
+                            required
+                        />
+                        {image.hotelImgUri && (
+                            <>
+                                <img src={`${ROOM_URL}/images/${image.hotelImgUri}`} alt="Hotel" />
+                                <button type="button" onClick={() => handleRemoveImage(index)}>Remove</button>
+                            </>
+                        )}
+                    </div>
                 ))}
                 <button type="button" onClick={handleAddImage}>Add Image</button>
                 <button type="submit">Save Room</button>

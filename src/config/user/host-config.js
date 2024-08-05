@@ -22,6 +22,7 @@ const BOARD = "/boards";
 const TREATS = "/treats";
 const BUNDLE = "/bundle";
 const CART = "/cart";
+const SHOP = "/shop";
 const notice = "/notice"
 // const AUTH = '/auth'
 
@@ -35,4 +36,5 @@ export const BOARD_URL = API_BASE_URL + BOARD;
 export const TREATS_URL = API_BASE_URL + TREATS;
 export const BUNDLE_URL = API_BASE_URL + BUNDLE;
 export const CART_URL = API_BASE_URL + CART;
+export const SHOP_URL = API_BASE_URL + SHOP;
 export const NOTICE_URL = API_BASE_URL + notice;

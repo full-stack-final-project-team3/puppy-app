@@ -21,6 +21,7 @@ const ReviewPage = () => {
         }
         const data = await response.json(); // JSON 형식으로 응답 데이터 파싱
         setReviews(data); // 리뷰 데이터를 상태에 저장
+        console.log(data);
       } catch (error) {
         // 오류 발생 시 콘솔에 로그 출력
         console.error('리뷰 조회 오류:', error);
@@ -48,8 +49,9 @@ const ReviewPage = () => {
           {/* reviews 배열을 순회하여 각 리뷰를 목록으로 표시 */}
           {reviews.map((review) => (
             <li key={review.id} onClick={() => handleReviewClick(review.id)}>
-              <h2>{review.reviewContent}</h2> {/* 리뷰 내용 표시 */}
-              <Rating name="read-only" value={review.rate} readOnly precision={0.5} />
+              <img className={styles.image} src={user.profileUrl} alt="Profile" />
+              <h2>리뷰 내용 : {review.reviewContent}</h2> {/* 리뷰 내용 표시 */}
+              <div>별점 : <Rating name="read-only" value={review.rate} readOnly precision={0.5} /></div>
               {/* 리뷰 평점 표시 (읽기 전용) */}
               {user && (
                 <p> 닉네임 : {user.nickname} ///  이메일 : {user.email} </p>

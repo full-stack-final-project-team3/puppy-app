@@ -8,7 +8,6 @@ import "slick-carousel/slick/slick-theme.css";
 import { useNavigate } from "react-router-dom";
 
 const BookingDetail = ({ hotel, startDate, endDate, onPay }) => {
-    console.log('hotelid: ' ,hotel['hotel-id']);
     const [roomCount, setRoomCount] = React.useState(1);
     const personCount = useSelector(state => state.reservation.personCount);
     const selectedRoom = useSelector(state => state.hotelPage.selectedRoom);
@@ -53,11 +52,6 @@ const BookingDetail = ({ hotel, startDate, endDate, onPay }) => {
     const finalPersonCount = personCount || 1;
     const totalPrice = roomPrice * roomCount * finalPersonCount;
 
-
-    console.log("selectedRoom", roomPrice);
-    console.log("roomCount", roomCount);
-    console.log("personCount", personCount);
-    console.log("totalPrice", totalPrice);
     const getImageUrl = (imageUri) => {
         if (imageUri && imageUri.startsWith('/local/')) {
             return `http://localhost:8888${imageUri.replace('/local', '/hotel/images')}`;
@@ -75,7 +69,10 @@ const BookingDetail = ({ hotel, startDate, endDate, onPay }) => {
         return date.toLocaleDateString('en-US', options).replace(',', '').replace(/\//g, ' / ');
     };
 
-    console.log("룸 멀까여여여여", selectedRoom)
+    const formatPrice = (price) => {
+        return new Intl.NumberFormat('ko-KR').format(price);
+    };
+
     return (
         <>
             <button onClick={handleModifyRoom}>객실 수정하기</button>
@@ -86,10 +83,8 @@ const BookingDetail = ({ hotel, startDate, endDate, onPay }) => {
                             <img
                                 src={firstImageUrl}
                                 alt="Room image"
-                                onLoad={() => console.log('Image loaded successfully')}
                                 onError={(e) => {
                                     e.target.onerror = null;
-                                    console.log('Image load error');
                                 }}
                                 className={styles.sliderImage}
                             />
@@ -109,7 +104,7 @@ const BookingDetail = ({ hotel, startDate, endDate, onPay }) => {
                 <span className={styles.priceLabel}>Selected Dog Count: {personCount}</span>
                 <div className={styles.priceDetails}>
                     <span className={styles.priceLabel}>Total Price: </span>
-                    <span className={styles.priceValue}>{totalPrice}</span>
+                    <span className={styles.priceValue}>{formatPrice(totalPrice)}</span>
                 </div>
                 <div className={styles.policies}>
                     <p className={`${styles.policy} ${styles.rulesPolicy}`}>Rules Policy: {hotel['rules-policy']}</p>
