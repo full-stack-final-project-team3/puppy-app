@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import styles from './Review.module.scss';
-import RatingInput from './RatingInput'; // 새로 만든 RatingInput 컴포넌트 import
+import RatingInput from './RatingInput';
 
 const EditReviewPage = () => {
   const { reviewId } = useParams();
   const [reviewContent, setReviewContent] = useState('');
   const [rate, setRate] = useState(5);
+  const [reviewPics, setReviewPics] = useState([]);
+  const [existingPics, setExistingPics] = useState([]);
   const navigate = useNavigate();
   const user = useSelector((state) => state.userEdit.userDetail);
 
@@ -23,6 +25,7 @@ const EditReviewPage = () => {
         const data = await response.json();
         setReviewContent(data.reviewContent);
         setRate(data.rate);
+        setExistingPics(data.reviewPics || []);
       } catch (error) {
         console.error('리뷰 조회 오류:', error);
       }
@@ -35,21 +38,26 @@ const EditReviewPage = () => {
     event.preventDefault();
 
     try {
+      const formData = new FormData();
+      formData.append('reviewSaveDto', new Blob([JSON.stringify({
+        reviewContent,
+        rate,
+        userId: user.id,
+        treatsId: 'dummy-treats-id' // 실제 treatsId로 변경 필요
+      })], { type: "application/json" }));
+
+      reviewPics.forEach((pic, index) => {
+        formData.append('reviewPics', pic);
+      });
+
       const response = await fetch(`http://localhost:8888/shop/reviews/${reviewId}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          reviewContent,
-          rate,
-          user: { id: 'dummy-user-id' }, // 실제 user_id로 변경 필요
-          treats: { id: 'dummy-treats-id' }, // 실제 treats_id로 변경 필요
-        }),
+        body: formData
       });
 
       if (!response.ok) {
         const errorData = await response.json();
+        console.error('서버 응답 오류:', errorData);
         throw new Error(`네트워크 응답이 실패했습니다. 오류: ${errorData.message}`);
       }
 
@@ -79,11 +87,15 @@ const EditReviewPage = () => {
     }
   };
 
+  const handleFileChange = (event) => {
+    setReviewPics(Array.from(event.target.files));
+  };
+
   return (
     <div className={`${styles.review_common_box} ${styles.review_editor_box}`}>
       <h1>리뷰 수정하기</h1>
-      <p> 닉네임 : {user.nickname} </p> 
-      <p> 이메일 : {user.email} </p> 
+      <p> 닉네임 : {user.nickname} </p>
+      <p> 이메일 : {user.email} </p>
       <form onSubmit={handleUpdate}>
         <div>
           <label htmlFor="review">리뷰</label>
@@ -97,6 +109,21 @@ const EditReviewPage = () => {
         <div>
           <label htmlFor="rate">별점</label>
           <RatingInput value={rate} onChange={setRate} />
+        </div>
+        <div>
+          <label htmlFor="reviewPics">이미지 업로드</label>
+          <input
+            type="file"
+            id="reviewPics"
+            multiple
+            accept="image/*"
+            onChange={handleFileChange}
+          />
+        </div>
+        <div>
+          {existingPics.map((pic, index) => (
+            <img key={index} src={`http://localhost:8888/shop/reviews/review-img/${pic.reviewPic}`} alt={`Review Pic ${index + 1}`} className={styles.review_image} />
+          ))}
         </div>
         <button type="submit">수정하기</button>
       </form>
