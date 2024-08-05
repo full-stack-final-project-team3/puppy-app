@@ -1,0 +1,115 @@
+.createPostPage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f8f4e9;
+    padding: 40px 20px;
+    font-family: 'Arial', sans-serif;
+}
+
+.title {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    color: #333;
+    text-align: center;
+}
+
+.form {
+    width: 100%;
+    max-width: 600px;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 0 20px; // 여백 추가
+    padding-right: 60px;
+}
+
+.input,
+.textarea {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+
+    &:focus {
+        outline: none;
+        border-color: #007bff;
+    }
+}
+
+.textarea {
+    min-height: 200px;
+    resize: vertical;
+}
+
+.imageUpload {
+    margin-bottom: 20px;
+}
+
+.imageLabel {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #f0f0f0;
+    color: #333;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+        background-color: #e0e0e0;
+    }
+}
+
+.imageInput {
+    display: none;
+}
+
+.fileName {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #666;
+}
+
+.submitButton {
+    width: 630px;
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+        background-color: #0056b3;
+    }
+}
+
+@media (max-width: 768px) {
+    .createPostPage {
+        padding: 20px 10px;
+    }
+
+    .form {
+        padding: 20px;
+        margin: 0; // 모바일에서는 여백 제거
+    }
+
+    .title {
+        font-size: 24px;
+    }
+
+    .input,
+    .textarea,
+    .submitButton {
+        font-size: 16px;
+    }
+}
