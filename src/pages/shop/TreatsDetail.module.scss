@@ -1,0 +1,28 @@
+.treatsDetail {
+  padding: 16px;
+  background-color: #fff; // 배경색
+  border-radius: 8px; // 모서리 둥글게
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); // 그림자 효과
+  max-width: 400px; // 최대 너비
+  margin: 0 auto; // 중앙 정렬
+
+  h2 {
+    font-size: 24px; // 제목 크기
+    color: #333; // 제목 색상
+    margin-bottom: 12px; // 제목과 내용 사이 간격
+  }
+
+  p {
+    font-size: 16px; // 본문 크기
+    color: #666; // 본문 색상
+    line-height: 1.5; // 줄 높이
+    margin-bottom: 16px; // 본문과 이미지 사이 간격
+  }
+
+  .treatsImage {
+    width: 100%; // 이미지 너비 100%
+    height: auto; // 비율 유지
+    border-radius: 4px; // 이미지 모서리 둥글게
+    object-fit: cover; // 이미지 비율 유지
+  }
+}
