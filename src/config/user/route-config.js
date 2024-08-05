@@ -134,7 +134,7 @@ export const router = createBrowserRouter([
       {
         path: "board/:id",
         element: <BoardDetailPage />,
-        loader: authCheckLoader,
+        // loader: authCheckLoader,
       },
       {
         path: "board/create", // 게시글 상세 페이지 경로 추가
