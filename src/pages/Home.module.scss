@@ -1,0 +1,72 @@
+.homeContainer {
+  width: 100%;
+  height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mySwiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiperSlide {
+  display: flex !important; /* Ensure flex display for slide */
+}
+
+.slideContent {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.textBox {
+  width: 50%;
+  color: white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #4B4B4B; // 배경색 추가
+
+  h1 {
+    margin: 0px auto;
+    font-size: 2.5em;
+    margin-bottom: 80px;
+    color: white; /* 텍스트 색상 */
+  }
+
+  p {
+    margin: 0px auto;
+    font-size: 1.2em;
+    margin-bottom: 40px;
+    color: white; /* 텍스트 색상 */
+  }
+
+  .getStartedBtn {
+    background-color: #ffa500;
+    color: white;
+    width: 30%;
+    margin: 0px auto;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.2em;
+  }
+}
+
+.videoBox {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  video {
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* 클릭 및 재생 멈춤 방지 */
+    object-fit: cover; /* 비디오가 컨테이너를 가득 채우도록 */
+  }
+}
