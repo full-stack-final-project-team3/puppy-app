@@ -10,7 +10,7 @@ const HotelRecords = () => {
     const { userReservations, status, error } = useSelector(state => state.reservation);
     const userId = JSON.parse(localStorage.getItem('userData')).userId;
     const totalPrice = useSelector(state => state.reservation.totalPrice);
-
+    
     useEffect(() => {
         if (userId) {
             dispatch(fetchUserReservations({ userId }));
@@ -29,8 +29,9 @@ const HotelRecords = () => {
         return <div>Error: {error}</div>;
     }
 
-    const formatPrice = (price) => {
-        return new Intl.NumberFormat('ko-KR').format(price);
+    const formatPrice = (totalPrice) => {
+        console.log(Intl.NumberFormat('ko-KR').format(totalPrice))
+        return new Intl.NumberFormat('ko-KR').format(totalPrice);
     };
 
     const getImageUrl = (imageUri) => {
