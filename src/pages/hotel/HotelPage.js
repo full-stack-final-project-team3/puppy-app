@@ -85,10 +85,12 @@ const HotelPage = () => {
 
     const handleNextStep = () => {
         dispatch(setStep(Math.min(step + 1, 5)));
+        window.scrollTo(0, 0);
     };
 
     const handlePreviousStep = () => {
         dispatch(setStep(Math.max(step - 1, 1)));
+        window.scrollTo(0, 0);
     };
 
     const handleStepClick = (num) => {
@@ -97,12 +99,14 @@ const HotelPage = () => {
             if (num === 1) {
                 dispatch(resetHotels());
             }
+            window.scrollTo(0, 0);
         }
     };
 
     const handleShowProperty = (hotelId) => {
         dispatch(fetchHotelDetails(hotelId)).then(() => {
             dispatch(setStep(3));
+            window.scrollTo(0, 0);
         });
     };
 
@@ -110,6 +114,7 @@ const HotelPage = () => {
         dispatch(setSelectedRoom(room));
         dispatch(fetchHotelDetails(hotel['hotel-id'])).then(() => {
             dispatch(setStep(4));
+            window.scrollTo(0, 0);
         });
     };
 
@@ -118,10 +123,27 @@ const HotelPage = () => {
         dispatch(setTotalPrice(totalPrice));
         dispatch(fetchHotelDetails(hotel['hotel-id'])).then(() => {
             dispatch(setStep(5));
+            window.scrollTo(0, 0);
         });
     };
 
-    const nodeRef = useRef(null);
+    const nodeRef1 = useRef(null);
+    const nodeRef2 = useRef(null);
+    const nodeRef3 = useRef(null);
+    const nodeRef4 = useRef(null);
+    const nodeRef5 = useRef(null);
+
+    const getNodeRef = (step) => {
+        switch (step) {
+            case 1: return nodeRef1;
+            case 2: return nodeRef2;
+            case 3: return nodeRef3;
+            case 4: return nodeRef4;
+            case 5: return nodeRef5;
+            default: return null;
+        }
+    };
+
 
     return (
         <div
@@ -134,9 +156,9 @@ const HotelPage = () => {
                     key={step}
                     timeout={300}
                     classNames="page"
-                    nodeRef={nodeRef}
+                    nodeRef={getNodeRef(step)}
                 >
-                    <div ref={nodeRef} className={styles.page}>
+                    <div ref={getNodeRef(step)} className={styles.page}>
                         {step === 1 ? (
                             <div className={styles.stepContent}>
                                 <HotelSearchForm
@@ -192,13 +214,28 @@ const HotelPage = () => {
                                 <button className={styles.back} onClick={handlePreviousStep}>&laquo;</button>
                             </div>
                         ) : step === 4 ? (
-                            <BookingDetail
-                                hotel={selectedHotel}
-                                selectedRoom={selectedRoom}
-                                startDate={startDate}
-                                endDate={endDate}
-                                onPay={handlePayment}
-                            />
+                            <div className={styles.hotelDetailContainer}>
+                                <h1 className={styles.selectedDate}>Selected date</h1>
+                                <button
+                                    className={styles.dateButton}
+                                    onClick={() => handleStepClick(2)}
+                                >
+                                    {`${formatDate(startDate)} - ${formatDate(endDate)}`}
+                                </button>
+                                {selectedHotel ? (
+                                    <BookingDetail
+                                    hotel={selectedHotel}
+                                    selectedRoom={selectedRoom}
+                                    startDate={startDate}
+                                    endDate={endDate}
+                                    onPay={handlePayment}
+                                />
+                                ) : (
+                                    <p>Loading...</p>
+                                )}
+                                <button className={styles.back} onClick={handlePreviousStep}>&laquo;</button>
+                            </div>
+                            
                         ) : step === 5 ? (
                             <HotelConfirmation
                                 hotel={selectedHotel}

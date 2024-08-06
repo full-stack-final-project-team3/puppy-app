@@ -3,6 +3,7 @@ import { Map, MapMarker, ZoomControl } from 'react-kakao-maps-sdk';
 
 const MapView = ({ location, title }) => {
   const [coords, setCoords] = useState({ lat: 37.506320759000715, lng: 127.05368251210247 });
+  const [map, setMap] = useState(null);
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -37,21 +38,35 @@ const MapView = ({ location, title }) => {
     };
   }, [location]);
 
+
+  const handleZoomIn = () => {
+    if (map) {
+      map.setLevel(map.getLevel() - 1);
+    }
+  };
+
+  const handleZoomOut = () => {
+    if (map) {
+      map.setLevel(map.getLevel() + 1);
+    }
+  };
+
+  const mapStyle = {
+    width: '1600px',
+    height: '500px',
+    filter: 'sepia(10%) hue-rotate(0deg) saturate(60%) brightness(100%) contrast(100%)',
+  };
+
   return (
-    <div>
+    <div style={{ position: 'relative' }}>
       <Map
         center={coords}
-        level={3} // The zoom level
-        style={{
-          width: '1300px',
-          height: '500px',
-        }}
-        draggable={false} // Disable dragging
+        level={3}
+        style={mapStyle}
+        draggable={false}
+        onCreate={setMap}
       >
-        <MapMarker
-          style={{ border: '2px solid #9971ff' }}
-          position={coords}
-        >
+        <MapMarker position={coords}>
           <div
             style={{
               color: '#9971ff',
@@ -59,17 +74,31 @@ const MapView = ({ location, title }) => {
               fontWeight: '700',
               border: '2px solid #9971ff',
               borderRadius: '5px',
-              padding: '5px 10px', // Adjust padding to fit the border
-              background: '#ffffff', // Background color to match the map
+              padding: '5px 10px',
+              background: '#ffffff',
             }}
           >
             {title}
           </div>
         </MapMarker>
-        <ZoomControl position={window.kakao.maps.ControlPosition.TOPRIGHT} />
       </Map>
+      <div style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 10 }}>
+        <button onClick={handleZoomIn} style={buttonStyle}>➕</button>
+        <button onClick={handleZoomOut} style={buttonStyle}>➖</button>
+      </div>
     </div>
   );
+};
+
+const buttonStyle = {
+  background: '#FFF',
+  color: '#ffffff',
+  border: 'none',
+  padding: '10px',
+  margin: '5px',
+  fontSize: '25px',
+  borderRadius: '5px',
+  cursor: 'pointer',
 };
 
 export default MapView;

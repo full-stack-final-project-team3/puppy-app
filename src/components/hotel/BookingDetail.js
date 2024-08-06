@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import Slider from 'react-slick';
+import { motion } from 'framer-motion';
 import styles from './BookingDetail.module.scss';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -81,44 +83,58 @@ const BookingDetail = ({ hotel, startDate, endDate, onPay }) => {
         return new Intl.NumberFormat('ko-KR').format(price);
     };
 
+    const animateProps = {
+        initial: { opacity: 0, y: 50 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: false },
+        transition: { ease: "easeInOut", duration: 1, y: { duration: 0.5 } }
+    };
+
+
     return (
         <>
-            <button onClick={handleModifyRoom}>객실 수정하기</button>
+            <button className={styles.modifyButton} onClick={handleModifyRoom}>
+                Modify Room
+            </button>
             <div className={styles.bookingDetail}>
-                <div className={styles.roomImages}>
-                    {firstImageUrl && (
-                        <div className={styles.imageContainer}>
-                            <img
-                                src={firstImageUrl}
-                                alt="Room image"
-                                onError={(e) => {
-                                    e.target.onerror = null;
-                                }}
-                                className={styles.sliderImage}
-                            />
+                <div className={styles.topDetail}>
+                    <div className={styles.roomImages}>
+                        {firstImageUrl && (
+                            <div className={styles.imageContainer}>
+                                <img
+                                    src={firstImageUrl}
+                                    alt="Room image"
+                                    onError={(e) => {
+                                        e.target.onerror = null;
+                                    }}
+                                    className={styles.sliderImage}
+                                    />
+                            </div>
+                        )}
+                    </div>
+                    <div className={styles.instruction}>
+                        <h2>{hotel['hotel-name']}</h2>
+                        <p>Room Type:  {translateType(selectedRoom['room-type'])}</p>
+                        <p>Price:  {selectedRoom['room-price']}</p>
+                        <p>Location:  {hotel['location']}</p>
+                        <p className={styles.date}>Date:  {formatDate(startDate)} - {formatDate(endDate)}</p>
+                        <div className={styles.roomCount}>
+                            <button onClick={handleDecrement}>-</button>
+                            <span>{roomCount}</span>
+                            <button onClick={handleIncrement}>+</button>
                         </div>
-                    )}
+                        <div className={styles.priceDetails}>
+                            <span className={styles.priceLabel}>Total Price: </span>
+                            <span className={styles.priceValue}>{formatPrice(totalPrice)} 원</span>
+                        </div>
+                    <button className={styles.bookNow} onClick={() => onPay(hotel, selectedRoom, totalPrice)}>Book Now</button>
+                    </div>
                 </div>
-                <h2>Title: {hotel['hotel-name']}</h2>
-                <p>Room Type: {translateType(selectedRoom['room-type'])}</p>
-                <p>Price: {selectedRoom['room-price']}</p>
-                <p>Location: {hotel['location']}</p>
-                <p>Date: {formatDate(startDate)} - {formatDate(endDate)}</p>
-                <div className={styles.roomCount}>
-                    <button onClick={handleDecrement}>-</button>
-                    <span>{roomCount}</span>
-                    <button onClick={handleIncrement}>+</button>
-                </div>
-                <span className={styles.priceLabel}>Selected Dog Count: {personCount}</span>
-                <div className={styles.priceDetails}>
-                    <span className={styles.priceLabel}>Total Price: </span>
-                    <span className={styles.priceValue}>{formatPrice(totalPrice)}</span>
-                </div>
-                <div className={styles.policies}>
+
+                <motion.div {...animateProps} className={styles.policies}>
                     <p className={`${styles.policy} ${styles.rulesPolicy}`}>Rules Policy: {hotel['rules-policy']}</p>
                     <p className={`${styles.policy} ${styles.cancelPolicy}`}>Cancel Policy: {hotel['cancel-policy']}</p>
-                </div>
-                <button onClick={() => onPay(hotel, selectedRoom, totalPrice)}>Book Now</button>
+                </motion.div>
             </div>
         </>
     );
