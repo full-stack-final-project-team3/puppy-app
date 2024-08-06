@@ -40,7 +40,7 @@ import MyLikeHotel from "../../pages/user/MyLikeHotel";
 import MyLikeSnack from "../../pages/user/MyLikeSnack";
 import SnackRecords from "../../pages/user/SnackRecords";
 import DetailAboutReservation from "../../components/hotel/DetailAboutReservation";
-
+import OrderPage from "../../pages/shop/order/OrderPage"; //쇼핑몰오더 
 
 
 const homeRouter = [
@@ -204,6 +204,11 @@ export const router = createBrowserRouter([
       {
         path: "/detail-reservation",
         element: <DetailAboutReservation/>
+      },
+      {
+        path: '/order-page',
+        element: <OrderPage />,
+        loader: authCheckLoader, // 오더
       },
     ],
   },
