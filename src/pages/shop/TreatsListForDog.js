@@ -4,7 +4,6 @@ import { TREATS_URL } from "../../config/user/host-config";
 import styles from "./TreatsListForDog.module.scss";
 import CreateBundle from "../../components/shop/CreateBundle";
 import Modal from "./TreatsDetailModal";
-import TreatsDetail from "./TreatsDetail";
 
 const TreatsListForDog = () => {
   const { dogId } = useParams();
@@ -153,7 +152,6 @@ const TreatsListForDog = () => {
                   
       {/* 모달 컴포넌트 사용 */}
       <Modal isOpen={isModalOpen} onClose={closeModal} treatsId={currentTreatId}>
-        {/* <TreatsDetail treatId={currentTreatId} /> */}
       </Modal>
     </>
   );

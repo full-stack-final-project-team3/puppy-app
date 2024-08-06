@@ -39,6 +39,7 @@ import MyLikeBoards from "../../pages/user/MyLikeBoards";
 import MyLikeHotel from "../../pages/user/MyLikeHotel";
 import MyLikeSnack from "../../pages/user/MyLikeSnack";
 import SnackRecords from "../../pages/user/SnackRecords";
+import ShowCart from "../../pages/shop/ShowCart";
 
 
 
@@ -129,6 +130,11 @@ export const router = createBrowserRouter([
       {
         path: "list/:dogId",
         element: <TreatsListForDog />,
+        loader: authCheckLoader,
+      },
+      {
+        path: "cart",
+        element: <ShowCart />,
         loader: authCheckLoader,
       },
       {

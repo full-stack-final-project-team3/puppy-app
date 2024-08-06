@@ -13,6 +13,7 @@ const Modal = ({ isOpen, onClose, treatsId }) => {
           X
         </button>
         <TreatDetail treatsId={treatsId} />
+        {/* 리뷰 영역 */}
       </div>
     </div>
   );
