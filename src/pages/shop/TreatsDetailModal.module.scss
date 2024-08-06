@@ -9,15 +9,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1001;
 }
 
 .modalContent {
-  background: white;
+  background-color: white;
+  border-radius: 8px;
   padding: 20px;
-  border-radius: 5px;
-  position: relative;
-  width: 80%;
-  max-width: 500px;
+  max-width: 90%;
+  max-height: 80%;
+  overflow-y: auto; // 세로 스크롤 활성화
 }
 
 .closeButton {
