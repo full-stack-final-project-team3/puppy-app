@@ -1,0 +1,76 @@
+.footerWrap {
+  width: 100%;
+  margin-top: 100px;
+  
+  .greenWrap {
+    width: 100%;
+    background: #14332c;
+
+    .pTitle {
+      width: 40%;
+      text-align: center;
+      color: white;
+      margin: 0 auto;
+      padding: 25px 0 15px 0;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+  }
+
+  .orangeLine {
+    width: 100%;
+    background: #d88255;
+    height: 22px;
+  }
+
+  .mainWrap {
+    background: #e6d6b9;
+    width: 100%;
+    display: flex;
+
+    .bottom {
+      width: 33.3%;
+      display: flex;
+      flex-direction: column;
+
+      .innerWrap {
+        text-align: center;
+        align-items: center;
+        margin: 30px 0;
+
+        p {
+          margin: 10px;
+          font-weight: 300;
+        }
+        .cursor {
+          cursor: pointer;
+        }
+        .cursor:hover {
+          text-decoration: underline;
+        }
+
+        .img {
+          margin-top: 30px;
+          width: 100px;
+          height: 100px;
+        }
+        .snsLogo {
+          width: 25%;
+          margin: 30px auto 0 auto;
+          display: flex;
+          justify-content: space-evenly;
+          .icon {
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+          }
+        }
+
+        .holliday {
+          margin-top: 30px;
+        }
+      }
+    }
+  }
+
+}
