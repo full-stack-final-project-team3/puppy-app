@@ -6,7 +6,6 @@ import {AUTH_URL, NOTICE_URL} from "../../../../config/user/host-config";
 import { RiKakaoTalkFill } from "react-icons/ri";
 import { userEditActions } from "../../../store/user/UserEditSlice";
 import { useDispatch } from "react-redux";
-import userEdit from "../mypage/UserEdit";
 
 const APP_KEY = process.env.REACT_APP_KAKAO_APP_KEY;
 const REDIRECT_URL = process.env.REACT_APP_KAKAO_REDIRECT_URL;
