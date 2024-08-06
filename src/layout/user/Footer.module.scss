@@ -1,0 +1,31 @@
+.footerWrap {
+  width: 100%;
+  margin-top: 100px;
+  
+  .greenWrap {
+    width: 100%;
+    background: #14332c;
+
+    .pTitle {
+      width: 40%;
+      text-align: center;
+      color: white;
+      margin: 0 auto;
+      padding: 25px 0 15px 0;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    //#f5f5f5
+  }
+
+  .orangeLine {
+    width: 100%;
+    background: #d88255;
+    height: 22px;
+  }
+
+  .mainWrap {
+
+  }
+
+}
