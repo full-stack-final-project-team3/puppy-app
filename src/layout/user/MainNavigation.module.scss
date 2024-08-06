@@ -31,7 +31,7 @@
       border-radius: 50%;
       background: #e41717;
       position: absolute;
-      right: 122px;
+      right: 131px;
       top: 24px;
       color: white;
       font-size: 0.8rem;
@@ -121,6 +121,7 @@
   border: 1px solid black;
   border-radius: 32px;
   overflow-y: auto;
+  z-index: 9999;
 
   .message {
     width: 100%;
