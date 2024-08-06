@@ -9,6 +9,7 @@ const AddTreats = () => {
   const [treatsType, setTreatsType] = useState("");
   const [treatsWeight, setTreatsWeight] = useState("");
   const [dogSize, setDogSize] = useState("");
+  const [treatsAgeType, setTreatsAgetype] = useState("");
   const [selectedAllergies, setSelectedAllergies] = useState([]);
   const [treatsPics, setTreatsPics] = useState([]);
   const [treatsDetailPics, setTreatsDetailPics] = useState([]);
@@ -52,6 +53,7 @@ const AddTreats = () => {
     formData.append("treatsType", treatsType);
     formData.append("treatsWeight", treatsWeight);
     formData.append("dogSize", dogSize);
+    formData.append("treatsAgeType",treatsAgeType)
     formData.append("allergieList", selectedAllergies.join(","));
 
     treatsPics.forEach((fileArray, index) => {
@@ -95,6 +97,7 @@ const AddTreats = () => {
       setTreatsType("");
       setTreatsWeight("");
       setDogSize("");
+      setTreatsAgetype("");
       setSelectedAllergies([]);
       setTreatsPics([]);
       setTreatsDetailPics([]);
@@ -153,8 +156,11 @@ const AddTreats = () => {
             <option value="" disabled>
               상품 종류 선택
             </option>
-            <option value="WET">습식</option>
-            <option value="DRY">건식</option>
+            <option value="WET">WET</option>
+            <option value="DRY">DRY</option>
+            <option value="GUM">GUM</option>
+            <option value="KIBBLE">KIBBLE</option>
+            <option value="SUPPS">SUPPS</option>
           </select>
         </div>
         <div className={styles.formGroup}>
@@ -169,7 +175,7 @@ const AddTreats = () => {
           <span>g</span>
         </div>
         <div className={styles.formGroup}>
-          <label className={styles.label}>상품 대상 강아지 사이즈</label>
+          <label className={styles.label}>대상 강아지 사이즈</label>
           <select
             className={styles.inputField}
             value={dogSize}
@@ -182,6 +188,22 @@ const AddTreats = () => {
             <option value="SMALL">SMALL</option>
             <option value="MEDIUM">MEDIUM</option>
             <option value="LARGE">LARGE</option>
+          </select>
+        </div>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>대상 강아지 연령층</label>
+          <select
+            className={styles.inputField}
+            value={treatsAgeType}
+            onChange={(e) => setTreatsAgetype(e.target.value)}
+            required
+          >
+            <option value="" disabled>
+              강아지 연령층 선택
+            </option>
+            <option value="BABY">BABY</option>
+            <option value="OLD">OLD</option>
+            <option value="ALL">ALL</option>
           </select>
         </div>
         <label className={styles.label}>알러지 유발 항목</label>

@@ -39,6 +39,9 @@ import MyLikeBoards from "../../pages/user/MyLikeBoards";
 import MyLikeHotel from "../../pages/user/MyLikeHotel";
 import MyLikeSnack from "../../pages/user/MyLikeSnack";
 import SnackRecords from "../../pages/user/SnackRecords";
+import DetailAboutReservation from "../../components/hotel/DetailAboutReservation";
+
+import SeasonalityChart from '../../pages/hotel/SeasonalityChart'
 
 
 
@@ -60,8 +63,8 @@ const homeRouter = [
   {
     path: "mypage",
     element: <MyPageMain />,
-    loader: userDataLoader,
-    id: "user-data2",
+    loader: authCheckLoader,
+    id: "auth-check-loader",
   },
 ];
 
@@ -99,6 +102,11 @@ export const router = createBrowserRouter([
       {
         path: "add-room/:hotelId",
         element: <AddRoomPage />,
+        loader: authCheckLoader,
+      },
+      {
+        path: "get-monthly",
+        element: <SeasonalityChart />,
         loader: authCheckLoader,
       },
       {
@@ -199,6 +207,10 @@ export const router = createBrowserRouter([
       {
         path: "/snack-record",
         element: <SnackRecords/>
+      },
+      {
+        path: "/detail-reservation",
+        element: <DetailAboutReservation/>
       },
     ],
   },

@@ -21,6 +21,7 @@ const MainNavigation = () => {
     const noticeList = useSelector(state => state.userEdit.userNotice);
     const userDetail = useSelector(state => state.userEdit.userDetail);
 
+
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -66,7 +67,7 @@ const MainNavigation = () => {
         }
     }, [userDetail.id, dispatch]);
 
-    // userDetail의 noticeCount가 변경될 때마다 알림을 가져옵니다.
+    // userDetail의 noticeCount가 변경될 때마다 알림
     useEffect(() => {
         if (userDetail.id) {
             fetchNotices();

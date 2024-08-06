@@ -20,16 +20,17 @@ const AboutMe = () => {
             const fetchUserData = async () => {
                 try {
                     const response = await fetch(`${AUTH_URL}/user`);
-                    if (response.status === 400) {
-                        navigate('/error', { state: { status: 400 } }); // 에러 페이지로 리다이렉트
-                    } else if (response.status === 404) {
-                        navigate('/error', { state: { status: 404 } }); // 404 에러 처리
-                    } else if (response.ok) {
+                    // if (response.status === 400) {
+                    //     navigate('/error', { state: { status: 400 } }); // 에러 페이지로 리다이렉트
+                    // } else if (response.status === 404) {
+                    //     navigate('/error', { state: { status: 404 } }); // 404 에러 처리
+                    // } else if (response.ok) {
+                     if (!response.ok) {
+                        console.error('Failed to fetch user data:', response.status);
+                    } else {
                         const userData = await response.json();
                         dispatch(userEditActions.updateUserDetail(userData));
-                    } else {
-                        console.error('Failed to fetch user data:', response.status);
-                    }
+                     }
                 } catch (error) {
                     console.error('Failed to fetch user data:', error);
                 }
@@ -55,7 +56,7 @@ const AboutMe = () => {
                         <h3 className={styles.nickname}>{user.nickname}</h3>
                         <span onClick={startEditMode} className={styles.modify}>수정</span>
                     </div>
-                    <span className={styles.point}>내 포인트 : {user.point.toLocaleString()}p</span> <br />
+                    <span className={styles.point}>내 포인트 : {new Intl.NumberFormat('ko-KR').format(user.point)}p</span> <br />
                 </div>
             </div>
         </div>

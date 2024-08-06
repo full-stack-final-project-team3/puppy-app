@@ -1,18 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 import styles from './BookingDetail.module.scss';
-import { useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { useSelector, useDispatch } from 'react-redux';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useNavigate } from "react-router-dom";
+import {setTotalPrice} from "../store/hotel/ReservationSlice";
 
 const BookingDetail = ({ hotel, startDate, endDate, onPay }) => {
     const [roomCount, setRoomCount] = React.useState(1);
     const personCount = useSelector(state => state.reservation.personCount);
     const selectedRoom = useSelector(state => state.hotelPage.selectedRoom);
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const handleModifyRoom = () => {
@@ -53,6 +55,12 @@ const BookingDetail = ({ hotel, startDate, endDate, onPay }) => {
     const roomPrice = selectedRoom['room-price'] || 0;
     const finalPersonCount = personCount || 1;
     const totalPrice = roomPrice * roomCount * finalPersonCount;
+
+    // 리덕스 상태에 totalPrice 저장
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useEffect(() => {
+        dispatch(setTotalPrice(totalPrice));
+    }, [totalPrice, dispatch]);
 
     const getImageUrl = (imageUri) => {
         if (imageUri && imageUri.startsWith('/local/')) {

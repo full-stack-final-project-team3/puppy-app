@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import {useSelector, useDispatch} from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import styles from './HotelConfirmation.module.scss';
-import {useNavigate} from 'react-router-dom';
-import {submitReservation} from '../store/hotel/HotelReservationSlice';
+import { useNavigate } from 'react-router-dom';
+import { submitReservation } from '../store/hotel/ReservationSlice';
 
 const HotelConfirmation = ({
                                hotel,
@@ -18,6 +18,7 @@ const HotelConfirmation = ({
     const personCount = useSelector(state => state.hotelPage.personCount);
     const email = user.email;
     const token = JSON.parse(localStorage.getItem('userData')).token;
+
 
     const handleConfirmBooking = () => {
         if (!user) {
@@ -34,9 +35,10 @@ const HotelConfirmation = ({
         dispatch(submitReservation({
             hotelId: hotel['hotel-id'],
             roomId: selectedRoom['room-id'],
+            hotelName: hotel['hotel-name'],
             startDate,
             endDate,
-            userId: user.userId,
+            userId: user.id,
             totalPrice,
             user,
             email,
@@ -45,8 +47,8 @@ const HotelConfirmation = ({
         }))
             .unwrap()
             .then((response) => {
-                navigate('/hotel', {state: {reservation: response}});
                 alert("예약이 완료되었습니다.");
+                navigate('/');
             })
             .catch((error) => {
                 console.error('Reservation failed:', error);
@@ -56,7 +58,7 @@ const HotelConfirmation = ({
 
     const formatDate = (dateStr) => {
         const date = new Date(dateStr);
-        const options = {weekday: 'short', year: 'numeric', month: '2-digit', day: '2-digit'};
+        const options = { weekday: 'short', year: 'numeric', month: '2-digit', day: '2-digit' };
         return date.toLocaleDateString('en-US', options).replace(',', '').replace(/\//g, ' / ');
     };
 
@@ -81,10 +83,7 @@ const HotelConfirmation = ({
                 <p>Check-out Date: {formatDate(endDate)}</p>
             </div>
             <div className={styles.userInfo}>
-                <p>User: {user.nickname}</p> {/* Assuming user object has a realName property */}
-            </div>
-
-            <div className={styles.userInfo}>
+                <p>User: {user.nickname}</p>
             </div>
 
             <div className={styles.userInfo}>

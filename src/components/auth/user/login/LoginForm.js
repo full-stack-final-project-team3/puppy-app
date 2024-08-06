@@ -6,7 +6,6 @@ import {AUTH_URL, NOTICE_URL} from "../../../../config/user/host-config";
 import { RiKakaoTalkFill } from "react-icons/ri";
 import { userEditActions } from "../../../store/user/UserEditSlice";
 import { useDispatch } from "react-redux";
-import userEdit from "../mypage/UserEdit";
 
 const APP_KEY = process.env.REACT_APP_KAKAO_APP_KEY;
 const REDIRECT_URL = process.env.REACT_APP_KAKAO_REDIRECT_URL;
@@ -67,7 +66,7 @@ const LoginForm = () => {
         setError(errorData.message || "로그인에 실패했습니다.");
       }
     } catch (err) {
-      setError("서버와의 통신 중 오류가 발생했습니다.");
+      setError("비밀번호가 올바르지 않습니다.");
     }
   };
 

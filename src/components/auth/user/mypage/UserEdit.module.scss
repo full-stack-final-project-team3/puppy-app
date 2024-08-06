@@ -123,27 +123,35 @@ label {
   margin-bottom: 0;
 }
 
-.submitButton {
-  display: block;
-  margin: 0 auto;
-  width: 20%;
-  padding: 12px;
-  background-color: #F4E9D3;
-  color: #333;
-  border: none;
-  border-radius: 32px;
-  font-size: 18px;
-  cursor: pointer;
-  text-align: center;
-  transition: background-color 0.3s;
+.flex {
+  display: flex;
+  width: 65%;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: row;
 
-  &:hover {
-    background-color: #9B0000;
-    color: #fff;
-  }
+  .submitButton {
+    display: block;
+    margin: 0 auto;
+    width: 30%;
+    padding: 12px;
+    background-color: #F4E9D3;
+    color: #333;
+    border: none;
+    border-radius: 32px;
+    font-size: 14px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s;
 
-  &:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
+    &:hover {
+      background-color: #9B0000;
+      color: #fff;
+    }
+
+    &:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
   }
 }

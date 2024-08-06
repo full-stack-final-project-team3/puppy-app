@@ -32,7 +32,6 @@ const DogList = () => {
         }
     };
 
-    console.log(dogList.length)
     return (
         <>
             {dogList && dogList.length > 0 ? (
