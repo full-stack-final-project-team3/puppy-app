@@ -8,6 +8,11 @@ body {
   background-color: #F1E1C8;
 }
 
+body::-webkit-scrollbar {
+    display: none;
+    /*   스크롤바 없앰   */
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

@@ -2,7 +2,7 @@
   width: 90%;
   margin: 50px auto 0;
   background: #F0E1C4;
-  padding-bottom: 20px;
+  padding-bottom: 37px;
 
   .me {
     width: 90%;
@@ -20,7 +20,7 @@
     padding-bottom: 15px;
 
     .img {
-      width: 150px;
+      width: 130px;
       height: 100px;
       margin-top: 15px;
       margin-left: 15px;
@@ -61,5 +61,11 @@
         font-weight: 300;
       }
     }
+  }
+}
+
+@media screen and (width: 390px) {
+  .wrap {
+    width: 77%;
   }
 }
