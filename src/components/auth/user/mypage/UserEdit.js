@@ -46,9 +46,7 @@ const UserEdit = () => {
     };
 
     const handleInputChange = (setter) => (e) => {
-        let value = e.target.value.replace(/,/g, '').replace('p', '');
-        setter(parseInt(value, 10) || 0);
-        setFormattedPoint(`${new Intl.NumberFormat('ko-KR').format(value)}p`);
+        setter(e.target.value);
         setIsSubmitDisabled(false);
     };
 

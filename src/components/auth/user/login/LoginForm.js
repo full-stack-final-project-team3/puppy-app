@@ -66,7 +66,7 @@ const LoginForm = () => {
         setError(errorData.message || "로그인에 실패했습니다.");
       }
     } catch (err) {
-      setError("서버와의 통신 중 오류가 발생했습니다.");
+      setError("비밀번호가 올바르지 않습니다.");
     }
   };
 

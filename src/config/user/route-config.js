@@ -39,6 +39,7 @@ import MyLikeBoards from "../../pages/user/MyLikeBoards";
 import MyLikeHotel from "../../pages/user/MyLikeHotel";
 import MyLikeSnack from "../../pages/user/MyLikeSnack";
 import SnackRecords from "../../pages/user/SnackRecords";
+import DetailAboutReservation from "../../components/hotel/DetailAboutReservation";
 
 
 
@@ -199,6 +200,10 @@ export const router = createBrowserRouter([
       {
         path: "/snack-record",
         element: <SnackRecords/>
+      },
+      {
+        path: "/detail-reservation",
+        element: <DetailAboutReservation/>
       },
     ],
   },

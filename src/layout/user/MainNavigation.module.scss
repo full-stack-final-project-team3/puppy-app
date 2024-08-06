@@ -121,6 +121,7 @@
   border: 1px solid black;
   border-radius: 32px;
   overflow-y: auto;
+  z-index: 9999;
 
   .message {
     width: 100%;
