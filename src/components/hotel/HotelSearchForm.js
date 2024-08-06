@@ -45,6 +45,11 @@ const HotelSearchForm = ({ isAdmin, handleNextStep, onSearch }) => {
       <div className={styles.stepContent}>
         {isAdmin && (
             <div className={styles.addHotelButtonContainer}>
+
+              <button className={styles.addHotelButton}>
+                <Link to="/get-monthly">예약 빈도</Link>
+              </button>
+
               <button className={styles.addHotelButton}>
                 <Link to="/add-hotel">호텔 추가</Link>
               </button>

@@ -22,12 +22,14 @@ const HotelList = ({onShowProperty, getSliderSettings }) => {
     const hotels = useSelector((state) => state.hotelPage.hotels);
 
 
-    console.log(userDetail)
-    useEffect(() => {
-        if (userData) {
-            dispatch(userEditActions.updateUserDetail(userData));
-        }
-    }, [dispatch, userData]);
+    // useEffect(() => {
+    //     if (userData) {
+    //         dispatch(userEditActions.updateUserDetail(userData));
+    //     }
+    // }, [dispatch, userData]);
+
+
+
 
     const handleAddRoom = (hotelId) => {
         navigate(`/add-room/${hotelId}`);
@@ -50,6 +52,15 @@ const HotelList = ({onShowProperty, getSliderSettings }) => {
         }
     }, [dispatch, userDetail.userId]);
 
+
+
+    // // 즐겨찾기 상태를 업데이트.
+    // useEffect(() => {
+    //     if (userData) {
+    //         dispatch(userEditActions.updateUserDetail(userData));
+    //
+    //     }
+    // }, [dispatch, userData]);
 
     // 즐겨찾기 상태를 업데이트.
 

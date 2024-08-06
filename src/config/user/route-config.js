@@ -41,6 +41,8 @@ import MyLikeSnack from "../../pages/user/MyLikeSnack";
 import SnackRecords from "../../pages/user/SnackRecords";
 import DetailAboutReservation from "../../components/hotel/DetailAboutReservation";
 
+import SeasonalityChart from '../../pages/hotel/SeasonalityChart'
+
 
 
 const homeRouter = [
@@ -100,6 +102,11 @@ export const router = createBrowserRouter([
       {
         path: "add-room/:hotelId",
         element: <AddRoomPage />,
+        loader: authCheckLoader,
+      },
+      {
+        path: "get-monthly",
+        element: <SeasonalityChart />,
         loader: authCheckLoader,
       },
       {
