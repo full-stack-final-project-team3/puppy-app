@@ -25,28 +25,34 @@ const TreatsListForDog = () => {
   const [currentTreatId, setCurrentTreatId] = useState(null);
   const treatTypes = ["DRY", "WET", "GUM", "KIBBLE", "SUPPS"];
 
-  const fetchTreatsList = async (currentType) => {
+  const fetchTreatsList = async () => {
+    // 현재 타입 가져오기
+    const currentType = treatTypes[currentStep];
+
     // 선택된 간식의 타입을 확인하여 조회에서 제외
     if (selectedTreats[currentType].length > 0) {
       // 현재 타입의 인덱스를 기반으로 다음 타입을 설정
-      let nextType = treatTypes.indexOf(currentType);
+      let nextType = currentStep + 1;
 
-      // 다음 타입이 비어있지 않을 경우 계속해서 다음 타입으로 이동
+      // 비어있는 다음 타입을 찾기
       while (
         nextType < treatTypes.length &&
         selectedTreats[treatTypes[nextType]].length > 0
       ) {
-        nextType++; // 비어있는 타입을 찾기 위해 인덱스 증가
+        nextType++;
       }
 
-      // 다음 타입이 유효한 경우에만 조회
+      // 비어있는 다음 타입이 있는 경우, 해당 타입을 조회
       if (nextType < treatTypes.length) {
-        fetchTreatsList(treatTypes[nextType]); // 비어있는 다음 타입으로 재귀 호출
+        setCurrentStep(nextType); // 다음 타입으로 스텝 이동
+        return; // 현재 타입에 대한 조회를 생략
+      } else {
+        return; // 모든 타입이 선택된 경우 조회하지 않음
       }
-      return; // 조회하지 않음
     }
 
     try {
+      setLoading(true); // 로딩 상태 시작
       const response = await fetch(
         `${TREATS_URL}/list/${dogId}?pageNo=${pageNo}&sort=${currentType}`,
         {
@@ -70,9 +76,7 @@ const TreatsListForDog = () => {
   };
 
   useEffect(() => {
-    if (treatTypes[currentStep]) {
-      fetchTreatsList(treatTypes[currentStep]);
-    }
+    fetchTreatsList();
   }, [dogId, pageNo, currentStep]);
 
   const toggleTreatSelection = (treat) => {
@@ -82,6 +86,7 @@ const TreatsListForDog = () => {
       const isSelected = prevSelected[currentType].some(
         (selected) => selected.id === treat.id
       );
+
       return {
         ...prevSelected,
         [currentType]: isSelected
@@ -90,6 +95,7 @@ const TreatsListForDog = () => {
       };
     });
 
+    // 다음 타입으로 스텝 이동
     setCurrentStep((prevStep) => Math.min(prevStep + 1, treatTypes.length - 1));
   };
 
@@ -101,7 +107,7 @@ const TreatsListForDog = () => {
       return { ...prevSelected, [type]: updatedTreats };
     });
 
-    // 현재 선택된 간식 타입 검사
+    // 현재 선택된 간식 타입 검사 및 다음 타입으로 이동
     setCurrentStep((prevStep) => {
       const updatedSelectedTreats = {
         ...selectedTreats,
@@ -116,14 +122,14 @@ const TreatsListForDog = () => {
       );
 
       if (emptyTypes.length > 0) {
-        // 비어있는 타입이 있다면 해당 타입의 간식 리스트를 재조회
-        fetchTreatsList(emptyTypes[0]);
         return treatTypes.indexOf(emptyTypes[0]); // 비어있는 타입으로 스텝 이동
       }
 
       return prevStep; // 이전 스텝 유지
     });
   };
+
+  console.log(currentStep);
 
   const openModal = (treat) => {
     setCurrentTreatId(treat.id);
