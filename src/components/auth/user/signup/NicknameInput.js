@@ -34,11 +34,11 @@ const NicknameInput = ({ onSuccess }) => {
     onSuccess(nickname);
   }, 1500);
 
-  const nicknameHandler = (e) => {
+  const nicknameHandler = debounce((e) => {
     const nickname = e.target.value;
     checkNickname(nickname);
     nextStep();
-  };
+  }, 1000);
 
   useEffect(() => {
     inputRef.current.focus();
