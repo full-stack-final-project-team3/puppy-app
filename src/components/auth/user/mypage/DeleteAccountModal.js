@@ -3,6 +3,8 @@ import styles from './DeleteAccountModal.module.scss';
 import {debounce} from "lodash";
 import {AUTH_URL} from "../../../../config/user/host-config";
 import {useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
+import {logoutAction} from "../../../../pages/user/Logout";
 
 const DeleteAccountModal = ({ onClose }) => {
 
@@ -13,6 +15,7 @@ const DeleteAccountModal = ({ onClose }) => {
     const [isValid, setIsValid] = useState(false); // 검증 여부
     const [isSubmitDisabled, setIsSubmitDisabled] = useState(true); // 비번 일치하면 버튼 활성화
     const modalRef = useRef();
+    const navi = useNavigate();
 
     const handleClickOutside = (e) => {
         if (modalRef.current && !modalRef.current.contains(e.target)) {
@@ -50,6 +53,19 @@ const DeleteAccountModal = ({ onClose }) => {
         checkPassword(password);
     }
 
+    const submitDeleteHandler = async () => {
+        const response = await fetch(`${AUTH_URL}/${user.id}`, {
+            method: "DELETE"
+        });
+        localStorage.removeItem('userData');
+        localStorage.removeItem('userDetail');
+        navi("/")
+        window.location.reload();
+        alert("회원탈퇴가 성공적으로 이루어졌습니다.")
+
+        // 탈퇴는 되는데 홈으로 안가지고 에러페이지로 가짐.
+    }
+
     return (
         <div className={styles.overlay} onClick={handleClickOutside}>
             <div className={styles.modal} ref={modalRef}>
@@ -67,6 +83,7 @@ const DeleteAccountModal = ({ onClose }) => {
                     <button
                         className={styles.confirmButton}
                         disabled={isSubmitDisabled}
+                        onClick={submitDeleteHandler}
                     >확인
                     </button>
                     <button className={styles.confirmButton} onClick={handleClickInside}>취소</button>

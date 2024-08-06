@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './MyPageMain.module.scss';
 import MyPageHeader from "./MyPageHeader";
 import MyPageBody from "./MyPageBody";
-import {useRouteLoaderData} from "react-router-dom";
+import {useNavigate, useRouteLoaderData} from "react-router-dom";
 import { DOG_URL } from "../../../../config/user/host-config";
 import DogEdit from "../../dog/DogEdit";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,17 +12,17 @@ import AboutMyInfo from "./AboutMyInfo.js";
 
 const MyPageMain = () => {
 
-    const userData = useRouteLoaderData('user-data2');
-
+    const authCheck = useRouteLoaderData('auth-check-loader');
 
     const userDetail = useSelector(state => state.userEdit.userDetail);
+
     const [dogList, setDogList] = useState([]);
 
     const isEditMode = useSelector(state => state.userEdit.isEditMode);
     const isDogEditMode = useSelector(state => state.dogEdit.isDogEditMode);
     const isUserEditMode = useSelector(state => state.userEdit.isUserEditMode);
 
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
 
     // useEffect(() => {
     //     if (!userData) return;
