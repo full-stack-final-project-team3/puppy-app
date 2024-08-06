@@ -40,6 +40,7 @@ import MyLikeHotel from "../../pages/user/MyLikeHotel";
 import MyLikeSnack from "../../pages/user/MyLikeSnack";
 import SnackRecords from "../../pages/user/SnackRecords";
 import DetailAboutReservation from "../../components/hotel/DetailAboutReservation";
+import ShowCart from "../../pages/shop/ShowCart";
 
 import SeasonalityChart from '../../pages/hotel/SeasonalityChart'
 
@@ -137,6 +138,11 @@ export const router = createBrowserRouter([
       {
         path: "list/:dogId",
         element: <TreatsListForDog />,
+        loader: authCheckLoader,
+      },
+      {
+        path: "cart",
+        element: <ShowCart />,
         loader: authCheckLoader,
       },
       {
