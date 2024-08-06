@@ -6,6 +6,7 @@ import { ROOM_URL, NOTICE_URL } from "../../../config/user/host-config";
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
+import {deleteHotel} from "./HotelAddSlice";
 
 // Dayjs 플러그인 등록
 dayjs.extend(utc);
@@ -178,6 +179,29 @@ export const submitReservation = createAsyncThunk(
     }
 );
 
+export const deleteReservation = createAsyncThunk(
+    'reservation/deleteReservation',
+    async (reservationId, { getState, rejectWithValue }) => {
+        const token = JSON.parse(localStorage.getItem('userData')).token;
+        try {
+            const response = await fetch(`http://localhost:8888/api/reservation/${reservationId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                return rejectWithValue(errorData.message);
+            }
+            return reservationId;
+        } catch (e) {
+            return rejectWithValue('Network error or server is unreachable.');
+        }
+    }
+);
+
 const reservationSlice = createSlice({
     name: 'reservation',
     initialState,
@@ -241,6 +265,13 @@ const reservationSlice = createSlice({
             .addCase(fetchUserReservations.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.payload;
+            })
+            .addCase(deleteReservation.fulfilled, (state, action) => {
+                state.userReservations = state.userReservations.filter(reservation => reservation.reservationId !== action.payload);
+                console.log("stateasdasd", state.userReservations.reservationId);
+            })
+            .addCase(deleteReservation.rejected, (state, action) => {
+                console.error("Error in deleting reservation:", action.error.message);
             });
     },
 });

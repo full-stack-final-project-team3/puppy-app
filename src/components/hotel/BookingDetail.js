@@ -17,6 +17,15 @@ const BookingDetail = ({ hotel, startDate, endDate, onPay }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const roomPrice = selectedRoom['room-price'] || 0;
+    const finalPersonCount = personCount || 1;
+    const totalPrice = roomPrice * roomCount * finalPersonCount;
+
+    // 리덕스 상태에 totalPrice 저장
+    useEffect(() => {
+        dispatch(setTotalPrice(totalPrice));
+    }, [totalPrice, dispatch]);
+
     const handleModifyRoom = () => {
         navigate(`/modify-room/${selectedRoom['room-id']}`, { state: { hotel, room: selectedRoom } });
     };
@@ -52,15 +61,7 @@ const BookingDetail = ({ hotel, startDate, endDate, onPay }) => {
     const handleIncrement = () => setRoomCount(roomCount + 1);
     const handleDecrement = () => setRoomCount(Math.max(1, roomCount - 1));
 
-    const roomPrice = selectedRoom['room-price'] || 0;
-    const finalPersonCount = personCount || 1;
-    const totalPrice = roomPrice * roomCount * finalPersonCount;
 
-    // 리덕스 상태에 totalPrice 저장
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    useEffect(() => {
-        dispatch(setTotalPrice(totalPrice));
-    }, [totalPrice, dispatch]);
 
     const getImageUrl = (imageUri) => {
         if (imageUri && imageUri.startsWith('/local/')) {

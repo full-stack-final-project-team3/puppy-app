@@ -19,7 +19,6 @@ const HotelConfirmation = ({
     const email = user.email;
     const token = JSON.parse(localStorage.getItem('userData')).token;
 
-
     const handleConfirmBooking = () => {
         if (!user) {
             alert("사용자 정보가 없습니다.");
@@ -48,7 +47,7 @@ const HotelConfirmation = ({
             .unwrap()
             .then((response) => {
                 alert("예약이 완료되었습니다.");
-                navigate('/');
+                window.location.reload();
             })
             .catch((error) => {
                 console.error('Reservation failed:', error);

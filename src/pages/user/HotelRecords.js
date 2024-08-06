@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
+
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUserReservations } from "../../components/store/hotel/ReservationSlice";
+import {deleteReservation, fetchUserReservations} from "../../components/store/hotel/ReservationSlice";
 import MyPageHeader from "../../components/auth/user/mypage/MyPageHeader";
 import { Link } from 'react-router-dom';
 import styles from './HotelRecords.module.scss';
@@ -11,6 +12,9 @@ const HotelRecords = () => {
     const userId = JSON.parse(localStorage.getItem('userData')).userId;
     const totalPrice = useSelector(state => state.reservation.totalPrice);
 
+
+    console.log("total", totalPrice)
+
     useEffect(() => {
         if (userId) {
             dispatch(fetchUserReservations({ userId }));
@@ -20,6 +24,12 @@ const HotelRecords = () => {
     useEffect(() => {
         console.log('User Reservations:', userReservations);
     }, [userReservations]);
+
+    useEffect(() => {
+        if (userId) {
+            dispatch(fetchUserReservations({ userId }));
+        }
+    }, [dispatch, userId, userReservations.length]);
 
     if (status === 'loading') {
         return <div>Loading...</div>;
@@ -41,6 +51,19 @@ const HotelRecords = () => {
     };
 
     console.log(userReservations);
+
+    // 예약삭제 처리 함수
+    const handleDeleteReservation = async (reservationId) => {
+        try {
+            await dispatch(deleteReservation(reservationId));
+            alert("예약이 삭제되었습니다.")
+
+        } catch (error) {
+            console.error("예약 삭제 실패:", error);
+            alert("예약 삭제에 실패했습니다.");
+        }
+    };
+
 
     return (
         <div className={styles.wrap}>
@@ -80,9 +103,12 @@ const HotelRecords = () => {
                                         <Link to={`/detail-reservation`} className={styles.link}>
                                             상세조회
                                         </Link>
-                                        <Link to={`/`} className={styles.link}>
+                                        <button
+                                            onClick={() => handleDeleteReservation(reservation.reservationId)}
+                                            className={styles.link}
+                                        >
                                             예약취소
-                                        </Link>
+                                        </button>
                                     </div>
                                 </li>
                             );
