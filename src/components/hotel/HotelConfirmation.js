@@ -19,6 +19,7 @@ const HotelConfirmation = ({
     const email = user.email;
     const token = JSON.parse(localStorage.getItem('userData')).token;
 
+    console.log("user", user.id)
     const handleConfirmBooking = () => {
         if (!user) {
             alert("사용자 정보가 없습니다.");
@@ -36,7 +37,7 @@ const HotelConfirmation = ({
             roomId: selectedRoom['room-id'],
             startDate,
             endDate,
-            userId: user.userId,
+            userId: user.id,
             totalPrice,
             user,
             email,
