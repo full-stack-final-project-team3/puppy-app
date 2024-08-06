@@ -2,8 +2,10 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useRouteLoaderData } from "react-router-dom";
 import UserContext from "../../components/context/user-context";
 import { AUTH_URL } from "../../config/user/host-config";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import { userEditActions } from "../../components/store/user/UserEditSlice";
+import Footer from '../../layout/user/Footer';
+import Home from "../Home";
 
 const WelcomePage = () => {
     const userData = useRouteLoaderData('user-data3');
@@ -39,6 +41,8 @@ const WelcomePage = () => {
     return (
         <div>
             {user ? <div>Welcome {userDetail.nickname}~</div> : <div>Welcome ~</div>}
+            <Home /> {/* Home 컴포넌트를 렌더링 */}
+            <Footer /> {/* Footer 컴포넌트를 렌더링 */}
         </div>
     );
 };

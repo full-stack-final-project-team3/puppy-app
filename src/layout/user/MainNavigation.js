@@ -3,7 +3,7 @@ import { Link, NavLink, useNavigate, useRouteLoaderData } from "react-router-dom
 import styles from "./MainNavigation.module.scss";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { BsBell } from "react-icons/bs";
-import { BiUser } from "react-icons/bi";
+import { BiBasket, BiUser } from "react-icons/bi";
 import UserContext from "../../components/context/user-context";
 import { userEditActions } from "../../components/store/user/UserEditSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -144,6 +144,7 @@ const MainNavigation = () => {
                     {user ? (
                         <>
                             <button className={styles.logout} onClick={logoutHandler}>Logout</button>
+                            <Link to={"/cart"}> <BiBasket className={styles.icon}/></Link>
                             <BsBell className={styles.icon} onClick={toggleNotice}></BsBell>
                             {Array.isArray(noticeList) && userDetail.noticeCount !== 0 && <span className={styles.count}>{userDetail.noticeCount}</span>}
                             {/*<Link to={"/mypage"} onClick={clearEditMode}><BiUser className={styles.icon} /></Link>*/}

@@ -45,7 +45,15 @@ const getMonthlyReservations = (reservations) => {
         monthlyReservations[month] += 1;
     });
 
-    return monthlyReservations;
+    // 날짜 키를 정렬
+    const sortedMonthlyReservations = Object.keys(monthlyReservations)
+        .sort()
+        .reduce((obj, key) => {
+            obj[key] = monthlyReservations[key];
+            return obj;
+        }, {});
+
+    return sortedMonthlyReservations;
 };
 
 const SeasonalityChart = () => {
