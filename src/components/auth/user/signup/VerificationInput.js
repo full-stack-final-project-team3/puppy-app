@@ -40,6 +40,7 @@ const VerificationInput = ({ email, onSuccess }) => {
 
       // 검증 성공 시
       setSuccess("인증이 완료되었습니다");
+      setError('');
       setTimeout(() => {
         onSuccess();
       }, 1500);

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import { CSSTransition } from "react-transition-group";
 import styles from "./SignUpPage.module.scss";
 import EmailInput from "./EmailInput";
@@ -10,14 +10,14 @@ import PhoneNumberInput from "./PhoneNumberInput";
 import AddDogInput from "./AddDogInput";
 import { AUTH_URL } from "../../../../config/user/host-config";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../AuthProvider";
 import StepIndicator from "./StepIndicator";
 import { useDispatch } from "react-redux";
+import UserContext from "../../../context/user-context";
+
 
 const SignUpPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { login } = useAuth(); // 로그인 함수 가져오기
   const nodeRef = useRef(null);
 
   const [step, setStep] = useState(1); // 현재 단계
@@ -30,6 +30,8 @@ const SignUpPage = () => {
   const [enteredPhoneNumber, setEnteredPhoneNumber] = useState(""); // 입력된 휴대폰 번호
   const [step2Button, setStep2Button] = useState(false); // step2 버튼 활성화 여부
   const [step3Button, setStep3Button] = useState(false); // step3 버튼 활성화 여부
+  const { changeIsLogin, setUser } = useContext(UserContext);
+
 
   // 다음 단계로 넘어가는 함수
   const nextStep = () => {
@@ -114,16 +116,33 @@ const SignUpPage = () => {
       dispatch(setStep(num));
     }
   };
-
-  // 자동 로그인
+  
   const autoLoginHandler = async () => {
-    try {
-      await login(enteredEmail, enteredPassword); // 자동 로그인 수행
-      navigate("/add-dog"); // 로그인 성공 후 이동할 페이지로 변경
-    } catch (error) {
-      alert("에러 발생");
+
+    const payload = {
+      email: enteredEmail,
+      password: enteredPassword,
+      nickname: enteredNickname,
+      address: enteredAddress,
+      phoneNumber: enteredPhoneNumber  
     }
-  };
+
+    const response = await fetch(`${AUTH_URL}/register-and-login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const responseData = await response.json();
+    console.log(responseData);
+    localStorage.setItem("userData", JSON.stringify(responseData));
+    setUser(responseData);
+    changeIsLogin(true); // 상태 업데이트
+    alert("강아지 등록하러갑니다")
+    navigate("/add-dog"); // 로그인 후 리디렉트할 경로
+  }
 
   return (
     <>
