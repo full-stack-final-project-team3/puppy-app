@@ -8,7 +8,7 @@ const StepIndicator = ({ step, onStepClick }) => {
     <div className={styles.stepIndicator}>
       {stepLabels.map((label, idx) => (
         <React.Fragment key={idx + 1}>
-          {idx > 0 && <div className={`${styles.stepLine} ${step > idx + 1 ? styles.active : ''}`} />}
+          {idx > 0 && <div className={`${styles.stepLine} ${step > idx ? styles.active : ''}`} />}
           <div className={styles.stepContainer}>
             <div
               className={`${styles.stepNumber} ${step >= idx + 1 ? styles.active : ''} ${step > idx + 1 ? styles.completed : ''}`}

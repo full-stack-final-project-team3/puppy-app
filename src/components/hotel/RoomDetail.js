@@ -97,15 +97,16 @@ const RoomDetail = ({ hotel, onBook, getSliderSettings, onModifyRoom }) => {
 
     return (
         <>
+        <button className={styles.modifyButton} onClick={modifyHotelHandler}>
+                            Modify Hotel
+                        </button>
             <div className={styles.roomDetail}>
                 {availableRooms.map((room, roomIndex) => (
                     <div key={room['room-id']} className={styles.room}>
                         <button className={styles.deleteButton} onClick={() => handleDeleteRoom(room['room-id'])}>
                             <FontAwesomeIcon icon={faTimes} />
                         </button>
-                        <button className={styles.modifyButton} onClick={modifyHotelHandler}>
-                            <FontAwesomeIcon icon={faPlus} />
-                        </button>
+                        
                         <Slider className={styles.slider} {...getSliderSettings(room["room-images"].length)}>
                             {room["room-images"] && room["room-images"].map((image, imageIndex) => {
                                 const imageUrl = getImageUrl(image['hotelImgUri']);
@@ -142,13 +143,15 @@ const RoomDetail = ({ hotel, onBook, getSliderSettings, onModifyRoom }) => {
                 </div>
             </motion.div>
             <motion.div {...animateProps} className={styles.line}></motion.div>
-            <motion.div {...animateProps} className={styles.description}>
+            <motion.div {...animateProps} className={styles.location}>
                 <MapView location={hotel['location']} title={hotel['hotel-name']} />
+                <motion.div {...animateProps} className={styles.contact}>
+                <h1>Location</h1>
+                {hotel['location']}<br></br><br></br>
+                Contact : {hotel['phone-number']}&nbsp;&nbsp;&nbsp;&nbsp;
+                </motion.div>
             </motion.div>
-            <motion.div {...animateProps} className={styles.contact}>
-                Contact : {hotel['phone-number']}<br></br>
-                주소 : {hotel['location']}
-            </motion.div>
+            
         </>
     );
 };
