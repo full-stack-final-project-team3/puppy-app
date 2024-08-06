@@ -5,68 +5,81 @@
   padding-bottom: 20px;
   padding-top: 20px;
 
-  .subWrap {
-    width: 80%;
-    margin: 20px auto;
-    display: flex;
-    justify-content: space-between;
+  .secondWrap {
 
-    .suggest {
-      width: 36%;
-      padding: 20px;
-      border: 1px solid #ccc;
-      text-align: center;
-      border-radius: 32px;
-      background: #F4E9D3;
-      cursor: pointer;
-      transition: background-color 0.7s ease, color 0.7s ease;
+    width: 90%;
+    margin: 0 auto;
+
+    .title {
+      font-size: 23px;
+      font-weight: 600;
+      padding: 10px 0;
+    }
+
+    .subWrap {
+      width: 100%;
+      margin: 20px auto;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      font-size: 16px;
-      font-weight: bold;
-      color: #555;
-      text-decoration: none;
+      justify-content: space-between;
+
+      .suggest {
+        width: 40%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        text-align: center;
+        border-radius: 32px;
+        background: #F4E9D3;
+        cursor: pointer;
+        transition: background-color 0.7s ease, color 0.7s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        color: #555;
+        text-decoration: none;
+      }
+
+      .suggest:hover {
+        background: #E8D7C3;
+        color: #333;
+      }
+
+      .hotelIcon {
+        font-size: 24px;
+        color: #99AD9D;
+      }
+
+      .snackIcon {
+        font-size: 24px;
+        color: #92B2D8;
+      }
+
+      .bookmarkIcon {
+        font-size: 24px;
+        color: #E3A193;
+      }
+
+      .starIcon {
+        font-size: 24px;
+        color: #99AD9D;
+      }
+
+      .penIcon {
+        font-size: 24px;
+        color: #92B2D8;
+      }
+
+      .heartIcon {
+        font-size: 24px;
+        color: #E3A193;
+      }
+
+      .suggest:hover .icon {
+        color: #555;
+      }
     }
 
-    .suggest:hover {
-      background: #E8D7C3;
-      color: #333;
-    }
-
-    .hotelIcon {
-      font-size: 24px;
-      color: #888;
-    }
-
-    .snackIcon {
-      font-size: 24px;
-      color: #fff;
-    }
-
-    .bookmarkIcon {
-      font-size: 24px;
-      color: #fff;
-    }
-
-    .starIcon {
-      font-size: 24px;
-      color: #fbfb21;
-    }
-
-    .penIcon {
-      font-size: 24px;
-      color: #000;
-    }
-
-    .heartIcon {
-      font-size: 24px;
-      color: #e32020;
-    }
-
-    .suggest:hover .icon {
-      color: #555;
-    }
   }
 }

@@ -60,8 +60,8 @@ const homeRouter = [
   {
     path: "mypage",
     element: <MyPageMain />,
-    loader: userDataLoader,
-    id: "user-data2",
+    loader: authCheckLoader,
+    id: "auth-check-loader",
   },
 ];
 
