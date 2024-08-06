@@ -21,6 +21,7 @@ const MainNavigation = () => {
     const noticeList = useSelector(state => state.userEdit.userNotice);
     const userDetail = useSelector(state => state.userEdit.userDetail);
 
+
     const dispatch = useDispatch();
 
     useEffect(() => {

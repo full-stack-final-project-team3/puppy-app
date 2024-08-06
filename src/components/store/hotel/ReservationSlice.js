@@ -104,7 +104,7 @@ export const fetchUserReservations = createAsyncThunk(
 
 export const submitReservation = createAsyncThunk(
     'reservation/submitReservation',
-    async ({ hotelId, roomId, startDate, endDate, userId, totalPrice, user, email, token, createdAt }, { rejectWithValue, dispatch }) => {
+    async ({ hotelId, roomId, startDate, endDate, userId, totalPrice, user, email, token, createdAt, hotelName}, { rejectWithValue, dispatch }) => {
         if (!token) {
             return rejectWithValue('No token found');
         }
@@ -135,7 +135,7 @@ export const submitReservation = createAsyncThunk(
 
             const newNotice = {
                 id: new Date().getTime(),
-                message: `호텔에 예약이 완료되었습니다.`,
+                message: `${hotelName}에 예약이 완료되었습니다.`,
                 isClicked: false,
                 userId,
                 createdAt

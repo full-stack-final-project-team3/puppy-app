@@ -1,6 +1,8 @@
 .footerWrap {
   width: 100%;
   margin-top: 100px;
+  //bottom: 0;
+  //position: relative;
   
   .greenWrap {
     width: 100%;
@@ -41,6 +43,7 @@
         p {
           margin: 10px;
           font-weight: 300;
+          font-size: 0.85rem;
         }
         .cursor {
           cursor: pointer;

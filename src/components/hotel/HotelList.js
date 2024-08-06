@@ -21,6 +21,8 @@ const HotelList = ({onShowProperty, getSliderSettings }) => {
     const favorites = useSelector((state) => state.favorites.favorites);
     const hotels = useSelector((state) => state.hotelPage.hotels);
 
+
+    console.log(userDetail)
     useEffect(() => {
         if (userData) {
             dispatch(userEditActions.updateUserDetail(userData));
@@ -50,12 +52,7 @@ const HotelList = ({onShowProperty, getSliderSettings }) => {
 
 
     // 즐겨찾기 상태를 업데이트.
-    useEffect(() => {
-        if (userData) {
-            dispatch(userEditActions.updateUserDetail(userData));
 
-        }
-    }, [dispatch, userData]);
 
     // 호텔 즐겨찾기 추가
     const handleAddFavorite = (hotelId) => {
