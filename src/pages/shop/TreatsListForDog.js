@@ -129,7 +129,7 @@ const TreatsListForDog = () => {
     });
   };
 
-  console.log(currentStep);
+  console.log(selectedTreats);
 
   const openModal = (treat) => {
     setCurrentTreatId(treat.id);

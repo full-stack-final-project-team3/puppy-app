@@ -1,8 +1,14 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { getUserToken } from '../../config/user/auth';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { getUserToken } from "../../config/user/auth";
 
 const CreateBundle = ({ selectedTreats, dogId }) => {
+  
+  const treatArray = Array.isArray(selectedTreats)
+    ? selectedTreats
+    : Object.values(selectedTreats).flat();
+
+  console.log(treatArray.length);
 
   const token = getUserToken();
 
@@ -15,7 +21,7 @@ const CreateBundle = ({ selectedTreats, dogId }) => {
     }
     const treatIds = selectedTreats.map((treat) => treat.id);
     const dto = {
-      treatIds: treatIds
+      treatIds: treatIds,
     };
 
     try {
@@ -23,7 +29,7 @@ const CreateBundle = ({ selectedTreats, dogId }) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          'Authorization': `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(dto),
       });
@@ -34,18 +40,13 @@ const CreateBundle = ({ selectedTreats, dogId }) => {
 
       // 번들 생성 후 장바구니 화면으로 리다이렉트
       // navigate('/cart'); // 장바구니 화면으로 이동
-      alert("번들 생성 성공")
-
+      alert("번들 생성 성공");
     } catch (error) {
       alert(error.message);
     }
   };
 
-  return (
-    <button onClick={handleCreateBundle}>
-      번들 생성
-    </button>
-  );
+  return <button onClick={handleCreateBundle}>번들 생성</button>;
 };
 
 export default CreateBundle;
