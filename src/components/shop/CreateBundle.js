@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { getUserToken } from "../../config/user/auth";
 
 const CreateBundle = ({ selectedTreats, dogId }) => {
-  
   const treatArray = Array.isArray(selectedTreats)
     ? selectedTreats
     : Object.values(selectedTreats).flat();
@@ -38,9 +37,30 @@ const CreateBundle = ({ selectedTreats, dogId }) => {
         throw new Error("번들 생성 실패");
       }
 
-      // 번들 생성 후 장바구니 화면으로 리다이렉트
-      navigate('/cart'); // 장바구니 화면으로 이동
-      alert("번들 생성 성공");
+      // 번들 생성 후 장바구니 생성 및 초기화
+      await createCart();
+      navigate("/cart"); // 장바구니 화면으로 이동
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+  const createCart = async () => {
+    try {
+      const cartResponse = await fetch(`http://localhost:8888/cart`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!cartResponse.ok) {
+        throw new Error("장바구니 생성 실패");
+      }
+
+      // 장바구니 생성 성공 시 처리
+      console.log("장바구니 생성 성공");
     } catch (error) {
       alert(error.message);
     }
