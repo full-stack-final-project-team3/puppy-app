@@ -226,7 +226,7 @@ const TreatsListForDog = () => {
           </div>
         </div>
       </div>
-      <CreateBundle selectedTreats={selectedTreats} dogId={dogId} />
+      <CreateBundle selectedTreats={selectedTreats} dogId={dogId} dogName={dogName}/>
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}

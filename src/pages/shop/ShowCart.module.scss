@@ -42,6 +42,9 @@
 }
 
 .itemRemove {
+  display: flex;
+  justify-content: flex-end;
+  margin-left: auto;
   cursor: pointer;
   color: #e74c3c;
   font-weight: bold;

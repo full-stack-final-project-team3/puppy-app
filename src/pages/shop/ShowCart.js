@@ -47,22 +47,28 @@ const ShowCart = () => {
     <div className={styles.cartContainer}>
       <h2 className={styles.cartTitle}>장바구니</h2>
       {cart.bundles && cart.bundles.length > 0 ? (
-        <ul className={styles.cartList}>
+        <div className={styles.cartList}>
           {cart.bundles.map((bundle, index) => (
-            <li key={index}>
-              <span className={styles.itemTitle}>{bundle.treats[0].treatsTitle}</span>
+            <div key={index}>
+              <h4>{bundle.dogName}을 위한 패키지</h4>
+              <div className={styles.itemTitle}>
+                {bundle.treats[0].treatsTitle}
+              </div>
               <span className={styles.itemRemove}>삭제</span>{" "}
               {/* 삭제 버튼 추가 */}
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       ) : (
         <div className={styles.emptyCartContainer}>
           <div className={styles.emptyCartIcon}>🛒</div> {/* 장바구니 아이콘 */}
           <div className={styles.emptyCartMessage}>
             장바구니가 비어있습니다.
           </div>
-          <button className={styles.shopButton} onClick={() => navigate('/treats')}>
+          <button
+            className={styles.shopButton}
+            onClick={() => navigate("/treats")}
+          >
             Shop Now!
           </button>
         </div>

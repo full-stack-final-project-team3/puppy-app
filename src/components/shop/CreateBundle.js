@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { getUserToken } from "../../config/user/auth";
 
-const CreateBundle = ({ selectedTreats, dogId }) => {
+const CreateBundle = ({ selectedTreats, dogId, dogName }) => {
   const treatArray = Array.isArray(selectedTreats)
     ? selectedTreats
     : Object.values(selectedTreats).flat();
