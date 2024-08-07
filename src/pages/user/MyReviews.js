@@ -1,17 +1,17 @@
 import React from 'react';
 import MyPageHeader from "../../components/auth/user/mypage/MyPageHeader";
-import styles from './MyLikeSnack.module.scss'
+import styles from './MyReviews.module.scss'
 
-const MyLikeSnack = () => {
+const MyReviews = () => {
 
     return (
         <div className={styles.wrap}>
             <MyPageHeader/>
             <div className={styles.subWrap}>
-                내가 찜해놓은 간식~
+                내가 쓴 리뷰들~
             </div>
         </div>
     );
 };
 
-export default MyLikeSnack;
+export default MyReviews;

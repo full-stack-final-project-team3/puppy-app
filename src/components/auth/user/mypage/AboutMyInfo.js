@@ -26,9 +26,9 @@ const AboutMyInfo = () => {
                         <FaBookmark className={styles.bookmarkIcon}/>
                         즐겨찾기 한 호텔
                     </Link>
-                    <Link to={'/like-snack'} className={styles.suggest}>
+                    <Link to={'/my-reviews'} className={styles.suggest}>
                         <FaStar className={styles.starIcon}/>
-                        찜해놓은 간식
+                        내 리뷰
                     </Link>
                 </div>
                 <div className={styles.subWrap}>
