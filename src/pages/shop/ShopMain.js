@@ -27,7 +27,9 @@ const ShopMain = () => {
 
   const handleStartClick = () => {
     if (isLoggedIn) {
-      if (selectedDogId) {
+      if (dogList.length === 0) {
+        navigate('/add-dog'); // 강아지가 없는 경우 강아지 등록 페이지로 이동
+      } else if (selectedDogId) {
         navigate(`/list/${selectedDogId}`, {
           state: { dogName: selectedDogName },
         });
@@ -77,8 +79,7 @@ const ShopMain = () => {
           <p>로그인을 해주세요.</p> // 로그인하지 않은 경우 안내 메시지
         )}
         <button onClick={handleStartClick} className={styles.startButton}>
-          {isLoggedIn ? "시작" : "로그인"}{" "}
-          {/* 유저 정보에 따라 버튼 텍스트 변경 */}
+        {isLoggedIn ? (dogList.length === 0 ? "등록하기" : "시작") : "로그인"} 
         </button>
       </div>
     </div>

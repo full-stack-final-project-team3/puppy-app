@@ -84,7 +84,7 @@ const BoardPage = () => {
     }
   };
 
-  console.log(posts)
+  console.log(posts);
   return (
     <div className={styles.boardPageWrapper}>
       <div className={styles.boardPage} ref={scrollRef}>

@@ -115,8 +115,8 @@
   position: absolute;
   right: 30px;
   top: 60px;
-  width: 300px;
-  height: 300px;
+  width: 340px;
+  height: 375px;
   background: #ffffff;
   border: 1px solid black;
   border-radius: 32px;
@@ -143,4 +143,7 @@
     color: #989898;
     cursor: default;
   }
+}
+.noticeWrap::-webkit-scrollbar {
+  display: none;
 }

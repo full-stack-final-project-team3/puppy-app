@@ -1,5 +1,3 @@
-// src/components/SeasonalityChart.js
-
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserReservations } from '../../components/store/hotel/ReservationSlice';
@@ -31,28 +29,51 @@ ChartJS.register(
     Legend
 );
 
+// 월별 예약 현황을 가져오는 로직
 const getMonthlyReservations = (reservations) => {
+    const now = dayjs();
     const monthlyReservations = {};
 
+    // 현재 월로부터 미래 11개월까지의 월을 초기화
+    for (let i = 0; i < 12; i++) {
+        const month = now.add(i, 'month').format('YYYY-MM');
+        monthlyReservations[month] = 0;
+    }
+
     reservations.forEach(({ reservationAt }) => {
-        // 여기서 UTC를 로컬 시간대로 변환
         const month = dayjs(reservationAt).utc().local().format('YYYY-MM');
-
-        if (!monthlyReservations[month]) {
-            monthlyReservations[month] = 0;
+        if (monthlyReservations.hasOwnProperty(month)) {
+            monthlyReservations[month] += 1;
         }
-
-        monthlyReservations[month] += 1;
     });
 
     return monthlyReservations;
 };
 
+
+// 객실 타입별 예약빈도 수 가져오는 로직
+const getTypeBasedReservations = (reservations) => {
+    const typeReservations = {
+        SMALL_DOG: 0,
+        MEDIUM_DOG: 0,
+        LARGE_DOG: 0
+    };
+
+    reservations.forEach(reservation => {
+        const type = reservation.room['room-type'];
+        if (type && typeReservations[type] !== undefined) {
+            typeReservations[type] += 1;
+        }
+    });
+
+    return typeReservations;
+};
+
+// 그래프를 그려주는 로직
 const SeasonalityChart = () => {
     const dispatch = useDispatch();
     const { userReservations, status, error } = useSelector(state => state.reservation);
     const userId = JSON.parse(localStorage.getItem('userData')).userId;
-
 
     useEffect(() => {
         if (status === 'idle' && userId) {
@@ -69,15 +90,38 @@ const SeasonalityChart = () => {
     }
 
     const monthlyReservations = getMonthlyReservations(userReservations);
+    const typeReservations = getTypeBasedReservations(userReservations);
 
-    const data = {
+
+    const monthlyData = {
         labels: Object.keys(monthlyReservations),
         datasets: [
             {
-                label: 'Reservations',
+                label: 'Monthly Reservations',
                 data: Object.values(monthlyReservations),
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgba(54, 162, 235, 1)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+            },
+        ],
+    };
+
+    const typeData = {
+        labels: Object.keys(typeReservations),
+        datasets: [
+            {
+                label: 'Reservations by Room Type',
+                data: Object.values(typeReservations),
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)'
+                ],
                 borderWidth: 1,
             },
         ],
@@ -96,15 +140,17 @@ const SeasonalityChart = () => {
             },
             title: {
                 display: true,
-                text: 'Monthly Reservations',
+                text: 'Reservation Statistics'
             },
         },
     };
 
     return (
         <div>
-            <h2>Monthly Reservations</h2>
-            <Bar data={data} options={options} />
+            <h2>Seasonality of Reservations</h2>
+            <Bar data={monthlyData} options={{ ...options, title: { ...options.title, text: 'Monthly Reservations' } }} />
+            <h2>Room Type Reservations</h2>
+            <Bar data={typeData} options={{ ...options, title: { ...options.title, text: 'Reservations by Room Type' } }} />
         </div>
     );
 };

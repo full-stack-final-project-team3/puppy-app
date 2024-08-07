@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUserReservations } from "../../components/store/hotel/ReservationSlice";
+import {deleteReservation, fetchUserReservations} from "../../components/store/hotel/ReservationSlice";
 import MyPageHeader from "../../components/auth/user/mypage/MyPageHeader";
 import { Link } from 'react-router-dom';
 import styles from './HotelRecords.module.scss';
@@ -9,17 +9,10 @@ const HotelRecords = () => {
     const dispatch = useDispatch();
     const { userReservations, status, error } = useSelector(state => state.reservation);
     const userId = JSON.parse(localStorage.getItem('userData')).userId;
-    const totalPrice = useSelector(state => state.reservation.totalPrice);
 
     useEffect(() => {
-        if (userId) {
-            dispatch(fetchUserReservations({ userId }));
-        }
-    }, [dispatch, userId]);
-
-    useEffect(() => {
-        console.log('User Reservations:', userReservations);
-    }, [userReservations]);
+        dispatch(fetchUserReservations({ userId }));
+    }, []);
 
     if (status === 'loading') {
         return <div>Loading...</div>;
@@ -40,7 +33,19 @@ const HotelRecords = () => {
         return imageUri;
     };
 
-    console.log(userReservations);
+
+    // 예약삭제 처리 함수
+    const handleDeleteReservation = async (reservationId) => {
+        try {
+            await dispatch(deleteReservation(reservationId));
+            alert("예약이 삭제되었습니다.")
+
+        } catch (error) {
+            console.error("예약 삭제 실패:", error);
+            alert("예약 삭제에 실패했습니다.");
+        }
+    };
+
 
     return (
         <div className={styles.wrap}>
@@ -71,7 +76,7 @@ const HotelRecords = () => {
                                     <div className={styles.reservationDetails}>
                                         <div><strong>호텔 이름 :</strong> {reservation.hotel['hotel-name']}</div>
                                         <div><strong>객실 이름 :</strong> {reservation.room.room_name}</div>
-                                        <div><strong>주문 총액 :</strong> {formatPrice(totalPrice)}</div>
+                                        <div><strong>주문 총액 :</strong> {formatPrice(reservation.price)}</div>
                                         <div><strong>호텔 위치 :</strong> {reservation.hotel.location}</div>
                                         <div><strong>예약날짜 :</strong> {new Date(reservation.reservationAt).toLocaleDateString()}</div>
                                         <div><strong>예약 종료 날짜:</strong> {new Date(reservation.reservationEndAt).toLocaleDateString()}</div>
@@ -80,9 +85,12 @@ const HotelRecords = () => {
                                         <Link to={`/detail-reservation`} className={styles.link}>
                                             상세조회
                                         </Link>
-                                        <Link to={`/`} className={styles.link}>
+                                        <button
+                                            onClick={() => handleDeleteReservation(reservation.reservationId)}
+                                            className={styles.link}
+                                        >
                                             예약취소
-                                        </Link>
+                                        </button>
                                     </div>
                                 </li>
                             );
