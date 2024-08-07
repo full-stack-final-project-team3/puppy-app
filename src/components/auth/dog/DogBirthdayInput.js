@@ -21,7 +21,7 @@ const DogBirthdayInput = ({ onDateChange }) => {
             <DatePicker
                 locale={ko}    // 언어설정 기본값은 영어
                 dateFormat="yyyy-MM-dd"    // 날짜 형식 설정
-                className="input-datepicker"    // 클래스 명 지정 css주기 위해
+                className={styles['input-datepicker']}    // 클래스 명 지정 css주기 위해
                 maxDate={new Date()}    // 선택할 수 있는 최대 날짜값 지정
                 selected={selectedDate}    // 선택된 날짜
                 onChange={handleDateChange}    // 날짜를 선택하였을 때 실행될 함수
