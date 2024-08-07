@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import styles from './MyPageMain.module.scss';
 import MyPageHeader from "./MyPageHeader";
 import MyPageBody from "./MyPageBody";
-import {useNavigate, useRouteLoaderData} from "react-router-dom";
+import { useRouteLoaderData } from "react-router-dom";
 import { DOG_URL } from "../../../../config/user/host-config";
 import DogEdit from "../../dog/DogEdit";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import UserEdit from "./UserEdit";
 import AboutMyInfo from "./AboutMyInfo.js";
-
+import AdminPage from "../../../../pages/user/AdminPage"
 
 const MyPageMain = () => {
 
@@ -21,23 +21,6 @@ const MyPageMain = () => {
     const isEditMode = useSelector(state => state.userEdit.isEditMode);
     const isDogEditMode = useSelector(state => state.dogEdit.isDogEditMode);
     const isUserEditMode = useSelector(state => state.userEdit.isUserEditMode);
-
-    // const dispatch = useDispatch();
-
-    // useEffect(() => {
-    //     if (!userData) return;
-    //
-    //     const fetchData = async () => {
-    //         try {
-    //             const response = await fetch(`${AUTH_URL}/${userData.email}`);
-    //             const userDetailData = await response.json();
-    //             dispatch(userEditActions.updateUserDetail(userDetailData));
-    //         } catch (error) {
-    //             console.error(error);
-    //         }
-    //     };
-    //     fetchData();
-    // }, [userData, dispatch]);
 
     const { id } = userDetail;
 
@@ -57,16 +40,17 @@ const MyPageMain = () => {
     }, [id]);
 
     return (
-        <div className={styles.wrap}>
-            <MyPageHeader />
-            {
-                !isEditMode &&
-                <MyPageBody user={userDetail} dogList={dogList} />
-            }
-            {isUserEditMode && <UserEdit  />}
-            {isDogEditMode && <DogEdit user={userDetail}/>}
-            { !isEditMode && <AboutMyInfo/>}
-        </div>
+        userDetail.role === "USER" ? (
+            <div className={styles.wrap}>
+                <MyPageHeader />
+                {!isEditMode && <MyPageBody user={userDetail} dogList={dogList} />}
+                {isUserEditMode && <UserEdit />}
+                {isDogEditMode && <DogEdit user={userDetail} />}
+                {!isEditMode && <AboutMyInfo />}
+            </div>
+        ) : (
+            <AdminPage/>
+        )
     );
 };
 

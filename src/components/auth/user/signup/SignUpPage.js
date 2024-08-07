@@ -138,6 +138,7 @@ const SignUpPage = () => {
     const responseData = await response.json();
     console.log(responseData);
     localStorage.setItem("userData", JSON.stringify(responseData));
+
     setUser(responseData);
     changeIsLogin(true); // 상태 업데이트
     alert("강아지 등록하러갑니다")
