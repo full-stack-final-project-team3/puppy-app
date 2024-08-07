@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import styles from './HotelConfirmation.module.scss';
 import { useNavigate } from 'react-router-dom';
 import { submitReservation } from '../store/hotel/ReservationSlice';
+import dayjs from "dayjs";
 
 const HotelConfirmation = ({
                                hotel,
@@ -35,14 +36,14 @@ const HotelConfirmation = ({
             hotelId: hotel['hotel-id'],
             roomId: selectedRoom['room-id'],
             hotelName: hotel['hotel-name'],
-            startDate,
-            endDate,
+            startDate: dayjs(startDate).utc().format(),
+            endDate: dayjs(endDate).utc().format(),
             userId: user.id,
             totalPrice,
             user,
             email,
             token,
-            createdAt: new Date().toISOString()
+            createdAt: dayjs().utc().format()
         }))
             .unwrap()
             .then((response) => {
