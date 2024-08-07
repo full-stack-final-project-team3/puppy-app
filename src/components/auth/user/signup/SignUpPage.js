@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import StepIndicator from "./StepIndicator";
 import { useDispatch } from "react-redux";
 import UserContext from "../../../context/user-context";
+import { userEditActions } from "../../../store/user/UserEditSlice"
 
 
 const SignUpPage = () => {
@@ -135,10 +136,16 @@ const SignUpPage = () => {
       body: JSON.stringify(payload),
     });
 
+    // 회원가입 유저 정보 전송
     const responseData = await response.json();
-    console.log(responseData);
     localStorage.setItem("userData", JSON.stringify(responseData));
     setUser(responseData);
+    
+    // 회원가입 유저 디테일 정보 전송
+    const response1 = await fetch(`${AUTH_URL}/${enteredEmail}`);
+        const userDetailData = await response1.json();
+        dispatch(userEditActions.updateUserDetail(userDetailData));
+        
     changeIsLogin(true); // 상태 업데이트
     alert("강아지 등록하러갑니다")
     navigate("/add-dog"); // 로그인 후 리디렉트할 경로
