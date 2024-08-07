@@ -47,15 +47,15 @@ const ReviewList = ({ hotelId }) => {
     }, [reviews]);
 
     if (loading) {
-        return <p>Loading reviews...</p>;
+        return <p className={styles.reviewLoading}>Loading reviews...</p>;
     }
 
     if (error) {
-        return <p>Error loading reviews: {error.message}</p>;
+        return <p className={styles.reviewLoading}>Error loading reviews: {error.message}</p>;
     }
 
     if (!reviews || reviews.length === 0) {
-        return <p>No reviews available</p>;
+        return <p className={styles.reviewLoading}>리뷰가 없습니다!</p>;
     }
 
     return (

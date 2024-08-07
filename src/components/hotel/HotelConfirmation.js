@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import styles from './HotelConfirmation.module.scss';
@@ -7,18 +7,21 @@ import { submitReservation } from '../store/hotel/ReservationSlice';
 import dayjs from "dayjs";
 
 const HotelConfirmation = ({
-                               hotel,
-                               selectedRoom = { name: 'Default Room Name' },
-                               startDate,
-                               endDate,
-                               totalPrice,
-                               user = { realName: 'Guest' }
-                           }) => {
+    hotel,
+    selectedRoom = { name: 'Default Room Name' },
+    startDate,
+    endDate,
+    totalPrice,
+    user = { realName: 'Guest', point: 0 }
+}) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const personCount = useSelector(state => state.hotelPage.personCount);
     const email = user.email;
     const token = JSON.parse(localStorage.getItem('userData')).token;
+    const [remainingPrice, setRemainingPrice] = useState(totalPrice);
+    const [pointUsage, setPointUsage] = useState('');
+    const [showPointPayment, setShowPointPayment] = useState(false);
 
     const handleConfirmBooking = () => {
         if (!user) {
@@ -39,7 +42,7 @@ const HotelConfirmation = ({
             startDate: dayjs(startDate).utc().format(),
             endDate: dayjs(endDate).utc().format(),
             userId: user.id,
-            totalPrice,
+            totalPrice: remainingPrice,
             user,
             email,
             token,
@@ -56,6 +59,20 @@ const HotelConfirmation = ({
             });
     };
 
+    const handleUseAllPoints = () => {
+        const pointsToUse = Math.min(user.point, totalPrice);
+        setPointUsage(pointsToUse);
+        setRemainingPrice(Math.max(0, totalPrice - pointsToUse));
+    };
+
+    const handlePointChange = (e) => {
+        let points = parseInt(e.target.value, 10) || 0;
+        points = Math.min(user.point, points);
+        points = Math.min(totalPrice, points);
+        setPointUsage(points);
+        setRemainingPrice(Math.max(0, totalPrice - points));
+    };
+
     const formatDate = (dateStr) => {
         const date = new Date(dateStr);
         const options = { weekday: 'short', year: 'numeric', month: '2-digit', day: '2-digit' };
@@ -66,37 +83,71 @@ const HotelConfirmation = ({
         return new Intl.NumberFormat('ko-KR').format(price);
     };
 
+    const handlePaymentMethodClick = (method) => {
+        if (method === 'point') {
+            setShowPointPayment(!showPointPayment);
+        } else {
+            alert('추후 업데이트 예정입니다.');
+        }
+    };
+
+    const isConfirmButtonDisabled = remainingPrice !== 0;
+
     return (
         <div className={styles.bookingConfirmation}>
-            <h2>Booking Confirmation</h2>
+            <h2 className={styles.bookingTitle}>결제 확인</h2>
             <p>Hotel: {hotel['hotel-name']}</p>
             <p>Room: {selectedRoom.room_name}</p>
-            <div className={styles.priceDetails}>
-                <span className={styles.priceLabel}>Total Price: </span>
-                <span className={styles.priceValue}>{formatPrice(totalPrice)}</span>
+            <div className={styles.section}>
+                <span className={styles.sectionLabel}>Dog Count: {personCount}</span>
             </div>
-            <div className={styles.personCount}>
-                <span>Person Count: {personCount}</span>
-            </div>
-            <div className={styles.dateDetails}>
+            <div className={styles.section}>
                 <p>Check-in Date: {formatDate(startDate)}</p>
                 <p>Check-out Date: {formatDate(endDate)}</p>
             </div>
-            <div className={styles.userInfo}>
+            <div className={styles.section}>
                 <p>User: {user.nickname}</p>
             </div>
 
-            <div className={styles.userInfo}>
-                <p>결제 정보</p>
+            <div className={styles.paymentInfoBox}>
+                <h3 className={styles.sectionTitle}>결제 정보</h3>
                 <p>객실 가격: {formatPrice(totalPrice)}</p>
-                <p>할인/ 부가결제: {''}</p>
+                <p>포인트 결제 차감: <span className={styles.discountAmount}>-{formatPrice(pointUsage)}</span></p>
+                <p>최종 결제 금액: {formatPrice(totalPrice)}</p>
             </div>
 
-            <div className={styles.userInfo}>
-                <p>최종 결제 금액 : {formatPrice(totalPrice)}</p>
+            <div className={styles.paymentMethods}>
+                <h3 className={styles.sectionTitle}>결제수단</h3>
+                <button className={styles.paymentButton} onClick={() => handlePaymentMethodClick('bank')}>무통장입금</button>
+                <button className={styles.paymentButton} onClick={() => handlePaymentMethodClick('creditCard')}>신용카드</button>
+                <button className={styles.paymentButton} onClick={() => handlePaymentMethodClick('virtualAccount')}>가상계좌</button>
+                <button className={styles.paymentButton} onClick={() => handlePaymentMethodClick('accountTransfer')}>계좌이체</button>
+                <button className={styles.paymentButton} onClick={() => handlePaymentMethodClick('point')}>포인트</button>
             </div>
 
-            <button onClick={handleConfirmBooking}>Confirm Booking</button>
+            {showPointPayment && (
+                <div className={styles.pointPayment}>
+                    <h3 className={styles.sectionTitle}>포인트 결제</h3>
+                    <input
+                        type="number"
+                        value={pointUsage}
+                        onChange={handlePointChange}
+                        placeholder="포인트 사용"
+                        className={styles.inputBox}
+                        max={totalPrice}
+                    />
+                    <button className={styles.useAllPointsButton} onClick={handleUseAllPoints}>모두사용</button>
+                    <p className={styles.pointPaymentMessage}>사용 가능: {formatPrice(user.point - pointUsage)}p</p>
+                </div>
+            )}
+
+            <button
+                className={`${styles.confirmButton} ${isConfirmButtonDisabled ? styles.disabledButton : styles.enabledButton}`}
+                onClick={handleConfirmBooking}
+                disabled={isConfirmButtonDisabled}
+            >
+                Confirm Booking
+            </button>
         </div>
     );
 };
@@ -112,7 +163,8 @@ HotelConfirmation.propTypes = {
     endDate: PropTypes.string.isRequired,
     totalPrice: PropTypes.number.isRequired,
     user: PropTypes.shape({
-        nickname: PropTypes.string, // Adjust according to actual user properties
+        nickname: PropTypes.string,
+        point: PropTypes.number,
     }),
 };
 

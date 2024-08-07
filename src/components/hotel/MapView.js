@@ -52,7 +52,7 @@ const MapView = ({ location, title }) => {
   };
 
   const mapStyle = {
-    width: '1600px',
+    width: '1400px',
     height: '500px',
     filter: 'sepia(10%) hue-rotate(0deg) saturate(60%) brightness(100%) contrast(100%)',
   };

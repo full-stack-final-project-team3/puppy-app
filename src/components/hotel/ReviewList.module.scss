@@ -17,11 +17,11 @@
     }
   
     .review {
-      background-color: #f3f3f3;
+      background: #F4E8D3;
       border-radius: 8px;
       padding: 20px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      color: #000;
+      color: #5C4033;
       width: 100%; /* 슬라이드 안에 꽉 차도록 설정 */
       max-width: 600px; /* 슬라이드의 최대 너비 설정 */
   
@@ -45,7 +45,7 @@
       &Date,
       &User {
         font-size: 14px;
-        color: #888;
+        color: #5C4033;
         margin-bottom: 3px;
       }
   
@@ -64,3 +64,9 @@
     }
 
     
+    .reviewLoading{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 40px;
+    }

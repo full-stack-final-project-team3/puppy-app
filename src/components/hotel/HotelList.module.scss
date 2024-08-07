@@ -3,19 +3,22 @@
   flex-wrap: wrap;
   gap: 20px;
   max-width: 1300px;
+  background: #F4E8D3;
+  border-radius: 32px;
+
   margin: 0 auto; /* Center the list */
   justify-content: center; /* Center items */
-  
+  padding: 40px;
   
 }
 
 .hotel {
-  border: 1px solid #ccc;
-  color: #000;
+  // border: 1px solid #ccc;
+  color: #5C4033;
   padding: 20px;
   margin: 10px;
   border-radius: 8px;
-  background-color: #f3f3f3;
+  background-color: #F4E8D3;
   flex: 1 1 calc(50% - 40px); /* Adjusted to fit 2 items in a row */
   max-width: calc(50% - 100px); /* Ensure it doesn't grow larger */
   box-sizing: border-box;
@@ -23,7 +26,7 @@
   h2 {
     margin: 0 0 10px;
     font-size: 1.5em;
-    color: #333;
+    color: #333333;
   }
 
   p {
@@ -78,14 +81,14 @@
     font-size: 14px;
     margin-right: 10px;
     color: #fff;
-    background-color: #9b1818;
+    background-color: #B37A7A;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 
     &:hover {
-      background-color: #680808;
+      background-color: #9A5A5A;
     }
   }
 
@@ -94,7 +97,7 @@
   }
 
   .showPropertyButton {
-    background-color: #901616;
+    background-color: #B37A7A;
   }
 }
 

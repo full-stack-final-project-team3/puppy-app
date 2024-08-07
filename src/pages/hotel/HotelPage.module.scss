@@ -1,16 +1,16 @@
 
 .hotelReservationPage {
   height: 92vh;
-  background-image: url(https://www.zooplus.co.uk/magazine/wp-content/uploads/2018/03/dachshund.jpg);
   background-size: cover;
   background-position: center;
+  font-family: "Red Hat Display", sans-serif;
   color: white;
   
   
   .stepContent {
     display: flex;
     flex-direction: column;
-    background-color: white;
+    background: #F4E8D3;
     padding: 40px;
     border-radius: 25px;
     width: 30%;

@@ -3,7 +3,7 @@
   
   label {
     margin-bottom: 20px;
-    color: black;
+    color: #5C4033;
     font-family: sans-serif;
     display: block;
     text-indent: 5px;
@@ -32,8 +32,8 @@
     width: 100%;
     padding: 20px;
     margin-top: 30px;
-    background-color: rgb(155, 0, 0);
-    color: white;
+    background-color: #B37A7A;
+    color: #FFFFF0;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -42,7 +42,7 @@
   }
 
   .next:hover {
-    background: #550d0d;
+    background: #9A5A5A;
   }
 
   .addHotelButtonContainer {

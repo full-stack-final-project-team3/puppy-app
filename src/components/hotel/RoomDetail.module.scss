@@ -1,19 +1,21 @@
 .roomDetail {
   display: flex;
   flex-wrap: wrap;
-  font-family: 'GmarketSans';
+  font-family: "Red Hat Display", sans-serif;
+  background: #F4E8D3;
+  border-radius: 32px;
+  color: #333333;
   gap: 20px;
   max-width: 1300px;
   margin: 0 auto; /* Center the list */
   justify-content: center; /* Center items */
 
   .room {
-    border: 1px solid #ccc;
-    color: #000;
+    color: #333333;
     padding: 20px;
     margin: 10px;
     border-radius: 8px;
-    background-color: #f3f3f3;
+    background: #F4E8D3;
     flex: 1 1 calc(50% - 40px); /* Adjusted to fit 2 items in a row */
     max-width: calc(50% - 100px); /* Ensure it doesn't grow larger */
     box-sizing: border-box;
@@ -36,7 +38,7 @@
     margin-right: 10px;
     right: 10px;
     color: #fff;
-    background-color: #9b1818;
+    background-color: #B37A7A;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -60,12 +62,12 @@
 
     .slider {
       margin-top: 10px;
-
+      
       .slide {
         position: relative;
         overflow: hidden;
         border-radius: 8px;
-
+        
         img {
           width: 100%;
           height: 400px; // 고정 높이 설정 (필요에 따라 조정)
@@ -122,24 +124,25 @@
   align-items: center;
   justify-content: center;
   font-size: 24px;
-  color: #454545;
-  font-family: 'GmarketSans';
+  color: #333333;
+  font-family: "Red Hat Display", sans-serif;
   margin-top: 50px;
 }
 
 .hotelTitle {
   max-width: 1300px;
   margin: 0px auto;
-  font-family: 'GmarketSans';
+  font-family: "Red Hat Display", sans-serif;
   font-size: 54px;
   margin-bottom: 60px;
-  color: #454545;
+  color: #333333;
   font-weight: bold;
 }
 
 .description {
-  color: #454545;
-  font-family: 'GmarketSans';
+  color: #333333;
+  font-family: 'NotoSansKR';
+
   font-size: 24px;
   max-width: 1300px;
   margin: 0px auto;
@@ -170,7 +173,7 @@
   justify-content:space-between;
   font-size: 24px;
   color: #E5E5E5;
-  font-family: 'GmarketSans';
+  font-family: "Red Hat Display", sans-serif;
   padding-bottom: 100px;
   margin-left: 5%;
   padding-top: 50px;
@@ -190,6 +193,6 @@
   cursor: pointer;
   transition: background-color 0.3s ease;
   &:hover {
-    background-color: #680808;
+    background-color: #643333;
   }
 }
