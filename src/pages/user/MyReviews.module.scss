@@ -9,6 +9,32 @@
     width: 90%;
     margin: 50px auto 0;
     background: #F0E1C4;
-    padding-bottom: 20px
+    padding-bottom: 20px;
+
+    .header {
+      display: flex;
+      .menu {
+        width: 50%;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        padding: 30px;
+        font-size: 1.3rem;
+        cursor: pointer;
+
+        &:hover {
+          text-decoration: underline;
+          font-weight: bold;
+        }
+      }
+    }
+      .hr {
+        width: 90%;
+        margin: 0 auto;
+        color: black;
+        height: 0.5px;
+        background: lightgray;
+        margin-bottom: 30px;
+      }
   }
 }
