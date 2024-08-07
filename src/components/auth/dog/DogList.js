@@ -37,7 +37,7 @@ const DogList = () => {
             {dogList && dogList.length > 0 ? (
                 dogList.map(dog => (
                     <div key={dog.id} className={styles.mainContainer}>
-                        <img className={styles.img} src={dog.dogProfileUrl} alt="Dog Profile" />
+                        <img className={styles.img} src={dog.dogProfileUrl || "/header-logo.png"} alt="Dog Profile" />
                         <div className={styles.wrapRight}>
                             <div className={styles.flex}>
                                 <h3 className={styles.nickname}>{dog.dogName}</h3>
