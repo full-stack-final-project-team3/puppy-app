@@ -47,7 +47,7 @@ const BoardPostPage = () => {
       });
 
       if (response.ok) {
-        navigate("/boards");
+        navigate("/board");
       } else {
         throw new Error("Failed to create post");
       }
