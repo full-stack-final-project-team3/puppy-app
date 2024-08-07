@@ -42,8 +42,9 @@ import SnackRecords from "../../pages/user/SnackRecords";
 import DetailAboutReservation from "../../components/hotel/DetailAboutReservation";
 import ShowCart from "../../pages/shop/ShowCart";
 
-import SeasonalityChart from '../../pages/hotel/SeasonalityChart'
+import SeasonalityChart from '../../pages/hotel/SeasonalityChart.js'
 import OrderPage from "../../pages/shop/order/OrderPage"; //쇼핑몰오더 
+
 
 
 

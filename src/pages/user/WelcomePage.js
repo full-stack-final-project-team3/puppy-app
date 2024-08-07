@@ -6,6 +6,7 @@ import {useDispatch} from "react-redux";
 import { userEditActions } from "../../components/store/user/UserEditSlice";
 import Footer from '../../layout/user/Footer';
 import Home from "../Home";
+import styles from './WelcomePage.module.scss'
 
 const WelcomePage = () => {
     const userData = useRouteLoaderData('user-data3');
@@ -40,7 +41,7 @@ const WelcomePage = () => {
 
     return (
         <div>
-            {user ? <div>Welcome {userDetail.nickname}~</div> : <div>Welcome ~</div>}
+            {user ? <div className={styles.welcome}>Welcome {userDetail.nickname}~</div> : <div>Welcome ~</div>}
             <Home /> {/* Home 컴포넌트를 렌더링 */}
             <Footer /> {/* Footer 컴포넌트를 렌더링 */}
         </div>

@@ -20,7 +20,6 @@ const AddDogMain = () => {
     // 갔다온 적이 있나? 로 막아버리기
     const [visitedSteps, setVisitedSteps] = useState([1]);
 
-
     const [step, setStep] = useState(1);
     const [name, setName] = useState('');
     const [breed, setBreed] = useState('');
@@ -30,7 +29,6 @@ const AddDogMain = () => {
     const [dogSize, setDogSize] = useState('');
     const [allergies, setAllergies] = useState([]);
     const profileUrl = "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fst2.depositphotos.com%2F5045705%2F11671%2Fv%2F950%2Fdepositphotos_116714982-stock-illustration-little-puppy-icon.jpg&type=a340";
-
 
     const dogNameValue = (dogName) => {
         setName(dogName);
@@ -46,6 +44,7 @@ const AddDogMain = () => {
 
     const dogBirthdayValue = (date) => {
         const formatDate = date.format('YYYY-MM-DD');
+        console.log(formatDate)
         setBirthday(formatDate);
         setStep(4);
         setVisitedSteps([1,2,3,4])
@@ -151,24 +150,36 @@ const AddDogMain = () => {
     }
 
     const switchStep = (num) => {
-        if (visitedSteps.length >= num) setStep(num)
+        if (visitedSteps.length >= num) setStep(num);
     }
 
     return (
         <>
             <div className={styles.stepWrap}>
                 <div className={styles.subWrap}>
-                    <div className={`${styles.step} ${step >= 1 ? styles.finishStep : ''}`} onClick={() => switchStep(1)}>1</div>
-                    <div className={`${styles.stepLine} ${step >= 2 ? styles.finishStep : ''}`}></div>
-                    <div className={`${styles.step} ${step >= 2 ? styles.finishStep : ''}`} onClick={() => switchStep(2)}>2</div>
-                    <div className={`${styles.stepLine} ${step >= 3 ? styles.finishStep : ''}`}></div>
-                    <div className={`${styles.step} ${step >= 3 ? styles.finishStep : ''}`} onClick={() => switchStep(3)}>3</div>
-                    <div className={`${styles.stepLine} ${step >= 4 ? styles.finishStep : ''}`}></div>
-                    <div className={`${styles.step} ${step >= 4 ? styles.finishStep : ''}`} onClick={() => switchStep(4)}>4</div>
-                    <div className={`${styles.stepLine} ${step >= 5 ? styles.finishStep : ''}`}></div>
-                    <div className={`${styles.step} ${step >= 5 ? styles.finishStep : ''}`} onClick={() => switchStep(5)}>5</div>
-                    <div className={`${styles.stepLine} ${step >= 6 ? styles.finishStep : ''}`}></div>
-                    <div className={`${styles.step} ${step >= 6 ? styles.finishStep : ''}`} onClick={() => switchStep(6)}>6</div>
+                    <div className={`${styles.step} ${step >= 1 ? styles.finishStep : ''}`} onClick={() => switchStep(1)}>
+                        1 <span className={styles.stepText}>Name</span>
+                    </div>
+                    <div className={`${styles.stepLine} ${step >= 2 ? styles.finishLine : ''}`}></div>
+                    <div className={`${styles.step} ${step >= 2 ? styles.finishStep : ''}`} onClick={() => switchStep(2)}>
+                        2 <span className={styles.stepText}>Breed</span>
+                    </div>
+                    <div className={`${styles.stepLine} ${step >= 3 ? styles.finishLine : ''}`}></div>
+                    <div className={`${styles.step} ${step >= 3 ? styles.finishStep : ''}`} onClick={() => switchStep(3)}>
+                        3 <span className={styles.stepText}>Birthday</span>
+                    </div>
+                    <div className={`${styles.stepLine} ${step >= 4 ? styles.finishLine : ''}`}></div>
+                    <div className={`${styles.step} ${step >= 4 ? styles.finishStep : ''}`} onClick={() => switchStep(4)}>
+                        4 <span className={styles.stepText}>Gender</span>
+                    </div>
+                    <div className={`${styles.stepLine} ${step >= 5 ? styles.finishLine : ''}`}></div>
+                    <div className={`${styles.step} ${step >= 5 ? styles.finishStep : ''}`} onClick={() => switchStep(5)}>
+                        5 <span className={styles.stepText}>Weight</span>
+                    </div>
+                    <div className={`${styles.stepLine} ${step >= 6 ? styles.finishLine : ''}`}></div>
+                    <div className={`${styles.step} ${step >= 6 ? styles.finishStep : ''}`} onClick={() => switchStep(6)}>
+                        6 <span className={styles.stepText}>Allergy</span>
+                    </div>
                 </div>
             </div>
             <div className={styles.wrap}>

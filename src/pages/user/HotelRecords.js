@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-
 import { useDispatch, useSelector } from 'react-redux';
 import {deleteReservation, fetchUserReservations} from "../../components/store/hotel/ReservationSlice";
 import MyPageHeader from "../../components/auth/user/mypage/MyPageHeader";
@@ -10,12 +9,6 @@ const HotelRecords = () => {
     const dispatch = useDispatch();
     const { userReservations, status, error } = useSelector(state => state.reservation);
     const userId = JSON.parse(localStorage.getItem('userData')).userId;
-
-    useEffect(() => {
-        if (userId) {
-            dispatch(fetchUserReservations({ userId }));
-        }
-    }, [dispatch, userId, userReservations.length]);
 
     if (status === 'loading') {
         return <div>Loading...</div>;
