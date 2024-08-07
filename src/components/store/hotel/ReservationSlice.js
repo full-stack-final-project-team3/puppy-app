@@ -115,16 +115,6 @@ export const fetchUserReservations = createAsyncThunk(
 export const submitReservation = createAsyncThunk(
     'reservation/submitReservation',
     async ({ hotelId, roomId, startDate, endDate, userId, totalPrice, user, email, token, createdAt, hotelName}, { rejectWithValue, dispatch }) => {
-        // console.log(hotelId)
-        // console.log(roomId)
-        // console.log(userId)
-        // console.log(user)
-        // console.log(startDate)
-        // console.log(endDate)
-        // console.log(email)
-        // console.log(token)
-        // console.log(hotelName)
-        // console.log(createdAt)
         if (!token) {
             return rejectWithValue('No token found');
         }
@@ -156,32 +146,32 @@ export const submitReservation = createAsyncThunk(
 
             const data = await response.json();
 
-            // const newNotice = {
-            //     id: new Date().getTime(),
-            //     message: `${hotelName}에 예약이 완료되었습니다.`,
-            //     isClicked: false,
-            //     userId,
-            //     createdAt
-            // };
-            //
-            // const noticeResponse = await fetch(`${NOTICE_URL}/add`, {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     },
-            //     body: JSON.stringify(newNotice),
-            // });
-            //
-            // if (noticeResponse.ok) {
-            //     dispatch(userEditActions.addUserNotice(newNotice));
-            //     const updatedUserDetailWithNoticeCount = {
-            //         ...user,
-            //         noticeCount: (user.noticeCount || 0) + 1
-            //     };
-            //     dispatch(userEditActions.updateUserDetail(updatedUserDetailWithNoticeCount));
-            // } else {
-            //     alert('예약은 성공했으나 알림 추가에 실패했습니다.');
-            // }
+            const newNotice = {
+                id: new Date().getTime(),
+                message: `${hotelName}에 예약이 완료되었습니다.`,
+                isClicked: false,
+                userId,
+                createdAt
+            };
+
+            const noticeResponse = await fetch(`${NOTICE_URL}/add`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newNotice),
+            });
+
+            if (noticeResponse.ok) {
+                dispatch(userEditActions.addUserNotice(newNotice));
+                const updatedUserDetailWithNoticeCount = {
+                    ...user,
+                    noticeCount: (user.noticeCount || 0) + 1
+                };
+                dispatch(userEditActions.updateUserDetail(updatedUserDetailWithNoticeCount));
+            } else {
+                alert('예약은 성공했으나 알림 추가에 실패했습니다.');
+            }
 
             return data;
         } catch (error) {
