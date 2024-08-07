@@ -156,8 +156,8 @@ const AddTreats = () => {
             <option value="" disabled>
               상품 종류 선택
             </option>
-            <option value="WET">WET</option>
             <option value="DRY">DRY</option>
+            <option value="WET">WET</option>
             <option value="GUM">GUM</option>
             <option value="KIBBLE">KIBBLE</option>
             <option value="SUPPS">SUPPS</option>
