@@ -144,3 +144,6 @@
     cursor: default;
   }
 }
+.noticeWrap::-webkit-scrollbar {
+  display: none;
+}

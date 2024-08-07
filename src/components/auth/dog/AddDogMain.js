@@ -44,6 +44,7 @@ const AddDogMain = () => {
 
     const dogBirthdayValue = (date) => {
         const formatDate = date.format('YYYY-MM-DD');
+        console.log(formatDate)
         setBirthday(formatDate);
         setStep(4);
         setVisitedSteps([1,2,3,4])
