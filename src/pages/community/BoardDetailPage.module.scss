@@ -1,34 +1,57 @@
-// BoardDetailPage.module.scss
-
 .postDetailPage {
-    background-color: #f8f4e9;
+    background-color: #F1E1C8;
     padding: 20px;
     font-family: 'Arial', sans-serif;
     position: relative;
     min-height: 100vh;
-    padding-bottom: 60px; // 여백 추가
+    padding-bottom: 60px;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 .postTitle {
-    font-size: 24px;
+    font-size: 28px;
     font-weight: bold;
     margin-bottom: 20px;
     color: #333;
+    text-align: left;
+    padding-left: 20px;
 }
 
 .postMeta {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
+    align-items: center;
     margin-bottom: 20px;
     font-size: 0.9rem;
     color: #666;
+    padding-left: 20px;
 }
 
 .author,
 .date,
 .viewCount {
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.profileImage {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
     margin-right: 10px;
+    object-fit: cover;
+}
+
+.postImage {
+    margin-bottom: 20px;
+
+    img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+    }
 }
 
 .postContent {
@@ -36,39 +59,19 @@
     line-height: 1.6;
     color: #333;
     margin-bottom: 20px;
+    padding: 0 20px;
 }
 
-.postImage img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 10px;
-    margin-bottom: 20px;
+.shareButtonContainer {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
 }
 
-.commentsSection {
-    margin-top: 40px;
-}
-
-.commentsSection h2 {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-    color: #333;
-}
-
-.commentForm {
-    margin-bottom: 20px;
-}
-
-.commentForm textarea {
-    width: 100%;
-    padding: 10px;
-    font-size: 1rem;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    margin-bottom: 10px;
-}
-
-.commentForm button {
+.shareButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 10px 20px;
     font-size: 1rem;
     color: #fff;
@@ -76,11 +79,86 @@
     border: none;
     border-radius: 30px;
     cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s, color 0.3s;
+    transition: background-color 0.3s;
 
     &:hover {
         background-color: #0056b3;
+    }
+
+    svg {
+        margin-right: 8px;
+    }
+}
+
+.commentsSection {
+    margin-top: 40px;
+    border-top: 1px solid #ccc;
+    padding-top: 20px;
+
+    h2 {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        color: #333;
+        display: flex;
+        align-items: center;
+
+        svg {
+            margin-right: 8px;
+        }
+    }
+}
+
+.commentForm {
+    margin-bottom: 20px;
+}
+
+.inputWrapper {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    overflow: hidden;
+    background-color: white;
+}
+
+.commentInput {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: none;
+    font-size: 1rem;
+
+    &:focus {
+        outline: none;
+    }
+}
+
+.iconButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #666;
+    padding: 0 10px;
+
+    &:hover {
+        color: #333;
+    }
+}
+
+.submitButton {
+    padding: 10px 20px;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-radius: 20px;
+    /* 추가된 부분 */
+    margin-right: 1px;
+    /* 추가된 부분 */
+
+    &:hover {
+        background-color: #357ae8;
     }
 }
 
@@ -101,14 +179,18 @@
     margin-bottom: 10px;
 }
 
-.commentAuthor {
+.commentAuthor,
+.replyAuthor {
     font-size: 0.9rem;
     font-weight: bold;
     margin-right: 10px;
     color: #333;
+    display: flex;
+    align-items: center;
 }
 
-.commentDate {
+.commentDate,
+.replyDate {
     font-size: 0.8rem;
     color: #999;
 }
@@ -116,6 +198,7 @@
 .replyList {
     list-style-type: none;
     padding: 0 0 0 20px;
+    margin-top: 10px;
 }
 
 .replyItem {
@@ -126,21 +209,19 @@
     padding: 10px;
 }
 
-.replyAuthor {
-    font-size: 0.9rem;
-    font-weight: bold;
-    margin-right: 10px;
-    color: #333;
-}
-
-.replyDate {
-    font-size: 0.8rem;
-    color: #999;
-}
-
 .loading {
     text-align: center;
     padding: 20px;
     font-size: 16px;
     color: #666;
+}
+
+.loginPrompt {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+}
+
+.iconWithSpacing {
+    margin-right: 8px;
 }
