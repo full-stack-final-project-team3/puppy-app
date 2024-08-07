@@ -18,12 +18,12 @@ const HOTEL = "/hotel";
 const ROOM = "/room";
 const UPLOAD = "/hotel/upload";
 const DOG = "/dog";
-const BOARD = "/boards";
+const BOARD = "/board";
 const TREATS = "/treats";
 const BUNDLE = "/bundle";
 const CART = "/cart";
 const SHOP = "/shop";
-const notice = "/notice"
+const notice = "/notice";
 // const AUTH = '/auth'
 
 export const EVENT_URL = API_BASE_URL + EVENT;

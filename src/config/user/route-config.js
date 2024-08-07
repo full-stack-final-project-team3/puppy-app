@@ -46,8 +46,6 @@ import SeasonalityChart from '../../pages/hotel/SeasonalityChart.js'
 import OrderPage from "../../pages/shop/order/OrderPage"; //쇼핑몰오더 
 
 
-
-
 const homeRouter = [
   {
     index: true,
@@ -152,7 +150,7 @@ export const router = createBrowserRouter([
         element: <AddDogMain />,
       },
       {
-        path: "boards",
+        path: "board",
         element: <BoardPage />,
         // loader: authCheckLoader,
       },
@@ -164,6 +162,11 @@ export const router = createBrowserRouter([
       {
         path: "board/create", // 게시글 상세 페이지 경로 추가
         element: <BoardPostPage />,
+        loader: authCheckLoader, // 로그인 정보를 확인하는 loader 추가
+      },
+      {
+        path: "board/:id/comments", // 게시글 상세 페이지 경로 추가
+        element: <BoardDetailPage />,
         loader: authCheckLoader, // 로그인 정보를 확인하는 loader 추가
       },
       {
@@ -194,27 +197,27 @@ export const router = createBrowserRouter([
       },
       {
         path: "/my-boards",
-        element: <MyBoards/>
+        element: <MyBoards />,
       },
       {
         path: "/hotel-record",
-        element: <HotelRecords/>
+        element: <HotelRecords />,
       },
       {
         path: "/like-boards",
-        element: <MyLikeBoards/>
+        element: <MyLikeBoards />,
       },
       {
         path: "/like-hotel",
-        element: <MyLikeHotel/>
+        element: <MyLikeHotel />,
       },
       {
         path: "/like-snack",
-        element: <MyLikeSnack/>
+        element: <MyLikeSnack />,
       },
       {
         path: "/snack-record",
-        element: <SnackRecords/>
+        element: <SnackRecords />,
       },
       {
         path: "/detail-reservation",
