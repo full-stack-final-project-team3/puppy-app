@@ -43,6 +43,8 @@ import DetailAboutReservation from "../../components/hotel/DetailAboutReservatio
 import ShowCart from "../../pages/shop/ShowCart";
 
 import SeasonalityChart from '../../pages/hotel/SeasonalityChart.js'
+import OrderPage from "../../pages/shop/order/OrderPage"; //쇼핑몰오더 
+
 
 
 
@@ -217,6 +219,11 @@ export const router = createBrowserRouter([
       {
         path: "/detail-reservation",
         element: <DetailAboutReservation/>
+      },
+      {
+        path: '/order-page',
+        element: <OrderPage />,
+        loader: authCheckLoader, // 오더
       },
     ],
   },

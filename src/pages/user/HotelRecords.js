@@ -9,20 +9,6 @@ const HotelRecords = () => {
     const dispatch = useDispatch();
     const { userReservations, status, error } = useSelector(state => state.reservation);
     const userId = JSON.parse(localStorage.getItem('userData')).userId;
-    const totalPrice = useSelector(state => state.reservation.totalPrice);
-
-
-    console.log("total", totalPrice)
-
-    useEffect(() => {
-        if (userId) {
-            dispatch(fetchUserReservations({ userId }));
-        }
-    }, [dispatch, userId]);
-
-    useEffect(() => {
-        console.log('User Reservations:', userReservations);
-    }, [userReservations]);
 
     if (status === 'loading') {
         return <div>Loading...</div>;
@@ -43,7 +29,6 @@ const HotelRecords = () => {
         return imageUri;
     };
 
-    console.log(userReservations);
 
     // 예약삭제 처리 함수
     const handleDeleteReservation = async (reservationId) => {
@@ -87,7 +72,7 @@ const HotelRecords = () => {
                                     <div className={styles.reservationDetails}>
                                         <div><strong>호텔 이름 :</strong> {reservation.hotel['hotel-name']}</div>
                                         <div><strong>객실 이름 :</strong> {reservation.room.room_name}</div>
-                                        <div><strong>주문 총액 :</strong> {formatPrice(totalPrice)}</div>
+                                        <div><strong>주문 총액 :</strong> {formatPrice(reservation.price)}</div>
                                         <div><strong>호텔 위치 :</strong> {reservation.hotel.location}</div>
                                         <div><strong>예약날짜 :</strong> {new Date(reservation.reservationAt).toLocaleDateString()}</div>
                                         <div><strong>예약 종료 날짜:</strong> {new Date(reservation.reservationEndAt).toLocaleDateString()}</div>

@@ -239,6 +239,7 @@ const reservationSlice = createSlice({
             .addCase(submitReservation.fulfilled, (state, action) => {
                 state.status = 'succeeded';
                 state.reservation = action.payload;
+                console.log("예약어떻게 됐어?",state.reservation)
             })
             .addCase(submitReservation.rejected, (state, action) => {
                 state.status = 'failed';
