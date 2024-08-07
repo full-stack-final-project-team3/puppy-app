@@ -8,18 +8,18 @@ const CreateBundle = ({ selectedTreats, dogId }) => {
     ? selectedTreats
     : Object.values(selectedTreats).flat();
 
-  console.log(treatArray.length);
+  console.log(treatArray);
 
   const token = getUserToken();
 
   const navigate = useNavigate();
 
   const handleCreateBundle = async () => {
-    if (selectedTreats.length !== 5) {
+    if (treatArray.length !== 5) {
       alert("간식은 5개 선택해야 합니다.");
       return;
     }
-    const treatIds = selectedTreats.map((treat) => treat.id);
+    const treatIds = treatArray.map((treat) => treat.id);
     const dto = {
       treatIds: treatIds,
     };
@@ -39,7 +39,7 @@ const CreateBundle = ({ selectedTreats, dogId }) => {
       }
 
       // 번들 생성 후 장바구니 화면으로 리다이렉트
-      // navigate('/cart'); // 장바구니 화면으로 이동
+      navigate('/cart'); // 장바구니 화면으로 이동
       alert("번들 생성 성공");
     } catch (error) {
       alert(error.message);

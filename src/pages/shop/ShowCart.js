@@ -48,9 +48,9 @@ const ShowCart = () => {
       <h2 className={styles.cartTitle}>장바구니</h2>
       {cart.bundles && cart.bundles.length > 0 ? (
         <ul className={styles.cartList}>
-          {cart.bundles.map((treats, index) => (
+          {cart.bundles.map((bundle, index) => (
             <li key={index}>
-              <span className={styles.itemTitle}>{treats.title}</span>
+              <span className={styles.itemTitle}>{bundle.treats[0].treatsTitle}</span>
               <span className={styles.itemRemove}>삭제</span>{" "}
               {/* 삭제 버튼 추가 */}
             </li>
