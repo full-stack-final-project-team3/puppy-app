@@ -28,7 +28,7 @@ const AddDogMain = () => {
     const [weight, setWeight] = useState('');
     const [dogSize, setDogSize] = useState('');
     const [allergies, setAllergies] = useState([]);
-    const profileUrl = "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fst2.depositphotos.com%2F5045705%2F11671%2Fv%2F950%2Fdepositphotos_116714982-stock-illustration-little-puppy-icon.jpg&type=a340";
+    // const profileUrl = "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fst2.depositphotos.com%2F5045705%2F11671%2Fv%2F950%2Fdepositphotos_116714982-stock-illustration-little-puppy-icon.jpg&type=a340";
 
     const dogNameValue = (dogName) => {
         setName(dogName);
@@ -79,7 +79,7 @@ const AddDogMain = () => {
             dogSize: dogSize,
             weight: weight,
             allergies: allergies,
-            dogProfileUrl: profileUrl,
+            // dogProfileUrl: profileUrl,
         };
 
         try {
