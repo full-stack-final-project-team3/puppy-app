@@ -1,12 +1,10 @@
-// src/components/store/hotel/ReservationSlice.js
-
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { userEditActions } from '../user/UserEditSlice';
 import { ROOM_URL, NOTICE_URL } from "../../../config/user/host-config";
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
-import {deleteHotel} from "./HotelAddSlice";
+import { deleteHotel } from "./HotelAddSlice";
 
 // Dayjs 플러그인 등록
 dayjs.extend(utc);
@@ -29,8 +27,9 @@ const initialState = {
 export const fetchAvailableRooms = createAsyncThunk(
     'reservation/fetchAvailableRooms',
     async ({ city, startDate, endDate }, thunkAPI) => {
-        const formattedStartDate = dayjs(startDate).utc().format();
-        const formattedEndDate = dayjs(endDate).utc().format();
+        // 시간대를 KST로 설정하여 처리
+        const formattedStartDate = dayjs(startDate).tz('Asia/Seoul').format();
+        const formattedEndDate = dayjs(endDate).tz('Asia/Seoul').format();
 
         const response = await fetch(`${ROOM_URL}/available?hotelId=${city}&reservationAt=${encodeURIComponent(formattedStartDate)}&reservationEndAt=${encodeURIComponent(formattedEndDate)}`);
         if (!response.ok) {
@@ -81,7 +80,6 @@ export const fetchUserReservations = createAsyncThunk(
 
             const reservations = await response.json();
 
-            // 예약정보에 등록된 호텔아이디와 유저 아이디로 호텔정보, 룸 정보 가져오기.
             const detailedReservations = await Promise.all(reservations.map(async (reservation) => {
                 const [hotelResponse, roomResponse] = await Promise.all([
                     fetch(`http://localhost:8888/hotel/${reservation.hotelId}`, {
@@ -122,6 +120,9 @@ export const submitReservation = createAsyncThunk(
         }
 
         try {
+            const reservationAt = dayjs(startDate).tz('Asia/Seoul').format();
+            const reservationEndAt = dayjs(endDate).tz('Asia/Seoul').format();
+
             const response = await fetch('http://localhost:8888/api/reservation', {
                 method: 'POST',
                 headers: {
@@ -131,8 +132,8 @@ export const submitReservation = createAsyncThunk(
                 body: JSON.stringify({
                     hotelId,
                     roomId,
-                    reservationAt: dayjs(startDate).utc().format(),
-                    reservationEndAt: dayjs(endDate).utc().format(),
+                    reservationAt,
+                    reservationEndAt,
                     userId,
                     price: totalPrice,
                     cancelled: 'SUCCESS'
@@ -239,7 +240,7 @@ const reservationSlice = createSlice({
             .addCase(submitReservation.fulfilled, (state, action) => {
                 state.status = 'succeeded';
                 state.reservation = action.payload;
-                console.log("예약어떻게 됐어?",state.reservation)
+                console.log("예약어떻게 됐어?", state.reservation)
             })
             .addCase(submitReservation.rejected, (state, action) => {
                 state.status = 'failed';

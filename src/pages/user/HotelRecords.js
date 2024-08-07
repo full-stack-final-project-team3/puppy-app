@@ -10,6 +10,10 @@ const HotelRecords = () => {
     const { userReservations, status, error } = useSelector(state => state.reservation);
     const userId = JSON.parse(localStorage.getItem('userData')).userId;
 
+    useEffect(() => {
+        dispatch(fetchUserReservations({ userId }));
+    }, []);
+
     if (status === 'loading') {
         return <div>Loading...</div>;
     }
