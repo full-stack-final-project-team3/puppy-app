@@ -29,25 +29,27 @@ ChartJS.register(
     Legend
 );
 
-// 월별 예약 현황가져오는 로직
+// 월별 예약 현황을 가져오는 로직
 const getMonthlyReservations = (reservations) => {
+    const now = dayjs();
     const monthlyReservations = {};
+
+    // 현재 월로부터 미래 11개월까지의 월을 초기화
+    for (let i = 0; i < 12; i++) {
+        const month = now.add(i, 'month').format('YYYY-MM');
+        monthlyReservations[month] = 0;
+    }
 
     reservations.forEach(({ reservationAt }) => {
         const month = dayjs(reservationAt).utc().local().format('YYYY-MM');
-        if (!monthlyReservations[month]) {
-            monthlyReservations[month] = 0;
+        if (monthlyReservations.hasOwnProperty(month)) {
+            monthlyReservations[month] += 1;
         }
-        monthlyReservations[month] += 1;
     });
 
-    return Object.keys(monthlyReservations)
-        .sort()
-        .reduce((obj, key) => {
-            obj[key] = monthlyReservations[key];
-            return obj;
-        }, {});
+    return monthlyReservations;
 };
+
 
 // 객실 타입별 예약빈도 수 가져오는 로직
 const getTypeBasedReservations = (reservations) => {
@@ -90,8 +92,6 @@ const SeasonalityChart = () => {
     const monthlyReservations = getMonthlyReservations(userReservations);
     const typeReservations = getTypeBasedReservations(userReservations);
 
-    console.log("monthlyReservations", monthlyReservations);
-    console.log("typeReservations", typeReservations);
 
     const monthlyData = {
         labels: Object.keys(monthlyReservations),
