@@ -56,7 +56,7 @@ const RoomDetail = ({ hotel, onBook, getSliderSettings, onModifyRoom }) => {
     }, [rooms]);
 
     if (!hotel || !rooms.length) {
-        return <p>No rooms available</p>;
+        return <p>해당 날짜에 예약이 다 차있습니다!</p>;
     }
 
     const getImageUrl = (imageUri) => {

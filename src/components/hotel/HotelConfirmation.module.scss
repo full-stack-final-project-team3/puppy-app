@@ -1,94 +1,141 @@
 .bookingConfirmation {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 1300px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  color: #000;
+  background: white;
+  // border: 1px solid #ccc;
+  border-radius: 10px;
+  // box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial, sans-serif';
+  padding-bottom: 200px;
+}
 
-  h2 {
-    margin: 0 0 20px;
-    font-size: 2em;
-    text-align: center;
-  }
+.bookingTitle {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1.5em;
+  color: #333;
+}
 
-  h3 {
-    margin: 0 0 10px;
-    font-size: 1.75em;
-  }
+.section {
+  margin-bottom: 20px;
+  padding: 10px 0;
+  border-bottom: 1px solid #2e2e2e;
+}
 
-  p {
-    margin: 5px 0;
-    font-size: 1em;
-  }
+.sectionLabel {
+  font-weight: bold;
+  color: #555;
+}
 
-  .priceDetails {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 20px 0;
+.sectionValue {
+  font-size: 1.2em;
+  color: #333;
+}
 
-    .priceLabel {
-      font-size: 1.25em;
-      font-weight: bold;
-    }
+.confirmButton {
+  display: block;
+  margin: 0px auto;
+  width: 100%;
+  padding: 20px;
+  margin-top: 150px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s;
 
-    .priceValue {
-      font-size: 1.5em;
-      color: #d9534f;
-    }
-  }
-
-  .personCount {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 20px 0;
-
-    span {
-      font-size: 1.25em;
-    }
-  }
-
-  .dateDetails {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 20px 0;
-
-    p {
-      font-size: 1.25em;
-    }
-  }
-
-  .userInfo {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 20px 0;
-
-    p {
-      font-size: 1.25em;
-      font-weight: bold;
-    }
-  }
-
-  button {
-    background-color: #007bff;
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    font-size: 1em;
-    cursor: pointer;
-    border-radius: 4px;
-    margin-top: 20px;
+  &.enabledButton {
+    background-color: #9b1818;
 
     &:hover {
-      background-color: #0056b3;
+      background-color: darken(#9b1818, 10%);
     }
   }
+
+  &.disabledButton {
+    background-color: transparent;
+    cursor: not-allowed;
+  }
+}
+
+.paymentButton {
+  display: block;
+  width: 100%;
+  padding: 20px;
+  margin-bottom: 10px;
+  background: #ffffff;
+  color: black;
+  border: none;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #cacaca;
+  }
+}
+
+.selectBox,
+.inputBox {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1em;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.sectionTitle {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.paymentMethodsSelect,
+.pointPaymentInput {
+  margin-bottom: 10px;
+}
+
+.paymentMethodsMessage,
+.pointPaymentMessage {
+  margin-top: 10px;
+  color: #888;
+  font-size: 0.9em;
+}
+
+.paymentMethodsMessage {
+  text-align: center;
+}
+
+.useAllPointsButton {
+  width: auto;
+  margin-top: 10px;
+  background-color: #28a745;
+
+  &:hover {
+    background-color: #218838;
+  }
+}
+
+.paymentInfoBox {
+  border-bottom: 1px solid #2e2e2e;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #FFF;
+}
+
+.discountAmount {
+  color: red;
 }

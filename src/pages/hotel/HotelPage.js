@@ -61,7 +61,7 @@ const HotelPage = () => {
     };
 
     const backgroundImages = [
-        'url(https://www.zooplus.co.uk/magazine/wp-content/uploads/2018/03/dachshund.jpg)', // Step 1
+        // 'url(https://www.zooplus.co.uk/magazine/wp-content/uploads/2018/03/dachshund.jpg)', // Step 1
         'url(https://example.com/image2.jpg)', // Step 2
         'url(https://example.com/image3.jpg)', // Step 3
         'url(https://example.com/image4.jpg)', // Step 4

@@ -2,7 +2,7 @@
   display: flex;
   height: 90px;
   width: 100%;
-  background: #f1f1f1;
+  background: #f0f0f0;
   align-items: center;
   border-top: 0.2px solid #bcbcbc;
   margin-bottom: 40px;
@@ -30,8 +30,8 @@
 
     &.active,
     &.completed {
-      background-color: rgb(155, 0, 0);
-      color: white;
+      background-color: #B37A7A;
+      color: #FFFFF0;
     }
 
     &:not(.active):not(.completed) {

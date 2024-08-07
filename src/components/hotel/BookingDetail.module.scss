@@ -15,7 +15,7 @@
     // border: 1px solid #c2c2c2;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); 
     border-radius: 25px;
-    background-color: #f9f9f9;
+    background: #F4E8D3;
     width: 100%;
 
     .instruction {
@@ -79,7 +79,8 @@
           border-radius: 4px;
   
           &:hover {
-            background-color: #9b1818;
+            background-color: #8FBC8F;
+            color:#2F4F4F;
           }
         }
   
@@ -115,14 +116,14 @@
     padding: 20px 140px;
     font-size: 14px;
     color: #fff;
-    background-color: #9b1818;
+    background-color: #B37A7A;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 
     &:hover {
-      background-color: #680808;
+      background-color: #9A5A5A;
     }
   }
 
@@ -135,7 +136,7 @@
     margin-top: 20px;
     font-family: sans-serif;
     color: #4e4e4e;
-    background-color: #f9f9f9;
+    background: #F4E8D3;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); 
     border-radius: 25px;
     line-height: 30px;
