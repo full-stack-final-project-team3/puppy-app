@@ -1,23 +1,19 @@
-// src/components/hotel/DualDatePickers.js
+// DualDatePickers.js
+
 import * as React from 'react';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { TextField, Box } from '@mui/material';
 import dayjs from 'dayjs';
-// import 'dayjs/locale/ko';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
 
-// dayjs.locale('ko');
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 export default function DualDatePickers({ startDate, setStartDate, endDate, setEndDate }) {
 
     const today = dayjs();
-
-    // 날짜 포맷팅 함수
-    const formatDateRange = (start, end) => {
-        const startFormatted = dayjs(start).format('YYYY년 M월 D일');
-        const endFormatted = dayjs(end).format('YYYY년 M월 D일');
-        return `${startFormatted}부터 ${endFormatted}까지`;
-    };
 
     const handleStartDateChange = (newValue) => {
         if (newValue && dayjs(newValue).isValid()) {
@@ -46,8 +42,8 @@ export default function DualDatePickers({ startDate, setStartDate, endDate, setE
                     value={startDate}
                     onChange={handleStartDateChange}
                     renderInput={(params) => (
-                        <TextField 
-                            {...params} 
+                        <TextField
+                            {...params}
                             value={startDate ? dayjs(startDate).format('YYYY년 MM월 DD일') : ''}
                             aria-label="Arrival date"
                         />
@@ -60,8 +56,8 @@ export default function DualDatePickers({ startDate, setStartDate, endDate, setE
                     value={endDate}
                     onChange={handleEndDateChange}
                     renderInput={(params) => (
-                        <TextField 
-                            {...params} 
+                        <TextField
+                            {...params}
                             value={endDate ? dayjs(endDate).format('YYYY년 MM월 DD일') : ''}
                             aria-label="Departure date"
                         />
