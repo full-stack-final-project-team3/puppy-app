@@ -28,14 +28,14 @@ const MyLikeHotel = () => {
     };
 
     return (
-        <div className={styles.wrap}>
+        <div>
             <MyPageHeader />
-            <div className={styles.subWrap}>
+            <div>
                 <h1>내가 찜한 호텔</h1>
                 {favorites.length > 0 ? (
-                    <div className={styles.favoriteList}>
+                    <div>
                         {favorites.map(hotel => (
-                            <div key={hotel.hotelId} className={styles.favoriteItem}>
+                            <div key={hotel.hotelId}>
                                 <div className={styles.hotelInfo}>
                                     <h3>호텔 이름: {hotel.hotelName}</h3>
                                     <p>호텔 위치: {hotel.location}</p>
@@ -44,7 +44,6 @@ const MyLikeHotel = () => {
                                     <img
                                         src={getImageUrl(hotel["hotel-images"][0].hotelImgUri)}
                                         alt={`${hotel.hotelName} 이미지`}
-                                        className={styles.image}
                                     />
                                 )}
                             </div>
