@@ -70,6 +70,8 @@ const LoginForm = () => {
     }
   };
 
+  // 서버에서 provider 정보 보내줌.
+
   // 카카오 로그인 처리
   const handleKakaoLogin = async () => {
     const urlParams = new URLSearchParams(window.location.search);

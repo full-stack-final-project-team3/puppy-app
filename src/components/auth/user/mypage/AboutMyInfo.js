@@ -26,9 +26,9 @@ const AboutMyInfo = () => {
                         <FaBookmark className={styles.bookmarkIcon}/>
                         즐겨찾기 한 호텔
                     </Link>
-                    <Link to={'/like-snack'} className={styles.suggest}>
-                        <FaStar className={styles.starIcon}/>
-                        찜해놓은 간식
+                    <Link to={'/like-boards'} className={styles.suggest}>
+                        <FaHeart className={styles.heartIcon}/>
+                        좋아요 누른 글
                     </Link>
                 </div>
                 <div className={styles.subWrap}>
@@ -36,9 +36,9 @@ const AboutMyInfo = () => {
                         <FaPen className={styles.penIcon}/>
                         내가 쓴 글
                     </Link>
-                    <Link to={'/like-boards'} className={styles.suggest}>
-                        <FaHeart className={styles.heartIcon}/>
-                        좋아요 누른 글
+                    <Link to={'/my-reviews'} className={styles.suggest}>
+                        <FaPen className={styles.starIcon}/>
+                        내 리뷰
                     </Link>
                 </div>
             </div>

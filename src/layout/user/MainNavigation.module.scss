@@ -124,18 +124,22 @@
   z-index: 9999;
 
   .message {
-    width: 100%;
+    width: 94%;
     padding-top: 14px;
-    text-indent: 10px;
+    margin: 0 auto;
     color: black;
     cursor: pointer;
     padding-bottom: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .time {
     border-bottom: 1px solid black;
-    text-indent: 10px;
+    text-indent: 14px;
     padding-bottom: 14px;
+    padding-top: 3px;
     font-size: 0.8rem;
   }
 

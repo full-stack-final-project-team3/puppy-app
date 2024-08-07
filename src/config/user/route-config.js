@@ -37,13 +37,15 @@ import checkMyInfo from "../../pages/user/MyBoards";
 import HotelRecords from "../../pages/user/HotelRecords";
 import MyLikeBoards from "../../pages/user/MyLikeBoards";
 import MyLikeHotel from "../../pages/user/MyLikeHotel";
-import MyLikeSnack from "../../pages/user/MyLikeSnack";
+import MyReviews from "../../pages/user/MyReviews";
 import SnackRecords from "../../pages/user/SnackRecords";
 import DetailAboutReservation from "../../components/hotel/DetailAboutReservation";
 import ShowCart from "../../pages/shop/ShowCart";
 
 import SeasonalityChart from '../../pages/hotel/SeasonalityChart.js'
 import OrderPage from "../../pages/shop/order/OrderPage"; //쇼핑몰오더 
+
+
 
 
 const homeRouter = [
@@ -212,8 +214,8 @@ export const router = createBrowserRouter([
         element: <MyLikeHotel />,
       },
       {
-        path: "/like-snack",
-        element: <MyLikeSnack />,
+         path: "/my-reviews",
+         element: <MyReviews/>
       },
       {
         path: "/snack-record",
