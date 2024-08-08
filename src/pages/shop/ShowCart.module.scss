@@ -1,99 +1,121 @@
 .cartContainer {
-  width: 80%;
-  margin: 40px auto 20px;
+  width: 90%; // 너비 조정
+  margin: 0px auto;
   padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  background-color: #f9f9f9;
-  display: flex; // Flexbox 사용
-  flex-direction: column; // 세로 방향으로 배치
-  align-items: center; // 가로 중앙 정렬
-  justify-content: center; // 세로 중앙 정렬
-}
-
-.cartTitle {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 20px;
-  color: #333;
-}
-
-.cartList {
-  list-style-type: none;
-  padding: 0;
-
-  li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px;
-    border-bottom: 1px solid #eee;
-
-    &:last-child {
-      border-bottom: none; // 마지막 항목의 경계선 제거
-    }
-  }
-}
-
-.itemTitle {
-  font-size: 18px;
-  color: #555;
-}
-
-.itemRemove {
-  cursor: pointer;
-  color: #e74c3c;
-  font-weight: bold;
-
-  &:hover {
-    text-decoration: underline;
-  }
-}
-
-.emptyCartContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  min-height: 200px; // 최소 높이 설정
-  border: 2px dashed #ccc; // 대시 경계선 추가
-  border-radius: 8px;
-  padding: 30px; // 패딩 증가
-  margin-top: 20px; 
-  background-color: #f9f9f9;
+
+  .cartTitle {
+    margin-bottom: 40px;
+  }
+
 }
 
-.emptyCartIcon {
-  font-size: 50px;
-  color: #e74c3c;
-  margin-bottom: 15px;
+.bundleContainer {
+  width: 1000px;
+  padding: 20px;
+  margin-bottom: 15px; // 항목 간 간격 추가
+  border: 1px solid #eee; // 항목 경계선 추가
+  border-radius: 8px; // 모서리 둥글게
+  background-color: #f7f7f7; // 항목 배경색
+  transition: transform 0.2s, box-shadow 0.2s; // 애니메이션 추가
 }
 
-.emptyCartMessage {
-  font-size: 20px; // 폰트 크기 증가
-  color: #555; // 색상 조정
-  margin-bottom: 15px; // 버튼과의 간격 증가
-  text-align: center; // 중앙 정렬 추가
+.bundleHeader {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
 }
 
-.shopButton {
-  padding: 10px 20px;
-  background-color: #e88b4f; // 버튼 색상
-  color: white;
-  border: none;
-  border-radius: 18px;
+.treatsList {
+  display: flex;
+  flex-direction: column; // 세로 정렬
+  width: 100%; // 리스트 너비 100%
+}
+
+.treatItem {
+  padding: 10px 50px 10px 10px;
+  display: flex; // 플렉스 박스 사용
+  align-items: center; // 수직 정렬
+  border-bottom: 1px solid #ddd; // 구분선 추가
+
+  // 이미지 스타일링
+  img {
+    width: 50px; // 이미지 너비
+    height: auto; // 비율 유지
+    margin-right: 10px; // 간식 제목과의 간격
+  }
+}
+
+.treatItem:last-child {
+  border-bottom: none; // 마지막 항목의 구분선 제거
+}
+
+.bundleFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.bundlePrice {
+  font-size: 16px; // 가격 폰트 크기
+  color: #333; // 가격 색상
+}
+
+.itemRemove {
+  font-size: 14px;
+  color: #e74c3c; // 삭제 버튼 색상
   cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s;
 
-  // &:hover {
-  //   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); // 그림자 효과
-  // }
+  &:hover {
+    text-decoration: underline; // 호버 시 밑줄 추가
+  }
 }
 
-.loading {
-  text-align: center;
-  font-size: 18px;
-  color: #3498db;
+.totalPriceContainer {
+  margin-top: 40px; // 상단 여백
+  width: 100%; // 너비 100%
+  border-top: 1px solid #ddd; // 상단 경계선 추가
+  padding-top: 20px; // 상단 패딩
+}
+
+.priceRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px; // 항목 간 간격
+  font-size: 16px; // 폰트 크기
+  color: #333; // 색상
+}
+
+.totalAmountRow {
+  margin: 10px 0;
+  display: flex;
+  justify-content: space-between;
+  font-size: 20px; // 더 큰 폰트 크기
+  font-weight: bold; // 굵게
+  color: #2c3e50; // 강조된 색상
+}
+
+.clearCartContainer {
+  display: flex; // Flexbox 활성화
+  justify-content: flex-end; // 오른쪽 정렬
+}
+
+.clearCartButton {
+  color: black; // 글자색
+  background: none; // 배경색 없음
+  border: none; // 모든 경계선 제거
+  border-bottom: 1px solid black; // 아래쪽 보더라인만 설정
+  cursor: pointer; // 커서 포인터
+  font-size: 12px; // 폰트 크기
+  margin-left: auto; // 오른쪽 끝으로 정렬
+  padding: 2px 0; // 위아래 패딩 추가 (선명한 클릭 영역을 위해)
+}
+
+.clearCartButton:hover {
+  background-color: #cecbcb; // 호버 시 색상 변화
+  opacity: 0.8;
 }
