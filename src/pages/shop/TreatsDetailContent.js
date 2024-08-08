@@ -1,5 +1,6 @@
 import React from 'react';
-import styles from './TreatsDetailContent.module.scss'; 
+import styles from './TreatsDetailContent.module.scss';
+import { AUTH_URL } from '../../config/user/host-config';
 
 const TreatsDetailContent = ({ treat }) => {
   return (
@@ -11,7 +12,7 @@ const TreatsDetailContent = ({ treat }) => {
       {Array.isArray(treat["treats-pics"]) && treat["treats-pics"].length > 0 && (
         <div className={styles.treatsPics}>
           {treat["treats-pics"].map((pic) => {
-            const treatPicUrl = `http://localhost:8888${pic.treatsPic.replace(
+            const treatPicUrl = `${AUTH_URL}${pic.treatsPic.replace(
               "/local",
               "/treats/images"
             )}`;
@@ -31,7 +32,7 @@ const TreatsDetailContent = ({ treat }) => {
       {Array.isArray(treat["treats-detail-pics"]) && treat["treats-detail-pics"].length > 0 && (
         <div className={styles.detailPics}>
           {treat["treats-detail-pics"].map((pic) => {
-            const detailPicUrl = `http://localhost:8888${pic.treatsDetailPic.replace(
+            const detailPicUrl = `${AUTH_URL}${pic.treatsDetailPic.replace(
               "/local",
               "/treats/images"
             )}`;

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import TreatsDetailContent from "./TreatsDetailContent";
+import { TREATS_URL } from "../../config/user/host-config";
 
 const TreatDetail = ({ treatsId }) => {
   // const { id: treatsId } = useParams(); // URL 파라미터에서 ID 추출
@@ -10,9 +11,7 @@ const TreatDetail = ({ treatsId }) => {
   useEffect(() => {
     const fetchTreatDetail = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:8888/treats/${treatsId}`
-        );
+        const response = await fetch(`${TREATS_URL}/${treatsId}`);
         if (!response.ok) {
           throw new Error("간식 정보를 가져오는 데 실패했습니다.");
         }
@@ -38,9 +37,7 @@ const TreatDetail = ({ treatsId }) => {
 
   console.log(treats["treats-pics"]);
 
-  return (
-    <TreatsDetailContent key={treats.id} treat={treats}/>
-  );
+  return <TreatsDetailContent key={treats.id} treat={treats} />;
 };
 
 export default TreatDetail;
