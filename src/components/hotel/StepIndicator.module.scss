@@ -2,9 +2,8 @@
   display: flex;
   height: 90px;
   width: 100%;
-  background: #f0f0f0;
+  background: #F4E8D3;
   align-items: center;
-  border-top: 0.2px solid #bcbcbc;
   margin-bottom: 40px;
   
   .stepContainer {
@@ -42,7 +41,7 @@
     }
   }
   .stepLabel {
-    color: #000;
+    color: #333;
     position: relative;
     top: 5px;
   }
@@ -53,7 +52,7 @@
     background-color: lightgray;
 
     &.active {
-      background-color: rgb(155, 0, 0);
+      background-color: #B37A7A;
     }
   }
 }

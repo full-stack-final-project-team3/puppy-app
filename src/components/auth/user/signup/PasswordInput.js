@@ -1,6 +1,5 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useRef, useState } from 'react';
 import styles from './SignUpPage.module.scss';
-import { debounce } from 'lodash';
 
 const PasswordInput = ({ onSuccess }) => {
 
@@ -41,13 +40,6 @@ const PasswordInput = ({ onSuccess }) => {
     const passwordCheck = e.target.value;
     setPasswordCheck(passwordCheck);
 
-    if (passwordCheck === '') {
-      // 비밀번호 확인 입력 값이 비어있는 경우
-      setCheckSuccess('');
-      setCheckError('');
-      return;
-    }
-
     if (password === passwordCheck) { // 비밀번호 재확인 성공
       setCheckSuccess("비밀번호가 일치합니다");
       setTimeout(() => {
@@ -58,10 +50,6 @@ const PasswordInput = ({ onSuccess }) => {
       setCheckError("비밀번호가 일치하지 않습니다"); // 비밀번호 재확인 실패
     }
   };
-
-  // useEffect(() => {
-  //   passwordRef.current.focus();
-  // }, []);
 
   return (
       <div className={styles.signUpInput}>

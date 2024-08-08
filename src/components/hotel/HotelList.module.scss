@@ -5,22 +5,20 @@
   max-width: 1300px;
   background: #F4E8D3;
   border-radius: 32px;
-
-  margin: 0 auto; /* Center the list */
-  justify-content: center; /* Center items */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+  justify-content: center;
   padding: 40px;
-  
 }
 
 .hotel {
-  // border: 1px solid #ccc;
   color: #5C4033;
   padding: 20px;
   margin: 10px;
   border-radius: 8px;
   background-color: #F4E8D3;
-  flex: 1 1 calc(50% - 40px); /* Adjusted to fit 2 items in a row */
-  max-width: calc(50% - 100px); /* Ensure it doesn't grow larger */
+  flex: 1 1 calc(50% - 40px);
+  max-width: calc(50% - 100px);
   box-sizing: border-box;
 
   h2 {
@@ -33,14 +31,50 @@
     margin: 5px 0;
   }
 
+  .imageBox {
+    position: relative;
+
+    .slick-prev, .slick-next {
+      display: none;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 1;
+      width: 150px; 
+      height: 150px;
+      font-size: 30px;
+      color: #343333;
+
+      &:before {
+        font-size: 50px;
+      }
+    }
+
+    .slick-prev {
+      left: 10px;
+    }
+
+    .slick-next {
+      right: 10px;
+    }
+
+    &:hover .slick-prev,
+    &:hover .slick-next {
+      display: block;
+    }
+  }
+
   .imageGallery {
     width: 100%;
+
     .slick-slide {
       height: auto;
     }
+
     .slick-list {
-      height: 400px; /* Fixed height for better layout */
+      height: 400px;
     }
+
     .slick-track {
       display: flex;
       align-items: center;
@@ -50,9 +84,9 @@
   .image {
     width: 100%;
     height: 400px;
-    object-fit: cover; /* Better image fit */
+    object-fit: cover;
   }
-  
+
   .deleteButton {
     background: none;
     border: none;
@@ -61,7 +95,7 @@
     font-size: 2rem;
     position: relative;
     right: 8%;
-    color: #868686; /* Change color as needed */
+    color: #868686;
   }
 
   .favoriteButton {
@@ -72,7 +106,7 @@
     border: none;
     cursor: pointer;
     font-size: 2rem;
-    color: #868686; /* 색상은 필요에 따라 변경 */
+    color: #868686;
   }
 
   .ListButton {
@@ -91,45 +125,4 @@
       background-color: #9A5A5A;
     }
   }
-
-  .AddRoomButton {
-    margin-left: auto;
-  }
-
-  .showPropertyButton {
-    background-color: #B37A7A;
-  }
-}
-
-.dateButton {
-  display: block;
-  margin: 0 auto 20px;
-  padding: 10px 20px;
-  font-size: 16px;
-  color: #fff;
-  background-color: #007bff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #0056b3;
-  }
-}
-
-/* react-slick 기본 스타일 적용 */
-.slick-prev, .slick-next {
-  z-index: 1;
-  width: 100px;
-  height: 100px;
-}
-
-.slick-prev:before, .slick-next:before {
-  font-size: 50px ;
-  color: #343333 ;
-}
-
-.slick-dots {
-  bottom: 10px;
 }

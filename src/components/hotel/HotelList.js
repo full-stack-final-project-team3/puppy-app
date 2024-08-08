@@ -1,26 +1,28 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
-import { useNavigate, useRouteLoaderData } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import {useNavigate, useRouteLoaderData} from 'react-router-dom';
+import {useDispatch, useSelector} from 'react-redux';
 import styles from './HotelList.module.scss';
 import Slider from 'react-slick';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes, faBookmark as filledBookmark } from '@fortawesome/free-solid-svg-icons';
-import { faBookmark as emptyBookmark } from '@fortawesome/free-regular-svg-icons';
-import { addFavorite, fetchFavorites, removeFavorite } from '../store/hotel/FavoriteSlice';
-import { deleteHotel, updateHotel } from '../store/hotel/HotelAddSlice';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faTimes, faBookmark as filledBookmark} from '@fortawesome/free-solid-svg-icons';
+import {faBookmark as emptyBookmark} from '@fortawesome/free-regular-svg-icons';
+import {addFavorite, fetchFavorites, removeFavorite} from '../store/hotel/FavoriteSlice';
+import {deleteHotel, updateHotel} from '../store/hotel/HotelAddSlice';
 import store from '../store';
-import { setHotels } from '../store/hotel/HotelPageSlice';
+import {setHotels} from '../store/hotel/HotelPageSlice';
 import HotelNoRoom from './HotelNoRoom';
 
-const HotelList = ({ onShowProperty, getSliderSettings }) => {
-const userData = useRouteLoaderData('user-data');
-const dispatch = useDispatch();
-const navigate = useNavigate();
-const userDetail = useSelector((state) => state.userEdit.userDetail);
-const favorites = useSelector((state) => state.favorites.favorites);
-const hotels = useSelector((state) => state.hotelPage.hotels);
-    
+const HotelList = ({onShowProperty, getSliderSettings}) => {
+    // const userData = useSelector(state => state.userEdit.userDetail);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const userDetail = useSelector((state) => state.userEdit.userDetail);
+    const favorites = useSelector((state) => state.favorites.favorites);
+    const hotels = useSelector((state) => state.hotelPage.hotels);
+    const isAdmin = userDetail && userDetail.role === 'ADMIN';
+
+    console.log("asdasd", userDetail)
 // 즐겨찾기 상태를 업데이트.
     // useEffect(() => {
     //     if (userData) {
@@ -29,17 +31,18 @@ const hotels = useSelector((state) => state.hotelPage.hotels);
     // }, [dispatch, userData]);
 
 
-  const handleAddRoom = (hotelId) => {
-    navigate(`/add-room/${hotelId}`);
-  };
+    const handleAddRoom = (hotelId) => {
+        navigate(`/add-room/${hotelId}`);
+    };
 
-  const handleAddReview = (hotelId) => {
-    if (userDetail && userDetail.userId) {
-      navigate(`/add-review/${hotelId}`, { state: { userId: userDetail.userId } });
-    } else {
-      console.error('사용자 ID가 누락되었습니다');
-    }
-  };
+    // 리뷰 작성 핸들러
+    // const handleAddReview = (hotelId) => {
+    //     if (userDetail && userDetail.id) {
+    //         navigate(`/add-review/${hotelId}`, {state: {userId: userDetail.userId}});
+    //     } else {
+    //         console.error('사용자 ID가 누락되었습니다');
+    //     }
+    // };
 
     // 호텔이 즐겨찾기 목록에 있는지 확인
     const isFavorite = (hotelId) => favorites.some(fav => fav.hotelId === hotelId);
@@ -50,8 +53,6 @@ const hotels = useSelector((state) => state.hotelPage.hotels);
         }
     }, [dispatch, userDetail.userId]);
 
-
-    
 
     // 호텔 즐겨찾기 추가
     const handleAddFavorite = (hotelId) => {
@@ -80,23 +81,23 @@ const hotels = useSelector((state) => state.hotelPage.hotels);
         }
     };
 
-  if (!hotels.length) {
-    return <HotelNoRoom />;
-  }
+    if (!hotels.length) {
+        return <HotelNoRoom/>;
+    }
 
-  return (
-    <div className={styles.hotelList}>
+    return (
+        <div className={styles.hotelList}>
             {hotels.map((hotel) => (
                 <div key={hotel.id} className={styles.hotel}>
                     <button
                         onClick={() => isFavorite(hotel.id) ? handleRemoveFavorite(hotel.id) : handleAddFavorite(hotel.id)}
                         className={styles.favoriteButton}
                     >
-                        <FontAwesomeIcon icon={isFavorite(hotel.id) ? filledBookmark : emptyBookmark} />
+                        <FontAwesomeIcon icon={isFavorite(hotel.id) ? filledBookmark : emptyBookmark}/>
                     </button>
-                    <button onClick={() => handleDeleteHotel(hotel.id)} className={styles.deleteButton}>
-                        <FontAwesomeIcon icon={faTimes} />
-                    </button>
+                    {isAdmin && (<button onClick={() => handleDeleteHotel(hotel.id)} className={styles.deleteButton}>
+                        <FontAwesomeIcon icon={faTimes}/>
+                    </button>)}
                     <div className={styles.imageBox}>
                         {/* Slider 적용 */}
                         <Slider {...getSliderSettings(hotel["hotel-images"].length)} className={styles.imageGallery}>
@@ -112,13 +113,15 @@ const hotels = useSelector((state) => state.hotelPage.hotels);
                                 );
                             })}
                         </Slider>
-                    </div><br></br>
+                    </div>
+                    <br></br>
                     <h2>{hotel.name}</h2><br></br>
                     <p>{hotel.description}</p><br></br>
                     <p>{hotel.location}</p>
 
-                    <button className={styles.ListButton} onClick={() => handleAddReview(hotel.id)}>리뷰 작성</button>
-                    <button className={styles.ListButton} onClick={() => handleAddRoom(hotel.id)}>방 추가</button>
+                    {/*<button className={styles.ListButton} onClick={() => handleAddReview(hotel.id)}>리뷰 작성</button>*/}
+                    {isAdmin &&
+                        (<button className={styles.ListButton} onClick={() => handleAddRoom(hotel.id)}>방 추가</button>)}
                     <button className={styles.ListButton} onClick={() => onShowProperty(hotel.id)}>선택</button>
                 </div>
             ))}
