@@ -1,30 +1,25 @@
 .cartContainer {
   width: 90%; // 너비 조정
-  max-width: 800px; // 최대 너비 설정
-  margin: 40px auto;
+  margin: 0px auto;
   padding: 20px;
-  border: 1px solid #ddd; // 경계선 색상 조정
-  border-radius: 10px; // 모서리 둥글게
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  background-color: #fff; // 배경색 변경
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  .cartTitle {
+    margin-bottom: 40px;
+  }
+
 }
 
 .bundleContainer {
-  width: 100%;
-  padding: 15px;
+  width: 1000px;
+  padding: 20px;
   margin-bottom: 15px; // 항목 간 간격 추가
   border: 1px solid #eee; // 항목 경계선 추가
   border-radius: 8px; // 모서리 둥글게
   background-color: #f7f7f7; // 항목 배경색
   transition: transform 0.2s, box-shadow 0.2s; // 애니메이션 추가
-
-  &:hover {
-    transform: translateY(-5px); // 위로 이동 효과
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); // 그림자 효과
-  }
 }
 
 .bundleHeader {
@@ -34,9 +29,24 @@
   margin-bottom: 10px;
 }
 
+.treatsList {
+  display: flex;
+  flex-direction: column; // 세로 정렬
+  width: 100%; // 리스트 너비 100%
+}
+
 .treatItem {
-  padding: 10px;
+  padding: 10px 50px 10px 10px;
+  display: flex; // 플렉스 박스 사용
+  align-items: center; // 수직 정렬
   border-bottom: 1px solid #ddd; // 구분선 추가
+
+  // 이미지 스타일링
+  img {
+    width: 50px; // 이미지 너비
+    height: auto; // 비율 유지
+    margin-right: 10px; // 간식 제목과의 간격
+  }
 }
 
 .treatItem:last-child {
@@ -50,29 +60,62 @@
   margin-top: 10px;
 }
 
+.bundlePrice {
+  font-size: 16px; // 가격 폰트 크기
+  color: #333; // 가격 색상
+}
+
 .itemRemove {
+  font-size: 14px;
   color: #e74c3c; // 삭제 버튼 색상
   cursor: pointer;
-  font-weight: bold;
 
   &:hover {
     text-decoration: underline; // 호버 시 밑줄 추가
   }
 }
 
-.emptyCartContainer {
-  // ... 기존 스타일 유지 ...
+.totalPriceContainer {
+  margin-top: 40px; // 상단 여백
+  width: 100%; // 너비 100%
+  border-top: 1px solid #ddd; // 상단 경계선 추가
+  padding-top: 20px; // 상단 패딩
 }
 
-.shopButton {
-  // ... 기존 스타일 유지 ...
-  &:hover {
-    background-color: #d76d3f; // 호버 시 색상 변화
-  }
+.priceRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px; // 항목 간 간격
+  font-size: 16px; // 폰트 크기
+  color: #333; // 색상
 }
 
-.loading {
-  text-align: center;
-  font-size: 18px;
-  color: #3498db;
+.totalAmountRow {
+  margin: 10px 0;
+  display: flex;
+  justify-content: space-between;
+  font-size: 20px; // 더 큰 폰트 크기
+  font-weight: bold; // 굵게
+  color: #2c3e50; // 강조된 색상
+}
+
+.clearCartContainer {
+  display: flex; // Flexbox 활성화
+  justify-content: flex-end; // 오른쪽 정렬
+}
+
+.clearCartButton {
+  color: black; // 글자색
+  background: none; // 배경색 없음
+  border: none; // 모든 경계선 제거
+  border-bottom: 1px solid black; // 아래쪽 보더라인만 설정
+  cursor: pointer; // 커서 포인터
+  font-size: 12px; // 폰트 크기
+  margin-left: auto; // 오른쪽 끝으로 정렬
+  padding: 2px 0; // 위아래 패딩 추가 (선명한 클릭 영역을 위해)
+}
+
+.clearCartButton:hover {
+  background-color: #cecbcb; // 호버 시 색상 변화
+  opacity: 0.8;
 }

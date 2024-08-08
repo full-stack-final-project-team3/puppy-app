@@ -3,8 +3,8 @@ import { getUserToken } from "../../config/user/auth";
 import styles from "./ShowCart.module.scss";
 import { useNavigate } from "react-router-dom";
 import { CART_URL } from "../../config/user/host-config";
+import CartContent from "./CartContent"; // CartContent 임포트
 
-// ShowCart.js
 const ShowCart = () => {
   const [cart, setCart] = useState(null);
   const [error, setError] = useState(null);
@@ -28,6 +28,7 @@ const ShowCart = () => {
 
         const data = await response.json();
         setCart(data);
+        console.log(data);
       } catch (error) {
         setError(error.message);
       }
@@ -71,37 +72,14 @@ const ShowCart = () => {
 
   return (
     <div className={styles.cartContainer}>
-      <h2 className={styles.cartTitle}>장바구니</h2>
+      <h2 className={styles.cartTitle}>CART</h2>
+
       {cart.bundles && cart.bundles.length > 0 ? (
-        <div className={styles.cartList}>
-          {cart.bundles.map((bundle) => (
-            <div key={bundle.id} className={styles.bundleContainer}>
-              <h4 className={styles.bundleHeader}>
-                {bundle.dogName}을 위한 맞춤 패키지
-              </h4>
-              <div className={styles.treatsList}>
-                {bundle.treats.map((treat, treatIndex) => (
-                  <div key={treatIndex} className={styles.treatItem}>
-                    <h5 className={styles.itemTitle}>{treat.treatsTitle}</h5>
-                    <p>무게: {treat.treatsWeight}g</p>
-                    {/* 여기에서 간식 수정 기능 추가 가능 */}
-                  </div>
-                ))}
-              </div>
-              <div className={styles.bundleFooter}>
-                <span className={styles.bundlePrice}>
-                  가격: {bundle.bundlePrice.toLocaleString()}원
-                </span>
-                <span
-                  className={styles.itemRemove}
-                  onClick={() => handleRemoveBundle(bundle.id)}
-                >
-                  삭제
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
+        <CartContent
+          cart={cart}
+          bundles={cart.bundles}
+          handleRemoveBundle={handleRemoveBundle}
+        />
       ) : (
         <div className={styles.emptyCartContainer}>
           <div className={styles.emptyCartIcon}>🛒</div>
