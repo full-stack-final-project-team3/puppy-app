@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import MyPageHeader from "../../components/auth/user/mypage/MyPageHeader";
 import styles from './MyLikeHotel.module.scss';
 import { useDispatch, useSelector } from "react-redux";
-import { fetchFavorites } from "../../components/store/hotel/FavoriteSlice";
+import { fetchFavorites } from "../../components/store/hotel/FavoriteSlice.js";
 
 const MyLikeHotel = () => {
     const { favorites, status } = useSelector(state => state.favorites);
