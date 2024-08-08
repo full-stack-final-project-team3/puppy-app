@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
-import { TREATS_URL } from "../../config/user/host-config";
+import { TREATS_URL, AUTH_URL } from "../../config/user/host-config";
 import styles from "./TreatsListForDog.module.scss";
 import CreateBundle from "../../components/shop/CreateBundle";
 import Modal from "./TreatsDetailModal";
@@ -157,10 +157,10 @@ const TreatsListForDog = () => {
                     Array.isArray(treat["treats-pics"]) &&
                     treat["treats-pics"].length > 0;
                   const imageUrl = hasTreatPics
-                    ? `http://localhost:8888${treat[
+                    ? `${AUTH_URL}${treat[
                         "treats-pics"
                       ][0].treatsPic.replace("/local", "/treats/images")}`
-                    : "http://localhost:8888/treats/images/default.webp";
+                    : `${AUTH_URL}/treats/images/default.webp`;
 
                   return (
                     <div className={styles.card} key={treat.id}>
@@ -200,7 +200,7 @@ const TreatsListForDog = () => {
                   selectedTreats[type].map((treat) => (
                     <div key={treat.title} className={styles.treatWrapper}>
                       <img
-                        src={`http://localhost:8888${treat[
+                        src={`${AUTH_URL}${treat[
                           "treats-pics"
                         ][0].treatsPic.replace("/local", "/treats/images")}`}
                         alt={treat.title}
@@ -226,7 +226,7 @@ const TreatsListForDog = () => {
           </div>
         </div>
       </div>
-      <CreateBundle selectedTreats={selectedTreats} dogId={dogId} dogName={dogName}/>
+      <CreateBundle selectedTreats={selectedTreats} dogId={dogId} />
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}

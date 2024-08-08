@@ -1,8 +1,9 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { getUserToken } from "../../config/user/auth";
+import { BUNDLE_URL, CART_URL } from "../../config/user/host-config";
 
-const CreateBundle = ({ selectedTreats, dogId, dogName }) => {
+const CreateBundle = ({ selectedTreats, dogId }) => {
   const treatArray = Array.isArray(selectedTreats)
     ? selectedTreats
     : Object.values(selectedTreats).flat();
@@ -24,7 +25,7 @@ const CreateBundle = ({ selectedTreats, dogId, dogName }) => {
     };
 
     try {
-      const response = await fetch(`http://localhost:8888/bundle/${dogId}`, {
+      const response = await fetch(`${BUNDLE_URL}/${dogId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -47,7 +48,7 @@ const CreateBundle = ({ selectedTreats, dogId, dogName }) => {
 
   const createCart = async () => {
     try {
-      const cartResponse = await fetch(`http://localhost:8888/cart`, {
+      const cartResponse = await fetch(`${CART_URL}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

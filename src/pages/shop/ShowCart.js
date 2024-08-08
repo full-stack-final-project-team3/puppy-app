@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import { getUserToken } from "../../config/user/auth";
 import styles from "./ShowCart.module.scss";
 import { useNavigate } from "react-router-dom";
+import { CART_URL } from "../../config/user/host-config";
 
+// ShowCart.js
 const ShowCart = () => {
   const [cart, setCart] = useState(null);
   const [error, setError] = useState(null);
@@ -12,7 +14,7 @@ const ShowCart = () => {
   useEffect(() => {
     const fetchCart = async () => {
       try {
-        const response = await fetch("http://localhost:8888/cart", {
+        const response = await fetch(`${CART_URL}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -25,22 +27,46 @@ const ShowCart = () => {
         }
 
         const data = await response.json();
-        setCart(data); // 장바구니 데이터를 상태에 저장
-        console.log(data);
+        setCart(data);
       } catch (error) {
-        setError(error.message); // 오류 메시지 저장
+        setError(error.message);
       }
     };
 
     fetchCart();
   }, [token]);
 
+  const handleRemoveBundle = async (bundleId) => {
+    try {
+      const response = await fetch(`${CART_URL}/${bundleId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("번들을 삭제하는 데 실패했습니다.");
+      }
+
+      // 상태 업데이트
+      setCart((prevCart) => ({
+        ...prevCart,
+        bundles: prevCart.bundles.filter((bundle) => bundle.id !== bundleId),
+      }));
+    } catch (error) {
+      console.error(error.message);
+      setError(error.message);
+    }
+  };
+
   if (error) {
-    return <div className={styles.cartContainer}>오류: {error}</div>; // 오류 메시지 표시
+    return <div className={styles.cartContainer}>오류: {error}</div>;
   }
 
   if (!cart) {
-    return <div className={styles.loading}>로딩 중...</div>; // 로딩 중 표시
+    return <div className={styles.loading}>로딩 중...</div>;
   }
 
   return (
@@ -48,20 +74,37 @@ const ShowCart = () => {
       <h2 className={styles.cartTitle}>장바구니</h2>
       {cart.bundles && cart.bundles.length > 0 ? (
         <div className={styles.cartList}>
-          {cart.bundles.map((bundle, index) => (
-            <div key={index}>
-              <h4>{bundle.dogName}을 위한 패키지</h4>
-              <div className={styles.itemTitle}>
-                {bundle.treats[0].treatsTitle}
+          {cart.bundles.map((bundle) => (
+            <div key={bundle.id} className={styles.bundleContainer}>
+              <h4 className={styles.bundleHeader}>
+                {bundle.dogName}을 위한 맞춤 패키지
+              </h4>
+              <div className={styles.treatsList}>
+                {bundle.treats.map((treat, treatIndex) => (
+                  <div key={treatIndex} className={styles.treatItem}>
+                    <h5 className={styles.itemTitle}>{treat.treatsTitle}</h5>
+                    <p>무게: {treat.treatsWeight}g</p>
+                    {/* 여기에서 간식 수정 기능 추가 가능 */}
+                  </div>
+                ))}
               </div>
-              <span className={styles.itemRemove}>삭제</span>{" "}
-              {/* 삭제 버튼 추가 */}
+              <div className={styles.bundleFooter}>
+                <span className={styles.bundlePrice}>
+                  가격: {bundle.bundlePrice.toLocaleString()}원
+                </span>
+                <span
+                  className={styles.itemRemove}
+                  onClick={() => handleRemoveBundle(bundle.id)}
+                >
+                  삭제
+                </span>
+              </div>
             </div>
           ))}
         </div>
       ) : (
         <div className={styles.emptyCartContainer}>
-          <div className={styles.emptyCartIcon}>🛒</div> {/* 장바구니 아이콘 */}
+          <div className={styles.emptyCartIcon}>🛒</div>
           <div className={styles.emptyCartMessage}>
             장바구니가 비어있습니다.
           </div>
