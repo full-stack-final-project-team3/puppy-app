@@ -23,7 +23,7 @@ import './HotelPageAnimations.scss';
 import dayjs from 'dayjs';
 
 const HotelPage = () => {
-    const userData = useLoaderData();
+    const userData = useSelector((state) => state.userEdit.userDetail);
     const isAdmin = userData && userData.role === 'ADMIN';
 
     const dispatch = useDispatch();

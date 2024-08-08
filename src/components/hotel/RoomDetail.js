@@ -10,7 +10,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useDispatch, useSelector } from 'react-redux';
 import ReviewList from './ReviewList';
-import { useNavigate } from "react-router-dom";
+import {useNavigate, useRouteLoaderData} from "react-router-dom";
 import MapView from './MapView';
 import { deleteRoom, setRooms } from '../store/hotel/RoomAddSlice';
 import { fetchAvailableRooms } from '../store/hotel/ReservationSlice';
@@ -29,6 +29,9 @@ const RoomDetail = ({ hotel, onBook, getSliderSettings, onModifyRoom }) => {
     const rooms = useSelector(state => state.roomAdd.rooms);
     const startDate = useSelector(state => state.reservation.startDate);
     const endDate = useSelector(state => state.reservation.endDate);
+    const userData = useSelector((state) => state.userEdit.userDetail);
+    const isAdmin = userData && userData.role === 'ADMIN';
+
 
     const [availableRooms, setAvailableRooms] = useState([]);
 
@@ -97,15 +100,15 @@ const RoomDetail = ({ hotel, onBook, getSliderSettings, onModifyRoom }) => {
 
     return (
         <>
-        <button className={styles.modifyButton} onClick={modifyHotelHandler}>
-                            Modify Hotel
-                        </button>
+            {isAdmin && (<button className={styles.modifyButton} onClick={modifyHotelHandler}>
+                Modify Hotel
+            </button>)}
             <div className={styles.roomDetail}>
                 {availableRooms.map((room, roomIndex) => (
                     <div key={room['room-id']} className={styles.room}>
-                        <button className={styles.deleteButton} onClick={() => handleDeleteRoom(room['room-id'])}>
-                            <FontAwesomeIcon icon={faTimes} />
-                        </button>
+                        {isAdmin && (<button className={styles.deleteButton} onClick={() => handleDeleteRoom(room['room-id'])}>
+                            <FontAwesomeIcon icon={faTimes}/>
+                        </button>)}
                         
                         <Slider className={styles.slider} {...getSliderSettings(room["room-images"].length)}>
                             {room["room-images"] && room["room-images"].map((image, imageIndex) => {
