@@ -22,24 +22,25 @@ const AddressInput = ({ onSuccess }) => {
     setDetailAddress(detail);
   };
 
-  // const handleSubmit = () => {
-  //   onSuccess({ localAddress, detailAddress }); // 주소 정보를 상위 컴포넌트로 전달
-  // };
-
   const openKakaoAddress = () => {
     new window.daum.Postcode({
       oncomplete: function (data) {
         setLocalAddress(data.address);
         dispatch(updateHotelData({ location: data.address }));
-        // handleSubmit(); // 주소 선택 후 onSuccess 호출
+        onSuccess({ localAddress: data.address, detailAddress });
       }
     }).open();
   };
 
-  // 렌더링 되자마자 입력창에 포커싱
   useEffect(() => {
     inputRef.current.focus();
   }, []);
+
+  useEffect(() => {
+    if (localAddress && detailAddress) {
+      onSuccess({ localAddress, detailAddress });
+    }
+  }, [localAddress, detailAddress]); // onSuccess를 의존성 배열에서 제거
 
   return (
     <>
