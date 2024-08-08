@@ -18,7 +18,7 @@ export const fetchReviews = createAsyncThunk(
                 throw new Error(`Failed to fetch reviews: ${errorText}`);
             }
             const data = await response.json();
-            return data;
+            return { hotelId, reviews: data }; // 리뷰 데이터와 호텔 ID를 함께 반환
         } catch (error) {
             return thunkAPI.rejectWithValue(error.toString());
         }
@@ -86,7 +86,11 @@ const reviewSlice = createSlice({
             })
             .addCase(fetchReviews.fulfilled, (state, action) => {
                 state.loading = false;
-                state.reviews = action.payload;
+                // 기존 리뷰에 새로운 리뷰 데이터를 추가
+                state.reviews = [
+                    ...state.reviews.filter(review => review.hotelId !== action.payload.hotelId),
+                    ...action.payload.reviews
+                ];
             })
             .addCase(fetchReviews.rejected, (state, action) => {
                 state.loading = false;

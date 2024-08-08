@@ -35,13 +35,14 @@ const HotelList = ({onShowProperty, getSliderSettings}) => {
         navigate(`/add-room/${hotelId}`);
     };
 
-    const handleAddReview = (hotelId) => {
-        if (userDetail && userDetail.id) {
-            navigate(`/add-review/${hotelId}`, {state: {userId: userDetail.userId}});
-        } else {
-            console.error('사용자 ID가 누락되었습니다');
-        }
-    };
+    // 리뷰 작성 핸들러
+    // const handleAddReview = (hotelId) => {
+    //     if (userDetail && userDetail.id) {
+    //         navigate(`/add-review/${hotelId}`, {state: {userId: userDetail.userId}});
+    //     } else {
+    //         console.error('사용자 ID가 누락되었습니다');
+    //     }
+    // };
 
     // 호텔이 즐겨찾기 목록에 있는지 확인
     const isFavorite = (hotelId) => favorites.some(fav => fav.hotelId === hotelId);
@@ -118,7 +119,7 @@ const HotelList = ({onShowProperty, getSliderSettings}) => {
                     <p>{hotel.description}</p><br></br>
                     <p>{hotel.location}</p>
 
-                    <button className={styles.ListButton} onClick={() => handleAddReview(hotel.id)}>리뷰 작성</button>
+                    {/*<button className={styles.ListButton} onClick={() => handleAddReview(hotel.id)}>리뷰 작성</button>*/}
                     {isAdmin &&
                         (<button className={styles.ListButton} onClick={() => handleAddRoom(hotel.id)}>방 추가</button>)}
                     <button className={styles.ListButton} onClick={() => onShowProperty(hotel.id)}>선택</button>
