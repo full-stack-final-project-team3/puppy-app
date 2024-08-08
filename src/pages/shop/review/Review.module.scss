@@ -1,55 +1,225 @@
-// Importing a CSS file in SCSS
-@import './common/common.css';
-
-
-.review_text{
-    width: 500px;
-    height: 350px;
-    resize: none;
+.review_common_box {
+  padding: 20px;
+  background-color: #f9f9f9;
 }
 
-.review_common_box button{
-    padding: 10px 20px;
-    border: 2px solid #000;
-    background-color: rgb(196, 231, 55);
+.review_page_box {
+  max-width: 800px;
+  margin: 0 auto;
 }
-.review_common_box button:hover {
-    background-color: transparent;
-}
-
-.review_editor_box{
-  outline: 3px;
-}
-
-.review_page_box{
-  background-color: transparent;
-}
-
 
 .review_list_box {
-    // review_list_box 안에 있는 li들에 대한 스타일 정의
-    list-style: none; // li 요소의 기본 리스트 스타일을 제거합니다.
-    padding: 0; // 필요에 따라 기본 padding을 제거합니다.
-    
-    // li 요소에 대한 추가 스타일을 정의할 수 있습니다.
-    li {
-      padding: 10px; // 예: 각 li 항목에 패딩을 추가합니다.
-      border-bottom: 1px solid #ddd; // 예: 각 li 항목에 하단 경계선을 추가합니다.
-      outline: 2px solid #777;
-      margin-bottom: 20px;
-      cursor: pointer;
-      
-      &:last-child {
-        border-bottom: none; // 마지막 li 항목에서 하단 경계선을 제거합니다.
-      }
-      
-      &:hover {
-        background-color: #f0f0f0; // 예: 마우스 오버 시 배경색 변경
-      }
-    }
-  }
+  list-style: none;
+  padding: 0;
+}
+
+.review_item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+}
+
+.review_item:hover {
+  background-color: #f0f0f0;
+}
+
+.review_profile_box {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.review_left {
+  flex: 0 0 60px;
+  margin-right: 10px;
+}
+
+.image {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.review_header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.nickname {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.date {
+  color: #888;
+}
+
+.review_body {
+  display: flex;
+  flex-direction: column;
+}
+
+.review_images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.review_image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.review_text_container {
+  position: relative;
+}
+
+.review_text_collapsed {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 3em; /* Assuming 1.5em per line */
+}
+
+.review_text_expanded {
+  display: block;
+}
+
+.expand_button {
+  background: none;
+  border: none;
+  color: blue;
+  cursor: pointer;
+  padding: 0;
+  margin-top: 5px;
+}
+
+h2 {
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+p {
+  margin: 0;
+  color: #666;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+.modal_content {
+  display: flex;
+  flex-direction: column;
+}
+
+.file_input_wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.file_input_wrapper input {
+  margin-right: 10px;
+}
 
 
-.review_common_box.review_editor_box .review_list_box{
-    outline: 3px solid red;
-  }
+
+
+
+/* Review.module.scss */
+
+/* Modal overlay to cover the screen */
+.modal_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Modal content container */
+.modal_content {
+  position: relative;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 90%;
+  max-height: 90vh;
+}
+
+/* Modal image */
+.modal_image {
+  max-width: 100%;
+  max-height: 80vh; /* Adjust as needed */
+  width: auto;
+  height: auto;
+  object-fit: contain; /* Keeps aspect ratio */
+}
+
+/* Image container for navigation buttons */
+.modal_image_container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* Navigation buttons */
+.prev_button, .next_button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.prev_button {
+  left: 10px;
+}
+
+.next_button {
+  right: 10px;
+}
+
+/* Close button */
+.close_button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 10;
+}
