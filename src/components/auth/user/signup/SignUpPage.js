@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useContext } from "react";
+import React, { useEffect, useRef, useState, useContext, useCallback } from "react";
 import { CSSTransition } from "react-transition-group";
 import styles from "./SignUpPage.module.scss";
 import EmailInput from "./EmailInput";
@@ -26,11 +26,16 @@ const SignUpPage = () => {
   const [enteredPassword, setEnteredPassword] = useState(""); // 입력된 패스워드
   const [passwordIsValid, setPasswordIsValid] = useState(false);
   const [enteredNickname, setEnteredNickname] = useState(""); // 입력된 닉네임
-  const [enteredAddress, setEnteredAddress] = useState(""); // 입력된 주소
   const [enteredPhoneNumber, setEnteredPhoneNumber] = useState(""); // 입력된 휴대폰 번호
   const [step2Button, setStep2Button] = useState(false); // step2 버튼 활성화 여부
   const [step3Button, setStep3Button] = useState(false); // step3 버튼 활성화 여부
+  const [address, setAddress] = useState({ localAddress: "", detailAddress: "" }); // 주소 상태
   const { changeIsLogin, setUser } = useContext(UserContext);
+
+  // 주소 입력 성공 핸들러
+  const handleAddressSuccess = useCallback((address) => {
+    setAddress(address);
+  }, []);
 
   // 다음 단계로 넘어가는 함수
   const nextStep = () => {
@@ -38,31 +43,26 @@ const SignUpPage = () => {
   };
 
   // 이메일 입력 성공 핸들러
-  const emailSuccessHandler = (email) => {
+  const emailSuccessHandler = useCallback((email) => {
     setEnteredEmail(email);
     setEmailVerified(true); // 이메일 검증 완료 상태로 변경
-  };
+  }, []);
 
   // 닉네임 입력 성공 핸들러
-  const nicknameSuccessHandler = (nickname) => {
+  const nicknameSuccessHandler = useCallback((nickname) => {
     setEnteredNickname(nickname);
-  };
+  }, []);
 
   // 패스워드 입력 성공 핸들러
-  const passwordSuccessHandler = (password, isValid) => {
+  const passwordSuccessHandler = useCallback((password, isValid) => {
     setEnteredPassword(password);
     setPasswordIsValid(isValid);
-  };
-
-  // 주소 입력 성공 핸들러
-  const addressSuccessHandler = (address) => {
-    setEnteredAddress(address);
-  };
+  }, []);
 
   // 휴대폰 번호 입력 성공 핸들러
-  const phoneNumberSuccessHandler = (phoneNumber) => {
+  const phoneNumberSuccessHandler = useCallback((phoneNumber) => {
     setEnteredPhoneNumber(phoneNumber);
-  };
+  }, []);
 
   // 서버에 회원가입 완료 요청하기
   const submitHandler = async (e) => {
@@ -71,14 +71,12 @@ const SignUpPage = () => {
       email: enteredEmail,
       nickname: enteredNickname,
       password: enteredPassword,
-      address: enteredAddress, // 지역주소와 상세주소를 합쳐서 전송
       phoneNumber: enteredPhoneNumber,
+      address: `${address.localAddress} ${address.detailAddress}`,
     };
 
     console.log(payload);
-    console.log('enteredAddress: ', enteredAddress);
     
-
     const response = await fetch(`${AUTH_URL}/join`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -108,10 +106,11 @@ const SignUpPage = () => {
   useEffect(() => {
     // 활성화 여부 감시
     const isActive = enteredEmail && enteredPassword
-      && enteredNickname && enteredPhoneNumber;
+      && enteredNickname && enteredPhoneNumber
+      && address.localAddress && address.detailAddress;
 
     setStep3Button(isActive);
-  }, [enteredEmail, enteredPassword, enteredNickname, enteredPhoneNumber]);
+  }, [enteredEmail, enteredPassword, enteredNickname, enteredPhoneNumber, address]);
 
   const handleStepClick = (num) => {
     if (num < step) {
@@ -125,8 +124,8 @@ const SignUpPage = () => {
       email: enteredEmail,
       password: enteredPassword,
       nickname: enteredNickname,
-      address: enteredAddress, // 지역주소와 상세주소를 합쳐서 전송
-      phoneNumber: enteredPhoneNumber
+      phoneNumber: enteredPhoneNumber,
+      address: `${address.localAddress} ${address.detailAddress}`,
     };
 
     console.log(payload);
@@ -199,7 +198,7 @@ const SignUpPage = () => {
 
               {step === 3 && (
                 <div className={styles.signUpBox}>
-                  <AddressInput onSuccess={addressSuccessHandler} />
+                  <AddressInput onSuccess={handleAddressSuccess} />
                   <PhoneNumberInput onSuccess={phoneNumberSuccessHandler} />
                   <button
                     type="submit"
