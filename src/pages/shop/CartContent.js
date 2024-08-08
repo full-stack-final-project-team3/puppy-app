@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { getUserToken } from "../../config/user/auth";
 import styles from "./ShowCart.module.scss";
 import { AUTH_URL } from "../../config/user/host-config";
+import { CART_URL } from "../../config/user/host-config";
 
 const CartContent = ({
   cart,
@@ -10,11 +12,65 @@ const CartContent = ({
 }) => {
   const discountedPrice = 69000; // 단일 번들 할인 전 가격
   const totalDiscountedPrice = discountedPrice * bundles.length; // 할인된 총 가격
+  const token = getUserToken();
 
-  const [subscriptionPeriod, setSubscriptionPeriod] = useState("");
+  // 각 번들에 대한 구독 기간 상태 관리
+  const [subscriptionPeriods, setSubscriptionPeriods] = useState(
+    bundles.reduce((acc, bundle) => {
+      acc[bundle.id] = ""; // 초기값은 빈 문자열
+      return acc;
+    }, {})
+  );
 
-  const handleSubscriptionChange = (event) => {
-    setSubscriptionPeriod(event.target.value);
+  const handleSubscriptionChange = (bundleId, event) => {
+    setSubscriptionPeriods((prev) => ({
+      ...prev,
+      [bundleId]: event.target.value,
+    }));
+  };
+
+  const handleUpdateCart = async () => {
+
+    const updatedCartInfo = {
+      bundles: bundles.map((bundle) => ({
+        bundleId: bundle.id,
+        subsType: subscriptionPeriods[bundle.id],
+      })),
+    };
+
+    try {
+      // 1. 장바구니 정보 업데이트 요청
+      await fetch(`${CART_URL}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(updatedCartInfo),
+      });
+
+      // 2. 결제 요청
+      //   const response = await fetch('/api/processPayment', {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     },
+      //     body: JSON.stringify({ cartId: cart.id }),
+      //   });
+
+      //   if (response.ok) {
+      //     const paymentResult = await response.json();
+      //     onPaymentSuccess(paymentResult); // 결제가 성공했을 때 호출
+      //   } else {
+      //     // 결제 실패 처리
+      //     console.error('결제에 실패했습니다.');
+      //   }
+
+      console.log("업데이트 완료")
+
+    } catch (error) {
+      console.error("오류 발생:", error);
+    }
   };
 
   return (
@@ -27,8 +83,8 @@ const CartContent = ({
             </h4>
             <select
               className={styles.subscriptionSelect}
-              value={subscriptionPeriod}
-              onChange={handleSubscriptionChange}
+              value={subscriptionPeriods[bundle.id] || ""}
+              onChange={(event) => handleSubscriptionChange(bundle.id, event)}
             >
               <option value="" disabled>
                 - [필수] 구독 기간 -
@@ -94,7 +150,9 @@ const CartContent = ({
         </div>
       </div>
       <div className={styles.paymentButtonContainer}>
-        <button className={styles.paymentButton}>결제하기</button>
+        <button className={styles.paymentButton} onClick={handleUpdateCart}>
+          결제하기
+        </button>
       </div>
     </div>
   );

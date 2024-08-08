@@ -42,7 +42,7 @@ const ShowCart = () => {
     const confirmRemove = window.confirm("장바구니를 비우시겠습니까?");
 
     if (!confirmRemove) {
-      return; // 사용자가 취소하면 함수 종료
+      return; 
     }
 
     try {
@@ -58,7 +58,6 @@ const ShowCart = () => {
         throw new Error("장바구니를 삭제하는 데 실패했습니다.");
       }
 
-      // 아이템 삭제 후 장바구니 다시 가져오기
       fetchCart();
     } catch (error) {
       console.error(error.message);
@@ -71,7 +70,7 @@ const ShowCart = () => {
     const confirmRemove = window.confirm("선택하신 상품을 삭제하시겠습니까?");
 
     if (!confirmRemove) {
-      return; // 사용자가 취소하면 함수 종료
+      return; 
     }
 
     try {
@@ -87,7 +86,6 @@ const ShowCart = () => {
         throw new Error("패키지를 삭제하는 데 실패했습니다.");
       }
 
-      // 아이템 삭제 후 장바구니 다시 가져오기
       fetchCart();
     } catch (error) {
       console.error(error.message);
