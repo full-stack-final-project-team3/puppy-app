@@ -14,13 +14,13 @@ export const fetchReviews = createAsyncThunk(
         try {
             const response = await fetch(`http://localhost:8888/api/reviews?hotelId=${hotelId}`);
             if (!response.ok) {
-                const errorText = await response.text();
+                const errorText = await response.json();
                 throw new Error(`Failed to fetch reviews: ${errorText}`);
             }
             const data = await response.json();
             return data;
         } catch (error) {
-            return thunkAPI.rejectWithValue(error.message);
+            return thunkAPI.rejectWithValue(error.toString());
         }
     }
 );
@@ -30,7 +30,6 @@ export const addReview = createAsyncThunk(
     async ({ hotelId, reviewContent, rate, userId }, thunkAPI) => {
         const token = JSON.parse(localStorage.getItem('userData')).token;
         const reviewData = { hotelId, reviewContent, rate, userId };
-        console.log('Sending review data to server:', reviewData); // 데이터 확인
         try {
             const response = await fetch('http://localhost:8888/api/reviews', {
                 method: 'POST',
@@ -43,7 +42,7 @@ export const addReview = createAsyncThunk(
 
             if (!response.ok) {
                 const errorText = await response.text();
-                throw new Error(`Failed to add review: ${errorText}`);
+                return thunkAPI.rejectWithValue(`Failed to add review: ${errorText}`);
             }
 
             const data = await response.json();
