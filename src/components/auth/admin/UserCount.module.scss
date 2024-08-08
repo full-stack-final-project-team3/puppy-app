@@ -1,0 +1,20 @@
+.nav {
+  width: 100%;
+
+  .ul {
+    display: flex;
+    width: 100%;
+    text-align: center;
+
+    .menu {
+      width: 33%;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .menu:hover {
+      font-weight: bold;
+      text-decoration: underline;
+    }
+  }
+}
