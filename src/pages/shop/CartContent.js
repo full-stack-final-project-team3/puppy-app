@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./ShowCart.module.scss";
 import { AUTH_URL } from "../../config/user/host-config";
 
@@ -11,13 +11,33 @@ const CartContent = ({
   const discountedPrice = 69000; // 단일 번들 할인 전 가격
   const totalDiscountedPrice = discountedPrice * bundles.length; // 할인된 총 가격
 
+  const [subscriptionPeriod, setSubscriptionPeriod] = useState("");
+
+  const handleSubscriptionChange = (event) => {
+    setSubscriptionPeriod(event.target.value);
+  };
+
   return (
     <div className={styles.cartList}>
       {bundles.map((bundle) => (
         <div key={bundle.id} className={styles.bundleContainer}>
-          <h4 className={styles.bundleHeader}>
-            {bundle.dogName}을 위한 맞춤 패키지
-          </h4>
+          <div className={styles.bundleHeaderContainer}>
+            <h4 className={styles.bundleHeader}>
+              반려견 전용 맞춤형 푸드 패키지 For {bundle.dogName}
+            </h4>
+            <select
+              className={styles.subscriptionSelect}
+              value={subscriptionPeriod}
+              onChange={handleSubscriptionChange}
+            >
+              <option value="" disabled>
+                - [필수] 구독 기간 -
+              </option>
+              <option value="ONE">1개월</option>
+              <option value="MONTH3">3개월</option>
+              <option value="MONTH6">6개월</option>
+            </select>
+          </div>
           <div className={styles.treatsList}>
             {bundle.treats.map((treat) => (
               <div key={treat.id} className={styles.treatItem}>
