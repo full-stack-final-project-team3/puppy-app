@@ -7,7 +7,7 @@ import { faTimes, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { useNavigate } from "react-router-dom";
+import {useNavigate, useRouteLoaderData} from "react-router-dom";
 import {setTotalPrice} from "../store/hotel/ReservationSlice";
 
 const BookingDetail = ({ hotel, startDate, endDate, onPay }) => {
@@ -16,6 +16,8 @@ const BookingDetail = ({ hotel, startDate, endDate, onPay }) => {
     const selectedRoom = useSelector(state => state.hotelPage.selectedRoom);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const userData = useSelector((state) => state.userEdit.userDetail);
+    const isAdmin =userData && userData.role === 'ADMIN';
 
     const roomPrice = selectedRoom['room-price'] || 0;
     const finalPersonCount = personCount || 1;
@@ -94,9 +96,9 @@ const BookingDetail = ({ hotel, startDate, endDate, onPay }) => {
 
     return (
         <>
-            <button className={styles.modifyButton} onClick={handleModifyRoom}>
+            {isAdmin && (<button className={styles.modifyButton} onClick={handleModifyRoom}>
                 Modify Room
-            </button>
+            </button>)}
             <div className={styles.bookingDetail}>
                 <div className={styles.topDetail}>
                     <div className={styles.roomImages}>

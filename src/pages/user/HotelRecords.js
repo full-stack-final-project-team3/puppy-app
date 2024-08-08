@@ -1,18 +1,33 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {deleteReservation, fetchUserReservations} from "../../components/store/hotel/ReservationSlice";
+import { deleteReservation, fetchUserReservations } from "../../components/store/hotel/ReservationSlice";
+import { fetchReviews } from "../../components/store/hotel/HotelReviewSlice"; // fetchReviews 가져오기
 import MyPageHeader from "../../components/auth/user/mypage/MyPageHeader";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from './HotelRecords.module.scss';
 
 const HotelRecords = () => {
     const dispatch = useDispatch();
     const { userReservations, status, error } = useSelector(state => state.reservation);
+    const { reviews } = useSelector(state => state.reviews);
     const userId = JSON.parse(localStorage.getItem('userData')).userId;
+    const userDetail = useSelector((state) => state.userEdit.userDetail);
+    const navigate = useNavigate();
 
     useEffect(() => {
         dispatch(fetchUserReservations({ userId }));
-    }, []);
+    }, [dispatch, userId]);
+
+    useEffect(() => {
+        const fetchAllReviews = async () => {
+            if (userReservations.length > 0) {
+                for (const reservation of userReservations) {
+                    await dispatch(fetchReviews(reservation.hotelId)).unwrap();
+                }
+            }
+        };
+        fetchAllReviews();
+    }, [dispatch, userReservations]);
 
     if (status === 'loading') {
         return <div>Loading...</div>;
@@ -33,19 +48,35 @@ const HotelRecords = () => {
         return imageUri;
     };
 
+    // 사용자가 특정 호텔에 이미 리뷰를 작성했는지 확인하는 함수
+    const hasUserReviewed = (hotelId) => {
+        return reviews.some(review => review.hotelId === hotelId && review.userId === userId);
+    };
 
     // 예약삭제 처리 함수
     const handleDeleteReservation = async (reservationId) => {
         try {
             await dispatch(deleteReservation(reservationId));
-            alert("예약이 삭제되었습니다.")
-
+            alert("예약이 삭제되었습니다.");
         } catch (error) {
             console.error("예약 삭제 실패:", error);
             alert("예약 삭제에 실패했습니다.");
         }
     };
 
+    const handleAddReview = (hotelId) => {
+        if (userDetail && userDetail.id) {
+            navigate(`/add-review/${hotelId}`, { state: { userId: userDetail.userId } });
+        } else {
+            console.error('사용자 ID가 누락되었습니다');
+        }
+    };
+
+    const isReviewable = (reservationEndAt) => {
+        const today = new Date();
+        const endDate = new Date(reservationEndAt);
+        return endDate < today;
+    };
 
     return (
         <div className={styles.wrap}>
@@ -91,6 +122,14 @@ const HotelRecords = () => {
                                         >
                                             예약취소
                                         </button>
+                                        {isReviewable(reservation.reservationEndAt) && !hasUserReviewed(reservation.hotelId) && (
+                                            <button
+                                                onClick={() => handleAddReview(reservation.hotelId)}
+                                                className={styles.link}
+                                            >
+                                                리뷰 작성
+                                            </button>
+                                        )}
                                     </div>
                                 </li>
                             );
