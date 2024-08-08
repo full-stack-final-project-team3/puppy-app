@@ -107,6 +107,7 @@ const HotelConfirmation = ({
             </div>
             <div className={styles.section}>
                 <p>User: {user.nickname}</p>
+                <p>Phone Number: {user.phoneNumber}</p>
             </div>
 
             <div className={styles.paymentInfoBox}>
