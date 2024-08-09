@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import { Link } from 'react-router-dom';
 import styles from './HotelReview.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -106,6 +107,10 @@ const HotelReview = () => {
                 </div>
                 <div className={styles.reviewFooter}>
                     <span>Rating: {review.rate}</span>
+                    <div className={styles.actions}>
+                        <Link to={`/edit-review/${review.id}`} className={styles.actionLink}>수정</Link>
+                        <Link to={`/delete-review/${review.id}`} className={styles.actionLink}>삭제</Link>
+                    </div>
                 </div>
                 <button onClick={() => deleteReviewHandler(review.id)}>리뷰 삭제</button>
                 <button onClick={() => openModal(review)}>리뷰 수정</button>

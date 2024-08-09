@@ -11,35 +11,42 @@ const ShowCart = () => {
   const token = getUserToken();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchCart = async () => {
-      try {
-        const response = await fetch(`${CART_URL}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+  const fetchCart = async () => {
+    try {
+      const response = await fetch(`${CART_URL}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-        if (!response.ok) {
-          throw new Error("장바구니 정보를 가져오는 데 실패했습니다.");
-        }
-
-        const data = await response.json();
-        setCart(data);
-        console.log(data);
-      } catch (error) {
-        setError(error.message);
+      if (!response.ok) {
+        throw new Error("장바구니 정보를 가져오는 데 실패했습니다.");
       }
-    };
 
+      const data = await response.json();
+      setCart(data);
+      console.log(data);
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
+  useEffect(() => {
     fetchCart();
   }, [token]);
 
-  const handleRemoveBundle = async (bundleId) => {
+  const handleRemoveCart = async (cartId) => {
+
+    const confirmRemove = window.confirm("장바구니를 비우시겠습니까?");
+
+    if (!confirmRemove) {
+      return; 
+    }
+
     try {
-      const response = await fetch(`${CART_URL}/${bundleId}`, {
+      const response = await fetch(`${CART_URL}/${cartId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -48,14 +55,38 @@ const ShowCart = () => {
       });
 
       if (!response.ok) {
-        throw new Error("번들을 삭제하는 데 실패했습니다.");
+        throw new Error("장바구니를 삭제하는 데 실패했습니다.");
       }
 
-      // 상태 업데이트
-      setCart((prevCart) => ({
-        ...prevCart,
-        bundles: prevCart.bundles.filter((bundle) => bundle.id !== bundleId),
-      }));
+      fetchCart();
+    } catch (error) {
+      console.error(error.message);
+      setError(error.message);
+    }
+  };
+
+  const handleRemoveBundle = async (bundleId) => {
+
+    const confirmRemove = window.confirm("선택하신 상품을 삭제하시겠습니까?");
+
+    if (!confirmRemove) {
+      return; 
+    }
+
+    try {
+      const response = await fetch(`${CART_URL}/bundle/${bundleId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("패키지를 삭제하는 데 실패했습니다.");
+      }
+
+      fetchCart();
     } catch (error) {
       console.error(error.message);
       setError(error.message);
@@ -79,6 +110,7 @@ const ShowCart = () => {
           cart={cart}
           bundles={cart.bundles}
           handleRemoveBundle={handleRemoveBundle}
+          handleRemoveCart={handleRemoveCart}
         />
       ) : (
         <div className={styles.emptyCartContainer}>
