@@ -15,10 +15,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { dogEditActions } from "../../components/store/dog/DogEditSlice";
 import { NOTICE_URL } from "../../config/user/host-config";
 
-const MainNavigation = () => {
+
+const MainNavigation = ({ drawerOpen, onToggleDrawer }) => {
   const navi = useNavigate();
-  const [menuOpen, setMenuOpen] = useState(false);
+  // const [menuOpen, setMenuOpen] = useState(false);
   const [openNotice, setOpenNotice] = useState(false);
+  // const [drawerOpen, setDrawerOpen] = useState(false); // Drawer 상태 관리 추가
   const noticeRef = useRef(null);
 
   const { changeIsLogin, user, setUser } = useContext(UserContext);
@@ -77,10 +79,6 @@ const MainNavigation = () => {
       fetchNotices();
     }
   }, [userDetail.noticeCount]);
-
-  const toggleMenuHandler = () => {
-    setMenuOpen((prevState) => !prevState);
-  };
 
   const logoutHandler = () => {
     localStorage.removeItem("userData");
@@ -171,7 +169,7 @@ const MainNavigation = () => {
                   </Link>
                   <GiHamburgerMenu
                       className={styles.icon}
-                      onClick={toggleMenuHandler}
+                      onClick={onToggleDrawer} // 기존 toggleMenuHandler에서 toggleDrawerHandler로 변경
                   />
                 </>
             ) : (
@@ -182,36 +180,12 @@ const MainNavigation = () => {
                   <BiUser onClick={loginHandler} className={styles.icon} />
                   <GiHamburgerMenu
                       className={styles.icon}
-                      onClick={toggleMenuHandler}
+                      onClick={onToggleDrawer} // 기존 toggleMenuHandler에서 toggleDrawerHandler로 변경
                   />
                 </>
             )}
           </div>
         </nav>
-        {menuOpen && (
-            <div className={styles.dropdownMenu}>
-              <ul>
-                <li>
-                  <NavLink to="/hotel">Hotel</NavLink>
-                </li>
-                <li>
-                  <NavLink to="/treats">Shop</NavLink>
-                </li>
-                <li>
-                  <NavLink to="/board">Community</NavLink>
-                </li>
-                {/*<li>*/}
-                {/*  <NavLink to="/order">basket</NavLink>*/}
-                {/*</li>*/}
-                {/*<li>*/}
-                {/*  <NavLink to="/mypage">mypage</NavLink>*/}
-                {/*</li>*/}
-                {/*<li>*/}
-                {/*  <NavLink to="/logout">logout</NavLink>*/}
-                {/*</li>*/}
-              </ul>
-            </div>
-        )}
         {openNotice && (
             <div className={styles.noticeWrap} ref={noticeRef}>
               {Array.isArray(noticeList) &&

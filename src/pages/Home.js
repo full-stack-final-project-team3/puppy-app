@@ -23,9 +23,9 @@ const Home = () => {
         <SwiperSlide className={styles.swiperSlide}>
           <div className={styles.slideContent}>
             <div className={styles.textBox}>
-              <h1>Scoop up fresh nutrition</h1>
-              <p>Get 60% off your first box and a FREE bag of Chicken and Apple Jerky Strips.</p>
-              <button className={styles.getStartedBtn}>Get Started</button>
+              <h1>간식</h1>
+              <p>간식 구독해라</p>
+              <button className={styles.getStartedBtn}>구독하기</button>
             </div>
             <div className={styles.videoBox}>
               <video autoPlay loop muted>
@@ -38,9 +38,9 @@ const Home = () => {
         <SwiperSlide className={styles.swiperSlide}>
           <div className={styles.slideContent}>
             <div className={styles.textBox}>
-              <h1>Another headline</h1>
-              <p>Some other promotional text goes here.</p>
-              <button className={styles.getStartedBtn}>Get Started</button>
+              <h1>애견 호텔</h1>
+              <p>호텔도 있음</p>
+              <button className={styles.getStartedBtn}>알아 보기</button>
             </div>
             <div className={styles.videoBox}>
               <video autoPlay loop muted>
@@ -53,8 +53,8 @@ const Home = () => {
         <SwiperSlide className={styles.swiperSlide}>
           <div className={styles.slideContent}>
             <div className={styles.textBox}>
-              <h1>Third headline</h1>
-              <p>More promotional content in this slide.</p>
+              <h1>커뮤니티</h1>
+              <p>소통하세요~~</p>
               <button className={styles.getStartedBtn}>Get Started</button>
             </div>
             <div className={styles.videoBox}>
