@@ -44,7 +44,7 @@ const HotelConfirmation = ({
             startDate: dayjs(startDate).utc().format(),
             endDate: dayjs(endDate).utc().format(),
             userId: user.id,
-            totalPrice: remainingPrice,
+            totalPrice: totalPrice,
             user,
             email,
             token,

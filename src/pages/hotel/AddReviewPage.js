@@ -14,6 +14,10 @@ const AddReviewPage = () => {
     const [customError, setCustomError] = useState('');
     const [hasReviewed, setHasReviewed] = useState(false);
 
+    const { userReservations } = useSelector(state => state.reservation);
+    console.log("호텔과, 룸의 정보 가져오기 ",userReservations)
+
+
     useEffect(() => {
         // 리뷰 목록을 가져와서 이미 작성된 리뷰가 있는지 확인
         dispatch(fetchReviews(hotelId)).then(({ payload }) => {
