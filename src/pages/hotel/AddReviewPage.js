@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addReview, setReviewContent, setRate, fetchReviews } from '../../components/store/hotel/HotelReviewSlice';
 import styles from './AddReviewPage.module.scss';
+import RatingInput from '../shop/review/RatingInput';
+import MyPageHeader from '../../components/auth/user/mypage/MyPageHeader';
 
 const AddReviewPage = () => {
     const { hotelId } = useParams();
@@ -74,32 +76,29 @@ const AddReviewPage = () => {
     }
 
     return (
-        <div className={styles.addReviewPage}>
-            <form onSubmit={handleReviewSubmit}>
-                <h1>Write a Review</h1>
-                <textarea
-                    name="reviewContent"
-                    placeholder="Write your review here..."
-                    value={reviewContent}
-                    onChange={(e) => dispatch(setReviewContent(e.target.value))}
-                    required
-                />
-                <label>
-                    Rate:
-                    <select
-                        value={rate}
-                        onChange={(e) => dispatch(setRate(Number(e.target.value)))}
+        <div className={styles.wrap}>
+            <MyPageHeader/>
+            <div className={styles.subWrap}>
+            <div className={styles.addReviewPage}>
+                <form onSubmit={handleReviewSubmit}>
+                    
+                    <textarea
+                        name="reviewContent"
+                        placeholder="Write your review here..."
+                        value={reviewContent}
+                        onChange={(e) => dispatch(setReviewContent(e.target.value))}
                         required
-                    >
-                        {[0, 1, 2, 3, 4, 5].map((num) => (
-                            <option key={num} value={num}>{num}</option>
-                        ))}
-                    </select>
+                    />
+                    <label>
+                    Rate:
+                    <RatingInput onClick={styles.star}value={rate} onChange={(newRate) => dispatch(setRate(newRate))} />
                 </label>
-                <button type="submit" disabled={loading}>Submit Review</button>
-                {customError && <p className={styles.error}>{customError}</p>}
-            </form>
-            <button onClick={() => navigate('/hotel')}>Back to List</button>
+                    <button type="submit" disabled={loading}>Submit Review</button>
+                    {customError && <p className={styles.error}>{customError}</p>}
+                </form>
+                <button onClick={() => navigate('/hotel')}>Back to List</button>
+            </div>
+            </div>
         </div>
     );
 };
