@@ -47,8 +47,6 @@ const MyPageMain = () => {
 
     const exit = (flag) => {
         setClickAdmin(flag)
-        console.log("exit 호출")
-        console.log(flag)
     }
 
 
