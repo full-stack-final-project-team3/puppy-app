@@ -24,6 +24,7 @@ const BUNDLE = "/bundle";
 const CART = "/cart";
 const SHOP = "/shop";
 const notice = "/notice";
+const admin = "/admin"
 // const AUTH = '/auth'
 
 export const EVENT_URL = API_BASE_URL + EVENT;
@@ -38,3 +39,4 @@ export const BUNDLE_URL = API_BASE_URL + BUNDLE;
 export const CART_URL = API_BASE_URL + CART;
 export const SHOP_URL = API_BASE_URL + SHOP;
 export const NOTICE_URL = API_BASE_URL + notice;
+export const ADMIN_URL = API_BASE_URL + admin;
