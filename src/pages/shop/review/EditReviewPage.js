@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import Rating from '@mui/material/Rating';
 import styles from './Review.module.scss';
-import RatingInput from './RatingInput';
 
 const EditReviewPage = () => {
   const { reviewId } = useParams();
   const [reviewContent, setReviewContent] = useState('');
   const [rate, setRate] = useState(5);
   const [reviewPics, setReviewPics] = useState([]);
-  const [existingPics, setExistingPics] = useState([]);
   const navigate = useNavigate();
   const user = useSelector((state) => state.userEdit.userDetail);
 
@@ -17,15 +16,13 @@ const EditReviewPage = () => {
     const fetchReview = async () => {
       try {
         const response = await fetch(`http://localhost:8888/shop/reviews/${reviewId}`);
-
         if (!response.ok) {
           throw new Error('네트워크 응답이 실패했습니다.');
         }
-
         const data = await response.json();
         setReviewContent(data.reviewContent);
         setRate(data.rate);
-        setExistingPics(data.reviewPics || []);
+        setReviewPics(data.reviewPics || []);
       } catch (error) {
         console.error('리뷰 조회 오류:', error);
       }
@@ -33,6 +30,10 @@ const EditReviewPage = () => {
 
     fetchReview();
   }, [reviewId]);
+
+  const handleFileChange = (event) => {
+    setReviewPics(Array.from(event.target.files));
+  };
 
   const handleUpdate = async (event) => {
     event.preventDefault();
@@ -44,7 +45,7 @@ const EditReviewPage = () => {
         rate,
         userId: user.id,
         treatsId: 'dummy-treats-id' // 실제 treatsId로 변경 필요
-      })], { type: "application/json" }));
+      })], { type: 'application/json' }));
 
       reviewPics.forEach((pic, index) => {
         formData.append('reviewPics', pic);
@@ -52,6 +53,9 @@ const EditReviewPage = () => {
 
       const response = await fetch(`http://localhost:8888/shop/reviews/${reviewId}`, {
         method: 'PUT',
+        headers: {
+          'userId': user.id
+        },
         body: formData
       });
 
@@ -69,33 +73,11 @@ const EditReviewPage = () => {
     }
   };
 
-  const handleDelete = async () => {
-    try {
-      const response = await fetch(`http://localhost:8888/shop/reviews/${reviewId}`, {
-        method: 'DELETE',
-      });
-
-      if (!response.ok) {
-        throw new Error('네트워크 응답이 실패했습니다.');
-      }
-
-      console.log('리뷰 삭제 성공');
-      navigate('/review-page');
-    } catch (error) {
-      console.error('리뷰 삭제 오류:', error);
-      console.log('리뷰 삭제 실패:', error.message);
-    }
-  };
-
-  const handleFileChange = (event) => {
-    setReviewPics(Array.from(event.target.files));
-  };
-
   return (
     <div className={`${styles.review_common_box} ${styles.review_editor_box}`}>
       <h1>리뷰 수정하기</h1>
-      <p> 닉네임 : {user.nickname} </p>
-      <p> 이메일 : {user.email} </p>
+      <p>닉네임: {user.nickname}</p>
+      <p>이메일: {user.email}</p>
       <form onSubmit={handleUpdate}>
         <div>
           <label htmlFor="review">리뷰</label>
@@ -108,7 +90,12 @@ const EditReviewPage = () => {
         </div>
         <div>
           <label htmlFor="rate">별점</label>
-          <RatingInput value={rate} onChange={setRate} />
+          <Rating
+            name="editable-rate"
+            value={rate}
+            onChange={(e, newValue) => setRate(newValue)}
+            precision={0.5}
+          />
         </div>
         <div>
           <label htmlFor="reviewPics">이미지 업로드</label>
@@ -121,13 +108,17 @@ const EditReviewPage = () => {
           />
         </div>
         <div>
-          {existingPics.map((pic, index) => (
-            <img key={index} src={`http://localhost:8888/shop/reviews/review-img/${pic.reviewPic}`} alt={`Review Pic ${index + 1}`} className={styles.review_image} />
+          {reviewPics.map((pic, index) => (
+            <img
+              key={index}
+              src={`http://localhost:8888/shop/reviews/review-img/${pic.reviewPic}`}
+              alt={`Review Pic ${index + 1}`}
+              className={styles.review_image}
+            />
           ))}
         </div>
         <button type="submit">수정하기</button>
       </form>
-      <button onClick={handleDelete}>삭제하기</button>
     </div>
   );
 };

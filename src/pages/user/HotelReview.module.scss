@@ -2,3 +2,101 @@
   width: 90%;
   margin: 0 auto;
 }
+
+.h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 1.8rem;
+}
+
+.reviewWrap {
+  width: 90%;
+  margin: 20px auto;
+  padding: 20px;
+  background: #F4E9D3;
+  border-radius: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+
+  .reviewHeader {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 1rem;
+    color: #555;
+
+    span {
+      color: #333;
+    }
+  }
+
+  .hotelName {
+    font-weight: bold;
+    color: #666;
+    margin-bottom: 10px;
+  }
+
+  .reviewContent {
+    margin-bottom: 10px;
+    p {
+      color: #333;
+    }
+  }
+
+  .reviewFooter {
+    font-size: 0.9rem;
+    color: #555;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .actions {
+      display: flex;
+      gap: 10px;
+
+      .actionLink {
+        padding: 4px 8px;
+        color: #333;
+        text-decoration: none;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+
+        &:hover {
+          background-color: #9B0000;
+          color: #fff;
+        }
+      }
+    }
+  }
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 500px;
+  max-width: 80%;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}

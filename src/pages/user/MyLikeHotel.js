@@ -2,15 +2,24 @@ import React, { useEffect } from 'react';
 import MyPageHeader from "../../components/auth/user/mypage/MyPageHeader";
 import styles from './MyLikeHotel.module.scss';
 import { useDispatch, useSelector } from "react-redux";
-import { fetchFavorites } from "../../components/store/hotel/FavoriteSlice";
+import {addFavorite, fetchFavorites, removeFavorite} from "../../components/store/hotel/FavoriteSlice";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faBookmark as filledBookmark} from "@fortawesome/free-solid-svg-icons";
+import {faBookmark as emptyBookmark} from "@fortawesome/free-regular-svg-icons";
 
 const MyLikeHotel = () => {
     const { favorites, status } = useSelector(state => state.favorites);
     const dispatch = useDispatch();
+    const userDetail = useSelector((state) => state.userEdit.userDetail);
+    console.log("user", userDetail)
 
     useEffect(() => {
-        dispatch(fetchFavorites());
-    }, [dispatch]);
+        if (userDetail && userDetail.id) {
+            dispatch(fetchFavorites(userDetail.userId));
+        }
+    }, [dispatch, userDetail.id]);
+
+    console.log("favorites", favorites)
 
     if (status === 'loading') {
         return <div>Loading...</div>;
@@ -27,6 +36,21 @@ const MyLikeHotel = () => {
         return imageUri;
     };
 
+
+    // 호텔이 즐겨찾기 목록에 있는지 확인
+    const isFavorite = (hotelId) => favorites.some(fav => fav.hotelId === hotelId);
+
+    // 호텔 즐겨찾기 추가
+    const handleAddFavorite = (hotelId) => {
+        dispatch(addFavorite(hotelId));
+    };
+
+    // 호텔 즐겨찾기 제거
+    const handleRemoveFavorite = (hotelId) => {
+        dispatch(removeFavorite(hotelId));
+    };
+
+
     return (
         <div>
             <MyPageHeader />
@@ -36,6 +60,12 @@ const MyLikeHotel = () => {
                     <div>
                         {favorites.map(hotel => (
                             <div key={hotel.hotelId}>
+                                <button
+                                    onClick={() => isFavorite(hotel.hotelId) ? handleRemoveFavorite(hotel.hotelId) : handleAddFavorite(hotel.hotelId)}
+                                    className={styles.favoriteButton}
+                                >
+                                    <FontAwesomeIcon icon={isFavorite(hotel.hotelId) ? filledBookmark : emptyBookmark}/>
+                                </button>
                                 <div className={styles.hotelInfo}>
                                     <h3>호텔 이름: {hotel.hotelName}</h3>
                                     <p>호텔 위치: {hotel.location}</p>

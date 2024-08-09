@@ -1,17 +1,101 @@
-import React from "react";
+import React, { useState } from "react";
+import { getUserToken } from "../../config/user/auth";
 import styles from "./ShowCart.module.scss";
 import { AUTH_URL } from "../../config/user/host-config";
+import { CART_URL } from "../../config/user/host-config";
 
-const CartContent = ({ cart, bundles, handleRemoveBundle }) => {
+const CartContent = ({
+  cart,
+  bundles,
+  handleRemoveBundle,
+  handleRemoveCart,
+}) => {
+  const discountedPrice = 69000; // 단일 번들 할인 전 가격
+  const totalDiscountedPrice = discountedPrice * bundles.length; // 할인된 총 가격
+  const token = getUserToken();
+
+  // 각 번들에 대한 구독 기간 상태 관리
+  const [subscriptionPeriods, setSubscriptionPeriods] = useState(
+    bundles.reduce((acc, bundle) => {
+      acc[bundle.id] = ""; // 초기값은 빈 문자열
+      return acc;
+    }, {})
+  );
+
+  const handleSubscriptionChange = (bundleId, event) => {
+    setSubscriptionPeriods((prev) => ({
+      ...prev,
+      [bundleId]: event.target.value,
+    }));
+  };
+
+  const handleUpdateCart = async () => {
+
+    const updatedCartInfo = {
+      bundles: bundles.map((bundle) => ({
+        bundleId: bundle.id,
+        subsType: subscriptionPeriods[bundle.id],
+      })),
+    };
+
+    try {
+      // 1. 장바구니 정보 업데이트 요청
+      await fetch(`${CART_URL}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(updatedCartInfo),
+      });
+
+      // 2. 결제 요청
+      //   const response = await fetch('/api/processPayment', {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     },
+      //     body: JSON.stringify({ cartId: cart.id }),
+      //   });
+
+      //   if (response.ok) {
+      //     const paymentResult = await response.json();
+      //     onPaymentSuccess(paymentResult); // 결제가 성공했을 때 호출
+      //   } else {
+      //     // 결제 실패 처리
+      //     console.error('결제에 실패했습니다.');
+      //   }
+
+      console.log("업데이트 완료")
+
+    } catch (error) {
+      console.error("오류 발생:", error);
+    }
+  };
+
   return (
     <div className={styles.cartList}>
       {bundles.map((bundle) => (
         <div key={bundle.id} className={styles.bundleContainer}>
-          <h4 className={styles.bundleHeader}>
-            {bundle.dogName}을 위한 맞춤 패키지
-          </h4>
+          <div className={styles.bundleHeaderContainer}>
+            <h4 className={styles.bundleHeader}>
+              반려견 전용 맞춤형 푸드 패키지 For {bundle.dogName}
+            </h4>
+            <select
+              className={styles.subscriptionSelect}
+              value={subscriptionPeriods[bundle.id] || ""}
+              onChange={(event) => handleSubscriptionChange(bundle.id, event)}
+            >
+              <option value="" disabled>
+                - [필수] 구독 기간 -
+              </option>
+              <option value="ONE">1개월</option>
+              <option value="MONTH3">3개월</option>
+              <option value="MONTH6">6개월</option>
+            </select>
+          </div>
           <div className={styles.treatsList}>
-            {bundle.treats.map((treat, treatIndex) => (
+            {bundle.treats.map((treat) => (
               <div key={treat.id} className={styles.treatItem}>
                 {/* 간식 이미지 렌더링 */}
                 {treat.treatsPics.length > 0 && (
@@ -25,8 +109,6 @@ const CartContent = ({ cart, bundles, handleRemoveBundle }) => {
                   />
                 )}
                 <h5 className={styles.itemTitle}>{treat.treatsTitle}</h5>
-                {/* <p>무게: {treat.treatsWeight}g</p> */}
-                {/* 여기에서 간식 수정 기능 추가 가능 */}
               </div>
             ))}
           </div>
@@ -43,9 +125,11 @@ const CartContent = ({ cart, bundles, handleRemoveBundle }) => {
           </div>
         </div>
       ))}
-      {/* 장바구니 비우기 버튼 오른쪽 정렬 */}
       <div className={styles.clearCartContainer}>
-        <button className={styles.clearCartButton} onClick={handleRemoveBundle}>
+        <button
+          className={styles.clearCartButton}
+          onClick={() => handleRemoveCart(cart.id)}
+        >
           장바구니 비우기
         </button>
       </div>
@@ -57,8 +141,18 @@ const CartContent = ({ cart, bundles, handleRemoveBundle }) => {
         </div>
         <div className={styles.totalAmountRow}>
           <span>결제예정금액</span>
-          <span>= {cart.totalPrice}원</span>
+          <span>
+            <span className={styles.totalDisCount}>
+              {totalDiscountedPrice.toLocaleString()}원
+            </span>
+            = {cart.totalPrice.toLocaleString()}원
+          </span>
         </div>
+      </div>
+      <div className={styles.paymentButtonContainer}>
+        <button className={styles.paymentButton} onClick={handleUpdateCart}>
+          결제하기
+        </button>
       </div>
     </div>
   );

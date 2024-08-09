@@ -178,12 +178,14 @@ const TreatsListForDog = () => {
                           {treat.title}
                         </h4>
                       </div>
+                      <div className={styles.addBtnContainer}>
                       <button
                         className={styles.addBtn}
                         onClick={() => toggleTreatSelection(treat)}
                       >
                         선택하기
                       </button>
+                      </div>
                     </div>
                   );
                 })}

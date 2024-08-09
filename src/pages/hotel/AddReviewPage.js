@@ -14,6 +14,10 @@ const AddReviewPage = () => {
     const [customError, setCustomError] = useState('');
     const [hasReviewed, setHasReviewed] = useState(false);
 
+    const { userReservations } = useSelector(state => state.reservation);
+    console.log("호텔과, 룸의 정보 가져오기 ",userReservations)
+
+
     useEffect(() => {
         // 리뷰 목록을 가져와서 이미 작성된 리뷰가 있는지 확인
         dispatch(fetchReviews(hotelId)).then(({ payload }) => {
@@ -22,7 +26,7 @@ const AddReviewPage = () => {
                 if (userHasReviewed) {
                     setHasReviewed(true);
                     alert('이미 이 호텔에 대한 리뷰를 작성했습니다.');
-                    navigate('/hotel'); // 리뷰 작성 페이지 접근을 차단하고 다른 페이지로 리디렉션
+                    navigate('/hotel');
                 }
             } else {
                 console.error('Unexpected payload format:', payload);
@@ -60,7 +64,7 @@ const AddReviewPage = () => {
             .catch((err) => {
                 const { message, status } = handleError(err);
                 setCustomError(message);
-                navigate('/error', { state: { message, status } }); // 에러 페이지로 리디렉션
+                navigate('/error', { state: { message, status } });
             });
     };
 

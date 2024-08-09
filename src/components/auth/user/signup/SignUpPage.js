@@ -8,7 +8,7 @@ import NicknameInput from "./NicknameInput";
 import AddressInput from "./AddressInput";
 import PhoneNumberInput from "./PhoneNumberInput";
 import AddDogInput from "./AddDogInput";
-import { AUTH_URL } from "../../../../config/user/host-config";
+import {AUTH_URL, NOTICE_URL} from "../../../../config/user/host-config";
 import { useNavigate } from "react-router-dom";
 import StepIndicator from "./StepIndicator";
 import { useDispatch } from "react-redux";
@@ -86,8 +86,46 @@ const SignUpPage = () => {
     const result = await response.text();
 
     if (result) {
-      alert("회원가입에 성공하셨습니다");
-      navigate("/login");
+
+
+
+      try {
+        const response = await fetch(`${AUTH_URL}/sign-in`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+
+        if (response.ok) {
+          const userDetailData = await (await fetch(`${AUTH_URL}/${enteredEmail}`)).json();
+          const noticeData = await (await fetch(`${NOTICE_URL}/user/${userDetailData.id}`)).json();
+
+          dispatch(userEditActions.saveUserNotice(noticeData));
+          dispatch(userEditActions.updateUserDetail(userDetailData));
+
+          const responseData = await response.json();
+          localStorage.setItem("userData", JSON.stringify(responseData));
+          setUser(responseData);
+          changeIsLogin(true);
+          alert("회원가입에 성공하셨습니다");
+          navigate("/");
+
+        } else {
+          const errorText = await response.text();
+        }
+      } catch (err) {
+        console.log("Unexpected error:", err);
+      }
+
+    }
+  };
+
+  // 키보드 엔터키 회원가입 방지
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
     }
   };
 
@@ -163,7 +201,7 @@ const SignUpPage = () => {
         classNames="page"
         nodeRef={nodeRef}
       >
-        <form onSubmit={submitHandler}>
+        <form onSubmit={submitHandler} onKeyDown={handleKeyDown}>
           <div className={styles.signUpPage}>
             <div className={styles.formStepActive}>
               {step === 1 && (

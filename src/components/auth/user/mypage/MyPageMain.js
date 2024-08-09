@@ -14,6 +14,8 @@ const MyPageMain = () => {
 
     const authCheck = useRouteLoaderData('auth-check-loader');
 
+    const [clickAdmin, setClickAdmin] = useState(false)
+
     const userDetail = useSelector(state => state.userEdit.userDetail);
 
     const [dogList, setDogList] = useState([]);
@@ -39,6 +41,16 @@ const MyPageMain = () => {
         fetchDogData();
     }, [id]);
 
+    const startAdminMode = () => {
+        setClickAdmin(true)
+    }
+
+    const exit = () => {
+        setClickAdmin(true)
+        console.log(clickAdmin)
+    }
+
+
     return (
         userDetail.role === "USER" ? (
             <div className={styles.wrap}>
@@ -49,7 +61,27 @@ const MyPageMain = () => {
                 {!isEditMode && <AboutMyInfo />}
             </div>
         ) : (
-            <AdminPage/>
+            clickAdmin ? (<div className={styles.wrap}>
+                <p onClick={startAdminMode}>Admin Page 가기</p>
+                <MyPageHeader/>
+                {!isEditMode && <MyPageBody user={userDetail} dogList={dogList}/>}
+                {isUserEditMode && <UserEdit/>}
+                {isDogEditMode && <DogEdit user={userDetail}/>}
+                {!isEditMode && <AboutMyInfo/>}
+            </div>) :
+                <AdminPage exit={exit}/>
+
+
+            // <>
+            //     <AdminPage/>
+            //     <div className={styles.wrap}>
+            //         <MyPageHeader/>
+            //         {!isEditMode && <MyPageBody user={userDetail} dogList={dogList}/>}
+            //         {isUserEditMode && <UserEdit/>}
+            //         {isDogEditMode && <DogEdit user={userDetail}/>}
+            //         {!isEditMode && <AboutMyInfo/>}
+            //     </div>
+            // </>
         )
     );
 };

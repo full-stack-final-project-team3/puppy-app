@@ -46,30 +46,27 @@ const LoginForm = () => {
         body: JSON.stringify(payload),
       });
 
-      // 로그인 할때 setItem
-
       if (response.ok) {
-        const response1 = await fetch(`${AUTH_URL}/${email}`);
-        const userDetailData = await response1.json();
-        const fetchNotice = await fetch(`${NOTICE_URL}/user/${userDetailData.id}`)
-        const noticeData = await fetchNotice.json();
-        dispatch(userEditActions.saveUserNotice(noticeData))
+        const userDetailData = await (await fetch(`${AUTH_URL}/${email}`)).json();
+        const noticeData = await (await fetch(`${NOTICE_URL}/user/${userDetailData.id}`)).json();
+
+        dispatch(userEditActions.saveUserNotice(noticeData));
         dispatch(userEditActions.updateUserDetail(userDetailData));
 
         const responseData = await response.json();
         localStorage.setItem("userData", JSON.stringify(responseData));
         setUser(responseData);
-        changeIsLogin(true); // 상태 업데이트
-        navigate("/"); // 로그인 후 리디렉트할 경로
+        changeIsLogin(true);
+        navigate("/");
+
       } else {
-        const errorData = await response.json();
-        setError(errorData.message || "로그인에 실패했습니다.");
+        const errorText = await response.text();
+        setError(errorText || "로그인에 실패했습니다.");
       }
     } catch (err) {
-      setError("비밀번호가 올바르지 않습니다.");
+      console.log("Unexpected error:", err);
     }
   };
-
   // 서버에서 provider 정보 보내줌.
 
   // 카카오 로그인 처리
@@ -130,24 +127,26 @@ const LoginForm = () => {
             <div className={styles.loginBox}>
               <form onSubmit={handleSubmit}>
                 <div className={styles.inputGroup}>
-                  <label htmlFor="email">Email</label>
+                  <label className={styles.label} htmlFor="email">Email</label>
                   <input
                     type="email"
                     id="email"
                     name="email"
                     placeholder="이메일을 입력하세요."
+                    className={styles.input}
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
                 <div className={styles.inputGroup}>
-                  <label htmlFor="password">Password</label>
+                  <label htmlFor="password" className={styles.label}>Password</label>
                   <input
                     type="password"
                     id="password"
                     name="password"
                     placeholder="비밀번호를 입력하세요."
+                    className={styles.input}
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -158,10 +157,11 @@ const LoginForm = () => {
                     type="checkbox"
                     id="autoLogin"
                     name="autoLogin"
+                    className={styles.input}
                     checked={autoLogin}
                     onChange={(e) => setAutoLogin(e.target.checked)}
                   />
-                  <label htmlFor="autoLogin">자동 로그인</label>
+                  <label htmlFor="autoLogin" className={styles.label}>자동 로그인</label>
                 </div>
                 {error && <div className={styles.errorMessage}>{error}</div>}
                 <div className={styles.bottomGroup}>

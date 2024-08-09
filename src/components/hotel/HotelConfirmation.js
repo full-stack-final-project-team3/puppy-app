@@ -5,6 +5,7 @@ import styles from './HotelConfirmation.module.scss';
 import { useNavigate } from 'react-router-dom';
 import { submitReservation } from '../store/hotel/ReservationSlice';
 import dayjs from "dayjs";
+import {userEditActions} from "../store/user/UserEditSlice";
 
 const HotelConfirmation = ({
     hotel,
@@ -22,6 +23,7 @@ const HotelConfirmation = ({
     const [remainingPrice, setRemainingPrice] = useState(totalPrice);
     const [pointUsage, setPointUsage] = useState('');
     const [showPointPayment, setShowPointPayment] = useState(false);
+
 
     const handleConfirmBooking = () => {
         if (!user) {
@@ -49,8 +51,11 @@ const HotelConfirmation = ({
             createdAt: dayjs().utc().format()
         }))
             .unwrap()
+
             .then((response) => {
                 alert("예약이 완료되었습니다.");
+                const deletedPoint = user.point - totalPrice;
+                dispatch(userEditActions.updateUserDetail({ ...user, point: deletedPoint }));
                 window.location.reload();
             })
             .catch((error) => {
