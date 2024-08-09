@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useRef, useState} from 'react';
 import DogNameInput from "./DogNameInput";
 import DogBirthdayInput from "./DogBirthdayInput";
 import DogBreedInput from "./DogBreedInput";
@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { DOG_URL, NOTICE_URL } from "../../../config/user/host-config";
 import { useDispatch, useSelector } from "react-redux";
 import { userEditActions } from "../../store/user/UserEditSlice";
+import {CSSTransition, TransitionGroup} from 'react-transition-group';
 
 const AddDogMain = () => {
     const navigate = useNavigate();
@@ -28,18 +29,41 @@ const AddDogMain = () => {
     const [weight, setWeight] = useState('');
     const [dogSize, setDogSize] = useState('');
     const [allergies, setAllergies] = useState([]);
+
+
+    const nodeRef1 = useRef(null);
+    const nodeRef2 = useRef(null);
+    const nodeRef3 = useRef(null);
+    const nodeRef4 = useRef(null);
+    const nodeRef5 = useRef(null);
+    const nodeRef6 = useRef(null);
+
+    const getNodeRef = (step) => {
+        switch (step) {
+            case 1: return nodeRef1;
+            case 2: return nodeRef2;
+            case 3: return nodeRef3;
+            case 4: return nodeRef4;
+            case 5: return nodeRef5;
+            case 6: return nodeRef6;
+            default: return null;
+        }
+    };
+
     // const profileUrl = "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fst2.depositphotos.com%2F5045705%2F11671%2Fv%2F950%2Fdepositphotos_116714982-stock-illustration-little-puppy-icon.jpg&type=a340";
 
     const dogNameValue = (dogName) => {
         setName(dogName);
         setStep(2);
         setVisitedSteps([1,2])
+        window.scrollTo(0, 0);
     };
 
     const dogBreedValue = (dogBreed) => {
         setBreed(dogBreed);
         setStep(3);
         setVisitedSteps([1,2,3])
+        window.scrollTo(0, 0);
     };
 
     const dogBirthdayValue = (date) => {
@@ -48,12 +72,14 @@ const AddDogMain = () => {
         setBirthday(formatDate);
         setStep(4);
         setVisitedSteps([1,2,3,4])
+        window.scrollTo(0, 0);
     };
 
     const dogSexValue = (sex) => {
         setGender(sex);
         setStep(5);
         setVisitedSteps([1,2,3,4,5])
+        window.scrollTo(0, 0);
     }
 
     const dogWeightValue = (weight) => {
@@ -66,6 +92,7 @@ const AddDogMain = () => {
             setDogSize("SMALL");
         }
         setStep(6);
+        window.scrollTo(0, 0);
     }
 
     const dogAllergiesValue = async (allergies) => {
@@ -183,13 +210,25 @@ const AddDogMain = () => {
                 </div>
             </div>
             <div className={styles.wrap}>
-                {step === 1 && <DogNameInput dogNameValue={dogNameValue}/>}
-                {step === 2 && <DogBreedInput dogBreedValue={dogBreedValue}/>}
-                {step === 3 && <DogBirthdayInput onDateChange={dogBirthdayValue}/>}
-                {step === 4 && <DogSexInput dogSexValue={dogSexValue}/>}
-                {step === 5 && <DogWeightInput dogWeightValue={dogWeightValue}/>}
-                {step === 6 && <DogAllergiesInput onAllergiesChange={dogAllergiesValue}/>}
+                <TransitionGroup>
+                    <CSSTransition
+                        key={step}
+                        timeout={300}
+                        classNames="page"
+                        nodeRef={getNodeRef(step)}
+                    >
+                        <div ref={getNodeRef(step)} className={styles.page}>
+                            {step === 1 && <DogNameInput dogNameValue={dogNameValue}/>}
+                            {step === 2 && <DogBreedInput dogBreedValue={dogBreedValue}/>}
+                            {step === 3 && <DogBirthdayInput onDateChange={dogBirthdayValue}/>}
+                            {step === 4 && <DogSexInput dogSexValue={dogSexValue}/>}
+                            {step === 5 && <DogWeightInput dogWeightValue={dogWeightValue}/>}
+                            {step === 6 && <DogAllergiesInput onAllergiesChange={dogAllergiesValue}/>}
+                        </div>
+                    </CSSTransition>
+                </TransitionGroup>
             </div>
+
         </>
     );
 };
