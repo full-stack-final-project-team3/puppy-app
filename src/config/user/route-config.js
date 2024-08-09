@@ -45,6 +45,7 @@ import ShowCart from "../../pages/shop/ShowCart";
 import SeasonalityChart from "../../pages/hotel/SeasonalityChart.js";
 import OrderPage from "../../pages/shop/order/OrderPage"; //쇼핑몰오더
 import ManagementTreats from "../../pages/shop/ManagementTreats.js";
+import EditTreat from "../../pages/shop/EditTreats.js";
 
 const homeRouter = [
   {
@@ -138,6 +139,13 @@ export const router = createBrowserRouter([
       {
         path: "manage-treats",
         element: <ManagementTreats />,
+        loader: authCheckLoader,
+        // loader: getUserToken,
+        // id: "getToken",
+      },
+      {
+        path: "edit-treats/:id",
+        element: <EditTreat />,
         loader: authCheckLoader,
         // loader: getUserToken,
         // id: "getToken",
