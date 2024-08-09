@@ -1,7 +1,10 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, {useRef, useState, useEffect, useContext} from 'react';
 import styles from './ModifyPassword.module.scss';
-import { AUTH_URL } from "../../../../config/user/host-config";
+import {AUTH_URL, NOTICE_URL} from "../../../../config/user/host-config";
 import { useNavigate } from "react-router-dom";
+import {userEditActions} from "../../../store/user/UserEditSlice";
+import {useDispatch} from "react-redux";
+import UserContext from "../../../context/user-context";
 
 const ModifyPassword = ({ email }) => {
     const navi = useNavigate();
@@ -12,6 +15,8 @@ const ModifyPassword = ({ email }) => {
     const [passwordMessage, setPasswordMessage] = useState(' ');
     const [password, setPassword] = useState('');
     const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+    const dispatch = useDispatch();
+    const { changeIsLogin, setUser } = useContext(UserContext);
 
     useEffect(() => {
         if (!email) {
@@ -44,6 +49,20 @@ const ModifyPassword = ({ email }) => {
         });
         const result = await response.text();
         console.log(result);
+
+        const userDetailResponse = await fetch(`${AUTH_URL}/${email}`);
+        const userDetailData = await userDetailResponse.json();
+
+        const noticeResponse = await fetch(`${NOTICE_URL}/user/${userDetailData.id}`);
+        const noticeData = await noticeResponse.json();
+
+        dispatch(userEditActions.saveUserNotice(noticeData));
+        dispatch(userEditActions.updateUserDetail(userDetailData));
+
+        console.log(userDetailResponse);
+        localStorage.setItem("userData", JSON.stringify(userDetailData));
+        setUser(userDetailData);
+        changeIsLogin(true);
         navi("/");
     };
 

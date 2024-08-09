@@ -127,24 +127,26 @@ const LoginForm = () => {
             <div className={styles.loginBox}>
               <form onSubmit={handleSubmit}>
                 <div className={styles.inputGroup}>
-                  <label htmlFor="email">Email</label>
+                  <label className={styles.label} htmlFor="email">Email</label>
                   <input
                     type="email"
                     id="email"
                     name="email"
                     placeholder="이메일을 입력하세요."
+                    className={styles.input}
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
                 <div className={styles.inputGroup}>
-                  <label htmlFor="password">Password</label>
+                  <label htmlFor="password" className={styles.label}>Password</label>
                   <input
                     type="password"
                     id="password"
                     name="password"
                     placeholder="비밀번호를 입력하세요."
+                    className={styles.input}
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -155,10 +157,11 @@ const LoginForm = () => {
                     type="checkbox"
                     id="autoLogin"
                     name="autoLogin"
+                    className={styles.input}
                     checked={autoLogin}
                     onChange={(e) => setAutoLogin(e.target.checked)}
                   />
-                  <label htmlFor="autoLogin">자동 로그인</label>
+                  <label htmlFor="autoLogin" className={styles.label}>자동 로그인</label>
                 </div>
                 {error && <div className={styles.errorMessage}>{error}</div>}
                 <div className={styles.bottomGroup}>
