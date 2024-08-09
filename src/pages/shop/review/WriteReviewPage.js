@@ -6,18 +6,29 @@ import styles from './Review.module.scss';
 import { userEditActions } from "../../../components/store/user/UserEditSlice";
 import { NOTICE_URL } from "../../../config/user/host-config";
 
-const WriteReviewPage = () => {
+const WriteReviewPage = ({ treatsId }) => {
   const [reviewContent, setReviewContent] = useState('');
   const [rate, setRate] = useState(5);
-  const [reviewPics, setReviewPics] = useState([]);
+  const [reviewPics, setReviewPics] = useState([{ id: Date.now(), files: [] }]);
   const navigate = useNavigate();
   const user = useSelector((state) => state.userEdit.userDetail);
   const dispatch = useDispatch();
 
-  const treatsId = '11164617-d6f0-4101-9a32-d2391ab81887'; // 실제 treatsId 값
+  // const treatsId = 'b1c2d3e4-f5g6-7890-ab12-c3d4e5f67891'; // 실제 treatsId 값
 
-  const handleFileChange = (event) => {
-    setReviewPics(Array.from(event.target.files));
+  const handleFileChange = (index, event) => {
+    const files = Array.from(event.target.files);
+    setReviewPics((prevPics) =>
+      prevPics.map((pic, i) => (i === index ? { ...pic, files } : pic))
+    );
+  };
+
+  const handleAddPic = () => {
+    setReviewPics((prevPics) => [...prevPics, { id: Date.now(), files: [] }]);
+  };
+
+  const handleRemovePic = (index) => {
+    setReviewPics((prevPics) => prevPics.filter((_, i) => i !== index));
   };
 
   const handleSubmit = async (event) => {
@@ -42,9 +53,10 @@ const WriteReviewPage = () => {
         treatsId: treatsId
       })], { type: "application/json" }));
 
-
-      reviewPics.forEach((pic, index) => {
-        formData.append('reviewPics', pic);
+      reviewPics.forEach((pic) => {
+        pic.files.forEach((file) => {
+          formData.append('reviewPics', file);
+        });
       });
 
       const response = await fetch('http://localhost:8888/shop/reviews', {
@@ -120,14 +132,21 @@ const WriteReviewPage = () => {
           <RatingInput value={rate} onChange={setRate} />
         </div>
         <div>
-          <label htmlFor="reviewPics">이미지 업로드</label>
-          <input
-            type="file"
-            id="reviewPics"
-            multiple
-            accept="image/*"
-            onChange={handleFileChange}
-          />
+          <label>대표 사진</label>
+          {reviewPics.map((pic, index) => (
+            <div key={pic.id} className={styles.file_input_wrapper}>
+              <input
+                type="file"
+                multiple
+                accept="image/*"
+                onChange={(e) => handleFileChange(index, e)}
+              />
+              {index > 0 && (
+                <button type="button" onClick={() => handleRemovePic(index)}>제거</button>
+              )}
+            </div>
+          ))}
+          <button type="button" onClick={handleAddPic}>대표 사진 추가</button>
         </div>
         <button type="submit">작성하기</button>
       </form>

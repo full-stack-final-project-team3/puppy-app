@@ -91,6 +91,13 @@ const SignUpPage = () => {
     }
   };
 
+  // 키보드 엔터키 회원가입 방지
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+    }
+  };
+
   // 스텝2 가입완료 버튼, 스텝2 추가정보 등록 버튼
   // 이메일, 닉네임, 비밀번호 입력 완료되면 활성화
   useEffect(() => {
@@ -163,7 +170,7 @@ const SignUpPage = () => {
         classNames="page"
         nodeRef={nodeRef}
       >
-        <form onSubmit={submitHandler}>
+        <form onSubmit={submitHandler} onKeyDown={handleKeyDown}>
           <div className={styles.signUpPage}>
             <div className={styles.formStepActive}>
               {step === 1 && (
