@@ -15,7 +15,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { dogEditActions } from "../../components/store/dog/DogEditSlice";
 import { NOTICE_URL } from "../../config/user/host-config";
 
-
 const MainNavigation = ({ drawerOpen, onToggleDrawer }) => {
   const navi = useNavigate();
   // const [menuOpen, setMenuOpen] = useState(false);
@@ -108,22 +107,22 @@ const MainNavigation = ({ drawerOpen, onToggleDrawer }) => {
   const checkNotice = async (noticeId) => {
     try {
       const response = await fetch(
-          `${NOTICE_URL}/click/${noticeId}/${userDetail.id}`,
-          {
-            method: "POST",
-          }
+        `${NOTICE_URL}/click/${noticeId}/${userDetail.id}`,
+        {
+          method: "POST",
+        }
       );
 
       if (response.ok) {
         const updatedNotices = noticeList.map((notice) =>
-            notice.id === noticeId ? { ...notice, isClicked: true } : notice
+          notice.id === noticeId ? { ...notice, isClicked: true } : notice
         );
         dispatch(userEditActions.saveUserNotice(updatedNotices));
         dispatch(
-            userEditActions.updateUserDetail({
-              ...userDetail,
-              noticeCount: userDetail.noticeCount - 1,
-            })
+          userEditActions.updateUserDetail({
+            ...userDetail,
+            noticeCount: userDetail.noticeCount - 1,
+          })
         );
         console.log("Notice clicked successfully.");
       } else {
@@ -137,84 +136,87 @@ const MainNavigation = ({ drawerOpen, onToggleDrawer }) => {
   // console.log(noticeList);
 
   return (
-      <header className={styles.header}>
-        <nav className={styles.nav}>
-          <div className={styles.left}></div>
-          <div className={styles.center}>
-            <NavLink to="/">
-              <img
-                  className={styles.img}
-                  src="/header-logo.png"
-                  alt="Header Logo"
+    <header className={styles.header}>
+      <nav className={styles.nav}>
+        <div className={styles.left}></div>
+        <div className={styles.center}>
+          <NavLink to="/">
+            <img
+              className={styles.img}
+              src="/header-logo.png"
+              alt="Header Logo"
+            />
+          </NavLink>
+        </div>
+        <div className={styles.right}>
+          {user ? (
+            <>
+              <div className={styles.welcome}>
+                Welcome {userDetail.nickname}
+              </div>
+              <button className={styles.logout} onClick={logoutHandler}>
+                Logout
+              </button>
+              <Link to={"/cart"}>
+                {" "}
+                <BiBasket className={`${styles.icon} ${styles.basket}`} />
+              </Link>
+              <BsBell className={styles.icon} onClick={toggleNotice}></BsBell>
+              {Array.isArray(noticeList) && userDetail.noticeCount !== 0 && (
+                <span className={styles.count}>{userDetail.noticeCount}</span>
+              )}
+              {/*<Link to={"/mypage"} onClick={clearEditMode}><BiUser className={styles.icon} /></Link>*/}
+              <Link to={"/mypage"} onClick={clearEditMode}>
+                <img className={styles.profile} src={userDetail.profileUrl} />
+              </Link>
+              <GiHamburgerMenu
+                className={styles.icon}
+                onClick={onToggleDrawer} // 기존 toggleMenuHandler에서 toggleDrawerHandler로 변경
               />
-            </NavLink>
-          </div>
-          <div className={styles.right}>
-            {user ? (
-                <>
-                  <button className={styles.logout} onClick={logoutHandler}>
-                    Logout
-                  </button>
-                  <Link to={"/cart"}>
-                    {" "}
-                    <BiBasket className={`${styles.icon} ${styles.basket}`} />
-                  </Link>
-                  <BsBell className={styles.icon} onClick={toggleNotice}></BsBell>
-                  {Array.isArray(noticeList) && userDetail.noticeCount !== 0 && (
-                      <span className={styles.count}>{userDetail.noticeCount}</span>
-                  )}
-                  {/*<Link to={"/mypage"} onClick={clearEditMode}><BiUser className={styles.icon} /></Link>*/}
-                  <Link to={"/mypage"} onClick={clearEditMode}>
-                    <img className={styles.profile} src={userDetail.profileUrl} />
-                  </Link>
-                  <GiHamburgerMenu
-                      className={styles.icon}
-                      onClick={onToggleDrawer} // 기존 toggleMenuHandler에서 toggleDrawerHandler로 변경
-                  />
-                </>
-            ) : (
-                <>
-                  <NavLink className={styles.login} to="/login">
-                    Login
-                  </NavLink>
-                  <BiUser onClick={loginHandler} className={styles.icon} />
-                  <GiHamburgerMenu
-                      className={styles.icon}
-                      onClick={onToggleDrawer} // 기존 toggleMenuHandler에서 toggleDrawerHandler로 변경
-                  />
-                </>
-            )}
-          </div>
-        </nav>
-        {openNotice && (
-            <div className={styles.noticeWrap} ref={noticeRef}>
-              {Array.isArray(noticeList) &&
-                  noticeList.length > 0 &&
-                  noticeList
-                      .slice()
-                      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // 시간 순서대로 정렬
-                      .map((notice) => (
-                          <React.Fragment key={notice.id}>
-                            <div
-                                className={`${styles.message} ${
-                                    notice.clicked ? styles.clickedMessage : ""
-                                }`}
-                                onClick={
-                                  !notice.clicked ? () => checkNotice(notice.id) : undefined
-                                }
-                            >
-                              {notice.message}
-                            </div>
-                            <div className={styles.time}>
-                              {new Date(
-                                  (notice.createdAt || "").replace(" ", "T")
-                              ).toLocaleString()}
-                            </div>
-                          </React.Fragment>
-                      ))}
-            </div>
-        )}
-      </header>
+            </>
+          ) : (
+            <>
+              <NavLink className={styles.login} to="/login">
+                Login
+              </NavLink>
+              <BiUser onClick={loginHandler} className={styles.icon} />
+              <GiHamburgerMenu
+                className={styles.icon}
+                onClick={onToggleDrawer} // 기존 toggleMenuHandler에서 toggleDrawerHandler로 변경
+              />
+            </>
+          )}
+        </div>
+      </nav>
+      {openNotice && (
+        <div className={styles.noticeWrap} ref={noticeRef}>
+          {Array.isArray(noticeList) &&
+            noticeList.length > 0 &&
+            noticeList
+              .slice()
+              .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // 시간 순서대로 정렬
+              .map((notice) => (
+                <React.Fragment key={notice.id}>
+                  <div
+                    className={`${styles.message} ${
+                      notice.clicked ? styles.clickedMessage : ""
+                    }`}
+                    onClick={
+                      !notice.clicked ? () => checkNotice(notice.id) : undefined
+                    }
+                  >
+                    {notice.message}
+                  </div>
+                  <div className={styles.time}>
+                    {new Date(
+                      (notice.createdAt || "").replace(" ", "T")
+                    ).toLocaleString()}
+                  </div>
+                </React.Fragment>
+              ))}
+        </div>
+      )}
+    </header>
   );
 };
 

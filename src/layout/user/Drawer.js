@@ -106,7 +106,7 @@ const BottomDrawerContainer = styled.div`
   background-color: #14332C;
   transform: translateY(${(props) => (props.open ? '0' : '100%')});
   transition: transform 0.3s ease-in-out;
-  z-index: 1699;
+  z-index: 1200;
 
   @media (max-width: 768px) {
     height: 50%;
@@ -115,8 +115,8 @@ const BottomDrawerContainer = styled.div`
 
 const CloseButton = styled(motion.button)`
   position: absolute;
-  top: calc(50% - 450px);
-  right: calc(600px - (960px - 50%)); /* 50px 왼쪽으로 이동 */
+  top: 42.5%;
+  right: 42.5%; /* 50px 왼쪽으로 이동 */
   width: 100px;
   height: 100px;
   padding: 0;
@@ -139,12 +139,12 @@ const CloseButton = styled(motion.button)`
 
   @media (max-width: 1920px) {
     z-index: 1600;
-    right: calc(50% - 960px + 600px);
+    left: -8%;
   }
 
   @media (max-width: 1000px) {
     z-index: 1600;
-    right: calc(50% - 500px + 300px);
+    left: -8%;
   }
 
   .x-shape {
@@ -213,6 +213,15 @@ const Drawer = ({ open, onClose }) => {
   return (
     <>
       <DrawerContainer open={open}>
+      <CloseButton
+          open={open}
+          onClick={onClose}
+          whileHover={{ scale: 1.2 }}
+          whileTap={{ scale: 0.9 }}
+          transition={{ type: "spring", stiffness: 400, damping: 17 }}
+        >
+          <div className="x-shape"></div>
+        </CloseButton>
         <NavItem href="/" className="special-spacing-home">Home</NavItem>
         <NavItem href="/mypage" className="special-spacing">My Page</NavItem>
         <NavItem href="/hotel">Hotel</NavItem>
@@ -230,15 +239,7 @@ const Drawer = ({ open, onClose }) => {
       <TopDrawerContainer open={open}>
       </TopDrawerContainer>
       <BottomDrawerContainer open={open}>
-      <CloseButton
-          open={open}
-          onClick={onClose}
-          whileHover={{ scale: 1.2 }}
-          whileTap={{ scale: 0.9 }}
-          transition={{ type: "spring", stiffness: 400, damping: 17 }}
-        >
-          <div className="x-shape"></div>
-        </CloseButton>
+      
       </BottomDrawerContainer>
     </>
   );
