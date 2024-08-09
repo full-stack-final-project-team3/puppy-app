@@ -3,12 +3,16 @@ import { useDispatch } from 'react-redux';
 import { adminActions } from "../../store/user/AdminSlice"; // 적절한 경로로 수정하세요
 import styles from './AdminNavigation.module.scss';
 
-const AdminNavigation = () => {
+const AdminNavigation = ({ exit }) => {
     const dispatch = useDispatch();
 
     const handleNavigationClick = (componentName) => {
         dispatch(adminActions.setVisibleComponent(componentName));
     };
+
+    const exitHandler = () => {
+        exit(true)
+    }
 
     return (
         <div className={styles.navigation}>
@@ -18,6 +22,7 @@ const AdminNavigation = () => {
             <p className={styles.menu} onClick={() => handleNavigationClick('ShopStatus')}>쇼핑몰 이용 현황</p>
             <p className={styles.menu} onClick={() => handleNavigationClick('UserPointStatus')}>유저 포인트 지출 현황</p>
             <p className={styles.menu} onClick={() => handleNavigationClick('ReportStatus')}>신고 및 민원</p>
+            <p className={styles.menu} onClick={exitHandler}>마이페이지 돌아가기</p>
         </div>
     );
 };

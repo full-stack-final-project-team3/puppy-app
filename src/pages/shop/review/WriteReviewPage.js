@@ -14,7 +14,7 @@ const WriteReviewPage = () => {
   const user = useSelector((state) => state.userEdit.userDetail);
   const dispatch = useDispatch();
 
-  const treatsId = 'b1c2d3e4-f5g6-7890-ab12-c3d4e5f67891'; // 실제 treatsId 값
+  const treatsId = '11164617-d6f0-4101-9a32-d2391ab81887'; // 실제 treatsId 값
 
   const handleFileChange = (event) => {
     setReviewPics(Array.from(event.target.files));
@@ -41,6 +41,7 @@ const WriteReviewPage = () => {
         userId: user.id,
         treatsId: treatsId
       })], { type: "application/json" }));
+
 
       reviewPics.forEach((pic, index) => {
         formData.append('reviewPics', pic);

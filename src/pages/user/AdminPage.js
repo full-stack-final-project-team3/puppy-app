@@ -4,12 +4,12 @@ import styles from './AdminPage.module.scss';
 import AdminNavigation from "../../components/auth/admin/AdminNavigation";
 import AdminMain from "../../components/auth/admin/AdminMain";
 
-const AdminPage = () => {
+const AdminPage = ({ exit }) => {
     const visibleComponent = useSelector((state) => state.admin.visibleComponent);
 
     return (
         <div className={styles.wrap}>
-            <AdminNavigation />
+            <AdminNavigation exit={exit} />
             <AdminMain visibleComponent={visibleComponent} />
         </div>
     );

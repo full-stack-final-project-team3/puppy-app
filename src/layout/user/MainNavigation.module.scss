@@ -151,3 +151,42 @@
 .noticeWrap::-webkit-scrollbar {
   display: none;
 }
+
+@media screen and (max-width: 400px) {
+  .basket {
+    display: none;
+  }
+  .profile {
+    display: none;
+  }
+  .logout {
+    display: none;
+  }
+
+  .dropdownMenu {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    z-index: 10000;
+
+    ul {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+
+      li {
+        padding: 20px 0;
+
+        a {
+          font-size: 1.5rem;
+        }
+      }
+    }
+  }
+}
