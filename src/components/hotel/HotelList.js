@@ -22,8 +22,7 @@ const HotelList = ({onShowProperty, getSliderSettings}) => {
     const hotels = useSelector((state) => state.hotelPage.hotels);
     const isAdmin = userDetail && userDetail.role === 'ADMIN';
 
-    console.log("asdasd", userDetail)
-// 즐겨찾기 상태를 업데이트.
+    // 즐겨찾기 상태를 업데이트.
     // useEffect(() => {
     //     if (userData) {
     //         dispatch(userEditActions.updateUserDetail(userData));
@@ -48,10 +47,10 @@ const HotelList = ({onShowProperty, getSliderSettings}) => {
     const isFavorite = (hotelId) => favorites.some(fav => fav.hotelId === hotelId);
 
     useEffect(() => {
-        if (userDetail && userDetail.userId) {
-            dispatch(fetchFavorites(userDetail.userId));
+        if (userDetail && userDetail.id) {
+            dispatch(fetchFavorites());
         }
-    }, [dispatch, userDetail.userId]);
+    }, [dispatch, userDetail.id]);
 
 
     // 호텔 즐겨찾기 추가
