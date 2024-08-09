@@ -147,7 +147,7 @@ const UserEdit = () => {
                 </div>
                 <div className={styles.doubleSection}>
                     <div className={styles.section}>
-                        <label htmlFor="password">비밀번호 변경</label>
+                        <label htmlFor="password" className={styles.label}>비밀번호 변경</label>
                         <input
                             id="password"
                             type="password"
@@ -158,7 +158,7 @@ const UserEdit = () => {
                         />
                     </div>
                     <div className={styles.section}>
-                        <label htmlFor="nickname">닉네임</label>
+                        <label htmlFor="nickname" className={styles.label}>닉네임</label>
                         <input
                             id="nickname"
                             type="text"
@@ -170,7 +170,7 @@ const UserEdit = () => {
                 </div>
                 <div className={styles.doubleSection}>
                     <div className={styles.section}>
-                        <label htmlFor="confirmPassword">비밀번호 확인</label>
+                        <label htmlFor="confirmPassword" className={styles.label}>비밀번호 확인</label>
                         <input
                             id="confirmPassword"
                             type="password"
@@ -185,7 +185,7 @@ const UserEdit = () => {
                         )}
                     </div>
                     <div className={styles.section}>
-                        <label htmlFor="name">이름</label>
+                        <label htmlFor="name" className={styles.label}>이름</label>
                         <input
                             id="name"
                             type="text"
@@ -197,7 +197,7 @@ const UserEdit = () => {
                 </div>
                 <div className={styles.doubleSection}>
                     <div className={styles.section}>
-                        <label htmlFor="phone">휴대전화</label>
+                        <label htmlFor="phone" className={styles.label}>휴대전화</label>
                         <input
                             id="phone"
                             type="text"
@@ -208,7 +208,7 @@ const UserEdit = () => {
                         />
                     </div>
                     <div className={styles.section}>
-                        <label htmlFor="point">포인트</label>
+                        <label htmlFor="point" className={styles.label}>포인트</label>
                         <input
                             id="point"
                             type="text"
