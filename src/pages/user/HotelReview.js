@@ -1,9 +1,7 @@
 import React, { useEffect } from 'react';
 import styles from './HotelReview.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchFavorites } from '../../components/store/hotel/FavoriteSlice';
 import { fetchReviews } from '../../components/store/hotel/HotelReviewSlice';
-import { fetchHotels } from '../../components/store/hotel/HotelPageSlice';
 import { fetchUserReservations } from '../../components/store/hotel/ReservationSlice';
 import { useParams } from 'react-router-dom';
 
@@ -12,7 +10,7 @@ const HotelReview = () => {
     const dispatch = useDispatch();
 
     const review = useSelector(state => state.reviews);
-    const { userReservations, status, error } = useSelector(state => state.reservation);
+    const { userReservations } = useSelector(state => state.reservation);
     const userDetail = useSelector((state) => state.userEdit.userDetail);
     const userId = userDetail.id;
 
@@ -33,15 +31,17 @@ const HotelReview = () => {
 
     const ReviewItem = ({ review }) => {
         return (
-            <div>
-                <div>
+            <div className={styles.reviewWrap}>
+                <div className={styles.reviewHeader}>
                     <span>{review.nickName}</span>
                     <span>{new Date(review.reviewDate).toLocaleDateString()}</span>
                 </div>
-                <div>
+                {/*   ↓ 여깁니다  ↓   */}
+                <span className={styles.hotelName}>캔디 모텔</span>
+                <div className={styles.reviewContent}>
                     <p>{review.reviewContent}</p>
                 </div>
-                <div>
+                <div className={styles.reviewFooter}>
                     <span>Rating: {review.rate}</span>
                 </div>
             </div>
@@ -49,8 +49,8 @@ const HotelReview = () => {
     };
 
     return (
-        <div>
-            <h2>Hotel Reviews</h2>
+        <div className={styles.wrap}>
+            <h2 className={styles.h2}>Hotel Reviews</h2>
             {review.reviews && review.reviews.length > 0 ? (
                 review.reviews
                     .filter(rev => rev.userId === userId)
