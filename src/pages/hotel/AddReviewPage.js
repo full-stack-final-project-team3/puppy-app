@@ -22,7 +22,7 @@ const AddReviewPage = () => {
                 if (userHasReviewed) {
                     setHasReviewed(true);
                     alert('이미 이 호텔에 대한 리뷰를 작성했습니다.');
-                    navigate('/hotel'); // 리뷰 작성 페이지 접근을 차단하고 다른 페이지로 리디렉션
+                    navigate('/hotel');
                 }
             } else {
                 console.error('Unexpected payload format:', payload);
@@ -60,7 +60,7 @@ const AddReviewPage = () => {
             .catch((err) => {
                 const { message, status } = handleError(err);
                 setCustomError(message);
-                navigate('/error', { state: { message, status } }); // 에러 페이지로 리디렉션
+                navigate('/error', { state: { message, status } });
             });
     };
 
