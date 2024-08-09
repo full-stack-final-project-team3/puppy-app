@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ADMIN_URL } from "../../../../config/user/host-config";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import styles from './ShowUserChart.module.scss';
 
 const ShowUserDay = () => {
@@ -23,7 +23,7 @@ const ShowUserDay = () => {
     return (
         <div className={styles.chartWrapper}>
             <ResponsiveContainer width="100%" height={400}>
-                <LineChart
+                <BarChart
                     data={dayUserCounts}
                     margin={{
                         top: 10,
@@ -37,8 +37,8 @@ const ShowUserDay = () => {
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Line type="monotone" dataKey="count" stroke="#8884d8" activeDot={{ r: 8 }} />
-                </LineChart>
+                    <Bar dataKey="count" fill="#8884d8" />
+                </BarChart>
             </ResponsiveContainer>
         </div>
     );

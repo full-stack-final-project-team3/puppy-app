@@ -16,8 +16,8 @@ const AdminNavigation = ({ exit }) => {
 
     return (
         <div className={styles.navigation}>
-            <p className={styles.menu} onClick={() => handleNavigationClick('UserCount')}>사용자 수 관리</p>
-            <p className={styles.menu} onClick={() => handleNavigationClick('NewUsers')}>신규 가입자</p>
+            <p className={styles.menu} onClick={() => handleNavigationClick('UserCount')}>신규 가입자</p>
+            <p className={styles.menu} onClick={() => handleNavigationClick('NewUsers')}>사용자 수 현황</p>
             <p className={styles.menu} onClick={() => handleNavigationClick('HotelBookStatus')}>호텔 예약 현황</p>
             <p className={styles.menu} onClick={() => handleNavigationClick('ShopStatus')}>쇼핑몰 이용 현황</p>
             <p className={styles.menu} onClick={() => handleNavigationClick('UserPointStatus')}>유저 포인트 지출 현황</p>
