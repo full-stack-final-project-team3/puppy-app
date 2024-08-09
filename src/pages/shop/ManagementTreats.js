@@ -45,9 +45,9 @@ const ManagementTreats = () => {
   );
 
   const handleEdit = (id) => {
-    navigate(`/edit-treats/${id}`); // 수정 페이지로 이동
+    navigate(`/edit-treats/${id}`); 
   };
-
+  
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm("정말로 삭제하시겠습니까?");
     if (!confirmDelete) return;
@@ -67,9 +67,13 @@ const ManagementTreats = () => {
 
       // 삭제 성공 시 상태 업데이트
       setTreatsList(treatsList.filter((treat) => treat.id !== id));
+
       alert("삭제가 완료되었습니다.");
+
     } catch (error) {
+
       console.error("삭제 실패:", error);
+
       alert("삭제에 실패했습니다. 다시 시도해 주세요.");
     }
   };
