@@ -11,7 +11,7 @@ const AdminNavigation = ({ exit }) => {
     };
 
     const exitHandler = () => {
-        exit(true)
+        exit(false)
     }
 
     return (

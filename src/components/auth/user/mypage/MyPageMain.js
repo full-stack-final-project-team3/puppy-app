@@ -45,9 +45,10 @@ const MyPageMain = () => {
         setClickAdmin(true)
     }
 
-    const exit = () => {
-        setClickAdmin(true)
-        console.log(clickAdmin)
+    const exit = (flag) => {
+        setClickAdmin(flag)
+        console.log("exit 호출")
+        console.log(flag)
     }
 
 
@@ -61,15 +62,17 @@ const MyPageMain = () => {
                 {!isEditMode && <AboutMyInfo />}
             </div>
         ) : (
-            clickAdmin ? (<div className={styles.wrap}>
-                <p onClick={startAdminMode}>Admin Page 가기</p>
-                <MyPageHeader/>
-                {!isEditMode && <MyPageBody user={userDetail} dogList={dogList}/>}
-                {isUserEditMode && <UserEdit/>}
-                {isDogEditMode && <DogEdit user={userDetail}/>}
-                {!isEditMode && <AboutMyInfo/>}
-            </div>) :
+            clickAdmin ?
                 <AdminPage exit={exit}/>
+                :
+                (<div className={styles.wrap}>
+                    <p onClick={startAdminMode}>Admin Page 가기</p>
+                    <MyPageHeader/>
+                    {!isEditMode && <MyPageBody user={userDetail} dogList={dogList}/>}
+                    {isUserEditMode && <UserEdit/>}
+                    {isDogEditMode && <DogEdit user={userDetail}/>}
+                    {!isEditMode && <AboutMyInfo/>}
+                </div>)
 
 
             // <>
