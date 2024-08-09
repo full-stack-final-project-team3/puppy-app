@@ -4,7 +4,7 @@
 }
 
 .authContainer {
-  width: 55%;
+  width: 37%;
   margin: 100px auto;
   padding: 20px;
   border: 1px solid #ccc;
@@ -70,13 +70,14 @@
 
 .loginBox {
   margin-top: 50px;
+  width: 73%;
 }
 
 .inputGroup {
   margin-bottom: 15px;
   text-align: left;
 
-  label {
+  .label {
     display: block;
     color: #333333;
     font-weight: 500;
@@ -84,7 +85,7 @@
     margin-bottom: 10px;
   }
 
-  input {
+  .input {
     width: 100%;
     padding: 10px;
     border: 1px solid #B7AE9E;
@@ -135,4 +136,5 @@
 .bottomGroup {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
 }
