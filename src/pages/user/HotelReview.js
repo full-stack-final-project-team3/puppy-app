@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import styles from './HotelReview.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchReviews } from '../../components/store/hotel/HotelReviewSlice';
@@ -36,13 +37,17 @@ const HotelReview = () => {
                     <span>{review.nickName}</span>
                     <span>{new Date(review.reviewDate).toLocaleDateString()}</span>
                 </div>
-                {/*   ↓ 여깁니다  ↓   */}
+                            {/* ↓  여깁니다  ↓ */}
                 <span className={styles.hotelName}>캔디 모텔</span>
                 <div className={styles.reviewContent}>
                     <p>{review.reviewContent}</p>
                 </div>
                 <div className={styles.reviewFooter}>
                     <span>Rating: {review.rate}</span>
+                    <div className={styles.actions}>
+                        <Link to={`/edit-review/${review.id}`} className={styles.actionLink}>수정</Link>
+                        <Link to={`/delete-review/${review.id}`} className={styles.actionLink}>삭제</Link>
+                    </div>
                 </div>
             </div>
         );
