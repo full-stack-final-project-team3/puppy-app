@@ -27,7 +27,7 @@ const DeleteAccountModal = ({ onClose }) => {
         onClose();
     }
     const checkPassword = debounce(async (password) => {
-        const response = await fetch(`${AUTH_URL}/check-password/${user.id}?password=${password}`);
+        const response = await fetch(`${AUTH_URL}/check-password/${user.email}?password=${password}`);
         const flag = await response.json();
 
         if (flag) {

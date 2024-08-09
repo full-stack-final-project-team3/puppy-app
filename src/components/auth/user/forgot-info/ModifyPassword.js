@@ -1,9 +1,9 @@
-import React, {useRef, useState, useEffect, useContext} from 'react';
+import React, { useRef, useState, useEffect, useContext } from 'react';
 import styles from './ModifyPassword.module.scss';
-import {AUTH_URL, NOTICE_URL} from "../../../../config/user/host-config";
+import { AUTH_URL, NOTICE_URL } from "../../../../config/user/host-config";
 import { useNavigate } from "react-router-dom";
-import {userEditActions} from "../../../store/user/UserEditSlice";
-import {useDispatch} from "react-redux";
+import { userEditActions } from "../../../store/user/UserEditSlice";
+import { useDispatch, useSelector } from "react-redux";
 import UserContext from "../../../context/user-context";
 
 const ModifyPassword = ({ email }) => {
@@ -17,6 +17,7 @@ const ModifyPassword = ({ email }) => {
     const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
     const dispatch = useDispatch();
     const { changeIsLogin, setUser } = useContext(UserContext);
+    const user = useSelector(state => state.userEdit.userDetail);
 
     useEffect(() => {
         if (!email) {
@@ -24,46 +25,71 @@ const ModifyPassword = ({ email }) => {
         }
     }, [email, navi]);
 
-    const handlePasswordChange = () => {
-        if (passwordRef.current.value && confirmPasswordRef.current.value) {
-            if (passwordRef.current.value === confirmPasswordRef.current.value) {
+    const handlePasswordChange = async () => {
+        const newPassword = passwordRef.current.value;
+        const confirmPassword = confirmPasswordRef.current.value;
+
+        if (!newPassword || !confirmPassword) {
+            setPasswordMessage('');
+            setIsSubmitDisabled(true);
+            return;
+        }
+
+        if (newPassword !== confirmPassword) {
+            setPasswordMatch(false);
+            setPasswordMessage('비밀번호가 일치하지 않습니다.');
+            setIsSubmitDisabled(true);
+            return;
+        }
+
+        try {
+            const response = await fetch(`${AUTH_URL}/check-password/${email}?password=${newPassword}`);
+            const isPasswordSame = await response.json();
+
+            if (isPasswordSame) {
+                setPasswordMatch(false);
+                setPasswordMessage("비밀번호가 이전과 동일합니다.");
+                setIsSubmitDisabled(true);
+            } else {
                 setPasswordMatch(true);
                 setPasswordMessage('비밀번호가 일치합니다.');
-                setPassword(passwordRef.current.value);
+                setPassword(newPassword);
                 setIsSubmitDisabled(false);
-            } else {
-                setPasswordMatch(false);
-                setPasswordMessage('비밀번호가 일치하지 않습니다.');
-                setIsSubmitDisabled(true);
             }
-        } else {
-            setPasswordMessage('');
+        } catch (error) {
+            console.error('비밀번호 확인 중 오류가 발생했습니다:', error);
+            setPasswordMessage('비밀번호 확인 중 오류가 발생했습니다.');
             setIsSubmitDisabled(true);
         }
     };
 
     const submitHandler = async () => {
-        const response = await fetch(`${AUTH_URL}/password?password=${password}&email=${email}`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-        });
-        const result = await response.text();
-        console.log(result);
+        try {
+            const response = await fetch(`${AUTH_URL}/password?password=${password}&email=${email}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+            });
 
-        const userDetailResponse = await fetch(`${AUTH_URL}/${email}`);
-        const userDetailData = await userDetailResponse.json();
+            if (!response.ok) {
+                throw new Error('비밀번호 변경에 실패했습니다.');
+            }
 
-        const noticeResponse = await fetch(`${NOTICE_URL}/user/${userDetailData.id}`);
-        const noticeData = await noticeResponse.json();
+            const userDetailResponse = await fetch(`${AUTH_URL}/${email}`);
+            const userDetailData = await userDetailResponse.json();
 
-        dispatch(userEditActions.saveUserNotice(noticeData));
-        dispatch(userEditActions.updateUserDetail(userDetailData));
+            const noticeResponse = await fetch(`${NOTICE_URL}/user/${userDetailData.id}`);
+            const noticeData = await noticeResponse.json();
 
-        console.log(userDetailResponse);
-        localStorage.setItem("userData", JSON.stringify(userDetailData));
-        setUser(userDetailData);
-        changeIsLogin(true);
-        navi("/");
+            dispatch(userEditActions.saveUserNotice(noticeData));
+            dispatch(userEditActions.updateUserDetail(userDetailData));
+
+            localStorage.setItem("userData", JSON.stringify(userDetailData));
+            setUser(userDetailData);
+            changeIsLogin(true);
+            navi("/");
+        } catch (error) {
+            console.error('비밀번호 변경 중 오류가 발생했습니다:', error);
+        }
     };
 
     return (
