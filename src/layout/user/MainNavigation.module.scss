@@ -157,6 +157,22 @@
 }
 
 @media screen and (max-width: 400px) {
+
+  .header .right .count {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #B3797A;
+    position: absolute;
+    right: 91px;
+    top: 35px;
+    color: white;
+    font-size: 0.6rem;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   .basket {
     display: none;
   }
