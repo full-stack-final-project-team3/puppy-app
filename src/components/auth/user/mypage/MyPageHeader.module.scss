@@ -13,19 +13,16 @@
     font-weight: 300;
     cursor: pointer;
   }
-}
 
-@media screen and (width: 400px) {
-
-  .headerWrap {
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 1px solid black;
-    width: 77%;
-
-  .icon {
-    width: 26px;
-    height: 26px;
-  }
+  @media screen and (max-width: 400px) {
+    width: 100%;
+    padding: 10px;
+    .icon {
+      width: 18px;
+      height: 18px;
+    }
+    h3 {
+      font-size: 16px;
+    }
   }
 }

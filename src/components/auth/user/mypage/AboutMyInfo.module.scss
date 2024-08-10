@@ -6,7 +6,6 @@
   padding-top: 20px;
 
   .secondWrap {
-
     width: 90%;
     margin: 0 auto;
 
@@ -21,9 +20,10 @@
       margin: 20px auto;
       display: flex;
       justify-content: space-between;
+      //flex-wrap: wrap; /* 요소들이 다음 줄로 넘어갈 수 있게 함 */
 
       .suggest {
-        width: 40%;
+        width: 45%; /* 1920x1080 해상도에서는 한 줄에 두 개씩 배치 */
         padding: 12px;
         border: 1px solid #ccc;
         text-align: center;
@@ -39,6 +39,7 @@
         font-weight: bold;
         color: #555;
         text-decoration: none;
+        margin-bottom: 0; /* 마진 제거 */
       }
 
       .suggest:hover {
@@ -58,7 +59,7 @@
 
       .bookmarkIcon {
         font-size: 24px;
-        color:  #92B2D8;
+        color: #92B2D8;
       }
 
       .starIcon {
@@ -68,7 +69,7 @@
 
       .penIcon {
         font-size: 24px;
-        color:  #E3A193;
+        color: #E3A193;
       }
 
       .heartIcon {
@@ -81,5 +82,21 @@
       }
     }
 
+    @media screen and (max-width: 400px) {
+      .subWrap {
+        display: flex;
+        flex-direction: column; /* 요소들을 한 줄에 하나씩 배치 */
+        align-items: center;
+
+        .suggest {
+          width: 80%; /* 한 줄에 하나씩 배치되도록 넓이를 100%로 설정 */
+          margin-bottom: 15px; /* 요소들 사이에 간격 추가 */
+        }
+
+        .suggest:last-child {
+          margin-bottom: 0; /* 마지막 요소의 마진을 제거하여 아래 여백 없애기 */
+        }
+      }
+    }
   }
 }
