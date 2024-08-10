@@ -36,12 +36,14 @@ const RoomDetail = ({ hotel, onBook, getSliderSettings, onModifyRoom }) => {
     const [availableRooms, setAvailableRooms] = useState([]);
 
     useEffect(() => {
+        // hotel.room이 변경될 때만 상태를 초기화
         if (hotel && hotel.room) {
             dispatch(setRooms(hotel.room));
         }
-    }, [dispatch, hotel]);
+    }, [dispatch, hotel.room]); // 의존성 배열에 hotel.room 추가하여 변경될 때만 실행
 
     useEffect(() => {
+        // 호텔 ID와 날짜 범위가 모두 설정된 경우에만 예약 가능한 방을 가져옴
         if (hotelId && startDate && endDate) {
             dispatch(fetchAvailableRooms({ city: hotelId, startDate, endDate }))
                 .unwrap()
@@ -52,7 +54,7 @@ const RoomDetail = ({ hotel, onBook, getSliderSettings, onModifyRoom }) => {
                     console.error("Error fetching available rooms:", error);
                 });
         }
-    }, [dispatch, hotelId, startDate, endDate]);
+    }, [dispatch, hotelId, startDate, endDate]); // 의존성 배열을 통해 상태가 변할 때만 실행
 
     useEffect(() => {
         setAvailableRooms(rooms);
