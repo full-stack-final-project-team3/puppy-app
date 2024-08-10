@@ -11,7 +11,7 @@ const initialRoomAddState = {
     roomImages: [{ hotelImgUri: '', type: 'ROOM' }],
     errorMessage: '',
     isUploading: false,
-    
+
 };
 
 export const uploadFile = createAsyncThunk(
@@ -103,6 +103,7 @@ export const updateRoom = createAsyncThunk(
         console.log(`Token: ${token}`);
         try {
             console.log(`Request URL: ${ROOM_URL}/${roomId}`);
+
             const response = await fetch(`${ROOM_URL}/${roomId}`, {
                 method: 'PATCH',
                 headers: {
@@ -110,10 +111,10 @@ export const updateRoom = createAsyncThunk(
                     'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    'room-name': roomData.name,
-                    'room-content': roomData.content,
-                    'room-type': roomData.type,
-                    'room-price': roomData.price,
+                    'room-name': roomData['room_name'],
+                    'room-content': roomData['room-content'],
+                    'room-type': roomData['room-type'],
+                    'room-price': roomData['room-price'],
                     'room-images': roomData.roomImages.map(image => ({
                         hotelImgUri: typeof image.hotelImgUri === 'string' ? image.hotelImgUri : '',
                         type: image.type || 'ROOM'  // type이 없는 경우 기본값 설정
@@ -188,7 +189,7 @@ const roomAddSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-        .addCase(uploadFile.pending, (state) => {
+            .addCase(uploadFile.pending, (state) => {
                 state.isUploading = true;
             })
             .addCase(uploadFile.fulfilled, (state, action) => {

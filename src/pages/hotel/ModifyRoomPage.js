@@ -7,24 +7,25 @@ import { ROOM_URL } from '../../config/user/host-config';
 import styles from './ModifyRoomPage.module.scss';
 
 const ModifyRoomPage = () => {
-    const { roomId } = useParams();
+    const {roomId} = useParams()
     const location = useLocation();
     const { hotel, room: initialRoomData } = location.state || {};
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const room = useSelector(state => state.roomAdd.rooms.find(room => room['room-id'] === roomId) || {});
-    
-    console.log('room: ', room);
+
     const [roomData, setRoomData] = useState({
         name: '',
         content: '',
         type: '',
         price: '',
-        roomImages: [], // 초기값을 빈 배열로 설정
+        roomImages: [],
         hotelId: hotel ? hotel['hotel-id'] : ''
     });
 
-    console.log('hotel: ', roomData.hotelId);
+
+
+
 
     useEffect(() => {
         if (!room || Object.keys(room).length === 0) {
@@ -32,11 +33,11 @@ const ModifyRoomPage = () => {
         } else {
             setRoomData({
                 ...room,
-                roomImages: room['room-images'] || [], // roomImages가 undefined일 경우 빈 배열 사용
+                roomImages: room['room-images'] || [],
                 hotelId: hotel ? hotel['hotel-id'] : room['hotel-id']
             });
         }
-    }, [dispatch, roomId, room, hotel]);
+    }, [dispatch]);
 
     useEffect(() => {
         if (initialRoomData) {
@@ -46,7 +47,7 @@ const ModifyRoomPage = () => {
                 hotelId: hotel ? hotel['hotel-id'] : initialRoomData['hotel-id']
             });
         }
-    }, [initialRoomData, hotel]);
+    }, []);
 
 
     const handleChange = (e) => {
@@ -55,7 +56,7 @@ const ModifyRoomPage = () => {
             files.forEach((file) => {
                 dispatch(uploadFile({ file })).then(response => {
                     const imageUrl = response.payload.data; // 서버에서 반환된 URL
-    
+
                     setRoomData(prevState => ({
                         ...prevState,
                         roomImages: [...prevState.roomImages, {
@@ -74,7 +75,7 @@ const ModifyRoomPage = () => {
             });
         }
     };
-    
+
 
 
     const handleDeleteImage = (index) => {
@@ -90,10 +91,8 @@ const ModifyRoomPage = () => {
             ...roomData,
             hotelId: hotel ? hotel['hotel-id'] : room['hotel-id']
         };
-    
-        console.log('Submitting room data:', JSON.stringify(roomDataWithHotelId, null, 2));
-        console.log('Request URL:', `${ROOM_URL}/${roomId}`);
-    
+
+
         dispatch(updateRoom({ roomId, roomData: roomDataWithHotelId }))
             .unwrap()
             .then(() => {
@@ -105,8 +104,10 @@ const ModifyRoomPage = () => {
                 alert('방 수정 실패: ' + error.message);
             });
     };
-    
-    
+
+    console.log("roomData", roomData);
+    console.log("room", room)
+    console.log("initialRoomData", initialRoomData);
 
     return (
         <div className={styles.modifyRoomPage}>
@@ -116,9 +117,9 @@ const ModifyRoomPage = () => {
                     <label>Name:</label>
                     <input
                         type="text"
-                        name="name"
+                        name="room_name"
                         required
-                        value={roomData.name}
+                        value={roomData['room_name']}
                         onChange={handleChange}
                     />
                 </div>
@@ -126,27 +127,27 @@ const ModifyRoomPage = () => {
                     <label>Price:</label>
                     <input
                         type="number"
-                        name="price"
+                        name="room-price"
                         required
-                        value={roomData.price}
+                        value={roomData['room-price']}
                         onChange={handleChange}
                     />
                 </div>
                 <div>
                     <label>Description:</label>
                     <textarea
-                        name="content"
+                        name="room-content"
                         required
-                        value={roomData.content}
+                        value={roomData['room-content']}
                         onChange={handleChange}
                     />
                 </div>
                 <div>
                     <label>Type:</label>
                     <select
-                        name="type"
+                        name="room-type"
                         required
-                        value={roomData.type}
+                        value={roomData['room-type']}
                         onChange={handleChange}
                     >
                         <option value="SMALL_DOG">Small Dog</option>
@@ -162,7 +163,6 @@ const ModifyRoomPage = () => {
                             const imageUrl = (typeof image.hotelImgUri === 'string' && image.hotelImgUri.startsWith('/local')) || image.type === 'LOCAL'
                                 ? `http://localhost:8888${image.hotelImgUri.replace('/local', '/hotel/images')}`
                                 : image.hotelImgUri;
-                            console.log(`Generated Image URL for ${image.type}: ${imageUrl}`); // 이미지 URL 확인
 
                             return (
                                 <div key={index} className={styles.imageContainer}>
