@@ -5,7 +5,7 @@
   justify-content: center;
   color: #A69991;
   width: 100%;
-  height: 80px;
+  height: 100px;
 
   .img {
     width: 70px;
@@ -17,6 +17,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    //margin-top: 30px;
   }
 
   .left, .right {
@@ -32,7 +33,7 @@
       background: #B3797A;
       position: absolute;
       right: 131px;
-      top: 24px;
+      top: 29px;
       color: white;
       font-size: 0.8rem;
       text-align: center;

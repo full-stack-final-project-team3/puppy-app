@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ADMIN_URL } from "../../../../config/user/host-config";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import styles from './ShowUserChart.module.scss';
+import moment from 'moment';
 
 const ShowUserMonth = () => {
     const [monthUserCount, setMonthUserCount] = useState([]);
@@ -11,7 +12,15 @@ const ShowUserMonth = () => {
             try {
                 const response = await fetch(`${ADMIN_URL}/users/count/month`);
                 const result = await response.json();
-                setMonthUserCount(result.map((count, index) => ({ month: `Month ${index + 1}`, count }))); // 서버에서 반환하는 JSON 구조에 맞게 수정
+
+                // 오늘 날짜를 기준으로 각 월을 계산하여 포맷
+                const formattedData = result.map((count, index) => {
+                    const month = moment().subtract(index, 'months').format('YYYY-MM');
+                    return { month: month, count };
+                });
+
+                // 최신 데이터가 오른쪽에 위치하도록 배열을 반전
+                setMonthUserCount(formattedData.reverse());
             } catch (error) {
                 console.error("Failed to fetch user counts:", error);
             }

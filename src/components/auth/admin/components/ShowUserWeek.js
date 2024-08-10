@@ -2,22 +2,31 @@ import React, { useEffect, useState } from 'react';
 import { ADMIN_URL } from "../../../../config/user/host-config";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import styles from './ShowUserChart.module.scss';
+import moment from 'moment';
 
 const ShowUserWeek = () => {
     const [weekUserCount, setWeekUserCount] = useState([]);
 
     useEffect(() => {
-        const getMonthUserCounts = async () => {
+        const getWeekUserCounts = async () => {
             try {
                 const response = await fetch(`${ADMIN_URL}/users/count/week`);
                 const result = await response.json();
-                setWeekUserCount(result.map((count, index) => ({ week: `Week ${index + 1}`, count }))); // 서버에서 반환하는 JSON 구조에 맞게 수정
+
+                // 오늘 날짜를 기준으로 각 주의 시작일을 계산하여 포맷
+                const formattedData = result.map((count, index) => {
+                    const weekStart = moment().subtract(index, 'weeks').startOf('week').format('YYYY [Week] WW');
+                    return { week: weekStart, count };
+                });
+
+                // 최신 데이터가 오른쪽에 위치하도록 배열을 반전
+                setWeekUserCount(formattedData.reverse());
             } catch (error) {
                 console.error("Failed to fetch user counts:", error);
             }
         };
 
-        getMonthUserCounts();
+        getWeekUserCounts();
     }, []);
 
     return (
