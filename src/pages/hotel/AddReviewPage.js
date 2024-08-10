@@ -61,7 +61,7 @@ const AddReviewPage = () => {
             .unwrap()
             .then(() => {
                 alert('리뷰가 작성되었습니다!');
-                navigate('/hotel');
+                navigate('/my-reviews');
             })
             .catch((err) => {
                 const { message, status } = handleError(err);

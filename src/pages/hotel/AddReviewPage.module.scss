@@ -9,7 +9,7 @@
   .subWrap {
     width: 90%;
     margin: 50px auto 0;
-    background: #F0E1C4;
+    background: #F4E8D3;
     padding-bottom: 20px
   }
 }
@@ -40,6 +40,7 @@
     flex-direction: column;
     
     textarea {
+      margin-top: 30px;
       padding: 15px;
       border-radius: 8px;
       border: 1px solid #ccc;
