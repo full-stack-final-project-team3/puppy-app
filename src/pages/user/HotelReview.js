@@ -8,7 +8,6 @@ import {
     modifyReview
 } from '../../components/store/hotel/HotelReviewSlice';
 import { fetchUserReservations } from '../../components/store/hotel/ReservationSlice';
-import { useParams } from 'react-router-dom';
 import {Modal, ModalHeader, ModalBody, ModalFooter, Button, Input} from "reactstrap";
 import { FaStar } from 'react-icons/fa';
 import RatingInput from '../shop/review/RatingInput';

@@ -36,7 +36,6 @@
     display: flex;
     padding-bottom: 15px;
     box-sizing: border-box;
-    //border-radius: 32px;
 
     .img {
       width: 75px;
@@ -48,12 +47,13 @@
 
     .wrapRight {
       margin-left: 30px;
-      width: calc(100% - 130px); // 100%에서 이미지 크기(100px)와 여백(30px)을 뺀 값
+      width: calc(100% - 130px);
 
       .flex {
         display: flex;
         justify-content: space-between;
         width: 100%;
+        align-items: center; /* 중간 정렬을 위해 추가 */
       }
 
       .nickname {
@@ -65,6 +65,13 @@
       .age {
         font-size: 0.7rem;
         color: #33342c;
+        margin-bottom: 10px; /* 동일한 마진 적용 */
+      }
+
+      .breed {
+        font-size: 12px;
+        color: #6c757d;
+        margin-bottom: 10px; /* 동일한 마진 적용 */
       }
 
       .modify {
@@ -81,10 +88,32 @@
       }
     }
 
-    .breed {
-      margin-bottom: 10px;
-      font-size: 12px;
-      color: #6c757d;
+    @media screen and (max-width: 400px) {
+      width: 100%;
+      margin: 10px 0;
+
+      .img {
+        width: 60px;
+        height: 60px;
+      }
+
+      .wrapRight {
+        margin-left: 10px;
+
+        .nickname {
+          font-size: 14px;
+        }
+
+        .age {
+          font-size: 12px;
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: 400px) {
+    .me {
+      margin: 10px auto;
     }
   }
 }

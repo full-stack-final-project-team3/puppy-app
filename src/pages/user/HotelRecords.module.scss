@@ -83,9 +83,11 @@
           text-align: center;
           font-size: 0.9rem;
           transition: background-color 0.3s;
+          background-color: transparent; /* 배경색 변경 없음 */
+          border: 1px solid transparent; /* 테두리 없애기 */
 
           &:hover {
-            background-color: #9B0000;
+            background-color: #B3797A;
             color: white;
           }
 
@@ -94,12 +96,84 @@
             //background-color: #4caf50;
 
             &:hover {
-              background-color: #9B0000;
+              background-color: #B3797A;
               color: white;
             }
           }
         }
       }
     }
+  }
+}
+@media (max-width: 400px) {
+  .wrap {
+    width: 100%;
+    margin: 10px auto;
+    padding: 10px;
+    border-radius: 16px;
+  }
+
+  .subWrap {
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 8px;
+  }
+
+  .title {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+
+  .reservationList {
+    width: 100%;
+  }
+
+  .reservationItem {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  .imageContainer {
+    margin-bottom: 10px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .reservationImage {
+    width: 80px;
+    height: 80px;
+  }
+
+  .reservationDetails {
+    width: 100%;
+
+    div {
+      font-size: 0.9rem;
+      margin-bottom: 5px;
+    }
+  }
+
+  div.reservationActions {
+    position: relative !important;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row !important; /* 한 줄로 배치 */
+    margin-top: 10px;
+  }
+
+  .link {
+    width: 48%; /* 버튼 너비를 조정하여 두 버튼이 한 줄에 나란히 위치하도록 */
+    padding: 5px;
+    font-size: 0.8rem;
+    text-align: center;
+    color: black; /* 기존 색상 유지 */
+    background-color: transparent; /* 배경색 변경 없음 */
+    border-radius: 8px;
+    text-decoration: none;
+    border: 1px solid transparent; /* 테두리 없애기 */
   }
 }

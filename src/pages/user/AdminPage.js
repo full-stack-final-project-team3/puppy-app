@@ -7,6 +7,8 @@ import AdminMain from "../../components/auth/admin/AdminMain";
 const AdminPage = ({ exit }) => {
     const visibleComponent = useSelector((state) => state.admin.visibleComponent);
 
+
+
     return (
         <div className={styles.wrap}>
             <AdminNavigation exit={exit} />

@@ -64,8 +64,18 @@
   }
 }
 
-@media screen and (width: 390px) {
-  .wrap {
-    width: 77%;
+@media screen and (max-width: 400px) {
+  .img {
+    width: 80px;
+    height: 80px;
+  }
+  .wrapRight {
+    margin-left: 15px;
+    .nickname {
+      font-size: 14px;
+    }
+    .point {
+      font-size: 12px;
+    }
   }
 }

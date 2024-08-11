@@ -5,7 +5,7 @@
   justify-content: center;
   color: #A69991;
   width: 100%;
-  height: 80px;
+  height: 100px;
 
   .img {
     width: 70px;
@@ -17,6 +17,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    //margin-top: 30px;
   }
 
   .left, .right {
@@ -29,10 +30,10 @@
       width: 20px;
       height: 20px;
       border-radius: 50%;
-      background: #e41717;
+      background: #B3797A;
       position: absolute;
       right: 131px;
-      top: 24px;
+      top: 29px;
       color: white;
       font-size: 0.8rem;
       text-align: center;
@@ -124,9 +125,10 @@
   border-radius: 32px;
   overflow-y: auto;
   z-index: 9999;
+  padding: 6px;
 
   .message {
-    width: 94%;
+    width: 93%;
     padding-top: 14px;
     margin: 0 auto;
     color: black;
@@ -155,6 +157,22 @@
 }
 
 @media screen and (max-width: 400px) {
+
+  .header .right .count {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #B3797A;
+    position: absolute;
+    right: 91px;
+    top: 35px;
+    color: white;
+    font-size: 0.6rem;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   .basket {
     display: none;
   }
