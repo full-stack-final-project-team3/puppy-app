@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import styles from './HotelReview.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -8,8 +8,7 @@ import {
     modifyReview
 } from '../../components/store/hotel/HotelReviewSlice';
 import { fetchUserReservations } from '../../components/store/hotel/ReservationSlice';
-import { useParams } from 'react-router-dom';
-import {Modal, ModalHeader, ModalBody, ModalFooter, Button, Input} from "reactstrap";
+import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from "reactstrap";
 
 const HotelReview = () => {
     const { hotelId } = useParams();
@@ -17,7 +16,7 @@ const HotelReview = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingReview, setEditingReview] = useState({ reviewContent: '', rate: 0 });
 
-    const review = useSelector(state => state.reviews);
+    const reviewsByReservationId = useSelector(state => state.reviews.reviewsByReservationId);
     const { userReservations } = useSelector(state => state.reservation);
     const userDetail = useSelector((state) => state.userEdit.userDetail);
     const userId = userDetail.id;
@@ -27,17 +26,12 @@ const HotelReview = () => {
         dispatch(fetchUserReservations({ userId }));
     }, [dispatch, userId]);
 
-    // 리뷰 목록 가져오기
-    useEffect(() => {
-        dispatch(fetchReviews(hotelId));
-    }, [dispatch, hotelId]);
-
     // 모든 예약에 대한 리뷰 가져오기
     useEffect(() => {
         const fetchAllReviews = async () => {
             if (userReservations.length > 0) {
                 for (const reservation of userReservations) {
-                    await dispatch(fetchReviews(reservation.hotelId)).unwrap();
+                    await dispatch(fetchReviews(reservation.reservationId)).unwrap();
                 }
             }
         };
@@ -118,15 +112,19 @@ const HotelReview = () => {
         );
     };
 
+    // 사용자의 모든 예약에 대한 리뷰들을 추출
+    const userReviews = userReservations.reduce((acc, reservation) => {
+        const reservationReviews = reviewsByReservationId[reservation.reservationId] || [];
+        return acc.concat(reservationReviews.filter(review => review.userId === userId));
+    }, []);
+
     return (
         <div className={styles.wrap}>
             <h2 className={styles.h2}>Hotel Reviews</h2>
-            {review.reviews && review.reviews.length > 0 ? (
-                review.reviews
-                    .filter(rev => rev.userId === userId)
-                    .map((rev) => (
-                        <ReviewItem key={rev.id} review={rev} />
-                    ))
+            {userReviews.length > 0 ? (
+                userReviews.map((rev) => (
+                    <ReviewItem key={rev.id} review={rev} />
+                ))
             ) : (
                 <p>No reviews available.</p>
             )}
