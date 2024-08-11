@@ -131,7 +131,7 @@
 }
 
 .selectedTreats {
-  position: fixed; // 변경된 부분
+  position: sticky; // 변경된 부분
   bottom: 20px; // 화면 아래로부터의 거리
   left: 50%; // 수평 중앙 정렬
   transform: translateX(-50%); // 중앙 정렬을 위한 변환

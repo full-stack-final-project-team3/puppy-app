@@ -155,7 +155,7 @@ const TreatsListForDog = () => {
         <div className={styles.content}>
           <h1>{dogName ? `${dogName}` : "강아지"} 맞춤 간식</h1>
           <div>
-            <h2>{treatTypes[currentStep]}</h2>
+            {/* <h2>{treatTypes[currentStep]}</h2> */}
             {treatsList.length === 0 ? (
               <p>등록된 {treatTypes[currentStep]} 간식이 없습니다.</p>
             ) : (
