@@ -7,7 +7,7 @@ import RatingInput from '../shop/review/RatingInput';
 import MyPageHeader from '../../components/auth/user/mypage/MyPageHeader';
 
 const AddReviewPage = () => {
-    const { hotelId } = useParams();
+    const { hotelId, reservationId } = useParams();
     const userDetail = useSelector((state) => state.userEdit.userDetail);
     const userId = userDetail.id;
     const navigate = useNavigate();
@@ -15,20 +15,23 @@ const AddReviewPage = () => {
     const { reviewContent, rate, loading, reviews } = useSelector((state) => state.reviews);
     const [customError, setCustomError] = useState('');
     const [hasReviewed, setHasReviewed] = useState(false);
-
     const { userReservations } = useSelector(state => state.reservation);
-    console.log("호텔과, 룸의 정보 가져오기 ",userReservations)
+    // const reservationId = userReservations.reservationId;
+
+    console.log("호텔과, 룸의 정보 가져오기 ", userReservations)
+    console.log("예약 번호", reservationId);
+    console.log("호텔번호", hotelId)
 
 
     useEffect(() => {
         // 리뷰 목록을 가져와서 이미 작성된 리뷰가 있는지 확인
-        dispatch(fetchReviews(hotelId)).then(({ payload }) => {
+        dispatch(fetchReviews(reservationId)).then(({ payload }) => {
             if (payload && Array.isArray(payload.reviews)) {
                 const userHasReviewed = payload.reviews.some(review => review.userId === userId);
                 if (userHasReviewed) {
                     setHasReviewed(true);
-                    alert('이미 이 호텔에 대한 리뷰를 작성했습니다.');
-                    navigate('/hotel');
+                    alert('이미 이 예약에 대한 리뷰를 작성했습니다.');
+                    navigate('/mypage');
                 }
             } else {
                 console.error('Unexpected payload format:', payload);
@@ -36,7 +39,7 @@ const AddReviewPage = () => {
         }).catch(error => {
             console.error('Error fetching reviews:', error);
         });
-    }, [dispatch, hotelId, userId, navigate]);
+    }, [dispatch, hotelId, userId, navigate, userReservations]);
 
     // 에러 메시지를 사용자 친화적인 형태로 변환하는 함수
     const handleError = (error) => {
@@ -56,12 +59,12 @@ const AddReviewPage = () => {
             console.error('사용자 ID가 누락되었습니다');
             return;
         }
-        const reviewData = { hotelId, reviewContent, rate, userId };
+        const reviewData = { hotelId, reviewContent, rate, userId, reservationId };
         dispatch(addReview(reviewData))
             .unwrap()
             .then(() => {
                 alert('리뷰가 작성되었습니다!');
-                navigate('/hotel');
+                navigate('/mypage');
             })
             .catch((err) => {
                 const { message, status } = handleError(err);
@@ -81,7 +84,7 @@ const AddReviewPage = () => {
             <div className={styles.subWrap}>
             <div className={styles.addReviewPage}>
                 <form onSubmit={handleReviewSubmit}>
-                    
+
                     <textarea
                         name="reviewContent"
                         placeholder="Write your review here..."
