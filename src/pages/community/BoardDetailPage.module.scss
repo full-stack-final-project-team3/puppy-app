@@ -7,6 +7,7 @@
     padding-bottom: 60px;
     max-width: 800px;
     margin: 0 auto;
+    overflow-x: hidden;
 }
 
 .postTitle {
@@ -75,7 +76,7 @@
     transform: translateY(100%);
     transition: transform 0.3s ease-out;
     z-index: 1000;
-    border-radius: 15px;
+    border-radius: 15px 15px 0 0;
     max-width: 800px;
     margin: 0 auto;
 }
@@ -120,14 +121,65 @@
     display: block;
 }
 
-.postImage {
-    margin-bottom: 20px;
+.postImages {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto 20px;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.postImage img {
+.mainImage {
     max-width: 100%;
     height: auto;
-    border-radius: 8px;
+    object-fit: contain;
+    display: block;
+}
+
+.imageNavButton {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.7);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    z-index: 1;
+}
+
+.imageNavButton:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.imageNavButton.prev {
+    left: 10px;
+}
+
+.imageNavButton.next {
+    right: 10px;
+}
+
+.imageCount {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.8rem;
 }
 
 .postContent {
@@ -151,7 +203,7 @@
     padding: 10px 20px;
     font-size: 1rem;
     color: #fff;
-    background-color: #007bff;
+    background-color: #B3797A;
     border: none;
     border-radius: 30px;
     cursor: pointer;
@@ -159,7 +211,7 @@
 }
 
 .shareButton:hover {
-    background-color: #0056b3;
+    background-color: #9F5A5B;
 }
 
 .shareButton svg {
@@ -223,7 +275,7 @@
 
 .submitButton {
     padding: 10px 20px;
-    background-color: #4a90e2;
+    background-color: #B3797A;
     color: white;
     border: none;
     cursor: pointer;
@@ -233,7 +285,7 @@
 }
 
 .submitButton:hover {
-    background-color: #357ae8;
+    background-color: #9F5A5B;
 }
 
 .commentList {
@@ -298,4 +350,17 @@
 
 .iconWithSpacing {
     margin-right: 8px;
+}
+
+.commentImage {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.imageSelected {
+    margin-left: 10px;
+    color: #666;
+    font-style: italic;
 }
