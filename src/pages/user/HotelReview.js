@@ -8,7 +8,11 @@ import {
     modifyReview
 } from '../../components/store/hotel/HotelReviewSlice';
 import { fetchUserReservations } from '../../components/store/hotel/ReservationSlice';
-import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from "reactstrap";
+import { useParams } from 'react-router-dom';
+import {Modal, ModalHeader, ModalBody, ModalFooter, Button, Input} from "reactstrap";
+import { FaStar } from 'react-icons/fa';
+import RatingInput from '../shop/review/RatingInput';
+
 
 const HotelReview = () => {
     const { hotelId } = useParams();
@@ -20,6 +24,15 @@ const HotelReview = () => {
     const { userReservations } = useSelector(state => state.reservation);
     const userDetail = useSelector((state) => state.userEdit.userDetail);
     const userId = userDetail.id;
+
+    // 별점 랜더링
+    const renderStars = (rate) => {
+        return Array(rate)
+            .fill()
+            .map((_, index) => (
+                <FaStar key={index} className={styles.starIcon} />
+            ));
+    };
 
     // 사용자의 예약 목록 가져오기
     useEffect(() => {
@@ -101,14 +114,14 @@ const HotelReview = () => {
                     <p>{review.reviewContent}</p>
                 </div>
                 <div className={styles.reviewFooter}>
-                    <span>Rating: {review.rate}</span>
+                    <span>Rating: 
+                        <span className={styles.star}>&nbsp;{renderStars(review.rate)}</span>
+                    </span>
                     <div className={styles.actions}>
-                        <Link to={`/edit-review/${review.id}`} className={styles.actionLink}>수정</Link>
-                        <Link to={`/delete-review/${review.id}`} className={styles.actionLink}>삭제</Link>
+                        <button className={styles.actionLink} onClick={() => deleteReviewHandler(review.id)}>삭제</button>
+                        <button className={styles.actionLink} onClick={() => openModal(review)}>수정</button>
                     </div>
                 </div>
-                <button onClick={() => deleteReviewHandler(review.id)}>리뷰 삭제</button>
-                <button onClick={() => openModal(review)}>리뷰 수정</button>
             </div>
         );
     };
@@ -130,36 +143,39 @@ const HotelReview = () => {
                 <p>No reviews available.</p>
             )}
 
-            <Modal isOpen={isModalOpen} toggle={closeModal}>
-                <ModalHeader toggle={closeModal}>리뷰 수정</ModalHeader>
-                <ModalBody>
-                    <textarea
-                        name="reviewContent"
-                        placeholder="Write your review here..."
-                        value={editingReview.reviewContent}
-                        onChange={handleChange}
-                        required
-                        className={styles.textarea}
-                    />
-                    <label>
-                        Rate:
-                        <select
-                            name="rate"
-                            value={editingReview.rate}
+            <Modal isOpen={isModalOpen} toggle={closeModal} className={styles.modal}>
+                
+                <ModalBody className={styles.modalBody}>
+                        <textarea
+                            name="reviewContent"
+                            placeholder="Write your review here..."
+                            value={editingReview.reviewContent}
                             onChange={handleChange}
                             required
-                            className={styles.select}
-                        >
-                            {[0, 1, 2, 3, 4, 5].map((num) => (
-                                <option key={num} value={num}>{num}</option>
-                            ))}
-                        </select>
-                    </label>
+                            className={styles.textarea}
+                        />
+                        <label className={styles.label}>
+                            Rate:
+                            <RatingInput
+                                value={editingReview.rate}
+                                onChange={(newRate) => handleChange({ target: { name: 'rate', value: newRate } })}
+                            />
+                        </label>
+                        <div className={styles.modalActions}>
+                        <Button 
+                            className={styles.primaryButton} 
+                            color="primary" 
+                            onClick={handleEditSubmit}>
+                            저장
+                        </Button>{' '}
+                        <Button 
+                            className={styles.secondaryButton} 
+                            color="secondary" 
+                            onClick={closeModal}>
+                            취소
+                        </Button>
+                        </div>
                 </ModalBody>
-                <ModalFooter>
-                    <Button color="primary" onClick={handleEditSubmit}>저장</Button>{' '}
-                    <Button color="secondary" onClick={closeModal}>취소</Button>
-                </ModalFooter>
             </Modal>
         </div>
     );

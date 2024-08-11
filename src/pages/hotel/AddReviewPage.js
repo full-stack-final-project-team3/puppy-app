@@ -65,6 +65,7 @@ const AddReviewPage = () => {
             .then(() => {
                 alert('리뷰가 작성되었습니다!');
                 navigate('/mypage');
+
             })
             .catch((err) => {
                 const { message, status } = handleError(err);
