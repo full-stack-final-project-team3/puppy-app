@@ -3,8 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import styles from "./BoardPage.module.scss";
 import { BOARD_URL } from "../../config/user/host-config";
 import { useSelector } from "react-redux";
-import { BsChat, BsEye, BsPerson } from "react-icons/bs";
+import { BsChat, BsEye, BsPerson, BsImages } from "react-icons/bs";
 import { HiOutlineHeart } from "react-icons/hi2";
+
+const BASE_URL = "http://localhost:8888"; // 백엔드가 실행되는 기본 URL
 
 const BoardPage = () => {
   const [posts, setPosts] = useState([]);
@@ -85,6 +87,7 @@ const BoardPage = () => {
   };
 
   console.log(posts);
+
   return (
     <div className={styles.boardPageWrapper}>
       <div className={styles.boardPage} ref={scrollRef}>
@@ -108,7 +111,6 @@ const BoardPage = () => {
                       <span className={styles.author}>
                         <BsPerson /> {post.user.nickname || "익명의강아지주인"}
                       </span>
-
                       <span className={styles.date}>
                         {new Date(post.boardCreatedAt).toLocaleDateString()}
                       </span>
@@ -123,9 +125,17 @@ const BoardPage = () => {
                       </span>
                     </div>
                   </div>
-                  {post.image && (
+                  {post.images && post.images.length > 0 && (
                     <div className={styles.postImage}>
-                      <img src={post.image} alt={post.boardTitle} />
+                      <img
+                        src={`${BASE_URL}${post.images[0]}`}
+                        alt={post.boardTitle}
+                      />
+                      {post.images.length > 1 && (
+                        <div className={styles.imageCount}>
+                          <BsImages /> +{post.images.length - 1}
+                        </div>
+                      )}
                     </div>
                   )}
                 </Link>
