@@ -16,8 +16,8 @@ const ShopStepIndicator = ({ step = 0, onStepClick }) => {
           <div className={styles.shopStepContainer}>
             <div
               className={`${styles.shopStepNumber} ${step >= idx ? styles.active : ''} ${step > idx ? styles.completed : ''}`}
-              onClick={idx <= step ? () => onStepClick(idx) : null} // 현재 및 이전 단계 클릭 가능
-              style={{ cursor: idx <= step ? 'pointer' : 'default' }}
+              // onClick={idx <= step ? () => onStepClick(idx) : null} // 현재 및 이전 단계 클릭 가능
+              style={{ cursor: idx <= step ? 'default' : 'default' }}
             >
               {idx <= step ? idx + 1 : null} {/* 실행된 스텝에서만 숫자 렌더링 */}
             </div>
