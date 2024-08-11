@@ -82,7 +82,7 @@ const HotelRecords = () => {
         <div className={styles.wrap}>
             <MyPageHeader />
             <div className={styles.subWrap}>
-                <h1 className={styles.title}>My Reservations</h1>
+                <h1 className={styles.title}>호텔 예약 내역</h1>
                 {userReservations.length === 0 ? (
                     <p>No reservations found.</p>
                 ) : (
