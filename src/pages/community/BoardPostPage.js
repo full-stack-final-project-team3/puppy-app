@@ -7,10 +7,9 @@ import { BOARD_URL } from "../../config/user/host-config";
 const BoardPostPage = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [image, setImage] = useState(null);
+  const [images, setImages] = useState([]);
   const navigate = useNavigate();
 
-  // Redux store에서 사용자 정보 가져오기
   const user = useSelector((state) => state.userEdit.userDetail);
   console.log("👽user: " + user.email);
 
@@ -18,23 +17,22 @@ const BoardPostPage = () => {
     e.preventDefault();
     const formData = new FormData();
 
-    // JSON.stringify로 DTO 형식 생성
     const dto = {
       boardTitle: title,
       boardContent: content,
-      image: image ? image.name : null,
-      user: user, // 사용자 ID 추가
+      user: { id: user.id },
     };
 
-    // FormData에 dto 추가
     formData.append(
       "dto",
       new Blob([JSON.stringify(dto)], { type: "application/json" })
     );
-    if (image) {
-      formData.append("file", image);
-    }
 
+    images.forEach((image, index) => {
+      formData.append(`files`, image);
+    });
+
+    console.log("☘️: " + formData);
     try {
       const response = await fetch(`${BOARD_URL}`, {
         method: "POST",
@@ -58,8 +56,8 @@ const BoardPostPage = () => {
   };
 
   const handleImageChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      setImage(e.target.files[0]);
+    if (e.target.files) {
+      setImages(Array.from(e.target.files));
     }
   };
 
@@ -91,9 +89,14 @@ const BoardPostPage = () => {
             type="file"
             onChange={handleImageChange}
             accept="image/*"
+            multiple
             className={styles.imageInput}
           />
-          {image && <p className={styles.fileName}>{image.name}</p>}
+          {images.length > 0 && (
+            <p className={styles.fileName}>
+              {images.length} 개의 이미지 선택됨
+            </p>
+          )}
         </div>
         <button type="submit" className={styles.submitButton}>
           게시글 작성

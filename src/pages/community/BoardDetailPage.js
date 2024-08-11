@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import styles from "./BoardDetailPage.module.scss";
 import { BOARD_URL, NOTICE_URL } from "../../config/user/host-config";
 import {
@@ -9,10 +9,13 @@ import {
   BsPerson,
   BsImage,
   BsThreeDotsVertical,
+  BsChevronLeft,
+  BsChevronRight,
 } from "react-icons/bs";
 import { AiOutlineExport } from "react-icons/ai";
 import { GoClock } from "react-icons/go";
-import { userEditActions } from "../../components/store/user/UserEditSlice";
+
+const BASE_URL = "http://localhost:8888"; // 백엔드 URL을 여기에 정의
 
 const BoardDetailPage = () => {
   const [post, setPost] = useState(null);
@@ -21,8 +24,8 @@ const BoardDetailPage = () => {
   const [newImage, setNewImage] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const { id } = useParams();
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.userEdit.userDetail);
@@ -192,6 +195,18 @@ const BoardDetailPage = () => {
     }
   };
 
+  const handlePrevImage = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === 0 ? post.images.length - 1 : prevIndex - 1
+    );
+  };
+
+  const handleNextImage = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === post.images.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
   if (!post) return <div className={styles.loading}>로딩 중...</div>;
 
   return (
@@ -221,9 +236,34 @@ const BoardDetailPage = () => {
           </div>
         )}
       </div>
-      {post.image && (
-        <div className={styles.postImage}>
-          <img src={post.image} alt={post.boardTitle} />
+      {post.images && post.images.length > 0 && (
+        <div className={styles.postImages}>
+          <img
+            src={`${BASE_URL}${post.images[currentImageIndex]}`}
+            alt={`${post.boardTitle} - 이미지 ${currentImageIndex + 1}`}
+            className={styles.mainImage}
+          />
+          {post.images.length > 1 && (
+            <>
+              <button
+                onClick={handlePrevImage}
+                className={`${styles.imageNavButton} ${styles.prev}`} // 왼쪽 버튼
+                aria-label="이전 이미지"
+              >
+                <BsChevronLeft />
+              </button>
+              <button
+                onClick={handleNextImage}
+                className={`${styles.imageNavButton} ${styles.next}`} // 오른쪽 버튼
+                aria-label="다음 이미지"
+              >
+                <BsChevronRight />
+              </button>
+              <div className={styles.imageCount}>
+                {currentImageIndex + 1} / {post.images.length}
+              </div>
+            </>
+          )}
         </div>
       )}
       <div className={styles.postContent}>{post.boardContent}</div>
