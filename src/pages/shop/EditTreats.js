@@ -5,6 +5,7 @@ import styles from "./EditTreats.module.scss";
 import { allergiesOptions } from "../../components/auth/dog/DogAllergiesInput";
 import { getUserToken } from "../../config/user/auth";
 import { AUTH_URL } from "../../config/user/host-config";
+import { useNavigate } from "react-router-dom";
 
 const EditTreat = ({}) => {
   const { id } = useParams(); // URL에서 id를 받아옴
@@ -21,6 +22,7 @@ const EditTreat = ({}) => {
   const treatsPicsInputRefs = useRef([]);
   const treatsDetailPicsInputRefs = useRef([]);
   const token = getUserToken();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchTreat = async () => {
@@ -74,7 +76,6 @@ const EditTreat = ({}) => {
       dogSize,
       treatsAgeType: treatsAgeType,
       allergies: selectedAllergies,
-      // 추가적인 이미지 데이터 처리 필요
     };
 
     const formData = new FormData();
@@ -120,7 +121,9 @@ const EditTreat = ({}) => {
       }
 
       alert("간식이 성공적으로 수정되었습니다.");
-      // 수정 후 리다이렉트 등 추가 로직 필요
+
+      navigate('/manage-treats')
+
     } catch (error) {
       console.error("수정 요청 실패:", error);
       alert("수정 요청에 실패했습니다. 다시 시도해 주세요.");
@@ -224,7 +227,7 @@ const EditTreat = ({}) => {
                 type="file"
                 className={styles.inputField}
                 onChange={(e) => handleFileChange(e, "treatsPics", index)}
-                ref={(el) => (treatsPicsInputRefs.current[index] = el)} // ref 추가
+                ref={(el) => (treatsPicsInputRefs.current[index] = el)}
                 multiple
               />
               {/* 미리보기 이미지 */}

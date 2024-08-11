@@ -101,7 +101,7 @@ const AddTreats = () => {
       setSelectedAllergies([]);
       setTreatsPics([]);
       setTreatsDetailPics([]);
-
+      
       // 파일 입력 필드 초기화
       treatsPicsInputRefs.current.forEach((ref) => {
         if (ref) ref.value = null;
