@@ -17,6 +17,7 @@
     width: 50%;
     padding-left: 20px;
   }
+
   .img {
     width: 45px;
     height: 45px;
@@ -98,7 +99,6 @@
     outline: none;
     background-color: #f5f5f5;
   }
-
 }
 
 .checkboxContainer {
@@ -137,4 +137,55 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+}
+
+
+@media screen and (max-width: 400px) {
+  .authContainer {
+    width: 90%; /* 더 좁은 화면에 맞게 컨테이너 너비를 줄임 */
+    margin: 50px auto; /* 상하 여백 조정 */
+    padding: 20px 10px;
+    flex-direction: column;
+    align-items: center;
+
+    > div {
+      width: 73%;
+      padding: 0;
+    }
+  }
+
+  .wrap {
+    margin: 20px 0 30px; /* 로고 및 Login 텍스트 정렬 */
+    text-align: center;
+  }
+
+  .loginBox {
+    width: 100%;
+  }
+
+  .inputGroup, .checkboxContainer, .bottomGroup {
+    width: 100%;
+  }
+
+  .signup, .kakao, .loginButton {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 32px;
+    text-align: center;
+  }
+
+  .signupBtn, .kakaoBtn {
+    width: 100%;
+  }
+
+  .bottomGroup {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .links {
+    text-align: left;
+    margin-bottom: 30px;
+  }
 }

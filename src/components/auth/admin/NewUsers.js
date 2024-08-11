@@ -1,10 +1,53 @@
-import React from 'react';
+import React, { useState } from 'react';
+import styles from './UserCount.module.scss';
+import ShowUserDay from "./components/ShowUserDay";
+import ShowUserMonth from "./components/ShowUserMonth";
+import ShowUserWeek from "./components/ShowUserWeek";
+import ShowTotalUserDay from "./components/ShowTotalUserDay";
+import ShowTotalUserWeek from "./components/ShowTotalUserWeek";
+import ShowTotalUserMonth from "./components/ShowTotalUserMonth";
 
 const NewUsers = () => {
+
+    const [showDay, setShowDay] = useState(true);
+    const [showWeek, setShowWeek] = useState(false);
+    const [showMonth, setShowMonth] = useState(false);
+
+    const dayHandler = () => {
+        setShowDay(true);
+        setShowWeek(false);
+        setShowMonth(false);
+    };
+
+    const weekHandler = () => {
+        setShowDay(false);
+        setShowWeek(true);
+        setShowMonth(false);
+    };
+
+    const monthHandler = () => {
+        setShowDay(false);
+        setShowWeek(false);
+        setShowMonth(true);
+    };
+
     return (
-        <div>
-            newUser
-        </div>
+        <>
+            <div>
+                <nav className={styles.nav}>
+                    <ul className={styles.ul}>
+                        <li className={styles.menu} onClick={dayHandler}>일별</li>
+                        <li className={styles.menu} onClick={weekHandler}>주별</li>
+                        <li className={styles.menu} onClick={monthHandler}>월별</li>
+                    </ul>
+                </nav>
+            </div>
+            <div className={styles.chartContainer}>
+                {showDay && <ShowTotalUserDay />}
+                {showWeek && <ShowTotalUserWeek />}
+                {showMonth && <ShowTotalUserMonth />}
+            </div>
+        </>
     );
 };
 

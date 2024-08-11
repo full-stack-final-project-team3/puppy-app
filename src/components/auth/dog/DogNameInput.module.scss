@@ -33,3 +33,13 @@
     outline: none;
   }
 }
+@media screen and (max-width: 400px) {
+
+  .wrap {
+    height: 33vh;
+
+  .input {
+    width: 40%;
+  }
+  }
+}

@@ -1,17 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { ADMIN_URL } from "../../../../config/user/host-config";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import styles from './ShowUserChart.module.scss';
+import moment from 'moment';
 
 const ShowUserMonth = () => {
-    const [monthUserCounts, setMonthUserCounts] = useState([]);
+    const [monthUserCount, setMonthUserCount] = useState([]);
 
     useEffect(() => {
         const getMonthUserCounts = async () => {
             try {
-                const response = await fetch(`${ADMIN_URL}/users/count/months`);
+                const response = await fetch(`${ADMIN_URL}/users/count/month`);
                 const result = await response.json();
-                setMonthUserCounts(result.map((count, index) => ({ month: `Month ${index + 1}`, count }))); // 서버에서 반환하는 JSON 구조에 맞게 수정
+
+                // 오늘 날짜를 기준으로 각 월을 계산하여 포맷
+                const formattedData = result.map((count, index) => {
+                    const month = moment().subtract(index, 'months').format('YYYY-MM');
+                    return { month: month, count };
+                });
+
+                // 최신 데이터가 오른쪽에 위치하도록 배열을 반전
+                setMonthUserCount(formattedData.reverse());
             } catch (error) {
                 console.error("Failed to fetch user counts:", error);
             }
@@ -23,8 +32,8 @@ const ShowUserMonth = () => {
     return (
         <div className={styles.chartWrapper}>
             <ResponsiveContainer width="100%" height={400}>
-                <LineChart
-                    data={monthUserCounts}
+                <BarChart
+                    data={monthUserCount}
                     margin={{
                         top: 10,
                         right: 30,
@@ -37,8 +46,8 @@ const ShowUserMonth = () => {
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Line type="monotone" dataKey="count" stroke="#82ca9d" activeDot={{ r: 8 }} />
-                </LineChart>
+                    <Bar dataKey="count" fill="#8884d8" />
+                </BarChart>
             </ResponsiveContainer>
         </div>
     );

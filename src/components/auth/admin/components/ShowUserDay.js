@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { ADMIN_URL } from "../../../../config/user/host-config";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import styles from './ShowUserChart.module.scss';
+import moment from 'moment'; // 날짜 포맷
 
 const ShowUserDay = () => {
     const [dayUserCounts, setDayUserCounts] = useState([]);
@@ -11,7 +12,15 @@ const ShowUserDay = () => {
             try {
                 const response = await fetch(`${ADMIN_URL}/users/count/today`);
                 const result = await response.json();
-                setDayUserCounts(result.map((count, index) => ({ day: `Day ${index + 1}`, count }))); // 서버에서 반환하는 JSON 구조에 맞게 수정
+
+                // 오늘 날짜부터 시작하여 각 날짜를 계산
+                const formattedData = result.map((count, index) => {
+                    const date = moment().subtract(index, 'days').format('MM/DD'); // 날짜 포맷을 MM-DD로 변경
+                    return { day: date, count };
+                });
+
+                // 최신 데이터가 오른쪽에 위치하도록 배열을 반전
+                setDayUserCounts(formattedData.reverse());
             } catch (error) {
                 console.error("Failed to fetch user counts:", error);
             }
@@ -23,7 +32,7 @@ const ShowUserDay = () => {
     return (
         <div className={styles.chartWrapper}>
             <ResponsiveContainer width="100%" height={400}>
-                <LineChart
+                <BarChart
                     data={dayUserCounts}
                     margin={{
                         top: 10,
@@ -37,8 +46,8 @@ const ShowUserDay = () => {
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Line type="monotone" dataKey="count" stroke="#8884d8" activeDot={{ r: 8 }} />
-                </LineChart>
+                    <Bar dataKey="count" fill="#8884d8" />
+                </BarChart>
             </ResponsiveContainer>
         </div>
     );
