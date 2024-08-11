@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styles from './UserCount.module.scss';
-import ShowUserDay from "./components/ShowUserDay";
-import ShowUserMonth from "./components/ShowUserMonth";
-import ShowUserWeek from "./components/ShowUserWeek";
+import ShowUserDay from "./components/ShowUserDay.js";
+import ShowUserMonth from "./components/ShowUserMonth.js";
+import ShowUserWeek from "./components/ShowUserWeek.js";
 import ShowTotalUserDay from "./components/ShowTotalUserDay";
 import ShowTotalUserWeek from "./components/ShowTotalUserWeek";
 import ShowTotalUserMonth from "./components/ShowTotalUserMonth";
