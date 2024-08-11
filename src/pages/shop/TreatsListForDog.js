@@ -4,6 +4,7 @@ import { TREATS_URL, AUTH_URL } from "../../config/user/host-config";
 import styles from "./TreatsListForDog.module.scss";
 import CreateBundle from "../../components/shop/CreateBundle";
 import Modal from "./TreatsDetailModal";
+import ShopStepIndicator from "./ShopStepIndicator";
 
 const TreatsListForDog = () => {
   const { dogId } = useParams();
@@ -24,6 +25,10 @@ const TreatsListForDog = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentTreatId, setCurrentTreatId] = useState(null);
   const treatTypes = ["DRY", "WET", "GUM", "KIBBLE", "SUPPS"];
+
+  const handleStepClick = (stepIndex) => {
+    setCurrentStep(stepIndex); // 클릭한 스텝으로 이동
+  };
 
   const fetchTreatsList = async () => {
     // 현재 타입 가져오기
@@ -68,6 +73,7 @@ const TreatsListForDog = () => {
       const data = await response.json();
       setTreatsList(data.treatsList);
       console.log(data);
+      console.log(currentStep);
     } catch (err) {
       setError(err);
     } finally {
@@ -143,6 +149,8 @@ const TreatsListForDog = () => {
 
   return (
     <>
+      <ShopStepIndicator step={currentStep} onStepClick={handleStepClick} />
+
       <div className={styles.treatsList}>
         <div className={styles.content}>
           <h1>{dogName ? `${dogName}` : "강아지"} 맞춤 간식</h1>
@@ -157,9 +165,10 @@ const TreatsListForDog = () => {
                     Array.isArray(treat["treats-pics"]) &&
                     treat["treats-pics"].length > 0;
                   const imageUrl = hasTreatPics
-                    ? `${AUTH_URL}${treat[
-                        "treats-pics"
-                      ][0].treatsPic.replace("/local", "/treats/images")}`
+                    ? `${AUTH_URL}${treat["treats-pics"][0].treatsPic.replace(
+                        "/local",
+                        "/treats/images"
+                      )}`
                     : `${AUTH_URL}/treats/images/default.webp`;
 
                   return (
@@ -179,12 +188,12 @@ const TreatsListForDog = () => {
                         </h4>
                       </div>
                       <div className={styles.addBtnContainer}>
-                      <button
-                        className={styles.addBtn}
-                        onClick={() => toggleTreatSelection(treat)}
-                      >
-                        선택하기
-                      </button>
+                        <button
+                          className={styles.addBtn}
+                          onClick={() => toggleTreatSelection(treat)}
+                        >
+                          선택하기
+                        </button>
                       </div>
                     </div>
                   );
@@ -193,41 +202,42 @@ const TreatsListForDog = () => {
             )}
           </div>
         </div>
+      </div>
 
-        <div className={styles.selectedTreats}>
-          <div className={styles.imageBoxContainer}>
-            {treatTypes.map((type, typeIndex) => (
-              <div className={styles.imageBox} key={typeIndex}>
-                {selectedTreats[type].length > 0 ? (
-                  selectedTreats[type].map((treat) => (
-                    <div key={treat.title} className={styles.treatWrapper}>
-                      <img
-                        src={`${AUTH_URL}${treat[
-                          "treats-pics"
-                        ][0].treatsPic.replace("/local", "/treats/images")}`}
-                        alt={treat.title}
-                        className={styles.treatImage}
-                      />
-                      <button
-                        className={styles.removeBtn}
-                        onClick={() => removeTreat(type, treat)}
-                      >
-                        ✖
-                      </button>
-                    </div>
-                  ))
-                ) : (
-                  <img
-                    src="https://cdn-icons-png.flaticon.com/512/8212/8212741.png"
-                    alt={`가상의 간식 ${typeIndex + 1}`}
-                    className={styles.treatImage}
-                  />
-                )}
-              </div>
-            ))}
-          </div>
+      <div className={styles.selectedTreats}>
+        <div className={styles.imageBoxContainer}>
+          {treatTypes.map((type, typeIndex) => (
+            <div className={styles.imageBox} key={typeIndex}>
+              {selectedTreats[type].length > 0 ? (
+                selectedTreats[type].map((treat) => (
+                  <div key={treat.title} className={styles.treatWrapper}>
+                    <img
+                      src={`${AUTH_URL}${treat[
+                        "treats-pics"
+                      ][0].treatsPic.replace("/local", "/treats/images")}`}
+                      alt={treat.title}
+                      className={styles.treatImage}
+                    />
+                    <button
+                      className={styles.removeBtn}
+                      onClick={() => removeTreat(type, treat)}
+                    >
+                      ✖
+                    </button>
+                  </div>
+                ))
+              ) : (
+                <img
+                  src="https://cdn-icons-png.flaticon.com/512/8212/8212741.png"
+                  alt={`가상의 간식 ${typeIndex + 1}`}
+                  className={styles.treatImage}
+                />
+              )}
+            </div>
+          ))}
         </div>
       </div>
+
       <CreateBundle selectedTreats={selectedTreats} dogId={dogId} />
       <Modal
         isOpen={isModalOpen}
