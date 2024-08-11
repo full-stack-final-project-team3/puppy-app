@@ -4,6 +4,7 @@ import { TREATS_URL } from "../../config/user/host-config";
 import styles from "./EditTreats.module.scss";
 import { allergiesOptions } from "../../components/auth/dog/DogAllergiesInput";
 import { getUserToken } from "../../config/user/auth";
+import { AUTH_URL } from "../../config/user/host-config";
 
 const EditTreat = ({}) => {
   const { id } = useParams(); // URL에서 id를 받아옴
@@ -15,6 +16,8 @@ const EditTreat = ({}) => {
   const [selectedAllergies, setSelectedAllergies] = useState([]);
   const [treatsPicsInputs, setTreatsPicsInputs] = useState([0]);
   const [treatsDetailPicsInputs, setTreatsDetailPicsInputs] = useState([0]);
+  const [previousTreatsPics, setPreviousTreatsPics] = useState([]); // 이전 대표 사진 상태
+  const [previousTreatsDetailPics, setPreviousTreatsDetailPics] = useState([]); // 이전 상세 사진 상태
   const treatsPicsInputRefs = useRef([]);
   const treatsDetailPicsInputRefs = useRef([]);
   const token = getUserToken();
@@ -26,12 +29,13 @@ const EditTreat = ({}) => {
         const data = await response.json();
         console.log(data);
         setTitle(data.title);
-        setTreatsType(data.type);
+        setTreatsType(data.treatsType);
         setTreatsWeight(data.weight);
         setDogSize(data.dogSize);
-        setTreatsAgeType(data.ageType);
-        setSelectedAllergies(data.allergies || []);
-        // 이미지 관련 데이터 설정 (필요에 따라서)
+        setTreatsAgeType(data.treatsAgeType);
+        setSelectedAllergies(data.allergieList || []);
+        setPreviousTreatsPics(data["treats-pics"]);
+        setPreviousTreatsDetailPics(data["treats-detail-pics"]);
       } catch (error) {
         console.error("간식 데이터를 가져오는 데 실패했습니다:", error);
       }
@@ -68,7 +72,7 @@ const EditTreat = ({}) => {
       type: treatsType,
       weight: treatsWeight,
       dogSize,
-      ageType: treatsAgeType,
+      treatsAgeType: treatsAgeType,
       allergies: selectedAllergies,
       // 추가적인 이미지 데이터 처리 필요
     };
@@ -85,7 +89,7 @@ const EditTreat = ({}) => {
     treatsPicsInputRefs.current.forEach((input, index) => {
       if (input.files.length > 0) {
         Array.from(input.files).forEach((file) => {
-          formData.append(`treatsPics[${index}]`, file);
+          formData.append(`treatsPics[${index}].treatsPicFile`, file);
         });
       }
     });
@@ -93,14 +97,17 @@ const EditTreat = ({}) => {
     treatsDetailPicsInputRefs.current.forEach((input, index) => {
       if (input.files.length > 0) {
         Array.from(input.files).forEach((file) => {
-          formData.append(`treatsDetailPics[${index}]`, file);
+          formData.append(
+            `treatsDetailPics[${index}].treatsDetailPicFile`,
+            file
+          );
         });
       }
     });
 
     try {
       const response = await fetch(`${TREATS_URL}/${id}`, {
-        method: "PUT",
+        method: "PATCH",
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -212,35 +219,59 @@ const EditTreat = ({}) => {
         <div className={styles.formGroup}>
           <label className={styles.label}>대표 사진</label>
           {treatsPicsInputs.map((_, index) => (
-            <input
-              key={index}
-              type="file"
-              className={styles.inputField}
-              onChange={(e) => handleFileChange(e, "treatsPics", index)}
-              ref={(el) => (treatsPicsInputRefs.current[index] = el)} // ref 추가
-              multiple
-            />
+            <div key={index}>
+              <input
+                type="file"
+                className={styles.inputField}
+                onChange={(e) => handleFileChange(e, "treatsPics", index)}
+                ref={(el) => (treatsPicsInputRefs.current[index] = el)} // ref 추가
+                multiple
+              />
+              {/* 미리보기 이미지 */}
+              {previousTreatsPics[index] && (
+                <img
+                  src={`${AUTH_URL}${previousTreatsPics[
+                    index
+                  ].treatsPic.replace("/local", "/treats/images")}`} // 이전 사진 URL 변환
+                  alt={`대표 사진 ${index + 1}`}
+                  className={styles.previewImage}
+                />
+              )}
+            </div>
           ))}
           <button type="button" onClick={addTreatsPicInput}>
             대표 사진 추가
           </button>
         </div>
+
         <div className={styles.formGroup}>
           <label className={styles.label}>상세 사진</label>
           {treatsDetailPicsInputs.map((_, index) => (
-            <input
-              key={index}
-              type="file"
-              className={styles.inputField}
-              onChange={(e) => handleFileChange(e, "treatsDetailPics", index)}
-              ref={(el) => (treatsDetailPicsInputRefs.current[index] = el)} // ref 추가
-              multiple
-            />
+            <div key={index}>
+              <input
+                type="file"
+                className={styles.inputField}
+                onChange={(e) => handleFileChange(e, "treatsDetailPics", index)}
+                ref={(el) => (treatsDetailPicsInputRefs.current[index] = el)} // ref 추가
+                multiple
+              />
+              {/* 미리보기 이미지 */}
+              {previousTreatsDetailPics[index] && (
+                <img
+                  src={`${AUTH_URL}${previousTreatsDetailPics[
+                    index
+                  ].treatsDetailPic.replace("/local", "/treats/images")}`} // 이전 상세 사진 URL 변환
+                  alt={`상세 사진 ${index + 1}`}
+                  className={styles.previewImage}
+                />
+              )}
+            </div>
           ))}
           <button type="button" onClick={addTreatsDetailPicInput}>
             상세 사진 추가
           </button>
         </div>
+
         <button type="submit" className={styles.submitButton}>
           수정하기
         </button>
