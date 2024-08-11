@@ -118,7 +118,7 @@ export const router = createBrowserRouter([
         loader: authCheckLoader,
       },
       {
-        path: "add-review/:hotelId",
+        path: "add-review/:hotelId/:reservationId",
         element: <AddReviewPage />,
         loader: authCheckLoader,
       },
