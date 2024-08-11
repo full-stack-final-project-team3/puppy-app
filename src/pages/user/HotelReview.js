@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import styles from './HotelReview.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -8,7 +8,7 @@ import {
     modifyReview
 } from '../../components/store/hotel/HotelReviewSlice';
 import { fetchUserReservations } from '../../components/store/hotel/ReservationSlice';
-import {Modal, ModalHeader, ModalBody, ModalFooter, Button, Input} from "reactstrap";
+import {Modal, ModalBody, Button } from "reactstrap";
 import { FaStar } from 'react-icons/fa';
 import RatingInput from '../shop/review/RatingInput';
 
