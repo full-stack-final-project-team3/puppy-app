@@ -38,6 +38,7 @@ const HotelReview = () => {
         fetchAllReviews();
     }, [dispatch, userReservations]);
 
+
     // 리뷰 삭제
     const deleteReviewHandler = async (reviewId) => {
         try {
