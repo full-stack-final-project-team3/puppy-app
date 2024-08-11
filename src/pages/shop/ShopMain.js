@@ -6,13 +6,13 @@ import { useSelector } from "react-redux";
 const ShopMain = () => {
   const [selectedDogId, setSelectedDogId] = useState("");
   const [selectedDogName, setSelectedDogName] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false); 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
   const user = useSelector((state) => state.userEdit.userDetail);
   const dogList = isLoggedIn ? user.dogList || [] : []; // 로그인 상태에 따라 강아지 목록 설정
 
   console.log(user);
-  
+
   useEffect(() => {
     // 로그인 상태 확인 및 업데이트
     setIsLoggedIn(user && Object.keys(user).length > 0);
@@ -28,7 +28,7 @@ const ShopMain = () => {
   const handleStartClick = () => {
     if (isLoggedIn) {
       if (dogList.length === 0) {
-        navigate('/add-dog'); // 강아지가 없는 경우 강아지 등록 페이지로 이동
+        navigate("/add-dog"); // 강아지가 없는 경우 강아지 등록 페이지로 이동
       } else if (selectedDogId) {
         navigate(`/list/${selectedDogId}`, {
           state: { dogName: selectedDogName },
@@ -42,19 +42,31 @@ const ShopMain = () => {
   };
 
   const handleAddClick = () => {
-    navigate('/add-treats')
+    navigate("/add-treats");
   };
 
+  const handleManagementClick = () => {
+    navigate("/manage-treats");
+  };
+  
   return (
     <div className={styles.shopMain}>
       <div className={styles.content}>
         <h1>내 강아지 목록</h1>
-        {isLoggedIn &&
-          user.role === "ADMIN" && ( // admin 역할일 때만 상품 추가 버튼 표시
-            <button onClick={handleAddClick} className={styles.newTreatsBtn}>
-              상품 추가
-            </button>
-          )}
+        <div className={styles.buttonContainer}>
+          {isLoggedIn &&
+            user.role === "ADMIN" && ( // admin 역할일 때만 상품 추가 버튼 표시
+              <button onClick={handleAddClick} className={styles.newTreatsBtn}>
+                상품 추가
+              </button>
+            )}
+          {isLoggedIn &&
+            user.role === "ADMIN" && ( // admin 역할일 때만 상품 추가 버튼 표시
+              <button onClick={handleManagementClick} className={styles.newTreatsBtn}>
+                상품 관리
+              </button>
+            )}
+        </div>
         {isLoggedIn ? ( // 로그인 상태일 때
           dogList.length === 0 ? ( // 강아지가 없는 경우
             <p>등록된 강아지가 없습니다. 강아지를 등록해 주세요.</p>
@@ -79,7 +91,7 @@ const ShopMain = () => {
           <p>로그인을 해주세요.</p> // 로그인하지 않은 경우 안내 메시지
         )}
         <button onClick={handleStartClick} className={styles.startButton}>
-        {isLoggedIn ? (dogList.length === 0 ? "등록하기" : "시작") : "로그인"} 
+          {isLoggedIn ? (dogList.length === 0 ? "등록하기" : "시작") : "로그인"}
         </button>
       </div>
     </div>
