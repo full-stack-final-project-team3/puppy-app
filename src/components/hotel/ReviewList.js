@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchReviews } from '../store/hotel/HotelReviewSlice'; // Adjust the file path accordingly
+import { fetchReviewsByHotelId } from '../store/hotel/HotelReviewSlice'; // Adjust the file path accordingly
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -38,7 +38,7 @@ const ReviewList = ({ hotelId }) => {
 
     useEffect(() => {
         if (hotelId) {
-            dispatch(fetchReviews(hotelId));
+            dispatch(fetchReviewsByHotelId(hotelId));
         }
     }, [dispatch, hotelId]);
 

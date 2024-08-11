@@ -10,7 +10,7 @@ const initialState = {
 };
 
 
-// 리뷰 목록 조회
+// 유저 리뷰 목록 조회
 export const fetchReviews = createAsyncThunk(
     'reviews/fetchReviews',
     async (reservationId, thunkAPI) => {
@@ -22,6 +22,25 @@ export const fetchReviews = createAsyncThunk(
             }
             const data = await response.json();
             return {reservationId, reviews: data}; // 리뷰 데이터와 호텔 ID를 함께 반환
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.toString());
+        }
+    }
+);
+
+
+// 호텔 리뷰 목록 조회
+export const fetchReviewsByHotelId = createAsyncThunk(
+    'reviews/fetchReviewsByHotelId',
+    async (hotelId, thunkAPI) => {
+        try {
+            const response = await fetch(`http://localhost:8888/api/reviews/hotel?hotelId=${hotelId}`);
+            if (!response.ok) {
+                const errorText = await response.json();
+                throw new Error(`Failed to fetch reviews: ${errorText}`);
+            }
+            const data = await response.json();
+            return { hotelId, reviews: data }; // 리뷰 데이터와 호텔 ID를 함께 반환
         } catch (error) {
             return thunkAPI.rejectWithValue(error.toString());
         }
@@ -166,6 +185,22 @@ const reviewSlice = createSlice({
             })
             .addCase(modifyReview.rejected, (state, action) => {
                 console.error("Error in modifying review:", action.payload);
+            })
+            .addCase(fetchReviewsByHotelId.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchReviewsByHotelId.fulfilled, (state, action) => {
+                state.loading = false;
+                // 기존 리뷰에 새로운 리뷰 데이터를 추가
+                state.reviews = [
+                    ...state.reviews.filter(review => review.hotelId !== action.payload.hotelId),
+                    ...action.payload.reviews
+                ];
+            })
+            .addCase(fetchReviewsByHotelId.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
             });
     },
 });
