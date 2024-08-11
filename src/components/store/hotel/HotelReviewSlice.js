@@ -2,6 +2,7 @@ import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 
 const initialState = {
     reviews: [],
+    reviewsByReservationId: {},
     reviewContent: '',
     rate: 0,
     loading: false,
@@ -12,15 +13,15 @@ const initialState = {
 // 리뷰 목록 조회
 export const fetchReviews = createAsyncThunk(
     'reviews/fetchReviews',
-    async (hotelId, thunkAPI) => {
+    async (reservationId, thunkAPI) => {
         try {
-            const response = await fetch(`http://localhost:8888/api/reviews?hotelId=${hotelId}`);
+            const response = await fetch(`http://localhost:8888/api/reviews?reservationId=${reservationId}`);
             if (!response.ok) {
                 const errorText = await response.json();
                 throw new Error(`Failed to fetch reviews: ${errorText}`);
             }
             const data = await response.json();
-            return {hotelId, reviews: data}; // 리뷰 데이터와 호텔 ID를 함께 반환
+            return {reservationId, reviews: data}; // 리뷰 데이터와 호텔 ID를 함께 반환
         } catch (error) {
             return thunkAPI.rejectWithValue(error.toString());
         }
@@ -30,9 +31,9 @@ export const fetchReviews = createAsyncThunk(
 // 리뷰 추가
 export const addReview = createAsyncThunk(
     'reviews/addReview',
-    async ({hotelId, reviewContent, rate, userId}, thunkAPI) => {
+    async ({hotelId, reviewContent, rate, userId, reservationId}, thunkAPI) => {
         const token = JSON.parse(localStorage.getItem('userData')).token;
-        const reviewData = {hotelId, reviewContent, rate, userId};
+        const reviewData = {hotelId, reviewContent, rate, userId, reservationId};
         try {
             const response = await fetch('http://localhost:8888/api/reviews', {
                 method: 'POST',
@@ -143,11 +144,7 @@ const reviewSlice = createSlice({
             })
             .addCase(fetchReviews.fulfilled, (state, action) => {
                 state.loading = false;
-                // 기존 리뷰에 새로운 리뷰 데이터를 추가
-                state.reviews = [
-                    ...state.reviews.filter(review => review.hotelId !== action.payload.hotelId),
-                    ...action.payload.reviews
-                ];
+                state.reviewsByReservationId[action.payload.reservationId] = action.payload.reviews;
             })
             .addCase(fetchReviews.rejected, (state, action) => {
                 state.loading = false;

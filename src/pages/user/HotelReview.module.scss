@@ -52,9 +52,13 @@
     justify-content: space-between;
     align-items: center;
 
+    .star{
+      color: #ffd000;
+    }
+
     .actions {
       display: flex;
-      gap: 10px;
+      gap: 5px;
 
       .actionLink {
         padding: 4px 8px;
@@ -72,31 +76,132 @@
   }
 }
 
-.modalOverlay {
+.modal {
+  /* 화면 가운데 정렬을 위한 추가 스타일 */
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #F4E9D3;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 100%;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 1001;
 }
 
-.modal {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  width: 500px;
-  max-width: 80%;
-  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+.modalHeader {
+  font-size: 1.8rem;
+  color: #333;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  text-align: center;
+  width: 100%;
 }
 
-.modalActions {
+.modalBody {
+  width: 100%;
   display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 20px;
+  flex-direction: column;
+  align-items: center;
+
+  .textarea {
+    width: 140%;
+    height: 100px;
+    padding: 10px;
+    margin-top: 30px;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    resize: vertical;
+    transition: border-color 0.3s ease;
+
+    &:focus {
+      border-color: #4CAF50;
+      outline: none;
+    }
+  }
+
+  .label {
+    font-size: 1rem;
+    margin-left: 50%;
+    color: #333;
+    display: block;
+    margin-bottom: 10px;
+    width: 100%;
+    text-align: center;
+
+    .star {
+      display: inline-block;
+      margin-top: 5px;
+    }
+
+    .select {
+      width: 100%;
+      padding: 8px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      transition: border-color 0.3s ease;
+
+      &:focus {
+        border-color: #4CAF50;
+        outline: none;
+      }
+    }
+  }
+
+  .modalActions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    margin-top: 20px;
+
+    .primaryButton {
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      background-color: #8FBC8F;
+      color: #2F4F4F;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+
+      &:hover {
+        background-color: #45A049;
+        transform: translateY(-2px);
+      }
+    }
+
+    .secondaryButton {
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      background-color: #B3797A;
+      color: #fff;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+
+      &:hover {
+        background-color: #8f3030;
+        transform: translateY(-2px);
+      }
+    }
+  }
+
+  .error {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: 15px;
+    text-align: center;
+  }
 }
