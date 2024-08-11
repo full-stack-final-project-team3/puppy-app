@@ -73,12 +73,88 @@
         cursor: pointer;
         font-size: 1.5rem;
         color: #868686;
-        z-index: 2;  // 버튼의 z-index를 높게 설정하여 이미지 위로 나오게 함
+        z-index: 2;
 
         &:hover {
           color: #B3797A;
         }
       }
+    }
+  }
+}
+
+@media (max-width: 400px) {
+  .wrap {
+    width: 100%;
+    margin: 10px auto;
+    padding: 10px;
+    border-radius: 16px;
+  }
+
+  .subWrap {
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 8px;
+  }
+
+  .title {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .hotelList {
+    width: 100%;
+  }
+
+  .hotelItem {
+    display: flex;
+    align-items: center; /* 텍스트와 이미지를 같은 라인에 배치 */
+    padding: 10px;
+    margin-bottom: 10px;
+    background: #F4E9D3;
+    border-radius: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .hotelImage {
+    width: 30%;
+    height: auto;
+    border-radius: 12px;
+    object-fit: cover;
+    margin-right: 10px;
+  }
+
+  .hotelInfo {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    h3 {
+      font-size: 1rem;
+      margin: 0 0 5px 0;
+    }
+
+    p {
+      font-size: 0.9rem;
+      margin: 0;
+    }
+  }
+
+  .favoriteButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #868686;
+
+    &:hover {
+      color: #B3797A;
     }
   }
 }
