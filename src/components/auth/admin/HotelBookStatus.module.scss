@@ -1,0 +1,21 @@
+.nav {
+  width: 100%;
+
+  .ul {
+    display: flex;
+    width: 100%;
+    text-align: center;
+
+    .menu {
+      width: 50%;
+      text-align: center;
+      cursor: pointer;
+      list-style: none;
+    }
+
+    .menu:hover {
+      font-weight: bold;
+      text-decoration: underline;
+    }
+  }
+}
