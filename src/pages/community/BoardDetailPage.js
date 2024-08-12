@@ -15,7 +15,7 @@ import {
 import { AiOutlineExport } from "react-icons/ai";
 import { GoClock } from "react-icons/go";
 
-const BASE_URL = "http://localhost:8888"; // 백엔드 URL을 여기에 정의
+const BASE_URL = "http://localhost:8888";
 
 const BoardDetailPage = () => {
   const [post, setPost] = useState(null);
@@ -25,6 +25,8 @@ const BoardDetailPage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [editingCommentId, setEditingCommentId] = useState(null);
+  const [editedCommentContent, setEditedCommentContent] = useState("");
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -207,6 +209,67 @@ const BoardDetailPage = () => {
     );
   };
 
+  const handleCommentEdit = (commentId, content) => {
+    setEditingCommentId(commentId);
+    setEditedCommentContent(content);
+  };
+
+  const handleCommentUpdate = async (commentId) => {
+    try {
+      const userData = JSON.parse(localStorage.getItem("userData"));
+      const response = await fetch(`${BOARD_URL}/${id}/comments/${commentId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userData.token}`,
+        },
+        body: JSON.stringify({
+          content: editedCommentContent,
+          userId: user.id,
+        }),
+      });
+
+      if (response.ok) {
+        const updatedBoardData = await response.json();
+        setPost(updatedBoardData);
+        setComments(updatedBoardData.replies || []);
+        setEditingCommentId(null);
+        setEditedCommentContent("");
+      } else {
+        throw new Error("댓글 수정에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("댓글 수정 중 오류 발생:", error);
+      alert("댓글 수정에 실패했습니다. 다시 시도해 주세요.");
+    }
+  };
+
+  const handleCommentDelete = async (commentId) => {
+    if (window.confirm("정말로 이 댓글을 삭제하시겠습니까?")) {
+      try {
+        const userData = JSON.parse(localStorage.getItem("userData"));
+        const response = await fetch(
+          `${BOARD_URL}/${id}/comments/${commentId}?userId=${user.id}`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${userData.token}`,
+            },
+          }
+        );
+
+        if (response.ok) {
+          setComments(comments.filter((comment) => comment.id !== commentId));
+        } else {
+          throw new Error("댓글 삭제에 실패했습니다.");
+        }
+      } catch (error) {
+        console.error("댓글 삭제 중 오류 발생:", error);
+        alert("댓글 삭제에 실패했습니다. 다시 시도해 주세요.");
+      }
+    }
+  };
+
   if (!post) return <div className={styles.loading}>로딩 중...</div>;
 
   return (
@@ -279,10 +342,7 @@ const BoardDetailPage = () => {
         <ul className={styles.commentList}>
           {comments && comments.length > 0 ? (
             comments.map((comment) => (
-              <li
-                key={comment.id || comment.replyId}
-                className={styles.commentItem}
-              >
+              <li key={comment.id} className={styles.commentItem}>
                 <div className={styles.commentContent}>
                   <span className={styles.commentAuthor}>
                     <img
@@ -293,11 +353,33 @@ const BoardDetailPage = () => {
                     {comment.user?.nickname || "익명의강아지주인"}
                   </span>
                   <span className={styles.commentDate}>
-                    {new Date(
-                      comment.createdAt || comment.replyCreatedAt
-                    ).toLocaleDateString()}
+                    {new Date(comment.replyCreatedAt).toLocaleDateString()}
                   </span>
-                  <p>{comment.content || comment.replyContent}</p>
+                  {editingCommentId === comment.id ? (
+                    <div>
+                      <textarea
+                        value={editedCommentContent}
+                        onChange={(e) =>
+                          setEditedCommentContent(e.target.value)
+                        }
+                        className={styles.editCommentTextarea}
+                      />
+                      <button
+                        onClick={() => handleCommentUpdate(comment.id)}
+                        className={styles.updateCommentButton}
+                      >
+                        완료
+                      </button>
+                      <button
+                        onClick={() => setEditingCommentId(null)}
+                        className={styles.cancelEditButton}
+                      >
+                        취소
+                      </button>
+                    </div>
+                  ) : (
+                    <p>{comment.replyContent}</p>
+                  )}
                   {comment.imageUrl && (
                     <img
                       src={comment.imageUrl}
@@ -305,34 +387,25 @@ const BoardDetailPage = () => {
                       className={styles.commentImage}
                     />
                   )}
-                </div>
-                {comment.replies && comment.replies.length > 0 && (
-                  <ul className={styles.replyList}>
-                    {comment.replies.map((reply) => (
-                      <li
-                        key={reply.id || reply.replyId}
-                        className={styles.replyItem}
+                  {user && user.id === comment.user?.id && (
+                    <div className={styles.commentActions}>
+                      <button
+                        onClick={() =>
+                          handleCommentEdit(comment.id, comment.replyContent)
+                        }
+                        className={styles.editCommentButton}
                       >
-                        <span className={styles.replyAuthor}>
-                          <img
-                            className={styles.profileImage}
-                            src={
-                              reply.user?.profileUrl || "/default-profile.png"
-                            }
-                            alt="프로필"
-                          />
-                          {reply.user?.nickname || "익명의강아지주인"}
-                        </span>
-                        <span className={styles.replyDate}>
-                          {new Date(
-                            reply.createdAt || reply.replyCreatedAt
-                          ).toLocaleDateString()}
-                        </span>
-                        <p>{reply.content || reply.replyContent}</p>
-                      </li>
-                    ))}
-                  </ul>
-                )}
+                        수정
+                      </button>
+                      <button
+                        onClick={() => handleCommentDelete(comment.id)}
+                        className={styles.deleteCommentButton}
+                      >
+                        삭제
+                      </button>
+                    </div>
+                  )}
+                </div>
               </li>
             ))
           ) : (
