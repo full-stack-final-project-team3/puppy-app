@@ -141,7 +141,7 @@ const HotelReview = () => {
                     <ReviewItem key={rev.id} review={rev} />
                 ))
             ) : (
-                <p>No reviews available.</p>
+                <p className={styles.noReview}>작성하신 리뷰가 없습니다!</p>
             )}
 
             <Modal isOpen={isModalOpen} toggle={closeModal} className={styles.modal}>

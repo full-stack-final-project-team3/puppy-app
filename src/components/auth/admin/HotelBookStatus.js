@@ -6,9 +6,11 @@ const HotelBookStatus = () => {
         <>
             <div>
                 <nav className={styles.nav}>
+                    <div className={styles.total}>예약 건수</div>
                     <ul className={styles.ul}>
-                        <li className={styles.menu}>전체 예약 건수</li>
-                        <li className={styles.menu}>호텔 별 예약 수</li>
+                        <li className={styles.menu}>일 별</li>
+                        <li className={styles.menu}>주간 별</li>
+                        <li className={styles.menu}>월 별</li>
                     </ul>
                 </nav>
             </div>

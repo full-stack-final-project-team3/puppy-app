@@ -31,9 +31,9 @@ const UserEdit = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (showModal) {
-            console.log("Modal is now visible:", showModal);
-        }
+        // if (showModal) {
+        //     console.log("Modal is now visible:", showModal);
+        // }
     }, [showModal]);
 
     const handlePasswordChange = () => {

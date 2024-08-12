@@ -86,13 +86,13 @@ const DogEdit = () => {
                 setShowModal(true);
             } else {
                 setModalText("삭제에 실패했습니다.");
-                setPendingFunction(() => {}); // 모달에서 실행할 함수는 없음
+                // setPendingFunction(() => {}); // 모달에서 실행할 함수는 없음
                 setShowModal(true);
             }
         } catch (error) {
             console.error('에러 발생:', error);
             setModalText("삭제 중 에러가 발생했습니다.");
-            setPendingFunction(() => {}); // 모달에서 실행할 함수는 없음
+            // setPendingFunction(() => {}); // 모달에서 실행할 함수는 없음
             setShowModal(true);
         }
     };
@@ -114,7 +114,7 @@ const DogEdit = () => {
 
                 dispatch(userEditActions.updateUserDetail({ ...userDetail, dogList: updatedDogList }));
                 dispatch(dogEditActions.updateDogInfo({ ...dog, allergies: updatedAllergies }));
-                setModalText("강아지의 건강이 좋아졌나봐요!");
+                setModalText("알러지가 삭제되었습니다!");
                 setPendingFunction(() => {}); // 모달에서 실행할 함수는 없음
                 setShowModal(true);
             } else {
