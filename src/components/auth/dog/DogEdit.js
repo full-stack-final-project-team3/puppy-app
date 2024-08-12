@@ -7,9 +7,15 @@ import { DOG_URL } from "../../../config/user/host-config";
 import { useNavigate } from "react-router-dom";
 import { decideGender, decideSize, translateAllergy, translateBreed } from './dogUtil.js';
 import { LuBadgeX } from "react-icons/lu";
+import UserModal from "../user/mypage/UserModal"; // UserModal 컴포넌트 import
 
 const DogEdit = () => {
     const [dogProfileUrl, setDogProfileUrl] = useState('');
+    const [showModal, setShowModal] = useState(false);
+    const [modalText, setModalText] = useState('');
+    const [pendingFunction, setPendingFunction] = useState(null); // 모달에서 실행할 함수를 저장할 상태
+    const [isDeleteConfirmation, setIsDeleteConfirmation] = useState(false); // 삭제 확인 모드인지 여부
+
     const weightRef = useRef();
     const fileInputRef = useRef();
 
@@ -36,7 +42,7 @@ const DogEdit = () => {
         }
     };
 
-    const clearEditMode = async e => {
+    const clearEditMode = async () => {
         const weight = weightRef.current.value;
         const payload = {
             weight,
@@ -49,11 +55,17 @@ const DogEdit = () => {
             body: JSON.stringify(payload),
         });
         if (response.ok) {
-            alert("수정 되었습니다.");
             const updatedDogList = userDetail.dogList.map(d => d.id === dog.id ? { ...d, weight, dogProfileUrl: payload.dogProfileUrl } : d);
             dispatch(userEditActions.updateUserDetail({ ...userDetail, dogList: updatedDogList }));
             dispatch(userEditActions.clearMode());
             dispatch(dogEditActions.clearEdit());
+            setModalText("성공적으로 수정이 완료되었습니다.");
+            setPendingFunction(() => {}); // 모달에서 실행할 함수는 없음
+            setShowModal(true);
+        } else {
+            setModalText("수정에 실패했습니다.");
+            setPendingFunction(() => {}); // 모달에서 실행할 함수는 없음
+            setShowModal(true);
         }
     };
 
@@ -65,19 +77,23 @@ const DogEdit = () => {
             });
 
             if (response.ok) {
-                alert("삭제 되었습니다.");
                 const updatedDogList = userDetail.dogList.filter(d => d.id !== dog.id);
                 dispatch(userEditActions.updateUserDetail({ ...userDetail, dogList: updatedDogList }));
                 dispatch(userEditActions.clearMode());
                 dispatch(dogEditActions.clearEdit());
-                navigate("/mypage");
+                setModalText("삭제 되었습니다.");
+                setPendingFunction(() => navigate("/mypage")); // 모달에서 실행할 함수로 navigate 설정
+                setShowModal(true);
             } else {
-                alert("삭제에 실패했습니다.");
-                console.error('삭제 실패:', response.statusText);
+                setModalText("삭제에 실패했습니다.");
+                setPendingFunction(() => {}); // 모달에서 실행할 함수는 없음
+                setShowModal(true);
             }
         } catch (error) {
             console.error('에러 발생:', error);
-            alert("삭제 중 에러가 발생했습니다.");
+            setModalText("삭제 중 에러가 발생했습니다.");
+            setPendingFunction(() => {}); // 모달에서 실행할 함수는 없음
+            setShowModal(true);
         }
     };
 
@@ -98,13 +114,36 @@ const DogEdit = () => {
 
                 dispatch(userEditActions.updateUserDetail({ ...userDetail, dogList: updatedDogList }));
                 dispatch(dogEditActions.updateDogInfo({ ...dog, allergies: updatedAllergies }));
-                alert("강아지의 건강이 좋아졌나봐요!");
+                setModalText("강아지의 건강이 좋아졌나봐요!");
+                setPendingFunction(() => {}); // 모달에서 실행할 함수는 없음
+                setShowModal(true);
             } else {
                 console.error('알러지 삭제 실패:', response.statusText);
             }
         } catch (error) {
             console.error('알러지 삭제 중 에러 발생:', error);
         }
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
+
+    const handleConfirmModal = () => {
+        setShowModal(false);
+        if (isDeleteConfirmation) {
+            removeHandler(); // 삭제 확인 모드일 때 removeHandler 실행
+        } else {
+            if (pendingFunction) {
+                pendingFunction(); // 다른 경우 pendingFunction 실행
+            }
+        }
+    };
+
+    const handleDeleteClick = () => {
+        setModalText("정말 삭제하시겠습니까?");
+        setIsDeleteConfirmation(true); // 삭제 확인 모드로 전환
+        setShowModal(true);
     };
 
     return (
@@ -144,8 +183,11 @@ const DogEdit = () => {
                         </div>
                     </div>
                     <div className={styles.buttons}>
-                        <button onClick={removeHandler}>삭제</button>
-                        <button onClick={clearEditMode}>완료</button>
+                        <button onClick={handleDeleteClick}>삭제</button>
+                        <button onClick={() => {
+                            setPendingFunction(() => clearEditMode);
+                            setShowModal(true); // 모달을 먼저 열고, 확인 버튼을 눌렀을 때 clearEditMode 실행
+                        }}>완료</button>
                     </div>
                 </div>
                 <div className={styles.right} onClick={handleImageClick}>
@@ -159,6 +201,17 @@ const DogEdit = () => {
                     />
                 </div>
             </div>
+
+            {showModal && (
+                <UserModal
+                    title={isDeleteConfirmation ? "삭제 확인" : "성공적으로 수정이 완료되었습니다."}
+                    message={modalText}
+                    onConfirm={handleConfirmModal}
+                    onClose={handleCloseModal}
+                    confirmButtonText={isDeleteConfirmation ? "예" : "확인"}
+                    showCloseButton={isDeleteConfirmation} // 삭제 확인 모드일 때는 "아니요" 버튼도 표시
+                />
+            )}
         </div>
     );
 };

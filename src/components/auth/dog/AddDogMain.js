@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, { useRef, useState } from 'react';
 import DogNameInput from "./DogNameInput";
 import DogBirthdayInput from "./DogBirthdayInput";
 import DogBreedInput from "./DogBreedInput";
@@ -9,8 +9,9 @@ import DogAllergiesInput from "./DogAllergiesInput";
 import { useNavigate } from "react-router-dom";
 import { DOG_URL, NOTICE_URL } from "../../../config/user/host-config";
 import { useDispatch, useSelector } from "react-redux";
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import UserModal from "../user/mypage/UserModal"; // UserModal import
 import { userEditActions } from "../../store/user/UserEditSlice";
-import {CSSTransition, TransitionGroup} from 'react-transition-group';
 
 const AddDogMain = () => {
     const navigate = useNavigate();
@@ -18,9 +19,7 @@ const AddDogMain = () => {
     const dispatch = useDispatch();
     const email = user.email;
 
-    // 갔다온 적이 있나? 로 막아버리기
     const [visitedSteps, setVisitedSteps] = useState([1]);
-
     const [step, setStep] = useState(1);
     const [name, setName] = useState('');
     const [breed, setBreed] = useState('');
@@ -29,7 +28,9 @@ const AddDogMain = () => {
     const [weight, setWeight] = useState('');
     const [dogSize, setDogSize] = useState('');
     const [allergies, setAllergies] = useState([]);
-
+    const [showModal, setShowModal] = useState(false);
+    const [modalText, setModalText] = useState('');
+    const [navigateOnConfirm, setNavigateOnConfirm] = useState(null);
 
     const nodeRef1 = useRef(null);
     const nodeRef2 = useRef(null);
@@ -50,37 +51,34 @@ const AddDogMain = () => {
         }
     };
 
-    // const profileUrl = "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fst2.depositphotos.com%2F5045705%2F11671%2Fv%2F950%2Fdepositphotos_116714982-stock-illustration-little-puppy-icon.jpg&type=a340";
-
     const dogNameValue = (dogName) => {
         setName(dogName);
         setStep(2);
-        setVisitedSteps([1,2])
+        setVisitedSteps([1, 2]);
         window.scrollTo(0, 0);
     };
 
     const dogBreedValue = (dogBreed) => {
         setBreed(dogBreed);
         setStep(3);
-        setVisitedSteps([1,2,3])
+        setVisitedSteps([1, 2, 3]);
         window.scrollTo(0, 0);
     };
 
     const dogBirthdayValue = (date) => {
         const formatDate = date.format('YYYY-MM-DD');
-        console.log(formatDate)
         setBirthday(formatDate);
         setStep(4);
-        setVisitedSteps([1,2,3,4])
+        setVisitedSteps([1, 2, 3, 4]);
         window.scrollTo(0, 0);
     };
 
     const dogSexValue = (sex) => {
         setGender(sex);
         setStep(5);
-        setVisitedSteps([1,2,3,4,5])
+        setVisitedSteps([1, 2, 3, 4, 5]);
         window.scrollTo(0, 0);
-    }
+    };
 
     const dogWeightValue = (weight) => {
         setWeight(weight);
@@ -93,7 +91,7 @@ const AddDogMain = () => {
         }
         setStep(6);
         window.scrollTo(0, 0);
-    }
+    };
 
     const dogAllergiesValue = async (allergies) => {
         setAllergies(allergies);
@@ -106,7 +104,6 @@ const AddDogMain = () => {
             dogSize: dogSize,
             weight: weight,
             allergies: allergies,
-            // dogProfileUrl: profileUrl,
         };
 
         try {
@@ -139,14 +136,13 @@ const AddDogMain = () => {
                     });
 
                     const noticeResponseText = await noticeResponse.text();
-
-                    console.log(noticeResponseText);
-
                     let newNotice;
                     try {
                         newNotice = JSON.parse(noticeResponseText);
                     } catch (jsonError) {
-                        alert('강아지 등록은 성공했으나 알림 추가에 실패했습니다.');
+                        setModalText('강아지 등록은 성공했으나 알림 추가에 실패했습니다.');
+                        setNavigateOnConfirm(() => () => navigate('/mypage', { state: { newDog }, replace: true }));
+                        setShowModal(true);
                         return;
                     }
 
@@ -157,28 +153,45 @@ const AddDogMain = () => {
                             noticeCount: user.noticeCount + 1
                         };
                         dispatch(userEditActions.updateUserDetail(updatedUserDetailWithNoticeCount));
-                        alert('강아지 등록 성공!');
+                        setModalText('강아지 등록 성공!');
+                        setNavigateOnConfirm(() => () => navigate('/mypage', { state: { newDog }, replace: true }));
+                        setShowModal(true);
                     } else {
-                        alert('강아지 등록은 성공했으나 알림 추가에 실패했습니다.');
+                        setModalText('강아지 등록은 성공했으나 알림 추가에 실패했습니다.');
+                        setNavigateOnConfirm(() => () => navigate('/mypage', { state: { newDog }, replace: true }));
+                        setShowModal(true);
                     }
 
                 } catch (error) {
-                    alert('강아지 등록은 성공했으나 알림 추가 중 오류가 발생했습니다.');
+                    setModalText('강아지 등록은 성공했으나 알림 추가 중 오류가 발생했습니다.');
+                    setNavigateOnConfirm(() => () => navigate('/mypage', { state: { newDog }, replace: true }));
+                    setShowModal(true);
                 }
 
-                // navigate 호출을 상태 업데이트 후에 실행
-                navigate('/mypage', { state: { newDog }, replace: true });
             } else {
-                alert('강아지 등록 실패!');
+                setModalText('강아지 등록 실패!');
+                setShowModal(true);
             }
         } catch (error) {
-            alert('강아지 등록 중 오류가 발생했습니다.');
+            setModalText('강아지 등록 중 오류가 발생했습니다.');
+            setShowModal(true);
         }
-    }
+    };
 
     const switchStep = (num) => {
         if (visitedSteps.length >= num) setStep(num);
-    }
+    };
+
+    const handleConfirmModal = () => {
+        setShowModal(false);
+        if (navigateOnConfirm) {
+            navigateOnConfirm(); // navigateOnConfirm이 존재하면 실행
+        }
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
 
     return (
         <>
@@ -218,17 +231,27 @@ const AddDogMain = () => {
                         nodeRef={getNodeRef(step)}
                     >
                         <div ref={getNodeRef(step)} className={styles.page}>
-                            {step === 1 && <DogNameInput dogNameValue={dogNameValue}/>}
-                            {step === 2 && <DogBreedInput dogBreedValue={dogBreedValue}/>}
-                            {step === 3 && <DogBirthdayInput onDateChange={dogBirthdayValue}/>}
-                            {step === 4 && <DogSexInput dogSexValue={dogSexValue}/>}
-                            {step === 5 && <DogWeightInput dogWeightValue={dogWeightValue}/>}
-                            {step === 6 && <DogAllergiesInput onAllergiesChange={dogAllergiesValue}/>}
+                            {step === 1 && <DogNameInput dogNameValue={dogNameValue} />}
+                            {step === 2 && <DogBreedInput dogBreedValue={dogBreedValue} />}
+                            {step === 3 && <DogBirthdayInput onDateChange={dogBirthdayValue} />}
+                            {step === 4 && <DogSexInput dogSexValue={dogSexValue} />}
+                            {step === 5 && <DogWeightInput dogWeightValue={dogWeightValue} />}
+                            {step === 6 && <DogAllergiesInput onAllergiesChange={dogAllergiesValue} />}
                         </div>
                     </CSSTransition>
                 </TransitionGroup>
-            </div>
 
+                {showModal && (
+                    <UserModal
+                        title="강아지가 성공적으로 등록되었습니다."
+                        message={modalText}
+                        onConfirm={handleConfirmModal}  // 모달 닫기 시 navigate 호출
+                        confirmButtonText="확인"
+                        showCloseButton={false}      // 닫기 버튼 표시 여부
+                        onClose={handleCloseModal} // 모달 닫기 시 호출
+                    />
+                )}
+            </div>
         </>
     );
 };
