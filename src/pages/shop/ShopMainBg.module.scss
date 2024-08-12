@@ -126,7 +126,7 @@
       color: #403c36;
       font-size: 36px;
       font-weight: bold;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
     }
 
     .processStep {
@@ -136,23 +136,51 @@
       .stepNumber {
         font-size: 24px;
         font-weight: bold;
+        padding-top: 5px;
         margin-right: 10px;
       }
 
       .stepContent {
         flex: 1;
 
-        .stepIcon {
-          // 여기에서 아이콘 스타일 추가
-          width: 24px;
-          height: 24px;
+        .stepIcon1 {
+          background-image: url("../../../public/shop_img/dog.png"); /* 아이콘 이미지 경로 */
+          background-size: contain; /* 이미지 크기 조정 */
+          background-repeat: no-repeat; /* 반복 방지 */
+          display: inline-block;
+          margin-left: 10px;
+          width: 40px;
+          height: 40px;
           background-size: cover;
-          margin-bottom: 5px; // 아이콘과 텍스트 간격
+        }
+
+        .stepIcon2 {
+          background-image: url("../../../public/shop_img/big-idea.png"); /* 아이콘 이미지 경로 */
+          background-size: contain; /* 이미지 크기 조정 */
+          background-repeat: no-repeat; /* 반복 방지 */
+          display: inline-block;
+          margin-left: 10px;
+          width: 42px;
+          height: 40px;
+          background-size: cover;
+        }
+
+        .stepIcon3 {
+          background-image: url("../../../public/shop_img/gift.png"); /* 아이콘 이미지 경로 */
+          background-size: contain; /* 이미지 크기 조정 */
+          background-repeat: no-repeat; /* 반복 방지 */
+          display: inline-block;
+          margin-left: 10px;
+          width: 42px;
+          height: 40px;
+          background-size: cover;
         }
 
         h5 {
           font-size: 17px;
           margin: 0;
+          margin-bottom: 5px;
+          color: #403c36;
         }
 
         p {
