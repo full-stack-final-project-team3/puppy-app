@@ -1,0 +1,146 @@
+.mainSection {
+  height: 95vh;
+
+  .imgSection {
+    background-image: url(../../../public/shop_img/shop_main.png); // 배경 이미지 경로
+    background-size: cover;
+    background-position: center;
+    height: 85%; /* 높이를 원하는 값으로 설정 */
+    width: 100%; /* 너비를 원하는 값으로 설정 */
+  }
+
+  .sliderContainer {
+    overflow: hidden;
+    position: relative;
+    height: 170px; // 슬라이드 높이를 화면 전체 높이로 설정
+    background: #5E584F;
+  }
+
+  .slider {
+    display: flex;
+    animation: scroll 15s linear infinite; /* 애니메이션 시간 조정 */
+    height: 100%; // 부모의 높이에 맞게 설정
+    width: calc(250px * 5 * 2); // 슬라이드 총 너비 조정 (슬라이드 수 x 각 슬라이드 너비 x 2)
+
+  }
+
+  .slideImgBox {
+    width: 260px;
+    display: flex;
+    justify-content: center; // 가로 중앙 정렬
+    margin: auto 0;
+
+    .slide {
+      background-color: #5E584F;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); // 텍스트 가독성을 위한 그림자
+      height: 100%; // 슬라이드 높이를 부모의 높이에 맞게 설정
+
+      &.slide1,
+      &.slide2,
+      &.slide3,
+      &.slide4,
+      &.slide5 {
+        width: 55px; // 슬라이드 너비 설정
+        height: 54px; // 슬라이드 높이 설정
+        margin-right: 20px;
+        background-size: cover; // 배경 이미지 사이즈를 contain으로 설정
+        background-position: center; // 배경 위치를 중앙으로 설정
+        background-repeat: no-repeat; // 배경 이미지 반복 방지
+      }
+
+      // 각 슬라이드에 대한 배경 이미지 설정
+      &.slide1 {
+        background-image: url("../../assets/shop/다운로드.png");
+      }
+
+      &.slide2 {
+        background-image: url("../../assets/shop/다운로드\ (1).png");
+      }
+
+      &.slide3 {
+        background-image: url("../../assets/shop/다운로드\ (2).png");
+      }
+
+      &.slide4 {
+        background-image: url("../../assets/shop/다운로드\ (3).png");
+      }
+
+      &.slide5 {
+        background-image: url("../../assets/shop/다운로드\ (4).png");
+      }
+
+      @keyframes scroll {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-50%); /* 전체 슬라이드 길이만큼 이동 */
+        }
+      }
+    }
+  }
+
+  .slideText {
+    color: white;
+    padding-top: 10px;
+    margin-right: 10px; // 슬라이드 텍스트 상단 여백 추가 (원하는 값으로 조정)
+  }
+
+  .imgSection2 {
+    background-image: url(../../../public/shop_img/shop_main2.png); // 배경 이미지 경로
+    background-size: cover;
+    background-position: center;
+    height: 85%; /* 높이를 원하는 값으로 설정 */
+    width: 100%; /* 너비를 원하는 값으로 설정 */
+  }
+
+  .imgSection3 {
+    background-image: url(../../../public/shop_img/shop_start.png); // 배경 이미지 경로
+    background-size: cover;
+    background-position: center;
+    height: 90%; /* 높이를 원하는 값으로 설정 */
+    width: 100%; /* 너비를 원하는 값으로 설정 */
+  }
+
+  .featuresContainer {
+    display: flex;
+    justify-content: center; /* 항목들을 중앙 정렬 */
+    gap: 150px; /* 항목 간의 간격 조정 */
+    background-color: #5E5850; /* 배경색 */
+    margin: 0 auto;
+    padding: 50px 0; /* 상하 패딩 */
+    color: rgb(255, 255, 255); /* 텍스트 색상 */
+  }
+
+  .featureItem {
+    text-align: center; /* 텍스트 중앙 정렬 */
+    max-width: 340px; /* 최대 너비 설정 */
+
+    .featureTitle {
+      font-size: 20px;
+      color: white;
+      margin-top: 10px;
+    }
+    .featureContent {
+      color: white;
+    }
+  }
+
+  .subsIcon {
+    background-image: url("../../../public/shop_img/subscribe1.png"); /* 아이콘 이미지 경로 */
+    background-size: contain; /* 이미지 크기 조정 */
+    background-repeat: no-repeat; /* 반복 방지 */
+    margin: 0 auto;
+    height: 70px; /* 아이콘 높이 설정 */
+    width: 70px; /* 아이콘 너비 설정 */
+  }
+
+  .qualityIcon {
+    background-image: url("../../../public/shop_img/shake-hand.png"); /* 아이콘 이미지 경로 */
+    background-size: contain; /* 이미지 크기 조정 */
+    background-repeat: no-repeat; /* 반복 방지 */
+    margin: 0 auto;
+    height: 70px; /* 아이콘 높이 설정 */
+    width: 70px; /* 아이콘 너비 설정 */
+  }
+}
