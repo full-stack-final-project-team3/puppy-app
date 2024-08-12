@@ -58,8 +58,8 @@ const ShopMainBg = () => {
               QUALITY
             </h2>
             <p className={styles.featureContent}>
-              최고의 원재료, 신뢰할 수 있는 브랜드의 까다로운 선별을 통해
-              강아지와 나, 우리 모두 안심할 수 있습니다.
+              최고의 원재료, 신뢰할 수 있는 브랜드의 까다로운<br></br>선별을 통해
+              강아지와 나, 모두 안심할 수 있습니다.
             </p>
           </div>
         </div>
