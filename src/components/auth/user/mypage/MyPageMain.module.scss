@@ -7,6 +7,19 @@
   //font-family: " Noto Sans KR", sans-serif;
 }
 
+.admin {
+  width: 20%;
+  margin: 0 auto;
+  padding-top: 30px;
+  text-align: center;
+  color: black;
+  cursor: pointer;
+}
+.admin:hover {
+  transform: scale(1.1);
+  text-decoration: underline;
+  font-weight: bold;
+}
 
 @media screen and (width: 400px) {
   .wrap {

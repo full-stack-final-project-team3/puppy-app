@@ -64,7 +64,7 @@ const MyPageMain = () => {
                 <AdminPage exit={exit}/>
                 :
                 (<div className={styles.wrap}>
-                    <p onClick={startAdminMode}>Admin Page 가기</p>
+                    <p onClick={startAdminMode} className={styles.admin}>Admin Page 가기</p>
                     <MyPageHeader/>
                     {!isEditMode && <MyPageBody user={userDetail} dogList={dogList}/>}
                     {isUserEditMode && <UserEdit/>}

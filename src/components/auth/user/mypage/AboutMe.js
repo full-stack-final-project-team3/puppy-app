@@ -1,14 +1,17 @@
-import React, { useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './AboutMe.module.scss';
 import { useDispatch, useSelector } from "react-redux";
 import { userEditActions } from "../../../store/user/UserEditSlice";
 import { AUTH_URL } from "../../../../config/user/host-config";
+import CheckPasswordModal from "./CheckPasswordModal";
 
 const AboutMe = () => {
     const user = useSelector(state => state.userEdit.userDetail);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
         // 로컬 저장소에서 상태를 복원
@@ -40,26 +43,45 @@ const AboutMe = () => {
     }, [dispatch, navigate]);
 
     const startEditMode = () => {
-        dispatch(userEditActions.startMode());
-        dispatch(userEditActions.startUserEditMode());
+
+        setShowModal(true)
+        // dispatch(userEditActions.startMode());
+        // dispatch(userEditActions.startUserEditMode());
     };
 
+    const onClose = (flag) => {
+        setShowModal(flag)
+        dispatch(userEditActions.startMode());
+        dispatch(userEditActions.startUserEditMode());
+    }
+
+    const cancelEdit = (flag) => {
+        setShowModal(flag)
+    }
+
     return (
-        <div className={styles.wrap}>
-            <div className={styles.me}>Me</div>
-            <div className={styles.mainContainer}>
-                <div className={styles.img}>
-                    <img className={styles.image} src={user.profileUrl} alt="Profile" />
-                </div>
-                <div className={styles.wrapRight}>
-                    <div className={styles.flex}>
-                        <h3 className={styles.nickname}>{user.nickname}</h3>
-                        <span onClick={startEditMode} className={styles.modify}>수정</span>
+        <>
+            <div className={styles.wrap}>
+                <div className={styles.me}>Me</div>
+                <div className={styles.mainContainer}>
+                    <div className={styles.img}>
+                        <img className={styles.image} src={user.profileUrl} alt="Profile"/>
                     </div>
-                    <span className={styles.point}>내 포인트 : {new Intl.NumberFormat('ko-KR').format(user.point)}p</span> <br />
+                    <div className={styles.wrapRight}>
+                        <div className={styles.flex}>
+                            <h3 className={styles.nickname}>{user.nickname}</h3>
+                            <span onClick={startEditMode} className={styles.modify}>수정</span>
+                        </div>
+                        <span
+                            className={styles.point}>내 포인트 : {new Intl.NumberFormat('ko-KR').format(user.point)}p</span>
+                        <br/>
+                    </div>
                 </div>
             </div>
-        </div>
+            { showModal &&
+                <CheckPasswordModal onClose={onClose} cancelEdit={cancelEdit}/>
+            }
+        </>
     );
 };
 

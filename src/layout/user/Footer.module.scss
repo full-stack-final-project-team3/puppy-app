@@ -77,3 +77,54 @@
   }
 
 }
+
+
+@media only screen and (max-width: 400px) {
+  .footerWrap {
+    .greenWrap {
+      .pTitle {
+        width: 100%;
+        font-size: 0.75rem;
+        padding: 15px 0 10px 0;
+      }
+    }
+
+    .orangeLine {
+      height: 15px;
+    }
+
+    .mainWrap {
+      flex-direction: column;
+
+      .bottom {
+        width: 100%;
+
+        .innerWrap {
+          margin: 15px 0;
+
+          p {
+            font-size: 0.75rem;
+            margin: 8px;
+          }
+
+          .img {
+            width: 80px;
+            height: 80px;
+          }
+
+          .snsLogo {
+            width: 50%;
+            .icon {
+              width: 30px;
+              height: 30px;
+            }
+          }
+
+          .holliday {
+            margin-top: 20px;
+          }
+        }
+      }
+    }
+  }
+}
