@@ -14,6 +14,7 @@ const DogEdit = () => {
     const [showModal, setShowModal] = useState(false);
     const [modalText, setModalText] = useState('');
     const [pendingFunction, setPendingFunction] = useState(null); // 모달에서 실행할 함수를 저장할 상태
+    const [isDeleteConfirmation, setIsDeleteConfirmation] = useState(false); // 삭제 확인 모드인지 여부
 
     const weightRef = useRef();
     const fileInputRef = useRef();
@@ -126,15 +127,24 @@ const DogEdit = () => {
 
     const handleCloseModal = () => {
         setShowModal(false);
-        if (pendingFunction) {
-            pendingFunction(); // pendingFunction이 존재하면 실행
-        }
-    };
-    const handleConfirmModal = () => {
-        setShowModal(false);
-        clearEditMode(); // 확인 버튼 클릭 시 handleSubmit 실행
     };
 
+    const handleConfirmModal = () => {
+        setShowModal(false);
+        if (isDeleteConfirmation) {
+            removeHandler(); // 삭제 확인 모드일 때 removeHandler 실행
+        } else {
+            if (pendingFunction) {
+                pendingFunction(); // 다른 경우 pendingFunction 실행
+            }
+        }
+    };
+
+    const handleDeleteClick = () => {
+        setModalText("정말 삭제하시겠습니까?");
+        setIsDeleteConfirmation(true); // 삭제 확인 모드로 전환
+        setShowModal(true);
+    };
 
     return (
         <div className={styles.wrap}>
@@ -173,7 +183,7 @@ const DogEdit = () => {
                         </div>
                     </div>
                     <div className={styles.buttons}>
-                        <button onClick={removeHandler}>삭제</button>
+                        <button onClick={handleDeleteClick}>삭제</button>
                         <button onClick={() => {
                             setPendingFunction(() => clearEditMode);
                             setShowModal(true); // 모달을 먼저 열고, 확인 버튼을 눌렀을 때 clearEditMode 실행
@@ -194,13 +204,14 @@ const DogEdit = () => {
 
             {showModal && (
                 <UserModal
-                    title="성공적으로 수정이 완료되었습니다."
+                    title={isDeleteConfirmation ? "삭제 확인" : "성공적으로 수정이 완료되었습니다."}
                     message={modalText}
                     onConfirm={handleConfirmModal}
-                    confirmButtonText="확인"
                     onClose={handleCloseModal}
-                    showCloseButton={false}></UserModal>
-                )}
+                    confirmButtonText={isDeleteConfirmation ? "예" : "확인"}
+                    showCloseButton={isDeleteConfirmation} // 삭제 확인 모드일 때는 "아니요" 버튼도 표시
+                />
+            )}
         </div>
     );
 };
