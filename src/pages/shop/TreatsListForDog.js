@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { useParams, useLocation } from "react-router-dom";
 import { TREATS_URL, AUTH_URL } from "../../config/user/host-config";
 import styles from "./TreatsListForDog.module.scss";
 import CreateBundle from "../../components/shop/CreateBundle";
 import Modal from "./TreatsDetailModal";
+import ShopStepIndicator from "./ShopStepIndicator";
 
 const TreatsListForDog = () => {
   const { dogId } = useParams();
@@ -21,9 +23,14 @@ const TreatsListForDog = () => {
     KIBBLE: [],
     SUPPS: [],
   });
+  const [removingTreats, setRemovingTreats] = useState({}); // 애니메이션 상태
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentTreatId, setCurrentTreatId] = useState(null);
   const treatTypes = ["DRY", "WET", "GUM", "KIBBLE", "SUPPS"];
+
+  const handleStepClick = (stepIndex) => {
+    setCurrentStep(stepIndex); // 클릭한 스텝으로 이동
+  };
 
   const fetchTreatsList = async () => {
     // 현재 타입 가져오기
@@ -68,6 +75,7 @@ const TreatsListForDog = () => {
       const data = await response.json();
       setTreatsList(data.treatsList);
       console.log(data);
+      console.log(currentStep);
     } catch (err) {
       setError(err);
     } finally {
@@ -97,6 +105,23 @@ const TreatsListForDog = () => {
 
     // 다음 타입으로 스텝 이동
     setCurrentStep((prevStep) => Math.min(prevStep + 1, treatTypes.length - 1));
+  };
+
+  const handleRemoveTreat = (type, treat) => {
+    // 애니메이션 클래스를 추가
+    setRemovingTreats((prev) => ({
+      ...prev,
+      [treat.title]: true,
+    }));
+
+    // 애니메이션이 끝난 후 실제로 삭제
+    setTimeout(() => {
+      removeTreat(type, treat);
+      setRemovingTreats((prev) => {
+        const { [treat.title]: _, ...rest } = prev; // 애니메이션이 끝난 후 상태에서 제거
+        return rest;
+      });
+    }, 500); // 애니메이션 시간과 일치
   };
 
   const removeTreat = (type, treat) => {
@@ -143,91 +168,107 @@ const TreatsListForDog = () => {
 
   return (
     <>
-      <div className={styles.treatsList}>
-        <div className={styles.content}>
-          <h1>{dogName ? `${dogName}` : "강아지"} 맞춤 간식</h1>
-          <div>
-            <h2>{treatTypes[currentStep]}</h2>
-            {treatsList.length === 0 ? (
-              <p>등록된 {treatTypes[currentStep]} 간식이 없습니다.</p>
-            ) : (
-              <div className={styles.cardContainer}>
-                {treatsList.map((treat) => {
-                  const hasTreatPics =
-                    Array.isArray(treat["treats-pics"]) &&
-                    treat["treats-pics"].length > 0;
-                  const imageUrl = hasTreatPics
-                    ? `${AUTH_URL}${treat[
-                        "treats-pics"
-                      ][0].treatsPic.replace("/local", "/treats/images")}`
-                    : `${AUTH_URL}/treats/images/default.webp`;
-
-                  return (
-                    <div className={styles.card} key={treat.id}>
-                      <img
-                        src={imageUrl}
-                        className={`${styles.cardImageTop} img-fluid`}
-                        alt={treat.title}
-                        onClick={() => openModal(treat)}
-                      />
-                      <div className={styles.cardBody}>
-                        <h4
-                          className={styles.cardTitle}
-                          onClick={() => openModal(treat)}
-                        >
-                          {treat.title}
-                        </h4>
-                      </div>
-                      <div className={styles.addBtnContainer}>
-                      <button
-                        className={styles.addBtn}
-                        onClick={() => toggleTreatSelection(treat)}
-                      >
-                        선택하기
-                      </button>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-        </div>
-
-        <div className={styles.selectedTreats}>
-          <div className={styles.imageBoxContainer}>
-            {treatTypes.map((type, typeIndex) => (
-              <div className={styles.imageBox} key={typeIndex}>
-                {selectedTreats[type].length > 0 ? (
-                  selectedTreats[type].map((treat) => (
-                    <div key={treat.title} className={styles.treatWrapper}>
-                      <img
-                        src={`${AUTH_URL}${treat[
-                          "treats-pics"
-                        ][0].treatsPic.replace("/local", "/treats/images")}`}
-                        alt={treat.title}
-                        className={styles.treatImage}
-                      />
-                      <button
-                        className={styles.removeBtn}
-                        onClick={() => removeTreat(type, treat)}
-                      >
-                        ✖
-                      </button>
-                    </div>
-                  ))
+      <ShopStepIndicator step={currentStep} onStepClick={handleStepClick} />
+      <TransitionGroup>
+        <CSSTransition
+          in={true} // 항상 true로 설정하여 애니메이션 적용
+          key={currentStep} // currentStep이 바뀔 때마다 애니메이션 재생
+          timeout={500} // 애니메이션 시간
+          classNames="page" // 애니메이션 클래스 이름
+        >
+          <div className={`${styles.treatsList} page`}>
+            <div className={styles.content}>
+              <h1>{dogName ? `${dogName}` : "강아지"} 맞춤 간식</h1>
+              <div>
+                {/* <h2>{treatTypes[currentStep]}</h2> */}
+                {treatsList.length === 0 ? (
+                  <p>등록된 {treatTypes[currentStep]} 간식이 없습니다.</p>
                 ) : (
-                  <img
-                    src="https://cdn-icons-png.flaticon.com/512/8212/8212741.png"
-                    alt={`가상의 간식 ${typeIndex + 1}`}
-                    className={styles.treatImage}
-                  />
+                  <div className={styles.cardContainer}>
+                    {treatsList.map((treat) => {
+                      const hasTreatPics =
+                        Array.isArray(treat["treats-pics"]) &&
+                        treat["treats-pics"].length > 0;
+                      const imageUrl = hasTreatPics
+                        ? `${AUTH_URL}${treat[
+                            "treats-pics"
+                          ][0].treatsPic.replace("/local", "/treats/images")}`
+                        : `${AUTH_URL}/treats/images/default.webp`;
+
+                      return (
+                        <div className={styles.card} key={treat.id}>
+                          <img
+                            src={imageUrl}
+                            className={`${styles.cardImageTop} img-fluid`}
+                            alt={treat.title}
+                            onClick={() => openModal(treat)}
+                          />
+                          <div className={styles.cardBody}>
+                            <h4
+                              className={styles.cardTitle}
+                              onClick={() => openModal(treat)}
+                            >
+                              {treat.title}
+                            </h4>
+                          </div>
+                          <div className={styles.addBtnContainer}>
+                            <button
+                              className={styles.addBtn}
+                              onClick={() => toggleTreatSelection(treat)}
+                            >
+                              선택하기
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
                 )}
               </div>
-            ))}
+            </div>
           </div>
+        </CSSTransition>
+      </TransitionGroup>
+
+      <div className={styles.selectedTreats}>
+        <div className={styles.imageBoxContainer}>
+          {treatTypes.map((type, typeIndex) => (
+            <div className={styles.imageBox} key={typeIndex}>
+              {selectedTreats[type].length > 0 ? (
+                selectedTreats[type].map((treat) => (
+                  <div
+                    key={treat.title}
+                    className={`${styles.treatWrapper} ${
+                      removingTreats[treat.title] ? styles.slideOut : ""
+                    }`}
+                  >
+                    <img
+                      src={`${AUTH_URL}${treat[
+                        "treats-pics"
+                      ][0].treatsPic.replace("/local", "/treats/images")}`}
+                      alt={treat.title}
+                      className={styles.treatImage}
+                    />
+                    <button
+                      className={styles.removeBtn}
+                      onClick={() => handleRemoveTreat(type, treat)}
+                    >
+                      ✖
+                    </button>
+                  </div>
+                ))
+              ) : (
+                <img
+                  src="https://cdn-icons-png.flaticon.com/512/8212/8212741.png"
+                  alt={`가상의 간식 ${typeIndex + 1}`}
+                  className={styles.treatImage}
+                />
+              )}
+            </div>
+          ))}
         </div>
       </div>
+
       <CreateBundle selectedTreats={selectedTreats} dogId={dogId} />
       <Modal
         isOpen={isModalOpen}

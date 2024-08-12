@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // useNavigate 임포트
+import { useNavigate } from "react-router-dom";
 import { getUserToken } from "../../config/user/auth";
 import { TREATS_URL } from "../../config/user/host-config";
 import { AUTH_URL } from "../../config/user/host-config";
 import styles from "./ManagementTreats.module.scss";
 import ManagementBtn from "./ManagementBtn";
+import Modal from "./TreatsDetailModal";
 
 const ManagementTreats = () => {
-  const navigate = useNavigate(); // useNavigate 훅 사용
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [treatsList, setTreatsList] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 열림 상태
+  const [selectedTreatId, setSelectedTreatId] = useState(null); // 선택된 간식 ID
   const token = getUserToken();
 
   useEffect(() => {
@@ -45,11 +48,11 @@ const ManagementTreats = () => {
   );
 
   const handleEdit = (id) => {
-    navigate(`/edit-treats/${id}`); 
+    navigate(`/edit-treats/${id}`);
   };
-  
+
   const handleDelete = async (id) => {
-    const confirmDelete = window.confirm("정말로 삭제하시겠습니까?");
+    const confirmDelete = window.confirm("정말 삭제하시겠습니까?");
     if (!confirmDelete) return;
 
     try {
@@ -65,17 +68,22 @@ const ManagementTreats = () => {
         throw new Error("삭제 요청이 실패했습니다.");
       }
 
-      // 삭제 성공 시 상태 업데이트
       setTreatsList(treatsList.filter((treat) => treat.id !== id));
-
       alert("삭제가 완료되었습니다.");
-
     } catch (error) {
-
       console.error("삭제 실패:", error);
-
       alert("삭제에 실패했습니다. 다시 시도해 주세요.");
     }
+  };
+
+  const openModal = (id) => {
+    setSelectedTreatId(id);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedTreatId(null);
   };
 
   if (loading) return <div>로딩 중...</div>;
@@ -84,7 +92,7 @@ const ManagementTreats = () => {
   return (
     <div className={styles.treatsList}>
       <div className={styles.content}>
-        <h1>전체 간식 목록</h1>
+        <h1>전체 상품 목록</h1>
         <input
           type="text"
           placeholder="간식 이름 검색..."
@@ -114,8 +122,11 @@ const ManagementTreats = () => {
                       src={imageUrl}
                       className={styles.imageBox}
                       alt={treat.title}
+                      onClick={() => openModal(treat.id)} // 간식 이름 클릭 시 모달 열기
                     />
-                    <h4 className={styles.cardTitle}>{treat.title}</h4>
+                    <h4 className={styles.cardTitle} onClick={() => openModal(treat.id)}>
+                      {treat.title}
+                    </h4>
                     <ManagementBtn
                       onEdit={() => handleEdit(treat.id)}
                       onDelete={() => handleDelete(treat.id)}
@@ -127,6 +138,7 @@ const ManagementTreats = () => {
           )}
         </div>
       </div>
+      <Modal isOpen={isModalOpen} onClose={closeModal} treatsId={selectedTreatId} />
     </div>
   );
 };

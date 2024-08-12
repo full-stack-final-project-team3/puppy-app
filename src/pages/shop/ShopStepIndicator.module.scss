@@ -1,0 +1,60 @@
+.shopStepIndicator {
+  display: flex;
+  height: 90px;
+  width: 100%;
+  background: #F4E8D3;
+  align-items: center;
+  margin-bottom: 40px;
+
+  .shopStepContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100px; /* 고정 너비 설정 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+
+    .shopStepNumber {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      margin: 0 10px; /* 좌우 여백 통일 */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: lightgray;
+      color: white;
+      cursor: default;
+
+      &.active,
+      &.completed {
+        background-color: #B37A7A;
+        color: #FFFFF0;
+      }
+
+      &:not(.active):not(.completed) {
+        background-color: transparent;
+        border: 2px solid lightgray;
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    .shopStepLabel {
+      color: #333;
+      font-size: 16px;
+      position: relative;
+      top: 5px;
+    }
+  }
+
+  .shopStepLine {
+    flex: 1;
+    height: 2px;
+    background-color: lightgray;
+
+    &.active {
+      background-color: #B37A7A;
+    }
+  }
+}
+

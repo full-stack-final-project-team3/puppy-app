@@ -5,12 +5,11 @@
 @import "~bootstrap/scss/card"; // 카드 스타일 추가
 
 .treatsList {
-  // height: 91vh; // 화면의 91vh/path/to/your/i
   background-size: cover; // 배경 이미지 사이즈 조정
   background-position: center; // 배경 이미지 중심 정렬
   color: white; // 기본 글자색 흰색
   margin-top: 5%;
-  margin-bottom: 15%;
+  margin-bottom: 5%;
 
   // 부트스트랩 카드 추가
   .cardContainer {
@@ -125,72 +124,116 @@
     margin: 0 auto 20px; // 자동 여백
   }
 
-  .selectedTreats {
-    position: fixed; // 고정 위치 설정
-    bottom: 20px; // 화면 아래로부터의 거리
-    left: 50%; // 수평 중앙 정렬
-    transform: translateX(-50%); // 중앙 정렬을 위한 변환
-    width: 90%; // 너비 조정
-    // height: 25%;
-    max-width: 40vw; // 최대 너비 설정
-    opacity: 0.9;
-    margin: 0 auto; // 중앙 정렬
-    padding: 20px;
-    border: 1px solid #e0e0e0;
-    border-radius: 10px;
-    background-color: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    color: #333;
-    z-index: 1000; // 다른 요소 위에 보이게 설정
-
-    .imageBoxContainer {
-      display: flex; // flexbox 사용
-      flex-wrap: wrap; // 줄 바꿈 허용
-      justify-content: center; // 중앙 정렬
-    }
-
-    .imageBox {
-      position: relative;
-      width: 90px; // 이미지 박스의 너비
-      height: 90px; // 이미지 박스의 높이
-      margin: 10px; // 이미지 박스 간격
-      border: 1px solid #ccc; // 테두리 추가
-      border-radius: 5px; // 둥글게
-      overflow: hidden; // 넘치는 이미지 부분 숨김
-
-      .removeBtn {
-        position: absolute;
-        top: 2px;
-        right: 0px;
-        background: none;
-        border: none;
-        color: red;
-        font-size: 20px;
-        cursor: pointer;
-        display: none; // 기본적으로 숨김
-
-        &:hover {
-          color: darkred;
-        }
-      }
-
-      &:hover {
-        .removeBtn {
-          display: block; // 마우스 오버 시 표시
-        }
-      }
-    }
-
-    .treatImage {
-      width: 100%; // 이미지 너비를 박스에 맞춤
-      opacity: 0.8;
-      height: auto; // 비율 유지
-    }
-  }
-
   .buttonContainer {
     text-align: center; // 버튼 중앙 정렬
     margin-top: 0px; // 버튼과 리스트 간의 간격 추가
   }
-
 }
+
+.selectedTreats {
+  position: sticky; // 변경된 부분
+  bottom: 20px; // 화면 아래로부터의 거리
+  left: 50%; // 수평 중앙 정렬
+  transform: translateX(-50%); // 중앙 정렬을 위한 변환
+  width: 90%; // 너비 조정
+  max-width: 40vw; // 최대 너비 설정
+  opacity: 0.9;
+  margin: 0 auto; // 중앙 정렬
+  padding: 0px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  color: #333;
+  z-index: 1000; // 다른 요소 위에 보이게 설정
+
+  .imageBoxContainer {
+    display: flex; // flexbox 사용
+    flex-wrap: wrap; // 줄 바꿈 허용
+    justify-content: center; // 중앙 정렬
+  }
+
+  .imageBox {
+    position: relative;
+    width: 90px; // 이미지 박스의 너비
+    height: 90px; // 이미지 박스의 높이
+    margin: 10px; // 이미지 박스 간격
+    border: 1px solid #ccc; // 테두리 추가
+    border-radius: 5px; // 둥글게
+    overflow: hidden; // 넘치는 이미지 부분 숨김
+
+    .removeBtn {
+      position: absolute;
+      top: 2px;
+      right: 0px;
+      background: none;
+      border: none;
+      color: red;
+      font-size: 20px;
+      cursor: pointer;
+      display: none; // 기본적으로 숨김
+
+      &:hover {
+        color: darkred;
+      }
+    }
+
+    &:hover {
+      .removeBtn {
+        display: block; // 마우스 오버 시 표시
+      }
+    }
+  }
+
+  @keyframes slideIn {
+    from {
+      transform: translateY(-60px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideOut {
+    from {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateY(-60px); // 위로 슬라이드 아웃
+      opacity: 0;
+    }
+  }
+
+  .treatWrapper {
+    animation: slideIn 0.6s ease forwards; // 애니메이션 적용
+  }
+
+  .slideOut {
+    animation: slideOut 0.6s ease forwards; // 삭제 시 애니메이션
+  }
+
+  .treatImage {
+    width: 100%; // 이미지 너비를 박스에 맞춤
+    opacity: 0.8;
+    height: auto; // 비율 유지
+  }
+}
+
+.page-enter {
+  opacity: 0;
+}
+.page-enter-active {
+  opacity: 1;
+  transition: opacity 500ms;
+}
+.page-exit {
+  opacity: 1;
+}
+.page-exit-active {
+  opacity: 0;
+  transition: opacity 500ms;
+}
+

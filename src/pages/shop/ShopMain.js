@@ -48,7 +48,7 @@ const ShopMain = () => {
   const handleManagementClick = () => {
     navigate("/manage-treats");
   };
-  
+
   return (
     <div className={styles.shopMain}>
       <div className={styles.content}>
@@ -56,14 +56,17 @@ const ShopMain = () => {
         <div className={styles.buttonContainer}>
           {isLoggedIn &&
             user.role === "ADMIN" && ( // admin 역할일 때만 상품 추가 버튼 표시
-              <button onClick={handleAddClick} className={styles.newTreatsBtn}>
-                상품 추가
+              <button
+                onClick={handleManagementClick}
+                className={styles.newTreatsBtn}
+              >
+                상품 관리
               </button>
             )}
           {isLoggedIn &&
             user.role === "ADMIN" && ( // admin 역할일 때만 상품 추가 버튼 표시
-              <button onClick={handleManagementClick} className={styles.newTreatsBtn}>
-                상품 관리
+              <button onClick={handleAddClick} className={styles.newTreatsBtn}>
+                상품 추가
               </button>
             )}
         </div>
