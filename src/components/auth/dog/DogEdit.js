@@ -59,11 +59,11 @@ const DogEdit = () => {
             dispatch(userEditActions.clearMode());
             dispatch(dogEditActions.clearEdit());
             setModalText("성공적으로 수정이 완료되었습니다.");
-            setPendingFunction(null); // 모달에서 실행할 함수는 없음
+            setPendingFunction(() => {}); // 모달에서 실행할 함수는 없음
             setShowModal(true);
         } else {
             setModalText("수정에 실패했습니다.");
-            setPendingFunction(null); // 모달에서 실행할 함수는 없음
+            setPendingFunction(() => {}); // 모달에서 실행할 함수는 없음
             setShowModal(true);
         }
     };
@@ -85,13 +85,13 @@ const DogEdit = () => {
                 setShowModal(true);
             } else {
                 setModalText("삭제에 실패했습니다.");
-                setPendingFunction(null); // 모달에서 실행할 함수는 없음
+                setPendingFunction(() => {}); // 모달에서 실행할 함수는 없음
                 setShowModal(true);
             }
         } catch (error) {
             console.error('에러 발생:', error);
             setModalText("삭제 중 에러가 발생했습니다.");
-            setPendingFunction(null); // 모달에서 실행할 함수는 없음
+            setPendingFunction(() => {}); // 모달에서 실행할 함수는 없음
             setShowModal(true);
         }
     };
@@ -114,7 +114,7 @@ const DogEdit = () => {
                 dispatch(userEditActions.updateUserDetail({ ...userDetail, dogList: updatedDogList }));
                 dispatch(dogEditActions.updateDogInfo({ ...dog, allergies: updatedAllergies }));
                 setModalText("강아지의 건강이 좋아졌나봐요!");
-                setPendingFunction(null); // 모달에서 실행할 함수는 없음
+                setPendingFunction(() => {}); // 모달에서 실행할 함수는 없음
                 setShowModal(true);
             } else {
                 console.error('알러지 삭제 실패:', response.statusText);
@@ -130,6 +130,11 @@ const DogEdit = () => {
             pendingFunction(); // pendingFunction이 존재하면 실행
         }
     };
+    const handleConfirmModal = () => {
+        setShowModal(false);
+        clearEditMode(); // 확인 버튼 클릭 시 handleSubmit 실행
+    };
+
 
     return (
         <div className={styles.wrap}>
@@ -171,7 +176,7 @@ const DogEdit = () => {
                         <button onClick={removeHandler}>삭제</button>
                         <button onClick={() => {
                             setPendingFunction(() => clearEditMode);
-                            clearEditMode();
+                            setShowModal(true); // 모달을 먼저 열고, 확인 버튼을 눌렀을 때 clearEditMode 실행
                         }}>완료</button>
                     </div>
                 </div>
@@ -191,11 +196,11 @@ const DogEdit = () => {
                 <UserModal
                     title="성공적으로 수정이 완료되었습니다."
                     message={modalText}
-                    onConfirm={handleCloseModal}
+                    onConfirm={handleConfirmModal}
                     confirmButtonText="확인"
-                    showCloseButton={false}
-                />
-            )}
+                    onClose={handleCloseModal}
+                    showCloseButton={false}></UserModal>
+                )}
         </div>
     );
 };
