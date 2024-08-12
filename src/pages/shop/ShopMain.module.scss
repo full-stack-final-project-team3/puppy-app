@@ -1,18 +1,14 @@
-.shopMain {
-  height: 91vh;
-  background-image: url(https://a.storyblok.com/f/125940/2880x1598/3fce6338dc/ollie-bakedfood-callout.jpg/m/1080x0); // 배경 이미지 경로
-  background-size: cover;
-  background-position: center;
-  color: white;
 
-  .content {
+.shopMain {
+
+  .content {    
     display: flex;
     flex-direction: column;
     background-color: white;
     padding: 40px;
     border-radius: 25px;
     width: 30%;
-    margin: 0 auto;
+    margin: 1600px auto 100px auto;
     box-sizing: border-box;
     color: black;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
