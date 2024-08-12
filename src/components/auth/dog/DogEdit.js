@@ -7,9 +7,14 @@ import { DOG_URL } from "../../../config/user/host-config";
 import { useNavigate } from "react-router-dom";
 import { decideGender, decideSize, translateAllergy, translateBreed } from './dogUtil.js';
 import { LuBadgeX } from "react-icons/lu";
+import UserModal from "../user/mypage/UserModal"; // UserModal 컴포넌트 import
 
 const DogEdit = () => {
     const [dogProfileUrl, setDogProfileUrl] = useState('');
+    const [showModal, setShowModal] = useState(false);
+    const [modalText, setModalText] = useState('');
+    const [pendingFunction, setPendingFunction] = useState(null); // 모달에서 실행할 함수를 저장할 상태
+
     const weightRef = useRef();
     const fileInputRef = useRef();
 
@@ -36,7 +41,7 @@ const DogEdit = () => {
         }
     };
 
-    const clearEditMode = async e => {
+    const clearEditMode = async () => {
         const weight = weightRef.current.value;
         const payload = {
             weight,
@@ -49,11 +54,17 @@ const DogEdit = () => {
             body: JSON.stringify(payload),
         });
         if (response.ok) {
-            alert("수정 되었습니다.");
             const updatedDogList = userDetail.dogList.map(d => d.id === dog.id ? { ...d, weight, dogProfileUrl: payload.dogProfileUrl } : d);
             dispatch(userEditActions.updateUserDetail({ ...userDetail, dogList: updatedDogList }));
             dispatch(userEditActions.clearMode());
             dispatch(dogEditActions.clearEdit());
+            setModalText("성공적으로 수정이 완료되었습니다.");
+            setPendingFunction(null); // 모달에서 실행할 함수는 없음
+            setShowModal(true);
+        } else {
+            setModalText("수정에 실패했습니다.");
+            setPendingFunction(null); // 모달에서 실행할 함수는 없음
+            setShowModal(true);
         }
     };
 
@@ -65,19 +76,23 @@ const DogEdit = () => {
             });
 
             if (response.ok) {
-                alert("삭제 되었습니다.");
                 const updatedDogList = userDetail.dogList.filter(d => d.id !== dog.id);
                 dispatch(userEditActions.updateUserDetail({ ...userDetail, dogList: updatedDogList }));
                 dispatch(userEditActions.clearMode());
                 dispatch(dogEditActions.clearEdit());
-                navigate("/mypage");
+                setModalText("삭제 되었습니다.");
+                setPendingFunction(() => navigate("/mypage")); // 모달에서 실행할 함수로 navigate 설정
+                setShowModal(true);
             } else {
-                alert("삭제에 실패했습니다.");
-                console.error('삭제 실패:', response.statusText);
+                setModalText("삭제에 실패했습니다.");
+                setPendingFunction(null); // 모달에서 실행할 함수는 없음
+                setShowModal(true);
             }
         } catch (error) {
             console.error('에러 발생:', error);
-            alert("삭제 중 에러가 발생했습니다.");
+            setModalText("삭제 중 에러가 발생했습니다.");
+            setPendingFunction(null); // 모달에서 실행할 함수는 없음
+            setShowModal(true);
         }
     };
 
@@ -98,12 +113,21 @@ const DogEdit = () => {
 
                 dispatch(userEditActions.updateUserDetail({ ...userDetail, dogList: updatedDogList }));
                 dispatch(dogEditActions.updateDogInfo({ ...dog, allergies: updatedAllergies }));
-                alert("강아지의 건강이 좋아졌나봐요!");
+                setModalText("강아지의 건강이 좋아졌나봐요!");
+                setPendingFunction(null); // 모달에서 실행할 함수는 없음
+                setShowModal(true);
             } else {
                 console.error('알러지 삭제 실패:', response.statusText);
             }
         } catch (error) {
             console.error('알러지 삭제 중 에러 발생:', error);
+        }
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+        if (pendingFunction) {
+            pendingFunction(); // pendingFunction이 존재하면 실행
         }
     };
 
@@ -145,7 +169,10 @@ const DogEdit = () => {
                     </div>
                     <div className={styles.buttons}>
                         <button onClick={removeHandler}>삭제</button>
-                        <button onClick={clearEditMode}>완료</button>
+                        <button onClick={() => {
+                            setPendingFunction(() => clearEditMode);
+                            clearEditMode();
+                        }}>완료</button>
                     </div>
                 </div>
                 <div className={styles.right} onClick={handleImageClick}>
@@ -159,6 +186,16 @@ const DogEdit = () => {
                     />
                 </div>
             </div>
+
+            {showModal && (
+                <UserModal
+                    title="성공적으로 수정이 완료되었습니다."
+                    message={modalText}
+                    onConfirm={handleCloseModal}
+                    confirmButtonText="확인"
+                    showCloseButton={false}
+                />
+            )}
         </div>
     );
 };

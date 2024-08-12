@@ -1,14 +1,13 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { userEditActions } from "../../../store/user/UserEditSlice";
 import styles from "./UserEdit.module.scss";
 import { AUTH_URL } from "../../../../config/user/host-config";
 import DeleteAccountModal from "./DeleteAccountModal"; // 모달 컴포넌트 import
+import UserModal from "./UserModal"; // 모달 컴포넌트 import
 
 const UserEdit = () => {
-
     const user = useSelector(state => state.userEdit.userDetail);
-    console.log(user)
 
     const passwordRef = useRef();
     const confirmPasswordRef = useRef();
@@ -26,7 +25,16 @@ const UserEdit = () => {
     const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
 
+    const [showModal, setShowModal] = useState(false);
+    const [modalText, setModalText] = useState('');
+
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (showModal) {
+            console.log("Modal is now visible:", showModal);
+        }
+    }, [showModal]);
 
     const handlePasswordChange = () => {
         if (passwordRef.current.value && confirmPasswordRef.current.value) {
@@ -78,14 +86,12 @@ const UserEdit = () => {
             reader.onloadend = () => {
                 setProfileUrl(reader.result);
             };
-            console.log(file)
-            console.log(profileUrl)
             reader.readAsDataURL(file);
             setIsSubmitDisabled(false);
         }
     };
 
-    const clearEditMode = async () => {
+    const handleSubmit = async () => {
         const payload = {
             email: user.email,
             address,
@@ -109,13 +115,16 @@ const UserEdit = () => {
                 dispatch(userEditActions.updateUserDetail({ ...user, ...payload }));
                 dispatch(userEditActions.clearMode());
                 dispatch(userEditActions.clearUserEditMode());
-                alert("변경 성공!");
+                setModalText("변경 성공!");
+                setShowModal(true);
             } else {
-                alert("변경 실패!");
+                setModalText("변경 실패!");
+                setShowModal(true);
             }
         } catch (error) {
             console.error("Error during fetch:", error);
-            alert("변경 실패!");
+            setModalText("변경 실패!");
+            setShowModal(true);
         }
     };
 
@@ -126,6 +135,15 @@ const UserEdit = () => {
     const closeModal = () => {
         setIsModalOpen(false); // 모달 닫기
     };
+
+    const handleConfirmModal = () => {
+        setShowModal(false);
+        handleSubmit(); // 확인 버튼 클릭 시 handleSubmit 실행
+    };
+    const handleCloseModal = () => {
+        setShowModal(false); // 모달을 닫습니다.
+    };
+
 
     return (
         <div className={styles.wrap}>
@@ -216,7 +234,7 @@ const UserEdit = () => {
                             className={styles.input}
                             placeholder="0"
                             onChange={handlePointInputChange}
-                            ref={pointInputRef} // 포인트 입력 필드의 참조를 추가합니다.
+                            ref={pointInputRef}
                         />
                     </div>
                 </div>
@@ -233,7 +251,7 @@ const UserEdit = () => {
                 <div className={styles.flex}>
                     <button
                         className={styles.submitButton}
-                        onClick={clearEditMode}
+                        onClick={() => setShowModal(true)}
                         disabled={isSubmitDisabled}
                     >
                         완료
@@ -247,6 +265,17 @@ const UserEdit = () => {
                 </div>
             </div>
             {isModalOpen && <DeleteAccountModal onClose={closeModal} />} {/* 모달 컴포넌트 추가 */}
+
+            {showModal && (
+                <UserModal
+                    title="성공적으로 수정 되었습니다"
+                    message={modalText}
+                    onConfirm={handleConfirmModal}  // 모달 닫기 시 handleSubmit 실행
+                    onClose={handleCloseModal}    // 모달 닫기
+                    confirmButtonText="확인"
+                    showCloseButton={false}       // 닫기 버튼 표시 여부
+                />
+            )}
         </div>
     );
 };
