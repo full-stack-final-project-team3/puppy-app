@@ -179,7 +179,7 @@ const BoardDetailPage = () => {
   };
 
   const handleEdit = () => {
-    navigate(`/board/edit/${id}`);
+    navigate(`/board/${id}/edit`);
   };
 
   const toggleOptions = () => {

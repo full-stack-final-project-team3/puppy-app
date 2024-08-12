@@ -32,6 +32,7 @@ import ReviewDetailPage from "../../pages/shop/review/ReviewDetailPage"; //리�
 import ErrorPage from "../../pages/user/ErrorPage";
 
 import BoardPostPage from "../../pages/community/BoardPostPage";
+import BoardEditPage from "../../pages/community/BoardEditPage.js";
 import MyBoards from "../../pages/user/MyBoards";
 import checkMyInfo from "../../pages/user/MyBoards";
 import HotelRecords from "../../pages/user/HotelRecords";
@@ -182,6 +183,11 @@ export const router = createBrowserRouter([
       {
         path: "board/:id/comments", // 게시글 상세 페이지 경로 추가
         element: <BoardDetailPage />,
+        loader: authCheckLoader, // 로그인 정보를 확인하는 loader 추가
+      },
+      {
+        path: "board/:id/edit", // 게시글 상세 페이지 경로 추가
+        element: <BoardEditPage />,
         loader: authCheckLoader, // 로그인 정보를 확인하는 loader 추가
       },
       {
