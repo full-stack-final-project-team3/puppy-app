@@ -1,23 +1,26 @@
-import React, {useEffect} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {deleteReservation, fetchUserReservations} from "../../components/store/hotel/ReservationSlice";
-import {fetchReviews} from "../../components/store/hotel/HotelReviewSlice"; // fetchReviews 가져오기
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteReservation, fetchUserReservations } from "../../components/store/hotel/ReservationSlice";
+import { fetchReviews } from "../../components/store/hotel/HotelReviewSlice"; // fetchReviews 가져오기
 import MyPageHeader from "../../components/auth/user/mypage/MyPageHeader";
-import {Link, useNavigate} from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from './HotelRecords.module.scss';
+import HotelModal from '../../components/hotel/HotelModal';
 
 const HotelRecords = () => {
     const dispatch = useDispatch();
-    const {userReservations, status, error} = useSelector(state => state.reservation);
-    // const {reviews} = useSelector(state => state.reviews);
+    const { userReservations, status, error } = useSelector(state => state.reservation);
     const { reviewsByReservationId } = useSelector(state => state.reviews);
     const userId = JSON.parse(localStorage.getItem('userData')).userId;
     const userDetail = useSelector((state) => state.userEdit.userDetail);
     const navigate = useNavigate();
 
+    const [showModal, setShowModal] = useState(false);
+    const [selectedReservationId, setSelectedReservationId] = useState(null);
+
     // 사용자의 예약내역조회
     useEffect(() => {
-        dispatch(fetchUserReservations({userId}));
+        dispatch(fetchUserReservations({ userId }));
     }, [dispatch, userId]);
 
     // 사용자가 예약한 내역이 존재하면 리뷰정보를 가져오기.
@@ -32,22 +35,10 @@ const HotelRecords = () => {
         fetchAllReviews();
     }, [dispatch, userReservations]);
 
-    console.log("userReservations", userReservations)
-
-    if (status === 'loading') {
-        return <div>Loading...</div>;
-    }
-
-    if (status === 'failed') {
-        return <div>Error: {error}</div>;
-    }
-
-    // 총액 1000 자리마다 , 찍어주기
     const formatPrice = (price) => {
         return new Intl.NumberFormat('ko-KR').format(price);
     };
 
-    // 이미지 가져오는 메서드
     const getImageUrl = (imageUri) => {
         if (imageUri && imageUri.startsWith('/local/')) {
             return `http://localhost:8888${imageUri.replace('/local', '/hotel/images')}`;
@@ -55,25 +46,28 @@ const HotelRecords = () => {
         return imageUri;
     };
 
-    // 사용자가 특정 호텔에 이미 리뷰를 작성했는지 확인하는 함수
     const hasUserReviewed = (reservationId) => {
         const reviews = reviewsByReservationId[reservationId] || [];
         return reviews.some(review => review.userId === userId);
     };
 
-
-    // 예약삭제 처리 함수
-    const handleDeleteReservation = async (reservationId) => {
+    const handleDeleteReservation = async () => {
         try {
-            await dispatch(deleteReservation(reservationId));
+            await dispatch(deleteReservation(selectedReservationId));
             alert("예약이 삭제되었습니다.");
+            setShowModal(false);
+            setSelectedReservationId(null);
         } catch (error) {
             console.error("예약 삭제 실패:", error);
             alert("예약 삭제에 실패했습니다.");
         }
     };
 
-    // 리뷰 작성 핸들러
+    const confirmDeleteReservation = (reservationId) => {
+        setSelectedReservationId(reservationId);
+        setShowModal(true);
+    };
+
     const handleAddReview = (hotelId, reservationId) => {
         if (userDetail && userDetail.id) {
             navigate(`/add-review/${hotelId}/${reservationId}`);
@@ -88,9 +82,23 @@ const HotelRecords = () => {
         return endDate < today;
     };
 
+    const isCancelable = (reservationStartAt) => {
+        const today = new Date();
+        const startDate = new Date(reservationStartAt);
+        return startDate >= today;
+    };
+
+    if (status === 'loading') {
+        return <div>Loading...</div>;
+    }
+
+    if (status === 'failed') {
+        return <div>Error: {error}</div>;
+    }
+
     return (
         <div className={styles.wrap}>
-            <MyPageHeader/>
+            <MyPageHeader />
             <div className={styles.subWrap}>
                 <h1 className={styles.title}>호텔 예약 내역</h1>
                 {userReservations.length === 0 ? (
@@ -119,22 +127,21 @@ const HotelRecords = () => {
                                         <div><strong>객실 이름 :</strong> {reservation.room.room_name}</div>
                                         <div><strong>주문 총액 :</strong> {formatPrice(reservation.price)}</div>
                                         <div><strong>호텔 위치 :</strong> {reservation.hotel.location}</div>
-                                        <div><strong>예약날짜
-                                            :</strong> {new Date(reservation.reservationAt).toLocaleDateString()}</div>
-                                        <div><strong>예약 종료
-                                            날짜:</strong> {new Date(reservation.reservationEndAt).toLocaleDateString()}
-                                        </div>
+                                        <div><strong>예약날짜 :</strong> {new Date(reservation.reservationAt).toLocaleDateString()}</div>
+                                        <div><strong>예약 종료 날짜:</strong> {new Date(reservation.reservationEndAt).toLocaleDateString()}</div>
                                     </div>
                                     <div className={styles.reservationActions}>
                                         <Link to={`/detail-reservation`} className={styles.link}>
                                             상세조회
                                         </Link>
-                                        <button
-                                            onClick={() => handleDeleteReservation(reservation.reservationId)}
-                                            className={styles.link}
-                                        >
-                                            예약취소
-                                        </button>
+                                        {isCancelable(reservation.reservationAt) && (
+                                            <button
+                                                onClick={() => confirmDeleteReservation(reservation.reservationId)}
+                                                className={styles.link}
+                                            >
+                                                예약취소
+                                            </button>
+                                        )}
                                         {isReviewable(reservation.reservationEndAt) && !hasUserReviewed(reservation.reservationId) && (
                                             <button
                                                 onClick={() => handleAddReview(reservation.hotelId, reservation.reservationId)}
@@ -150,6 +157,17 @@ const HotelRecords = () => {
                     </ul>
                 )}
             </div>
+
+            {showModal && (
+                <HotelModal
+                    title="예약 취소 확인"
+                    message="정말로 이 예약을 취소하시겠습니까?"
+                    onConfirm={handleDeleteReservation}
+                    onClose={() => setShowModal(false)}
+                    confirmButtonText="예"
+                    showCloseButton={true}
+                />
+            )}
         </div>
     );
 };
