@@ -4,7 +4,6 @@ import {debounce} from "lodash";
 import {AUTH_URL} from "../../../../config/user/host-config";
 import {useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {logoutAction} from "../../../../pages/user/Logout";
 
 const DeleteAccountModal = ({ onClose }) => {
 
