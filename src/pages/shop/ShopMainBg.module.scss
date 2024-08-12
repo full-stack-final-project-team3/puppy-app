@@ -25,7 +25,7 @@
   }
 
   .slideImgBox {
-    width: 250px;
+    width: 260px;
     display: flex;
     justify-content: center; // 가로 중앙 정렬
     margin: auto 0;
@@ -40,9 +40,9 @@
       &.slide3,
       &.slide4,
       &.slide5 {
-        width: 53px; // 슬라이드 너비 설정
+        width: 55px; // 슬라이드 너비 설정
         height: 54px; // 슬라이드 높이 설정
-        margin-right: 100px;
+        margin-right: 20px;
         background-size: cover; // 배경 이미지 사이즈를 contain으로 설정
         background-position: center; // 배경 위치를 중앙으로 설정
         background-repeat: no-repeat; // 배경 이미지 반복 방지
@@ -81,10 +81,9 @@
   }
 
   .slideText {
-    margin-right: 20px; // 슬라이드 텍스트 상단 여백 추가 (원하는 값으로 조정)
-    display: flex;
-    justify-content: center; // 가로 중앙 정렬
-    align-items: center; // 세로 중앙 정렬
+    color: white;
+    padding-top: 10px;
+    margin-right: 10px; // 슬라이드 텍스트 상단 여백 추가 (원하는 값으로 조정)
   }
 
   .imgSection2 {
@@ -107,7 +106,7 @@
     display: flex;
     justify-content: center; /* 항목들을 중앙 정렬 */
     gap: 150px; /* 항목 간의 간격 조정 */
-    background-color: #4f4f4f; /* 배경색 */
+    background-color: #5E5850; /* 배경색 */
     margin: 0 auto;
     padding: 50px 0; /* 상하 패딩 */
     color: rgb(255, 255, 255); /* 텍스트 색상 */

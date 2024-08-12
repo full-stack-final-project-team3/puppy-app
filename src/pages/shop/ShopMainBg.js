@@ -21,6 +21,7 @@ const Slider = () => {
                 className={`${styles.slide} ${styles[slide.className]}`}
                 key={index}
               ></div>
+              <div className={styles.slideText}>{slide.text}</div>
             </div>
           </>
         ))}
