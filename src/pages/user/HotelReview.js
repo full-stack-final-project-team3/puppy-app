@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import styles from './HotelReview.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -8,10 +8,9 @@ import {
     modifyReview
 } from '../../components/store/hotel/HotelReviewSlice';
 import { fetchUserReservations } from '../../components/store/hotel/ReservationSlice';
-import {Modal, ModalHeader, ModalBody, ModalFooter, Button, Input} from "reactstrap";
+import { Modal, ModalBody, Button } from "reactstrap";
 import { FaStar } from 'react-icons/fa';
 import RatingInput from '../shop/review/RatingInput';
-
 
 const HotelReview = () => {
     const { hotelId } = useParams();
@@ -50,12 +49,13 @@ const HotelReview = () => {
         fetchAllReviews();
     }, [dispatch, userReservations]);
 
-
     // 리뷰 삭제
     const deleteReviewHandler = async (reviewId) => {
         try {
             await dispatch(deleteReview({ reviewId, userId }));
             alert("리뷰가 삭제되었습니다.");
+            // 삭제 후 리뷰 목록 다시 불러오기
+            await dispatch(fetchUserReservations({ userId }));
         } catch (error) {
             console.error("리뷰 삭제 실패:", error);
             alert("리뷰 삭제에 실패했습니다.");
@@ -85,6 +85,8 @@ const HotelReview = () => {
             }));
             alert("리뷰가 수정되었습니다.");
             closeModal();
+            // 수정 후 리뷰 목록 다시 불러오기
+            await dispatch(fetchUserReservations({ userId }));
         } catch (error) {
             console.error("리뷰 수정 실패:", error);
             alert("리뷰 수정에 실패했습니다.");
@@ -143,7 +145,7 @@ const HotelReview = () => {
             )}
 
             <Modal isOpen={isModalOpen} toggle={closeModal} className={styles.modal}>
-                
+
                 <ModalBody className={styles.modalBody}>
                         <textarea
                             name="reviewContent"
@@ -153,27 +155,27 @@ const HotelReview = () => {
                             required
                             className={styles.textarea}
                         />
-                        <label className={styles.label}>
-                            Rate:
-                            <RatingInput
-                                value={editingReview.rate}
-                                onChange={(newRate) => handleChange({ target: { name: 'rate', value: newRate } })}
-                            />
-                        </label>
-                        <div className={styles.modalActions}>
-                        <Button 
-                            className={styles.primaryButton} 
-                            color="primary" 
+                    <label className={styles.label}>
+                        Rate:
+                        <RatingInput
+                            value={editingReview.rate}
+                            onChange={(newRate) => handleChange({ target: { name: 'rate', value: newRate } })}
+                        />
+                    </label>
+                    <div className={styles.modalActions}>
+                        <Button
+                            className={styles.primaryButton}
+                            color="primary"
                             onClick={handleEditSubmit}>
                             저장
                         </Button>{' '}
-                        <Button 
-                            className={styles.secondaryButton} 
-                            color="secondary" 
+                        <Button
+                            className={styles.secondaryButton}
+                            color="secondary"
                             onClick={closeModal}>
                             취소
                         </Button>
-                        </div>
+                    </div>
                 </ModalBody>
             </Modal>
         </div>

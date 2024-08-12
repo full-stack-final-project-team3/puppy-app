@@ -4,13 +4,13 @@ import { motion } from 'framer-motion';
 import Slider from "react-slick";
 import styles from './RoomDetail.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useDispatch, useSelector } from 'react-redux';
 import ReviewList from './ReviewList';
-import {useNavigate, useRouteLoaderData} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import MapView from './MapView';
 import { deleteRoom, setRooms } from '../store/hotel/RoomAddSlice';
 import { fetchAvailableRooms } from '../store/hotel/ReservationSlice';
@@ -31,7 +31,6 @@ const RoomDetail = ({ hotel, onBook, getSliderSettings, onModifyRoom }) => {
     const endDate = useSelector(state => state.reservation.endDate);
     const userData = useSelector((state) => state.userEdit.userDetail);
     const isAdmin = userData && userData.role === 'ADMIN';
-
 
     const [availableRooms, setAvailableRooms] = useState([]);
 
@@ -78,15 +77,18 @@ const RoomDetail = ({ hotel, onBook, getSliderSettings, onModifyRoom }) => {
     };
 
     const handleDeleteRoom = async (roomId) => {
-        try {
-            const actionResult = await dispatch(deleteRoom(roomId));
-            if (actionResult.type.endsWith('fulfilled')) {
-                const updatedRooms = availableRooms.filter(room => room['room-id'] !== roomId);
-                setAvailableRooms(updatedRooms);
-                dispatch(setRooms(updatedRooms));
+        // eslint-disable-next-line no-restricted-globals
+        if (confirm("정말로 이 방을 삭제하시겠습니까?")) {
+            try {
+                const actionResult = await dispatch(deleteRoom(roomId));
+                if (actionResult.type.endsWith('fulfilled')) {
+                    const updatedRooms = availableRooms.filter(room => room['room-id'] !== roomId);
+                    setAvailableRooms(updatedRooms);
+                    dispatch(setRooms(updatedRooms));
+                }
+            } catch (e) {
+                console.error("룸 삭제 실패", e);
             }
-        } catch (e) {
-            console.error("룸 삭제 실패", e);
         }
     };
 
@@ -96,7 +98,6 @@ const RoomDetail = ({ hotel, onBook, getSliderSettings, onModifyRoom }) => {
         viewport: { once: false },
         transition: { ease: "easeInOut", duration: 1, y: { duration: 0.5 } }
     };
-
 
     return (
         <>
@@ -109,7 +110,7 @@ const RoomDetail = ({ hotel, onBook, getSliderSettings, onModifyRoom }) => {
                         {isAdmin && (<button className={styles.deleteButton} onClick={() => handleDeleteRoom(room['room-id'])}>
                             <FontAwesomeIcon icon={faTimes}/>
                         </button>)}
-                        
+
                         <Slider className={styles.slider} {...getSliderSettings(room["room-images"].length)}>
                             {room["room-images"] && room["room-images"].map((image, imageIndex) => {
                                 const imageUrl = getImageUrl(image['hotelImgUri']);
@@ -149,12 +150,11 @@ const RoomDetail = ({ hotel, onBook, getSliderSettings, onModifyRoom }) => {
             <motion.div {...animateProps} className={styles.location}>
                 <MapView location={hotel['location']} title={hotel['hotel-name']} />
                 <motion.div {...animateProps} className={styles.contact}>
-                <h1>Location</h1>
-                {hotel['location']}<br></br><br></br>
-                Contact : {hotel['phone-number']}&nbsp;&nbsp;&nbsp;&nbsp;
+                    <h1>Location</h1>
+                    {hotel['location']}<br></br><br></br>
+                    Contact : {hotel['phone-number']}&nbsp;&nbsp;&nbsp;&nbsp;
                 </motion.div>
             </motion.div>
-            
         </>
     );
 };

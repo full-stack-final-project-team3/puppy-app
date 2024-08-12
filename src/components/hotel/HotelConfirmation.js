@@ -5,16 +5,17 @@ import styles from './HotelConfirmation.module.scss';
 import { useNavigate } from 'react-router-dom';
 import { submitReservation } from '../store/hotel/ReservationSlice';
 import dayjs from "dayjs";
-import {userEditActions} from "../store/user/UserEditSlice";
+import { userEditActions } from '../store/user/UserEditSlice'
+import HotelModal from '../hotel/HotelModal';
 
 const HotelConfirmation = ({
-    hotel,
-    selectedRoom = { name: 'Default Room Name' },
-    startDate,
-    endDate,
-    totalPrice,
-    user = { realName: 'Guest', point: 0 }
-}) => {
+                               hotel,
+                               selectedRoom = { name: 'Default Room Name' },
+                               startDate,
+                               endDate,
+                               totalPrice,
+                               user = { realName: 'Guest', point: 0 }
+                           }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const personCount = useSelector(state => state.hotelPage.personCount);
@@ -24,19 +25,29 @@ const HotelConfirmation = ({
     const [pointUsage, setPointUsage] = useState('');
     const [showPointPayment, setShowPointPayment] = useState(false);
 
+    const [showModal, setShowModal] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
+    const [isConfirmStep, setIsConfirmStep] = useState(true); // 새로운 상태 추가
 
     const handleConfirmBooking = () => {
         if (!user) {
-            alert("사용자 정보가 없습니다.");
+            setModalMessage("사용자 정보가 없습니다.");
+            setShowModal(true);
             return;
         }
 
         if (!token) {
-            alert("로그인이 필요합니다.");
+            setModalMessage("로그인이 필요합니다.");
+            setShowModal(true);
             navigate('/login'); // 로그인 페이지로 이동
             return;
         }
 
+        setModalMessage("예약을 진행하시겠습니까?");
+        setShowModal(true);
+    };
+
+    const handleReservation = () => {
         dispatch(submitReservation({
             hotelId: hotel['hotel-id'],
             roomId: selectedRoom['room-id'],
@@ -51,16 +62,16 @@ const HotelConfirmation = ({
             createdAt: dayjs().utc().format()
         }))
             .unwrap()
-
             .then((response) => {
-                alert("예약이 완료되었습니다.");
+                setModalMessage("예약이 완료되었습니다.");
+                setIsConfirmStep(false); // 상태를 변경하여 확인 버튼만 표시되도록 함
                 const deletedPoint = user.point - totalPrice;
                 dispatch(userEditActions.updateUserDetail({ ...user, point: deletedPoint }));
-                window.location.reload();
             })
             .catch((error) => {
                 console.error('Reservation failed:', error);
-                alert("예약이 되어있는 객실입니다.");
+                setModalMessage("예약이 되어있는 객실입니다.");
+                setIsConfirmStep(false); // 상태를 변경하여 확인 버튼만 표시되도록 함
             });
     };
 
@@ -93,6 +104,13 @@ const HotelConfirmation = ({
             setShowPointPayment(!showPointPayment);
         } else {
             alert('추후 업데이트 예정입니다.');
+        }
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+        if (!isConfirmStep) {
+            window.location.reload(); // 예약 완료 후 새로고침
         }
     };
 
@@ -154,6 +172,17 @@ const HotelConfirmation = ({
             >
                 Confirm Booking
             </button>
+
+            {showModal && (
+                <HotelModal
+                    title={isConfirmStep ? "예약 확인" : "알림"}
+                    message={modalMessage}
+                    onConfirm={isConfirmStep ? handleReservation : handleCloseModal}
+                    onClose={handleCloseModal}
+                    confirmButtonText={isConfirmStep ? "예" : "확인"} // 버튼 텍스트 변경
+                    showCloseButton={isConfirmStep} // 확인 단계에서는 닫기 버튼을 표시
+                />
+            )}
         </div>
     );
 };

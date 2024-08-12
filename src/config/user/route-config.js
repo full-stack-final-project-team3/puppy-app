@@ -42,11 +42,10 @@ import SnackRecords from "../../pages/user/SnackRecords";
 import DetailAboutReservation from "../../components/hotel/DetailAboutReservation";
 import ShowCart from "../../pages/shop/ShowCart";
 
-import SeasonalityChart from '../../pages/hotel/SeasonalityChart.js'
-import OrderPage from "../../pages/shop/order/OrderPage"; //쇼핑몰오더 
-
-
-
+import SeasonalityChart from "../../pages/hotel/SeasonalityChart.js";
+import OrderPage from "../../pages/shop/order/OrderPage"; //쇼핑몰오더
+import ManagementTreats from "../../pages/shop/ManagementTreats.js";
+import EditTreat from "../../pages/shop/EditTreats.js";
 
 const homeRouter = [
   {
@@ -138,6 +137,20 @@ export const router = createBrowserRouter([
         id: "getToken",
       },
       {
+        path: "manage-treats",
+        element: <ManagementTreats />,
+        loader: authCheckLoader,
+        // loader: getUserToken,
+        // id: "getToken",
+      },
+      {
+        path: "edit-treats/:id",
+        element: <EditTreat />,
+        loader: authCheckLoader,
+        // loader: getUserToken,
+        // id: "getToken",
+      },
+      {
         path: "list/:dogId",
         element: <TreatsListForDog />,
         loader: authCheckLoader,
@@ -214,8 +227,8 @@ export const router = createBrowserRouter([
         element: <MyLikeHotel />,
       },
       {
-         path: "/my-reviews",
-         element: <MyReviews/>
+        path: "/my-reviews",
+        element: <MyReviews />,
       },
       {
         path: "/snack-record",
@@ -223,10 +236,10 @@ export const router = createBrowserRouter([
       },
       {
         path: "/detail-reservation",
-        element: <DetailAboutReservation/>
+        element: <DetailAboutReservation />,
       },
       {
-        path: '/order-page',
+        path: "/order-page",
         element: <OrderPage />,
         loader: authCheckLoader, // 오더
       },
