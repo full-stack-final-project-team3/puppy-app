@@ -10,20 +10,17 @@ const Slider = () => {
     { className: "slide5", text: "NO ARTIFICIAL FLAVORS" },
   ];
 
+  const slideCount = slides.length; // 슬라이드 개수
+  const duplicatedSlides = [...slides, ...slides]; // 슬라이드 복제
+
   return (
     <div className={styles.sliderContainer}>
       <div className={styles.slider}>
-        {/* 슬라이드 내용을 두 번 반복 */}
-        {[...slides, ...slides].map((slide, index) => (
-          <>
-            <div className={styles.slideImgBox}>
-              <div
-                className={`${styles.slide} ${styles[slide.className]}`}
-                key={index}
-              ></div>
-              <div className={styles.slideText}>{slide.text}</div>
-            </div>
-          </>
+        {duplicatedSlides.map((slide, index) => (
+          <div className={styles.slideImgBox} key={index}>
+            <div className={`${styles.slide} ${styles[slide.className]}`}></div>
+            <div className={styles.slideText}>{slide.text}</div>
+          </div>
         ))}
       </div>
     </div>
@@ -58,13 +55,49 @@ const ShopMainBg = () => {
               QUALITY
             </h2>
             <p className={styles.featureContent}>
-              최고의 원재료, 신뢰할 수 있는 브랜드의 까다로운<br></br>선별을 통해
-              강아지와 나, 모두 안심할 수 있습니다.
+              최고의 원재료, 신뢰할 수 있는 브랜드의 까다로운<br></br>선별을
+              통해 강아지와 나, 모두 안심할 수 있습니다.
             </p>
           </div>
         </div>
       </div>
-      <div className={styles.imgSection3}></div>
+      <div className={styles.imgSection3Box}>
+        <div className={styles.processContainer}>
+          <div className={styles.processContent}>
+            <h2 className={styles.processTitle}>PROCESS</h2>
+            <div className={styles.processStep}>
+              <span className={styles.stepNumber}>✔️</span>
+              <div className={styles.stepContent}>
+                <div className={styles.stepIcon}></div>
+                <h5>강아지 정보를 입력하기</h5>
+                <p>
+                  몇 가지 간단한 질문을 통해 우리에게 강아지를 소개해주세요!
+                </p>
+              </div>
+            </div>
+            <div className={styles.processStep}>
+              <span className={styles.stepNumber}>✔️</span>
+              <div className={styles.stepContent}>
+                <div className={styles.stepIcon}></div>
+                <h5>간식 고르기</h5>
+                <p>
+                  강아지 정보를 분석하여 추천한 몇 가지 간식 중 원하는 걸
+                  선택해주세요!
+                </p>
+              </div>
+            </div>
+            <div className={styles.processStep}>
+              <span className={styles.stepNumber}>✔️</span>
+              <div className={styles.stepContent}>
+                <div className={styles.stepIcon}></div>
+                <h5>월 정기 배송</h5>
+                <p>선택한 정보를 바탕으로 강아지에게 매월 선물이 배송돼요.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className={styles.imgSection3}> </div>
+      </div>
     </div>
   );
 };

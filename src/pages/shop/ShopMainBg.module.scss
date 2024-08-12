@@ -2,7 +2,7 @@
   height: 95vh;
 
   .imgSection {
-    background-image: url(../../../public/shop_img/shop_main.png); // 배경 이미지 경로
+    background-image: url(../../../public/shop_img/1.png); // 배경 이미지 경로
     background-size: cover;
     background-position: center;
     height: 85%; /* 높이를 원하는 값으로 설정 */
@@ -13,25 +13,27 @@
     overflow: hidden;
     position: relative;
     height: 170px; // 슬라이드 높이를 화면 전체 높이로 설정
-    background: #5E584F;
+    background: #5e584f;
   }
 
   .slider {
     display: flex;
     animation: scroll 15s linear infinite; /* 애니메이션 시간 조정 */
     height: 100%; // 부모의 높이에 맞게 설정
-    width: calc(250px * 5 * 2); // 슬라이드 총 너비 조정 (슬라이드 수 x 각 슬라이드 너비 x 2)
-
+    width: calc(
+      250px * 5 * 2
+    ); // 슬라이드 총 너비 조정 (슬라이드 수 x 각 슬라이드 너비 x 2)
   }
 
   .slideImgBox {
+    flex: 0 0 auto;
     width: 260px;
     display: flex;
     justify-content: center; // 가로 중앙 정렬
     margin: auto 0;
 
     .slide {
-      background-color: #5E584F;
+      background-color: #5e584f;
       text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); // 텍스트 가독성을 위한 그림자
       height: 100%; // 슬라이드 높이를 부모의 높이에 맞게 설정
 
@@ -87,26 +89,86 @@
   }
 
   .imgSection2 {
-    background-image: url(../../../public/shop_img/shop_main2.png); // 배경 이미지 경로
+    background-image: url(../../../public/shop_img/2.png); // 배경 이미지 경로
     background-size: cover;
     background-position: center;
     height: 85%; /* 높이를 원하는 값으로 설정 */
     width: 100%; /* 너비를 원하는 값으로 설정 */
   }
 
+  .imgSection3Box {
+    display: flex;
+  }
+
   .imgSection3 {
-    background-image: url(../../../public/shop_img/shop_start.png); // 배경 이미지 경로
-    background-size: cover;
-    background-position: center;
-    height: 90%; /* 높이를 원하는 값으로 설정 */
-    width: 100%; /* 너비를 원하는 값으로 설정 */
+    float: left;
+    background-image: url("../../../public/shop_img/3840x0.png"); // 배경 이미지 경로
+    background-size: cover; // 배경 이미지가 전체 영역을 덮도록 설정
+    background-position: center; // 배경 이미지를 중앙에 배치
+    height: 600px; // 원하는 높이 설정
+    width: 50%; // 너비를 절반으로 설정
+    left: 0;
+    display: flex; // 내부 요소 배치를 위한 플렉스 박스 사용
+    flex-direction: column; // 세로 방향으로 배치
+  }
+
+  .processContainer {
+    width: 50%;
+    background-color: #b5b38d; // 배경 색상
+    text-align: left;
+
+    .processContent {
+      padding-top: 50px;
+      padding-left: 120px;
+    }
+
+    .processTitle {
+      color: #403c36;
+      font-size: 36px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .processStep {
+      display: flex;
+      margin-bottom: 20px;
+
+      .stepNumber {
+        font-size: 24px;
+        font-weight: bold;
+        margin-right: 10px;
+      }
+
+      .stepContent {
+        flex: 1;
+
+        .stepIcon {
+          // 여기에서 아이콘 스타일 추가
+          width: 24px;
+          height: 24px;
+          background-size: cover;
+          margin-bottom: 5px; // 아이콘과 텍스트 간격
+        }
+
+        h5 {
+          font-size: 17px;
+          margin: 0;
+        }
+
+        p {
+          margin: 0;
+          margin-top: 10px;
+          color: #403c36;
+        }
+      }
+    }
   }
 
   .featuresContainer {
     display: flex;
     justify-content: center; /* 항목들을 중앙 정렬 */
     gap: 150px; /* 항목 간의 간격 조정 */
-    background-color: #5E5850; /* 배경색 */
+    background-color: #5e5850; /* 배경색 */
     margin: 0 auto;
     padding: 50px 0; /* 상하 패딩 */
     color: rgb(255, 255, 255); /* 텍스트 색상 */
