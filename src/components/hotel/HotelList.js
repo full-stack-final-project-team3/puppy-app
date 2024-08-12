@@ -67,16 +67,20 @@ const HotelList = ({onShowProperty, getSliderSettings}) => {
     // 호텔 삭제 처리 함수
     // 리렌더링이 안돼서 여기서 직접 호출해와서 진행하기
     const handleDeleteHotel = async (hotelId) => {
-        try {
-            const actionResult = await dispatch(deleteHotel(hotelId));
-            if (actionResult.type.endsWith('fulfilled')) {
-                // Redux store 에서 직접 필요한 상태를 가져오는 로직
-                const currentHotels = store.getState().hotelPage.hotels;
-                const updatedHotels = currentHotels.filter(hotel => hotel.id !== hotelId);
-                dispatch(setHotels(updatedHotels));
+
+        // eslint-disable-next-line no-restricted-globals
+        if (confirm("정말로 삭제 하시겠습니까? ")) {
+            try {
+                const actionResult = await dispatch(deleteHotel(hotelId));
+                if (actionResult.type.endsWith('fulfilled')) {
+                    // Redux store 에서 직접 필요한 상태를 가져오는 로직
+                    const currentHotels = store.getState().hotelPage.hotels;
+                    const updatedHotels = currentHotels.filter(hotel => hotel.id !== hotelId);
+                    dispatch(setHotels(updatedHotels));
+                }
+            } catch (error) {
+                console.error("호텔 삭제 실패:", error);
             }
-        } catch (error) {
-            console.error("호텔 삭제 실패:", error);
         }
     };
 
