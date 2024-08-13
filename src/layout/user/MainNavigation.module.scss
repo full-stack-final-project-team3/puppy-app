@@ -138,7 +138,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 10px; /* 좌우 여백 추가 */
+
   }
 
   .left, .center, .right {
@@ -148,8 +148,7 @@
   }
 
   .center {
-    justify-content: flex-start !important;
-    margin-right: 130px;
+    justify-content: center;
   }
 
   .left {
@@ -160,15 +159,6 @@
     justify-content: flex-end;
   }
 
-  .right > * {
-    margin-right: 0px !important; /* 모든 아이콘 사이의 마진을 0px로 설정 */
-  }
-  .login {
-    margin-right: 20px !important;
-  }
-  .logout {
-    margin-right: 10px !important;
-  }
 
 
   .welcome {
@@ -185,7 +175,6 @@
 
   .icon {
     margin-left: 10px; /* 아이콘 간격 조절 */
-    margin-right: 20px !important; /* 아이콘 사이의 오른쪽 마진을 0px로 강제 설정 */
   }
 
   .noticeWrap {
