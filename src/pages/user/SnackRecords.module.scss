@@ -1,14 +1,82 @@
 .wrap {
-  width: 50%;
-  margin: 50px auto;
-  border-radius: 32px;
-  background: #F4E8D3;
-  padding-bottom: 30px;
+  padding: 20px;
+  background-color: #f9f9f9;
+}
 
-  .subWrap {
-    width: 90%;
-    margin: 50px auto 0;
-    background: #F0E1C4;
-    padding-bottom: 20px
-  }
+.subWrap {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #333;
+}
+
+.card {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.imageContainer {
+  flex: 0 0 100px;
+  margin-right: 20px;
+}
+
+.dogImage {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.details {
+  flex: 1;
+  font-size: 14px;
+  color: #555;
+}
+
+.details p {
+  margin: 5px 0;
+}
+
+.details ul {
+  padding-left: 20px;
+  margin: 5px 0;
+}
+
+.actions {
+  flex: 0 0 100px;
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cancelButton {
+  padding: 10px 15px;
+  font-size: 14px;
+  color: #fff;
+  background-color: #ff6b6b;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.cancelButton:hover {
+  background-color: #e63946;
 }

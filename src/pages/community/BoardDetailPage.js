@@ -11,6 +11,7 @@ import {
   BsThreeDotsVertical,
   BsChevronLeft,
   BsChevronRight,
+  BsReply,
 } from "react-icons/bs";
 import { AiOutlineExport } from "react-icons/ai";
 import { GoClock } from "react-icons/go";
@@ -27,6 +28,12 @@ const BoardDetailPage = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [editedCommentContent, setEditedCommentContent] = useState("");
+  const [replyingTo, setReplyingTo] = useState(null);
+  const [newSubReply, setNewSubReply] = useState("");
+  const [newSubReplyImage, setNewSubReplyImage] = useState(null);
+
+  const [editingSubReplyId, setEditingSubReplyId] = useState(null);
+  const [editedSubReplyContent, setEditedSubReplyContent] = useState("");
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -270,8 +277,178 @@ const BoardDetailPage = () => {
     }
   };
 
-  if (!post) return <div className={styles.loading}>로딩 중...</div>;
+  //대댓글 작성
+  const handleSubReplySubmit = async (e, commentId) => {
+    e.preventDefault();
+    if (!isLoggedIn) {
+      alert("답글을 작성하려면 로그인이 필요합니다.");
+      return;
+    }
+    try {
+      const userData = JSON.parse(localStorage.getItem("userData"));
+      const formData = new FormData();
+      formData.append("subReplyContent", newSubReply); // 'content' 대신 'subReplyContent' 사용
+      formData.append(
+        "user",
+        JSON.stringify({
+          id: user.id,
+          nickname: user.nickname,
+          profileUrl: user.profileUrl,
+          email: user.email,
+        })
+      );
+      if (newSubReplyImage) {
+        formData.append("image", newSubReplyImage);
+      }
 
+      const response = await fetch(
+        `${BOARD_URL}/${id}/comments/${commentId}/subReplies`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${userData.token}`,
+          },
+          body: formData,
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const newSubReplyData = await response.json();
+
+      setComments((prevComments) =>
+        prevComments.map((comment) =>
+          comment.id === commentId
+            ? {
+                ...comment,
+                subReplies: [
+                  ...(comment.subReplies || []),
+                  {
+                    ...newSubReplyData,
+                    user: {
+                      id: user.id,
+                      nickname: user.nickname,
+                      profileUrl: user.profileUrl,
+                      email: user.email,
+                    },
+                    subReplyCreatedAt: new Date().toISOString(), // 'createdAt' 대신 'subReplyCreatedAt' 사용
+                  },
+                ],
+              }
+            : comment
+        )
+      );
+
+      setNewSubReply("");
+      setNewSubReplyImage(null);
+      setReplyingTo(null);
+      if (document.getElementById("subReplyImageUpload")) {
+        document.getElementById("subReplyImageUpload").value = "";
+      }
+    } catch (error) {
+      console.error("답글을 제출하는 중 오류 발생:", error);
+      alert("답글 제출에 실패했습니다. 다시 시도해 주세요.");
+    }
+  };
+
+  //대댓글 이미지 추가
+  const handleSubReplyImageChange = (e) => {
+    if (e.target.files[0]) {
+      setNewSubReplyImage(e.target.files[0]);
+    }
+  };
+
+  //대댓글 수정 / 삭제
+const handleSubReplyEdit = (subReplyId, content) => {
+  setEditingSubReplyId(subReplyId);
+  setEditedSubReplyContent(content);
+};
+
+const handleSubReplyUpdate = async (commentId, subReplyId) => {
+  try {
+    const userData = JSON.parse(localStorage.getItem("userData"));
+    const response = await fetch(
+      `${BOARD_URL}/${id}/comments/${commentId}/subReplies/${subReplyId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userData.token}`,
+        },
+        body: JSON.stringify({
+          content: editedSubReplyContent,
+          userId: user.id,
+        }),
+      }
+    );
+
+    if (response.ok) {
+      const updatedSubReply = await response.json();
+      setComments((prevComments) =>
+        prevComments.map((comment) =>
+          comment.id === commentId
+            ? {
+                ...comment,
+                subReplies: comment.subReplies.map((subReply) =>
+                  subReply.id === subReplyId
+                    ? { ...subReply, subReplyContent: editedSubReplyContent }
+                    : subReply
+                ),
+              }
+            : comment
+        )
+      );
+      setEditingSubReplyId(null);
+      setEditedSubReplyContent("");
+    } else {
+      throw new Error("대댓글 수정에 실패했습니다.");
+    }
+  } catch (error) {
+    console.error("대댓글 수정 중 오류 발생:", error);
+    alert("대댓글 수정에 실패했습니다. 다시 시도해 주세요.");
+  }
+};
+
+const handleSubReplyDelete = async (commentId, subReplyId) => {
+  if (window.confirm("정말로 이 대댓글을 삭제하시겠습니까?")) {
+    try {
+      const userData = JSON.parse(localStorage.getItem("userData"));
+      const response = await fetch(
+        `${BOARD_URL}/${id}/comments/${commentId}/subReplies/${subReplyId}?userId=${user.id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${userData.token}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        setComments((prevComments) =>
+          prevComments.map((comment) =>
+            comment.id === commentId
+              ? {
+                  ...comment,
+                  subReplies: comment.subReplies.filter(
+                    (subReply) => subReply.id !== subReplyId
+                  ),
+                }
+              : comment
+          )
+        );
+      } else {
+        throw new Error("대댓글 삭제에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("대댓글 삭제 중 오류 발생:", error);
+      alert("대댓글 삭제에 실패했습니다. 다시 시도해 주세요.");
+    }
+  }
+};
+  //렌더링 시작 부분!@
+  if (!post) return <div className={styles.loading}>로딩 중...</div>;
   return (
     <div className={styles.postDetailPage}>
       <h1 className={styles.postTitle}>{post.boardTitle}</h1>
@@ -310,14 +487,14 @@ const BoardDetailPage = () => {
             <>
               <button
                 onClick={handlePrevImage}
-                className={`${styles.imageNavButton} ${styles.prev}`} // 왼쪽 버튼
+                className={`${styles.imageNavButton} ${styles.prev}`}
                 aria-label="이전 이미지"
               >
                 <BsChevronLeft />
               </button>
               <button
                 onClick={handleNextImage}
-                className={`${styles.imageNavButton} ${styles.next}`} // 오른쪽 버튼
+                className={`${styles.imageNavButton} ${styles.next}`}
                 aria-label="다음 이미지"
               >
                 <BsChevronRight />
@@ -404,6 +581,144 @@ const BoardDetailPage = () => {
                         삭제
                       </button>
                     </div>
+                  )}
+
+                  {/* 답글 버튼 */}
+                  <button
+                    onClick={() => setReplyingTo(comment.id)}
+                    className={styles.replyButton}
+                  >
+                    <BsReply /> 답글
+                  </button>
+
+                  {/* 대댓글 목록 */}
+                  {comment.subReplies && comment.subReplies.length > 0 && (
+                    <ul className={styles.subReplyList}>
+                      {comment.subReplies.map((subReply) => (
+                        <li key={subReply.id} className={styles.subReplyItem}>
+                          <span className={styles.subReplyAuthor}>
+                            <img
+                              className={styles.profileImage}
+                              src={
+                                subReply.user?.profileUrl ||
+                                "/default-profile.png"
+                              }
+                              alt="프로필"
+                            />
+                            {subReply.user?.nickname || "익명의강아지주인"}
+                          </span>
+                          <span className={styles.subReplyDate}>
+                            {new Date(
+                              subReply.subReplyCreatedAt
+                            ).toLocaleString()}
+                          </span>
+                          {editingSubReplyId === subReply.id ? (
+                            <div>
+                              <textarea
+                                value={editedSubReplyContent}
+                                onChange={(e) =>
+                                  setEditedSubReplyContent(e.target.value)
+                                }
+                                className={styles.editSubReplyTextarea}
+                              />
+                              <button
+                                onClick={() =>
+                                  handleSubReplyUpdate(comment.id, subReply.id)
+                                }
+                                className={styles.updateSubReplyButton}
+                              >
+                                완료
+                              </button>
+                              <button
+                                onClick={() => setEditingSubReplyId(null)}
+                                className={styles.cancelEditButton}
+                              >
+                                취소
+                              </button>
+                            </div>
+                          ) : (
+                            <p>{subReply.subReplyContent}</p>
+                          )}
+                          {subReply.imageUrl && (
+                            <img
+                              src={subReply.imageUrl}
+                              alt="대댓글 이미지"
+                              className={styles.subReplyImage}
+                            />
+                          )}
+                          {user && user.id === subReply.user?.id && (
+                            <div className={styles.subReplyActions}>
+                              <button
+                                onClick={() =>
+                                  handleSubReplyEdit(
+                                    subReply.id,
+                                    subReply.subReplyContent
+                                  )
+                                }
+                                className={styles.editSubReplyButton}
+                              >
+                                수정
+                              </button>
+                              <button
+                                onClick={() =>
+                                  handleSubReplyDelete(comment.id, subReply.id)
+                                }
+                                className={styles.deleteSubReplyButton}
+                              >
+                                삭제
+                              </button>
+                            </div>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+
+                  {/* 대댓글 입력 폼 */}
+                  {replyingTo === comment.id && (
+                    <form
+                      onSubmit={(e) => handleSubReplySubmit(e, comment.id)}
+                      className={styles.subReplyForm}
+                    >
+                      <div className={styles.inputWrapper}>
+                        <input
+                          type="text"
+                          value={newSubReply}
+                          onChange={(e) => setNewSubReply(e.target.value)}
+                          placeholder="답글을 입력하세요"
+                          required
+                          className={styles.subReplyInput}
+                        />
+                        <label
+                          htmlFor="subReplyImageUpload"
+                          className={styles.iconButton}
+                        >
+                          <BsImage />
+                        </label>
+                        <input
+                          id="subReplyImageUpload"
+                          type="file"
+                          onChange={handleSubReplyImageChange}
+                          accept="image/*"
+                          style={{ display: "none" }}
+                        />
+                        {newSubReplyImage && (
+                          <span className={styles.imageSelected}>
+                            이미지 선택됨
+                          </span>
+                        )}
+                        <button type="submit" className={styles.submitButton}>
+                          등록
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setReplyingTo(null)}
+                          className={styles.cancelButton}
+                        >
+                          취소
+                        </button>
+                      </div>
+                    </form>
                   )}
                 </div>
               </li>
