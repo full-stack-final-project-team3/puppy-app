@@ -32,7 +32,7 @@
       border-radius: 50%;
       background: #B3797A;
       position: absolute;
-      right: 131px;
+      right: 135px;
       top: 29px;
       color: white;
       font-size: 0.8rem;
@@ -68,6 +68,19 @@
   .icon {
     width: 25px;
     height: 25px;
+    cursor: pointer;
+    color: #A69A91;
+  }
+  .bell {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    color: #A69A91;
+  }
+
+  .basket {
+    width: 30px;
+    height: 30px;
     cursor: pointer;
     color: #A69A91;
   }
