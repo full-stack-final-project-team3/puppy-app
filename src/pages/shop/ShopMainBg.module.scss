@@ -7,6 +7,13 @@
     background-position: center;
     height: 85%; /* 높이를 원하는 값으로 설정 */
     width: 100%; /* 너비를 원하는 값으로 설정 */
+    position: relative; /* 부모 요소에 relative 설정 */
+
+    .manageShopBtn {
+      position: absolute; /* 자식 요소에 absolute 설정 */
+      top: 10px; /* 상단에서 10px 떨어진 위치 */
+      right: 10px; /* 오른쪽에서 10px 떨어진 위치 */
+    }
   }
 
   .sliderContainer {
@@ -116,6 +123,47 @@
     width: 50%;
     background-color: #b5b38d; // 배경 색상
     text-align: left;
+
+    .content {
+      margin-top: 40px;
+
+      .guide {
+        color: #827d76;
+        width: 45%;
+        margin-left: 35px;
+      }
+
+      .selectDogBox {
+        display: flex; /* Flexbox 사용 */
+        width: 100%; /* 부모 요소의 너비를 상속 */
+
+        .dogList {
+          background: #b5b38d;
+          color: #403c36;
+          width: 45%;
+          margin-left: 35px;
+        }
+      }
+
+      .startBtnBox {
+        display: flex; /* Flexbox 사용 */
+        width: 100%; /* 부모 요소의 너비를 상속 */
+
+        .startButton {
+          width: 45%;
+          background-color: #e88b4f; // 버튼 배경색
+          padding: 20px;
+          margin-top: 20px;
+          margin-left: 35px;
+          color: #fffff0;
+          border: none;
+          border-radius: 25px;
+          cursor: pointer;
+          font-size: 16px;
+          font-weight: bold;
+        }
+      }
+    }
 
     .processContent {
       padding-top: 50px;
