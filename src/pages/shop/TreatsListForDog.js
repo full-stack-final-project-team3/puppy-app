@@ -16,6 +16,7 @@ const TreatsListForDog = () => {
   const [error, setError] = useState(null);
   const [pageNo, setPageNo] = useState(1);
   const [currentStep, setCurrentStep] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
   const [selectedTreats, setSelectedTreats] = useState({
     DRY: [],
     WET: [],
@@ -31,6 +32,25 @@ const TreatsListForDog = () => {
   const handleStepClick = (stepIndex) => {
     setCurrentStep(stepIndex); // 클릭한 스텝으로 이동
   };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const { scrollTop, clientHeight, scrollHeight } =
+        document.documentElement;
+
+      if (scrollTop + clientHeight >= scrollHeight - 5) {
+        console.log("무한 스크롤 이벤트 실행");
+        // 여기서 다음 페이지를 로드하는 함수 호출 가능
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    // 컴포넌트 언마운트 시 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   const fetchTreatsList = async () => {
     // 현재 타입 가져오기
@@ -73,7 +93,15 @@ const TreatsListForDog = () => {
         throw new Error("네트워크 응답이 올바르지 않습니다.");
       }
       const data = await response.json();
-      setTreatsList(data.treatsList);
+      // currentStep이 바뀔 때는 리스트 초기화
+      if (pageNo === 1) {
+        // 새로운 스텝으로 초기화할 때는 pageNo가 1일 때만 초기화
+        setTreatsList(data.treatsList); // 새로운 리스트로 초기화
+        setTotalCount(data.totalCount)
+      } else {
+        setTreatsList((prevList) => [...prevList, ...data.treatsList]); // 기존 리스트에 새로 불러온 리스트를 합침
+      }
+
       console.log(data);
       console.log(currentStep);
     } catch (err) {
@@ -104,7 +132,11 @@ const TreatsListForDog = () => {
     });
 
     // 다음 타입으로 스텝 이동
-    setCurrentStep((prevStep) => Math.min(prevStep + 1, treatTypes.length - 1));
+    setCurrentStep((prevStep) => {
+      const nextStep = Math.min(prevStep + 1, treatTypes.length - 1);
+      setPageNo(1); // 간식 선택 시 pageNo를 1로 초기화
+      return nextStep;
+    });
   };
 
   const handleRemoveTreat = (type, treat) => {
