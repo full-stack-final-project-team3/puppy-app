@@ -47,6 +47,7 @@ import SeasonalityChart from "../../pages/hotel/SeasonalityChart.js";
 import OrderPage from "../../pages/shop/order/OrderPage"; //쇼핑몰오더
 import ManagementTreats from "../../pages/shop/ManagementTreats.js";
 import EditTreat from "../../pages/shop/EditTreats.js";
+import OrderDetail from "../../pages/shop/order/OrderDetail.js"; //쇼핑몰상세페이지
 
 const homeRouter = [
   {
@@ -259,6 +260,11 @@ export const router = createBrowserRouter([
         path: "/order-page",
         element: <OrderPage />,
         loader: authCheckLoader, // 오더
+      },
+      {
+        path: "/order-detail",
+        element: <OrderDetail />,
+        loader: authCheckLoader, // 오더상세
       },
     ],
   },
