@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./ShopMainBg.module.scss";
+import Footer from "../../layout/user/Footer";
 
 const Slider = () => {
   const slides = [
@@ -106,6 +107,7 @@ const ShopMainBg = ({ content, manageShopBtn }) => {
           </div>
           <div className={styles.imgSection3}> </div>
         </div>
+        <Footer/>
       </div>
     </>
   );

@@ -53,9 +53,11 @@
   .right > * {
     margin-right: 40px;
   }
-  .count {
-    right: 80px !important; /* .count 요소를 오른쪽으로 30px 이동 */
-  }
+
+
+  //.count {
+  //  right: 80px !important; /* .count 요소를 오른쪽으로 30px 이동 */
+  //}
 
   .login {
     text-decoration: none;
@@ -190,5 +192,9 @@
     overflow-y: auto;
     z-index: 9999;
     padding: 6px;
+  }
+
+  .count {
+    right: 110px !important;
   }
 }
