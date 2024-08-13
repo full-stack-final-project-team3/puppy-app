@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import styles from './OrderPage.module.scss'; // 추가된 라인
+import styles from './OrderPage.module.scss';
+import {NOTICE_URL} from "../../../config/user/host-config";
+import {userEditActions} from "../../../components/store/user/UserEditSlice";
+import treatsDetail from "../TreatsDetail";
+import treatsDetailContent from "../TreatsDetailContent"; // 추가된 라인
 
 const OrderPage = () => {
   const user = useSelector((state) => state.userEdit.userDetail);
   const location = useLocation();
   const { bundles, subscriptionPeriods, totalPrice } = location.state;
+  const dispatch = useDispatch();
 
+  console.log(user)
   const subscriptionPeriodLabels = {
     ONE: "1개월",
     MONTH3: "3개월",
@@ -76,24 +82,60 @@ const OrderPage = () => {
       },
       body: JSON.stringify(orderData),
     })
-      .then(response => {
-        if (!response.ok) {
-          return response.text().then(text => { throw new Error(text) });
-        }
-        return response.json();
-      })
-      .then(data => {
-        alert('주문이 성공적으로 완료되었습니다!');
-        console.log('Order created:', data);
-        setOrderInfo(prevOrderInfo => ({
-          ...prevOrderInfo,
-        }));
-      })
-      .catch(error => {
-        console.error('Error creating order:', error);
-        alert('주문 생성에 실패했습니다.');
-      });
-  };
+        .then(response => {
+          if (!response.ok) {
+            return response.text().then(text => {
+              throw new Error(text)
+            });
+          }
+          return response.json();
+        })
+        .then(async data => {
+          try {
+            const noticePayload = {
+              userId: user.id,
+              message: `'강아지 맞춤 간식 패키지' 주문 성공!`
+            };
+
+            const noticeResponse = await fetch(`${NOTICE_URL}/add`, {
+              method: 'POST',
+              headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify(noticePayload)
+            });
+
+            if (!noticeResponse.ok) {
+              const errorText = await noticeResponse.text();
+              throw new Error(`Failed to send notice: ${errorText}`);
+            }
+
+            const newNotice = await noticeResponse.json();
+
+            dispatch(userEditActions.addUserNotice(newNotice));
+
+            const updatedUserDetailWithNoticeCount = {
+              ...user,
+              noticeCount: user.noticeCount + 1
+            };
+
+            dispatch(userEditActions.updateUserDetail(updatedUserDetailWithNoticeCount));
+
+            alert('주문이 성공적으로 완료되었습니다!');
+            console.log('Order created:', data);
+
+            setOrderInfo(prevOrderInfo => ({
+              ...prevOrderInfo,
+            }));
+
+          } catch (noticeError) {
+            console.error('Error sending notice:', noticeError);
+            alert('주문은 성공했지만 알림 생성에 실패했습니다.');
+          }
+        })
+        .catch(error => {
+          console.error('Error creating order:', error);
+          alert('주문 생성에 실패했습니다.');
+        });
+  }
 
   return (
     <div className={styles['order-page-container']}>
