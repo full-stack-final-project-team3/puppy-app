@@ -140,11 +140,10 @@ const OrderPage = () => {
       orderHistory.push(orderData);
       localStorage.setItem('orderHistory', JSON.stringify(orderHistory));
 
-      // Fetch updated user data after successful order
+      
       const updatedUserResponse = await fetch(`${AUTH_URL}/${user.email}`);
       const updatedUser = await updatedUserResponse.json();
 
-      // Update user detail in Redux store
       dispatch(userEditActions.updateUserDetail(updatedUser));
 
       setModalMessage("결제가 완료되었습니다.");
