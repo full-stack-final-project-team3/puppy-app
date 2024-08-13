@@ -81,7 +81,6 @@ const TreatsListForDog = () => {
     }
 
     try {
-      setLoading(true); // 로딩 상태 시작
       const response = await fetch(
         `${TREATS_URL}/list/${dogId}?pageNo=${pageNo}&sort=${currentType}`,
         {
@@ -95,14 +94,19 @@ const TreatsListForDog = () => {
         throw new Error("네트워크 응답이 올바르지 않습니다.");
       }
       const data = await response.json();
-      // currentStep이 바뀔 때는 리스트 초기화
-      if (pageNo === 1) {
-        // 새로운 스텝으로 초기화할 때는 pageNo가 1일 때만 초기화
-        setTreatsList(data.treatsList); // 새로운 리스트로 초기화
-        setTotalCount(data.totalCount)
-      } else {
-        setTreatsList((prevList) => [...prevList, ...data.treatsList]); // 기존 리스트에 새로 불러온 리스트를 합침
-      }
+
+      setLoading(true); // 로딩 상태 시작
+
+      // 1초 후에 데이터를 렌더링
+      setTimeout(() => {
+        // currentStep이 바뀔 때는 리스트 초기화
+        if (pageNo === 1) {
+          setTreatsList(data.treatsList);
+          setTotalCount(data.totalCount);
+        } else {
+          setTreatsList((prevList) => [...prevList, ...data.treatsList]);
+        }
+      }, 800); // 1초 지연
 
       console.log(data);
       console.log(currentStep);
@@ -155,7 +159,7 @@ const TreatsListForDog = () => {
         const { [treat.title]: _, ...rest } = prev; // 애니메이션이 끝난 후 상태에서 제거
         return rest;
       });
-    }, 500); // 애니메이션 시간과 일치
+    }, 800); // 애니메이션 시간과 일치
   };
 
   const removeTreat = (type, treat) => {
@@ -184,7 +188,7 @@ const TreatsListForDog = () => {
         setPageNo(1); // 간식 선택 시 pageNo를 1로 초기화
         return treatTypes.indexOf(emptyTypes[0]); // 비어있는 타입으로 스텝 이동
       }
-      
+
       return prevStep; // 이전 스텝 유지
     });
   };
@@ -204,21 +208,23 @@ const TreatsListForDog = () => {
   return (
     <>
       <ShopStepIndicator step={currentStep} onStepClick={handleStepClick} />
-      <TransitionGroup>
+      {/* <TransitionGroup>
         <CSSTransition
           in={true} // 항상 true로 설정하여 애니메이션 적용
           key={currentStep} // currentStep이 바뀔 때마다 애니메이션 재생
-          timeout={500} // 애니메이션 시간
+          timeout={700} // 애니메이션 시간
           classNames="page" // 애니메이션 클래스 이름
-        >
+        > */}
           <div className={`${styles.treatsList} page`}>
             <div className={styles.content}>
               <h1>{dogName ? `${dogName}` : "강아지"} 맞춤 간식</h1>
               <div>
-                {/* <h2>{treatTypes[currentStep]}</h2> */}
-                {treatsList.length === 0 ? (
-                  <p>등록된 {treatTypes[currentStep]} 간식이 없습니다.</p>
+                {loading ? ( // 로딩 중일 때
+                  <p>로딩 중...</p>
                 ) : (
+                  // : treatsList.length === 0 ? (
+                  //   <p>등록된 {treatTypes[currentStep]} 간식이 없습니다.</p>
+                  // )
                   <div className={styles.cardContainer}>
                     {treatsList.map((treat) => {
                       const hasTreatPics =
@@ -262,8 +268,8 @@ const TreatsListForDog = () => {
               </div>
             </div>
           </div>
-        </CSSTransition>
-      </TransitionGroup>
+        {/* </CSSTransition>
+      </TransitionGroup> */}
 
       <div className={styles.selectedTreats}>
         <div className={styles.imageBoxContainer}>
