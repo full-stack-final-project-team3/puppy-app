@@ -40,7 +40,9 @@ const TreatsListForDog = () => {
 
       if (scrollTop + clientHeight >= scrollHeight - 5) {
         console.log("무한 스크롤 이벤트 실행");
-        // 여기서 다음 페이지를 로드하는 함수 호출 가능
+        if (treatsList.length <= totalCount) {
+          setPageNo((prevPage) => prevPage + 1); // 페이지 번호 증가
+        }
       }
     };
 
@@ -50,7 +52,7 @@ const TreatsListForDog = () => {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [loading, treatsList, totalCount]);
 
   const fetchTreatsList = async () => {
     // 현재 타입 가져오기
@@ -179,9 +181,10 @@ const TreatsListForDog = () => {
       );
 
       if (emptyTypes.length > 0) {
+        setPageNo(1); // 간식 선택 시 pageNo를 1로 초기화
         return treatTypes.indexOf(emptyTypes[0]); // 비어있는 타입으로 스텝 이동
       }
-
+      
       return prevStep; // 이전 스텝 유지
     });
   };
