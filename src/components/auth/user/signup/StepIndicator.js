@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './StepIndicator.module.scss';
 
 const StepIndicator = ({ step, onStepClick }) => {
-  const stepLabels = ['Email', 'Nickname& Password', 'Address& PhoneNumber', 'Add Dog'];
+  const stepLabels = ['Email', 'Nickname Password', 'Address PhoneNumber', 'Add Dog'];
 
   return (
     <div className={styles.stepIndicator}>
