@@ -16,11 +16,6 @@ const AddReviewPage = () => {
     const [customError, setCustomError] = useState('');
     const [hasReviewed, setHasReviewed] = useState(false);
     const { userReservations } = useSelector(state => state.reservation);
-    // const reservationId = userReservations.reservationId;
-
-    console.log("호텔과, 룸의 정보 가져오기 ", userReservations)
-    console.log("예약 번호", reservationId);
-    console.log("호텔번호", hotelId)
 
 
     useEffect(() => {
