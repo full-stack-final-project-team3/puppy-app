@@ -4,6 +4,7 @@ import { debounce } from "lodash";
 import { AUTH_URL } from "../../../../config/user/host-config";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import PortalPasswordModal from "../PortalPasswordModal";
 
 const CheckPasswordModal = ({ onClose, cancelEdit }) => {
     const user = useSelector(state => state.userEdit.userDetail);
@@ -53,26 +54,20 @@ const CheckPasswordModal = ({ onClose, cancelEdit }) => {
     }
 
     return (
-        <div className={styles.overlay} onClick={handleClickOutside}>
-            <div className={styles.modal} ref={modalRef}>
-                <h2 className={styles.h2}>현재 비밀번호를 입력해주세요.</h2>
-                <input
-                    type="password"
-                    placeholder="현재 비밀번호"
-                    className={styles.input}
-                    onChange={changeHandler}
-                />
-                {isValid && <p className={styles.success}>{success}</p>}
-                {!isValid && <p className={styles.error}>{error}</p>}
-                <div className={styles.flex}>
-                    <button
-                        className={styles.confirmButton}
-                        onClick={cancel}
-                    >취소
-                    </button>
-                </div>
+        <PortalPasswordModal onClose={cancelEdit}> {/* PortalModal을 통해 모달 렌더링 */}
+            <h2 className={styles.h2}>현재 비밀번호를 입력해주세요.</h2>
+            <input
+                type="password"
+                placeholder="현재 비밀번호"
+                className={styles.input}
+                onChange={changeHandler}
+            />
+            {isValid && <p className={styles.success}>{success}</p>}
+            {!isValid && <p className={styles.error}>{error}</p>}
+            <div className={styles.flex}>
+                <button className={styles.confirmButton} onClick={cancelEdit}>취소</button>
             </div>
-        </div>
+        </PortalPasswordModal>
     );
 };
 
