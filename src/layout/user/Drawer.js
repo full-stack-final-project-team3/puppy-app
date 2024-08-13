@@ -146,6 +146,9 @@ const CloseButton = styled(motion.button)`
     z-index: 1600;
     left: -8%;
   }
+  @media (max-width: 400px) {
+  right: calc(42.5% - 100px); /* 기존 위치에서 30px 더 오른쪽으로 이동 */
+  }
 
   .x-shape {
     width: 60%;
@@ -214,6 +217,7 @@ const Drawer = ({ open, onClose }) => {
     <>
       <DrawerContainer open={open}>
       <CloseButton
+          className={CloseButton}
           open={open}
           onClick={onClose}
           whileHover={{ scale: 1.2 }}

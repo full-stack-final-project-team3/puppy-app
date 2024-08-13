@@ -53,6 +53,9 @@
   .right > * {
     margin-right: 40px;
   }
+  .count {
+    right: 80px !important; /* .count 요소를 오른쪽으로 30px 이동 */
+  }
 
   .login {
     text-decoration: none;
@@ -81,36 +84,6 @@
     font-weight: 600;
     cursor: pointer;
     text-decoration: none;
-  }
-}
-
-.dropdownMenu {
-  position: absolute;
-  top: 80px; // header 높이 만큼 내려오기
-  right: 20px; // 필요에 따라 조정
-  background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  z-index: 1000;
-
-  ul {
-    list-style: none;
-    margin: 0;
-    padding: 10px 0;
-
-    li {
-      padding: 10px 20px;
-
-      a {
-        text-decoration: none;
-        color: #333;
-      }
-
-      a:hover {
-        background-color: #f5f5f5;
-      }
-    }
   }
 }
 
@@ -166,7 +139,6 @@
     justify-content: space-between;
     align-items: center;
     padding: 0 10px; /* 좌우 여백 추가 */
-
   }
 
   .left, .center, .right {
@@ -176,7 +148,8 @@
   }
 
   .center {
-    justify-content: center;
+    justify-content: flex-start !important;
+    margin-right: 130px;
   }
 
   .left {
@@ -187,6 +160,15 @@
     justify-content: flex-end;
   }
 
+  .right > * {
+    margin-right: 0px !important; /* 모든 아이콘 사이의 마진을 0px로 설정 */
+  }
+  .login {
+    margin-right: 20px !important;
+  }
+  .logout {
+    margin-right: 10px !important;
+  }
 
 
   .welcome {
@@ -203,6 +185,7 @@
 
   .icon {
     margin-left: 10px; /* 아이콘 간격 조절 */
+    margin-right: 20px !important; /* 아이콘 사이의 오른쪽 마진을 0px로 강제 설정 */
   }
 
   .noticeWrap {
