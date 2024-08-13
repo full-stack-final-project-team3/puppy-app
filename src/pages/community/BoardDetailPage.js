@@ -11,6 +11,7 @@ import {
   BsThreeDotsVertical,
   BsChevronLeft,
   BsChevronRight,
+  BsReply,
 } from "react-icons/bs";
 import { AiOutlineExport } from "react-icons/ai";
 import { GoClock } from "react-icons/go";
@@ -27,6 +28,10 @@ const BoardDetailPage = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [editedCommentContent, setEditedCommentContent] = useState("");
+  const [replyingTo, setReplyingTo] = useState(null);
+  const [newSubReply, setNewSubReply] = useState("");
+  const [newSubReplyImage, setNewSubReplyImage] = useState(null);
+
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -270,8 +275,90 @@ const BoardDetailPage = () => {
     }
   };
 
-  if (!post) return <div className={styles.loading}>로딩 중...</div>;
+  //대댓글 작성
+  const handleSubReplySubmit = async (e, commentId) => {
+    e.preventDefault();
+    if (!isLoggedIn) {
+      alert("답글을 작성하려면 로그인이 필요합니다.");
+      return;
+    }
+    try {
+      const userData = JSON.parse(localStorage.getItem("userData"));
+      const formData = new FormData();
+      formData.append("subReplyContent", newSubReply); // 'content' 대신 'subReplyContent' 사용
+      formData.append(
+        "user",
+        JSON.stringify({
+          id: user.id,
+          nickname: user.nickname,
+          profileUrl: user.profileUrl,
+          email: user.email,
+        })
+      );
+      if (newSubReplyImage) {
+        formData.append("image", newSubReplyImage);
+      }
 
+      const response = await fetch(
+        `${BOARD_URL}/${id}/comments/${commentId}/subReplies`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${userData.token}`,
+          },
+          body: formData,
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const newSubReplyData = await response.json();
+
+      setComments((prevComments) =>
+        prevComments.map((comment) =>
+          comment.id === commentId
+            ? {
+                ...comment,
+                subReplies: [
+                  ...(comment.subReplies || []),
+                  {
+                    ...newSubReplyData,
+                    user: {
+                      id: user.id,
+                      nickname: user.nickname,
+                      profileUrl: user.profileUrl,
+                      email: user.email,
+                    },
+                    subReplyCreatedAt: new Date().toISOString(), // 'createdAt' 대신 'subReplyCreatedAt' 사용
+                  },
+                ],
+              }
+            : comment
+        )
+      );
+
+      setNewSubReply("");
+      setNewSubReplyImage(null);
+      setReplyingTo(null);
+      if (document.getElementById("subReplyImageUpload")) {
+        document.getElementById("subReplyImageUpload").value = "";
+      }
+    } catch (error) {
+      console.error("답글을 제출하는 중 오류 발생:", error);
+      alert("답글 제출에 실패했습니다. 다시 시도해 주세요.");
+    }
+  };
+
+  //대댓글 이미지 추가
+  const handleSubReplyImageChange = (e) => {
+    if (e.target.files[0]) {
+      setNewSubReplyImage(e.target.files[0]);
+    }
+  };
+
+  if (!post) return <div className={styles.loading}>로딩 중...</div>;
   return (
     <div className={styles.postDetailPage}>
       <h1 className={styles.postTitle}>{post.boardTitle}</h1>
@@ -310,14 +397,14 @@ const BoardDetailPage = () => {
             <>
               <button
                 onClick={handlePrevImage}
-                className={`${styles.imageNavButton} ${styles.prev}`} // 왼쪽 버튼
+                className={`${styles.imageNavButton} ${styles.prev}`}
                 aria-label="이전 이미지"
               >
                 <BsChevronLeft />
               </button>
               <button
                 onClick={handleNextImage}
-                className={`${styles.imageNavButton} ${styles.next}`} // 오른쪽 버튼
+                className={`${styles.imageNavButton} ${styles.next}`}
                 aria-label="다음 이미지"
               >
                 <BsChevronRight />
@@ -405,6 +492,95 @@ const BoardDetailPage = () => {
                       </button>
                     </div>
                   )}
+
+                  {/* 답글 버튼 */}
+                  <button
+                    onClick={() => setReplyingTo(comment.id)}
+                    className={styles.replyButton}
+                  >
+                    <BsReply /> 답글
+                  </button>
+
+                  {/* 대댓글 목록 */}
+                  {comment.subReplies && comment.subReplies.length > 0 && (
+                    <ul className={styles.subReplyList}>
+                      {comment.subReplies.map((subReply) => (
+                        <li key={subReply.id} className={styles.subReplyItem}>
+                          <span className={styles.subReplyAuthor}>
+                            <img
+                              className={styles.profileImage}
+                              src={
+                                subReply.user?.profileUrl ||
+                                "/default-profile.png"
+                              }
+                              alt="프로필"
+                            />
+                            {subReply.user?.nickname || "익명의강아지주인"}
+                          </span>
+                          <span className={styles.subReplyDate}>
+                            {new Date(
+                              subReply.subReplyCreatedAt
+                            ).toLocaleString()}
+                          </span>
+                          <p>{subReply.subReplyContent}</p>
+                          {subReply.imageUrl && (
+                            <img
+                              src={subReply.imageUrl}
+                              alt="대댓글 이미지"
+                              className={styles.subReplyImage}
+                            />
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+
+                  {/* 대댓글 입력 폼 */}
+                  {replyingTo === comment.id && (
+                    <form
+                      onSubmit={(e) => handleSubReplySubmit(e, comment.id)}
+                      className={styles.subReplyForm}
+                    >
+                      <div className={styles.inputWrapper}>
+                        <input
+                          type="text"
+                          value={newSubReply}
+                          onChange={(e) => setNewSubReply(e.target.value)}
+                          placeholder="답글을 입력하세요"
+                          required
+                          className={styles.subReplyInput}
+                        />
+                        <label
+                          htmlFor="subReplyImageUpload"
+                          className={styles.iconButton}
+                        >
+                          <BsImage />
+                        </label>
+                        <input
+                          id="subReplyImageUpload"
+                          type="file"
+                          onChange={handleSubReplyImageChange}
+                          accept="image/*"
+                          style={{ display: "none" }}
+                        />
+                        {newSubReplyImage && (
+                          <span className={styles.imageSelected}>
+                            이미지 선택됨
+                          </span>
+                        )}
+                        <button type="submit" className={styles.submitButton}>
+                          등록
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setReplyingTo(null)}
+                          className={styles.cancelButton}
+                        >
+                          취소
+                        </button>
+                      </div>
+                    </form>
+                  )}
                 </div>
               </li>
             ))
@@ -468,5 +644,4 @@ const BoardDetailPage = () => {
     </div>
   );
 };
-
 export default BoardDetailPage;

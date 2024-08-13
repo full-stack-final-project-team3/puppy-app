@@ -191,6 +191,12 @@ export const router = createBrowserRouter([
         loader: authCheckLoader, // 로그인 정보를 확인하는 loader 추가
       },
       {
+        path: "board/:id/comments/:commentId/subReplies", // 게시글 상세 페이지 경로 추가
+        element: <BoardDetailPage />,
+        loader: authCheckLoader, // 로그인 정보를 확인하는 loader 추가
+      },
+
+      {
         path: "board/:id/edit", // 게시글 상세 페이지 경로 추가
         element: <BoardEditPage />,
         loader: authCheckLoader, // 로그인 정보를 확인하는 loader 추가
