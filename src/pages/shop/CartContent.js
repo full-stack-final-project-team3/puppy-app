@@ -3,6 +3,7 @@ import { getUserToken } from "../../config/user/auth";
 import styles from "./ShowCart.module.scss";
 import { AUTH_URL } from "../../config/user/host-config";
 import { CART_URL } from "../../config/user/host-config";
+import { useNavigate } from "react-router-dom"; // yj추가
 
 const CartContent = ({
   cart,
@@ -13,6 +14,7 @@ const CartContent = ({
   const discountedPrice = 69000; // 단일 번들 할인 전 가격
   const totalDiscountedPrice = discountedPrice * bundles.length; // 할인된 총 가격
   const token = getUserToken();
+  const navigate = useNavigate(); // yj추가
 
   // 각 번들에 대한 구독 기간 상태 관리
   const [subscriptionPeriods, setSubscriptionPeriods] = useState(
@@ -47,6 +49,16 @@ const CartContent = ({
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(updatedCartInfo),
+      });
+
+      // yj추가
+      // OrderPage로 이동하면서 데이터 전달
+      navigate("/order-page", {
+        state: {
+          bundles,
+          subscriptionPeriods,
+          totalPrice: cart.totalPrice,
+        },
       });
 
       // 2. 결제 요청
