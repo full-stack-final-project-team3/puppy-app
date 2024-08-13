@@ -28,7 +28,7 @@ const CheckPasswordModal = ({ onClose, cancelEdit }) => {
         if (flag) {
             setIsValid(true);
             // setIsSubmitDisabled(false);
-            setSuccess("일치합니다.");
+            // setSuccess("일치합니다.");
             onClose(false); // 모달을 닫으며 다음 단계로 이동
         } else {
             setIsValid(false);
@@ -36,7 +36,7 @@ const CheckPasswordModal = ({ onClose, cancelEdit }) => {
             setError("비밀번호가 틀렸습니다.");
         }
 
-    }, 1000);
+    }, 300);
 
     const changeHandler = (e) => {
         const password = e.target.value;
