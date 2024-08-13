@@ -451,7 +451,67 @@ const handleSubReplyDelete = async (commentId, subReplyId) => {
   if (!post) return <div className={styles.loading}>로딩 중...</div>;
   return (
     <div className={styles.postDetailPage}>
-      {/* 기존 코드... */}
+      <h1 className={styles.postTitle}>{post.boardTitle}</h1>
+      <div className={styles.postMeta}>
+        <span className={styles.author}>
+          <img
+            className={styles.profileImage}
+            src={post.user?.profileUrl || "/default-profile.png"}
+            alt="프로필"
+          />
+          {post.user?.nickname || "익명의강아지주인"}
+        </span>
+        <span className={styles.date}>
+          <GoClock className={styles.iconWithSpacing} />
+          {new Date(post.boardCreatedAt).toLocaleDateString()}
+        </span>
+        <span className={styles.viewCount}>
+          <BsEye className={styles.iconWithSpacing} /> {post.viewCount}
+        </span>
+        {isLoggedIn && user.id === post.user.id && (
+          <div className={styles.optionsContainer}>
+            <button className={styles.optionsButton} onClick={toggleOptions}>
+              <BsThreeDotsVertical />
+            </button>
+          </div>
+        )}
+      </div>
+      {post.images && post.images.length > 0 && (
+        <div className={styles.postImages}>
+          <img
+            src={`${BASE_URL}${post.images[currentImageIndex]}`}
+            alt={`${post.boardTitle} - 이미지 ${currentImageIndex + 1}`}
+            className={styles.mainImage}
+          />
+          {post.images.length > 1 && (
+            <>
+              <button
+                onClick={handlePrevImage}
+                className={`${styles.imageNavButton} ${styles.prev}`}
+                aria-label="이전 이미지"
+              >
+                <BsChevronLeft />
+              </button>
+              <button
+                onClick={handleNextImage}
+                className={`${styles.imageNavButton} ${styles.next}`}
+                aria-label="다음 이미지"
+              >
+                <BsChevronRight />
+              </button>
+              <div className={styles.imageCount}>
+                {currentImageIndex + 1} / {post.images.length}
+              </div>
+            </>
+          )}
+        </div>
+      )}
+      <div className={styles.postContent}>{post.boardContent}</div>
+      <div className={styles.shareButtonContainer}>
+        <button className={styles.shareButton} onClick={handleShare}>
+          <AiOutlineExport /> 공유하기
+        </button>
+      </div>
       <div className={styles.commentsSection}>
         <h2>
           <BsChat /> 댓글
