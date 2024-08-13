@@ -1,5 +1,5 @@
 .authContainer {
-  width: 44%;
+  width: 25%;
   margin: 100px auto;
   padding: 20px;
   border: 1px solid #ccc;
@@ -67,5 +67,40 @@
     outline: none;
     border-color: #A68968;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+}
+
+
+@media screen and (max-width: 400px) {
+  .authContainer {
+    width: 83%;
+    margin: 50px auto;
+    padding: 15px;
+    border-radius: 20px;
+
+    .codeInputWrapper {
+      gap: 5px;
+
+      .codeInput {
+        width: 35px;
+        height: 35px;
+        font-size: 1em;
+      }
+    }
+  }
+
+  .input {
+    width: 85%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border-radius: 20px;
+  }
+
+  h3 {
+    font-size: 1.2em;
+  }
+
+  .h3 {
+    font-size: 1em;
   }
 }
