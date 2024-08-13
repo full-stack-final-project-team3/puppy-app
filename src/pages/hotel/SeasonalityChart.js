@@ -50,7 +50,6 @@ const getMonthlyReservations = (reservations) => {
     return monthlyReservations;
 };
 
-
 // 객실 타입별 예약빈도 수 가져오는 로직
 const getTypeBasedReservations = (reservations) => {
     const typeReservations = {
@@ -82,22 +81,21 @@ const SeasonalityChart = () => {
     }, [status, dispatch, userId]);
 
     if (status === 'loading') {
-        return <p>Loading...</p>;
+        return <p>로딩 중...</p>;
     }
 
     if (status === 'failed') {
-        return <p>Error: {error}</p>;
+        return <p>오류: {error}</p>;
     }
 
     const monthlyReservations = getMonthlyReservations(userReservations);
     const typeReservations = getTypeBasedReservations(userReservations);
 
-
     const monthlyData = {
         labels: Object.keys(monthlyReservations),
         datasets: [
             {
-                label: 'Monthly Reservations',
+                label: '월별 예약 현황',
                 data: Object.values(monthlyReservations),
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 borderColor: 'rgba(75, 192, 192, 1)',
@@ -110,7 +108,7 @@ const SeasonalityChart = () => {
         labels: Object.keys(typeReservations),
         datasets: [
             {
-                label: 'Reservations by Room Type',
+                label: '객실 타입별 예약',
                 data: Object.values(typeReservations),
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
@@ -140,17 +138,17 @@ const SeasonalityChart = () => {
             },
             title: {
                 display: true,
-                text: 'Reservation Statistics'
+                text: '예약 통계'
             },
         },
     };
 
     return (
         <div>
-            <h2>Seasonality of Reservations</h2>
-            <Bar data={monthlyData} options={{ ...options, title: { ...options.title, text: 'Monthly Reservations' } }} />
-            <h2>Room Type Reservations</h2>
-            <Bar data={typeData} options={{ ...options, title: { ...options.title, text: 'Reservations by Room Type' } }} />
+            <h2>월별 예약 트렌드</h2>
+            <Bar data={monthlyData} options={{ ...options, title: { ...options.title, text: '월별 예약 현황' } }} />
+            <h2>객실 타입별 예약</h2>
+            <Bar data={typeData} options={{ ...options, title: { ...options.title, text: '객실 타입별 예약' } }} />
         </div>
     );
 };
