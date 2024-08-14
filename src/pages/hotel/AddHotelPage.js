@@ -1,28 +1,35 @@
-import React, {useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {useNavigate} from 'react-router-dom';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import {
     updateHotelData, updateImage, addImage, removeImage,
     setShowConfirmModal, setShowRoomModal, setErrorMessage,
     uploadFile, submitHotel, resetRoomData
 } from '../../components/store/hotel/HotelAddSlice';
 import styles from './AddHotelPage.module.scss';
-import {HOTEL_URL} from "../../config/user/host-config";
 import RoomModal from "./RoomModal";
+
+// 이미지 URL 생성 함수
+const createImageUrl = (image) => {
+    if (!image || !image.hotelImgUri) return '';
+    return image.type === 'LOCAL'
+        ? image.hotelImgUri
+        : `http://localhost:8888${image.hotelImgUri.replace('/local', '/hotel/images')}`;
+};
 
 const AddHotelPage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const {hotelData, hotelId, errorMessage, showConfirmModal, showRoomModal} = useSelector((state) => state.hotelAdd);
+    const { hotelData, hotelId, errorMessage, showConfirmModal, showRoomModal } = useSelector((state) => state.hotelAdd);
 
     const handleHotelChange = (e) => {
-        const {name, value} = e.target;
+        const { name, value } = e.target;
         dispatch(updateHotelData({[name]: value}));
     };
 
     const handleImageChange = (e, index) => {
-        const {name, value} = e.target;
-        dispatch(updateImage({index, image: {[name]: value}}));
+        const { name, value } = e.target;
+        dispatch(updateImage({ index, image: { [name]: value } }));
     };
 
     const handleAddImage = () => {
@@ -41,7 +48,7 @@ const AddHotelPage = () => {
     const handleHotelSubmit = (e) => {
         e.preventDefault();
         const token = JSON.parse(localStorage.getItem('userData')).token;
-        dispatch(submitHotel({hotelData, token}));
+        dispatch(submitHotel({ hotelData, token }));
     };
 
     const handleConfirmYes = () => {
@@ -64,11 +71,11 @@ const AddHotelPage = () => {
 
     const backHandler = () => {
         navigate('/hotel');
-    }
+    };
 
     const handleRoomAdded = () => {
-        dispatch(resetRoomData()); // 룸 데이터 초기화
-        dispatch(setShowRoomModal(true)); // 모달창 다시 열기
+        dispatch(resetRoomData());
+        dispatch(setShowRoomModal(true));
     };
 
     return (
@@ -145,11 +152,10 @@ const AddHotelPage = () => {
                         />
                         {image.hotelImgUri && (
                             <>
-                                <img src={`${HOTEL_URL}/images/${image.hotelImgUri}`} alt="Hotel"/>
+                                <img src={createImageUrl(image)} alt="Hotel" />
                                 <input
                                     type="hidden"
                                     name="type"
-                                    placeholder="Image Type"
                                     value={image.type}
                                     onChange={(e) => handleImageChange(e, index)}
                                     required
@@ -162,8 +168,7 @@ const AddHotelPage = () => {
                 <button type="button" onClick={handleAddImage}>Add Image</button>
                 <button type="submit">Save Hotel</button>
                 {errorMessage && <p className={styles.error}>{errorMessage}</p>}
-                <button type="button" onClick={backHandler}>뒤로가기</button>
-
+                <button type="button" onClick={backHandler}>Back</button>
             </form>
 
             {showConfirmModal && (
@@ -174,8 +179,10 @@ const AddHotelPage = () => {
                 </div>
             )}
 
-            {showRoomModal && <RoomModal backHandler = {backHandler} hotelId={hotelId} onClose={() => dispatch(setShowRoomModal(false))}
-                                         onRoomAdded={handleRoomAdded}/>}
+            {showRoomModal && (
+                <RoomModal backHandler={backHandler} hotelId={hotelId} onClose={() => dispatch(setShowRoomModal(false))}
+                           onRoomAdded={handleRoomAdded}/>
+            )}
         </div>
     );
 };
