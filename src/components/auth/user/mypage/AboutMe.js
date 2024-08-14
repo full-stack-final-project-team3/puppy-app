@@ -10,7 +10,6 @@ const AboutMe = () => {
     const user = useSelector(state => state.userEdit.userDetail);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
     const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
