@@ -15,6 +15,14 @@ const AddRoomPage = () => {
     const roomData = useSelector((state) => state.roomAdd);
     const isUploading = useSelector((state) => state.roomAdd.isUploading);
 
+    // 이미지 URL 생성 함수
+    const createImageUrl = (image) => {
+        if (!image || !image.hotelImgUri) return '';
+        return image.type === 'LOCAL'
+            ? image.hotelImgUri
+            : `http://localhost:8888${image.hotelImgUri.replace('/local', '/hotel/images')}`;
+    };
+
     const handleRoomChange = (e) => {
         const { name, value } = e.target;
         dispatch(updateRoomData({ [name]: value }));
@@ -98,7 +106,7 @@ const AddRoomPage = () => {
                         />
                         {image.hotelImgUri && (
                             <>
-                                <img src={`${ROOM_URL}/images/${image.hotelImgUri}`} alt="Hotel" />
+                                <img src={createImageUrl(image)} alt="ROOM"/>
                                 <button type="button" onClick={() => handleRemoveImage(index)}>Remove</button>
                             </>
                         )}
