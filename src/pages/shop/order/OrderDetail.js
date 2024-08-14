@@ -3,6 +3,12 @@ import { useLocation } from 'react-router-dom';
 import styles from './scss/OrderDetail.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 
+const subscriptionPeriodLabels = {
+    ONE: "1개월",
+    MONTH3: "3개월",
+    MONTH6: "6개월",
+};
+
 const OrderDetail = () => {
     const user = useSelector((state) => state.userEdit.userDetail);
     const location = useLocation();
@@ -15,13 +21,13 @@ const OrderDetail = () => {
                 <p><strong>이름: {user.nickname}</strong> </p>
                 <p><strong>이메일: {user.email}</strong> </p>
                 <p><strong>핸드폰 번호: {user.phoneNumber}</strong></p>
-                <p><strong>주소:</strong></p>
+                <p><strong>주소: {order.address || 'N/A'}</strong></p>
             </div>
             {order.bundles.map((bundle, index) => (
                 <div key={index} className={styles.bundleItem}>
                     <p><strong>상품명 :</strong> 반려견 전용 맞춤형 푸드 패키지 For {bundle.dogName}</p>
                     <p><strong>상품 구독 기간 :</strong> 
-                        {order.subscriptionPeriods[bundle.id]}
+                        {subscriptionPeriodLabels[order.subscriptionPeriods[bundle.id]] || '구독 기간 정보 없음'}
                     </p>
                     <p><strong>패키지 리스트:</strong></p>
                     <ul>

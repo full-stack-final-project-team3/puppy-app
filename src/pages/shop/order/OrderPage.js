@@ -140,12 +140,9 @@ const OrderPage = () => {
       orderHistory.push(orderData);
       localStorage.setItem('orderHistory', JSON.stringify(orderHistory));
 
-      // Fetch updated user data after successful order
-      const updatedUserResponse = await fetch(`${AUTH_URL}/${user.email}`);
-      const updatedUser = await updatedUserResponse.json();
-
-      // Update user detail in Redux store
-      dispatch(userEditActions.updateUserDetail(updatedUser));
+      // 차감된 포인트를 계산하여 Redux 상태 업데이트
+      const deletedPoint = user.point - pointUsage;
+      dispatch(userEditActions.updateUserDetail({ ...user, point: deletedPoint }));
 
       setModalMessage("결제가 완료되었습니다.");
       setIsConfirmStep(false);
@@ -206,4 +203,3 @@ const OrderPage = () => {
 };
 
 export default OrderPage;
-//성공
