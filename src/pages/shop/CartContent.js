@@ -32,6 +32,15 @@ const CartContent = ({
   };
 
   const handleUpdateCart = async () => {
+    // 구독 기간이 설정되지 않은 경우 체크
+    const hasSubscription = bundles.every(
+      (bundle) => subscriptionPeriods[bundle.id] !== ""
+    );
+
+    if (!hasSubscription) {
+      alert("구독 기간을 설정해주세요.");
+      return; // 업데이트를 중단
+    }
 
     const updatedCartInfo = {
       bundles: bundles.map((bundle) => ({
@@ -78,8 +87,7 @@ const CartContent = ({
       //     console.error('결제에 실패했습니다.');
       //   }
 
-      console.log("업데이트 완료")
-
+      console.log("업데이트 완료");
     } catch (error) {
       console.error("오류 발생:", error);
     }
