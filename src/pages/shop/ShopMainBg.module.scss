@@ -1,284 +1,292 @@
-.mainSection {
-  height: 95vh;
+.shopMainBgContainer {
+  
+  .mainSection {
+    height: 95vh;
 
-  .imgSection {
-    background-image: url(../../../public/shop_img/1.png); // 배경 이미지 경로
-    background-size: cover;
-    background-position: center;
-    height: 85%; /* 높이를 원하는 값으로 설정 */
-    width: 100%; /* 너비를 원하는 값으로 설정 */
-    position: relative; /* 부모 요소에 relative 설정 */
+    .imgSection {
+      background-image: url(../../../public/shop_img/1.png); // 배경 이미지 경로
+      background-size: cover;
+      background-position: center;
+      height: 85%; /* 높이를 원하는 값으로 설정 */
+      width: 100%; /* 너비를 원하는 값으로 설정 */
+      position: relative; /* 부모 요소에 relative 설정 */
 
-    .manageShopBtn {
-      position: absolute; /* 자식 요소에 absolute 설정 */
-      top: 10px; /* 상단에서 10px 떨어진 위치 */
-      right: 10px; /* 오른쪽에서 10px 떨어진 위치 */
-    }
-  }
-
-  .sliderContainer {
-    overflow: hidden;
-    position: relative;
-    height: 170px; // 슬라이드 높이를 화면 전체 높이로 설정
-    background: #5e584f;
-  }
-
-  .slider {
-    display: flex;
-    animation: scroll 15s linear infinite; /* 애니메이션 시간 조정 */
-    height: 100%; // 부모의 높이에 맞게 설정
-    width: calc(
-      250px * 5 * 2
-    ); // 슬라이드 총 너비 조정 (슬라이드 수 x 각 슬라이드 너비 x 2)
-  }
-
-  .slideImgBox {
-    flex: 0 0 auto;
-    width: 260px;
-    display: flex;
-    justify-content: center; // 가로 중앙 정렬
-    margin: auto 0;
-
-    .slide {
-      background-color: #5e584f;
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); // 텍스트 가독성을 위한 그림자
-      height: 100%; // 슬라이드 높이를 부모의 높이에 맞게 설정
-
-      &.slide1,
-      &.slide2,
-      &.slide3,
-      &.slide4,
-      &.slide5 {
-        width: 55px; // 슬라이드 너비 설정
-        height: 54px; // 슬라이드 높이 설정
-        margin-right: 20px;
-        background-size: cover; // 배경 이미지 사이즈를 contain으로 설정
-        background-position: center; // 배경 위치를 중앙으로 설정
-        background-repeat: no-repeat; // 배경 이미지 반복 방지
-      }
-
-      // 각 슬라이드에 대한 배경 이미지 설정
-      &.slide1 {
-        background-image: url("../../assets/shop/다운로드.png");
-      }
-
-      &.slide2 {
-        background-image: url("../../assets/shop/다운로드\ (1).png");
-      }
-
-      &.slide3 {
-        background-image: url("../../assets/shop/다운로드\ (2).png");
-      }
-
-      &.slide4 {
-        background-image: url("../../assets/shop/다운로드\ (3).png");
-      }
-
-      &.slide5 {
-        background-image: url("../../assets/shop/다운로드\ (4).png");
-      }
-
-      @keyframes scroll {
-        0% {
-          transform: translateX(0);
-        }
-        100% {
-          transform: translateX(-50%); /* 전체 슬라이드 길이만큼 이동 */
-        }
-      }
-    }
-  }
-
-  .slideText {
-    color: white;
-    padding-top: 10px;
-    margin-right: 10px; // 슬라이드 텍스트 상단 여백 추가 (원하는 값으로 조정)
-  }
-
-  .imgSection2 {
-    background-image: url(../../../public/shop_img/2.png); // 배경 이미지 경로
-    background-size: cover;
-    background-position: center;
-    height: 85%; /* 높이를 원하는 값으로 설정 */
-    width: 100%; /* 너비를 원하는 값으로 설정 */
-  }
-
-  .imgSection3Box {
-    display: flex;
-  }
-
-  .imgSection3 {
-    float: left;
-    background-image: url("../../../public/shop_img/3840x0.png"); // 배경 이미지 경로
-    background-size: cover; // 배경 이미지가 전체 영역을 덮도록 설정
-    background-position: center; // 배경 이미지를 중앙에 배치
-    height: 600px; // 원하는 높이 설정
-    width: 50%; // 너비를 절반으로 설정
-    left: 0;
-    display: flex; // 내부 요소 배치를 위한 플렉스 박스 사용
-    flex-direction: column; // 세로 방향으로 배치
-  }
-
-  .processContainer {
-    width: 50%;
-    background-color: #b5b38d; // 배경 색상
-    text-align: left;
-
-    .content {
-      margin-top: 40px;
-
-      .guide {
-        color: #827d76;
-        width: 45%;
-        margin-left: 35px;
-      }
-
-      .selectDogBox {
-        display: flex; /* Flexbox 사용 */
-        width: 100%; /* 부모 요소의 너비를 상속 */
-
-        .dogList {
-          background: #b5b38d;
-          color: #403c36;
-          width: 45%;
-          margin-left: 35px;
-        }
-      }
-
-      .startBtnBox {
-        display: flex; /* Flexbox 사용 */
-        width: 100%; /* 부모 요소의 너비를 상속 */
-
-        .startButton {
-          width: 45%;
-          background-color: #e88b4f; // 버튼 배경색
-          padding: 20px;
-          margin-top: 20px;
-          margin-left: 35px;
-          color: #fffff0;
-          border: none;
-          border-radius: 25px;
-          cursor: pointer;
-          font-size: 16px;
-          font-weight: bold;
-        }
+      .manageShopBtn {
+        position: absolute; /* 자식 요소에 absolute 설정 */
+        top: 10px; /* 상단에서 10px 떨어진 위치 */
+        right: 10px; /* 오른쪽에서 10px 떨어진 위치 */
       }
     }
 
-    .processContent {
-      padding-top: 50px;
-      padding-left: 120px;
+    .sliderContainer {
+      overflow: hidden;
+      position: relative;
+      height: 170px; // 슬라이드 높이를 화면 전체 높이로 설정
+      background: #5e584f;
     }
 
-    .processTitle {
-      color: #403c36;
-      font-size: 36px;
-      font-weight: bold;
-      margin-bottom: 30px;
-    }
-
-    .processStep {
+    .slider {
       display: flex;
-      margin-bottom: 20px;
+      animation: scroll 15s linear infinite; /* 애니메이션 시간 조정 */
+      height: 100%; // 부모의 높이에 맞게 설정
+      width: calc(
+        250px * 5 * 2
+      ); // 슬라이드 총 너비 조정 (슬라이드 수 x 각 슬라이드 너비 x 2)
+    }
 
-      .stepNumber {
-        font-size: 24px;
+    .slideImgBox {
+      flex: 0 0 auto;
+      width: 260px;
+      display: flex;
+      justify-content: center; // 가로 중앙 정렬
+      margin: auto 0;
+
+      .slide {
+        background-color: #5e584f;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); // 텍스트 가독성을 위한 그림자
+        height: 100%; // 슬라이드 높이를 부모의 높이에 맞게 설정
+
+        &.slide1,
+        &.slide2,
+        &.slide3,
+        &.slide4,
+        &.slide5 {
+          width: 55px; // 슬라이드 너비 설정
+          height: 54px; // 슬라이드 높이 설정
+          margin-right: 20px;
+          background-size: cover; // 배경 이미지 사이즈를 contain으로 설정
+          background-position: center; // 배경 위치를 중앙으로 설정
+          background-repeat: no-repeat; // 배경 이미지 반복 방지
+        }
+
+        // 각 슬라이드에 대한 배경 이미지 설정
+        &.slide1 {
+          background-image: url("../../assets/shop/다운로드.png");
+        }
+
+        &.slide2 {
+          background-image: url("../../assets/shop/다운로드\ (1).png");
+        }
+
+        &.slide3 {
+          background-image: url("../../assets/shop/다운로드\ (2).png");
+        }
+
+        &.slide4 {
+          background-image: url("../../assets/shop/다운로드\ (3).png");
+        }
+
+        &.slide5 {
+          background-image: url("../../assets/shop/다운로드\ (4).png");
+        }
+
+        @keyframes scroll {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-50%); /* 전체 슬라이드 길이만큼 이동 */
+          }
+        }
+      }
+    }
+
+    .slideText {
+      color: white;
+      padding-top: 10px;
+      margin-right: 10px; // 슬라이드 텍스트 상단 여백 추가 (원하는 값으로 조정)
+    }
+
+    .imgSection2 {
+      background-image: url(../../../public/shop_img/2.png); // 배경 이미지 경로
+      background-size: cover;
+      background-position: center;
+      height: 85%; /* 높이를 원하는 값으로 설정 */
+      width: 100%; /* 너비를 원하는 값으로 설정 */
+    }
+
+    .imgSection3Box {
+      display: flex;
+    }
+
+    .imgSection3 {
+      float: left;
+      background-image: url("../../../public/shop_img/3840x0.png"); // 배경 이미지 경로
+      background-size: cover; // 배경 이미지가 전체 영역을 덮도록 설정
+      background-position: center; // 배경 이미지를 중앙에 배치
+      height: 600px; // 원하는 높이 설정
+      width: 50%; // 너비를 절반으로 설정
+      left: 0;
+      display: flex; // 내부 요소 배치를 위한 플렉스 박스 사용
+      flex-direction: column; // 세로 방향으로 배치
+    }
+
+    .processContainer {
+      width: 50%;
+      background-color: #E8E4D7; // 배경 색상
+      text-align: left;
+
+      .content {
+        margin-top: 40px;
+
+        .guide {
+          color: #827d76;
+          width: 42%;
+          margin-left: 35px;
+        }
+
+        .selectDogBox {
+          display: flex; /* Flexbox 사용 */
+          width: 100%; /* 부모 요소의 너비를 상속 */
+
+          .dogList {
+            background: #E8E4D7;
+            color: #403c36;
+            width: 42%;
+            margin-left: 35px;
+          }
+        }
+
+        .startBtnBox {
+          display: flex; /* Flexbox 사용 */
+          width: 100%; /* 부모 요소의 너비를 상속 */
+
+          .startButton {
+            width: 42%;
+            background-color: #4D5D4C; // 버튼 배경색
+            padding: 18px;
+            margin-top: 20px;
+            margin-left: 35px;
+            color: #fffff0;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: transform 0.4s ease-in-out; /* 애니메이션 속도 조절 */
+          }
+
+          .startButton:hover {
+            transform: translateY(-3px); /* 호버 시 버튼이 5px 위로 이동 */
+          }
+        }
+      }
+
+      .processContent {
+        padding-top: 50px;
+        padding-left: 120px;
+      }
+
+      .processTitle {
+        color: #403c36;
+        font-size: 36px;
         font-weight: bold;
-        padding-top: 5px;
-        margin-right: 10px;
+        margin-bottom: 30px;
       }
 
-      .stepContent {
-        flex: 1;
+      .processStep {
+        display: flex;
+        margin-bottom: 20px;
 
-        .stepIcon1 {
-          background-image: url("../../../public/shop_img/dog.png"); /* 아이콘 이미지 경로 */
-          background-size: contain; /* 이미지 크기 조정 */
-          background-repeat: no-repeat; /* 반복 방지 */
-          display: inline-block;
-          margin-left: 10px;
-          width: 40px;
-          height: 40px;
-          background-size: cover;
+        .stepNumber {
+          font-size: 24px;
+          font-weight: bold;
+          padding-top: 5px;
+          margin-right: 10px;
         }
 
-        .stepIcon2 {
-          background-image: url("../../../public/shop_img/big-idea.png"); /* 아이콘 이미지 경로 */
-          background-size: contain; /* 이미지 크기 조정 */
-          background-repeat: no-repeat; /* 반복 방지 */
-          display: inline-block;
-          margin-left: 10px;
-          width: 42px;
-          height: 40px;
-          background-size: cover;
-        }
+        .stepContent {
+          flex: 1;
 
-        .stepIcon3 {
-          background-image: url("../../../public/shop_img/gift.png"); /* 아이콘 이미지 경로 */
-          background-size: contain; /* 이미지 크기 조정 */
-          background-repeat: no-repeat; /* 반복 방지 */
-          display: inline-block;
-          margin-left: 10px;
-          width: 42px;
-          height: 40px;
-          background-size: cover;
-        }
+          .stepIcon1 {
+            background-image: url("../../../public/shop_img/dog.png"); /* 아이콘 이미지 경로 */
+            background-size: contain; /* 이미지 크기 조정 */
+            background-repeat: no-repeat; /* 반복 방지 */
+            display: inline-block;
+            margin-left: 10px;
+            width: 40px;
+            height: 40px;
+            background-size: cover;
+          }
 
-        h5 {
-          font-size: 17px;
-          margin: 0;
-          margin-bottom: 5px;
-          color: #403c36;
-        }
+          .stepIcon2 {
+            background-image: url("../../../public/shop_img/big-idea.png"); /* 아이콘 이미지 경로 */
+            background-size: contain; /* 이미지 크기 조정 */
+            background-repeat: no-repeat; /* 반복 방지 */
+            display: inline-block;
+            margin-left: 10px;
+            width: 42px;
+            height: 40px;
+            background-size: cover;
+          }
 
-        p {
-          margin: 0;
-          margin-top: 10px;
-          color: #403c36;
+          .stepIcon3 {
+            background-image: url("../../../public/shop_img/gift.png"); /* 아이콘 이미지 경로 */
+            background-size: contain; /* 이미지 크기 조정 */
+            background-repeat: no-repeat; /* 반복 방지 */
+            display: inline-block;
+            margin-left: 10px;
+            width: 42px;
+            height: 40px;
+            background-size: cover;
+          }
+
+          h5 {
+            font-size: 17px;
+            margin: 0;
+            margin-bottom: 5px;
+            color: #403c36;
+          }
+
+          p {
+            margin: 0;
+            margin-top: 10px;
+            color: #403c36;
+          }
         }
       }
     }
-  }
 
-  .featuresContainer {
-    display: flex;
-    justify-content: center; /* 항목들을 중앙 정렬 */
-    gap: 150px; /* 항목 간의 간격 조정 */
-    background-color: #5e5850; /* 배경색 */
-    margin: 0 auto;
-    padding: 50px 0; /* 상하 패딩 */
-    color: rgb(255, 255, 255); /* 텍스트 색상 */
-  }
-
-  .featureItem {
-    text-align: center; /* 텍스트 중앙 정렬 */
-    max-width: 335px; /* 최대 너비 설정 */
-
-    .featureTitle {
-      font-size: 20px;
-      color: white;
-      margin-top: 10px;
+    .featuresContainer {
+      display: flex;
+      justify-content: center; /* 항목들을 중앙 정렬 */
+      gap: 150px; /* 항목 간의 간격 조정 */
+      background-color: #5e5850; /* 배경색 */
+      margin: 0 auto;
+      padding: 50px 0; /* 상하 패딩 */
+      color: rgb(255, 255, 255); /* 텍스트 색상 */
     }
-    .featureContent {
-      color: white;
+
+    .featureItem {
+      text-align: center; /* 텍스트 중앙 정렬 */
+      max-width: 335px; /* 최대 너비 설정 */
+
+      .featureTitle {
+        font-size: 20px;
+        color: white;
+        margin-top: 10px;
+      }
+      .featureContent {
+        color: white;
+      }
     }
-  }
 
-  .subsIcon {
-    background-image: url("../../../public/shop_img/subscribe1.png"); /* 아이콘 이미지 경로 */
-    background-size: contain; /* 이미지 크기 조정 */
-    background-repeat: no-repeat; /* 반복 방지 */
-    margin: 0 auto;
-    height: 70px; /* 아이콘 높이 설정 */
-    width: 70px; /* 아이콘 너비 설정 */
-  }
+    .subsIcon {
+      background-image: url("../../../public/shop_img/subscribe1.png"); /* 아이콘 이미지 경로 */
+      background-size: contain; /* 이미지 크기 조정 */
+      background-repeat: no-repeat; /* 반복 방지 */
+      margin: 0 auto;
+      height: 70px; /* 아이콘 높이 설정 */
+      width: 70px; /* 아이콘 너비 설정 */
+    }
 
-  .qualityIcon {
-    background-image: url("../../../public/shop_img/shake-hand.png"); /* 아이콘 이미지 경로 */
-    background-size: contain; /* 이미지 크기 조정 */
-    background-repeat: no-repeat; /* 반복 방지 */
-    margin: 0 auto;
-    height: 70px; /* 아이콘 높이 설정 */
-    width: 70px; /* 아이콘 너비 설정 */
+    .qualityIcon {
+      background-image: url("../../../public/shop_img/shake-hand.png"); /* 아이콘 이미지 경로 */
+      background-size: contain; /* 이미지 크기 조정 */
+      background-repeat: no-repeat; /* 반복 방지 */
+      margin: 0 auto;
+      height: 70px; /* 아이콘 높이 설정 */
+      width: 70px; /* 아이콘 너비 설정 */
+    }
   }
 }
