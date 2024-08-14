@@ -38,7 +38,7 @@ const CartContent = ({
     );
 
     if (!hasSubscription) {
-      alert("구독 기간을 설정해 주세요.");
+      alert("구독 기간을 설정해주세요.");
       return; // 업데이트를 중단
     }
 
