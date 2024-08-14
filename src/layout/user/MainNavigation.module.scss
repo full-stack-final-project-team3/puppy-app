@@ -32,7 +32,7 @@
       border-radius: 50%;
       background: #B3797A;
       position: absolute;
-      right: 135px;
+      right: 131px;
       top: 29px;
       color: white;
       font-size: 0.8rem;
@@ -53,11 +53,7 @@
   .right > * {
     margin-right: 40px;
   }
-
-
-  //.count {
-  //  right: 80px !important; /* .count 요소를 오른쪽으로 30px 이동 */
-  //}
+  
 
   .login {
     text-decoration: none;
@@ -68,19 +64,6 @@
   .icon {
     width: 25px;
     height: 25px;
-    cursor: pointer;
-    color: #A69A91;
-  }
-  .bell {
-    width: 30px;
-    height: 30px;
-    cursor: pointer;
-    color: #A69A91;
-  }
-
-  .basket {
-    width: 30px;
-    height: 30px;
     cursor: pointer;
     color: #A69A91;
   }
@@ -153,7 +136,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-
+    padding: 0 10px; /* 좌우 여백 추가 */
   }
 
   .left, .center, .right {
@@ -163,7 +146,8 @@
   }
 
   .center {
-    justify-content: center;
+    justify-content: flex-start !important;
+    margin-right: 160px;
   }
 
   .left {
@@ -174,6 +158,18 @@
     justify-content: flex-end;
   }
 
+  .right > * {
+    margin-right: 0px !important; /* 모든 아이콘 사이의 마진을 0px로 설정 */
+  }
+  .login {
+    margin-right: 20px !important;
+  }
+  .logout {
+    margin-right: 10px !important;
+  }
+  .count {
+    right: 60px !important; /* .count 요소를 오른쪽으로 30px 이동 */
+  }
 
 
   .welcome {
@@ -190,7 +186,9 @@
 
   .icon {
     margin-left: 10px; /* 아이콘 간격 조절 */
+    margin-right: 20px !important; /* 아이콘 사이의 오른쪽 마진을 0px로 강제 설정 */
   }
+  
 
   .noticeWrap {
     position: absolute;
@@ -207,7 +205,4 @@
     padding: 6px;
   }
 
-  .count {
-    right: 110px !important;
-  }
 }
