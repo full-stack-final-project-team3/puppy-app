@@ -4,7 +4,6 @@ import styles from "./ShopMainBg.module.scss";
 import { useSelector } from "react-redux";
 import ShopMainBg from "./ShopMainBg";
 import ManageShop from "./NaviManageBtn.js";
-import Footer from "../../layout/user/Footer";
 
 const ShopMain = () => {
   const [selectedDog, setSelectedDog] = useState("");
@@ -24,6 +23,7 @@ const ShopMain = () => {
     setSelectedDogId(selectedId);
     const selectedDog = dogList.find((dog) => dog.id === selectedId);
     setSelectedDog(selectedDog);
+    console.log(selectedDog);
     setSelectedDogName(selectedDog ? selectedDog.dogName : "");
   };
 
@@ -32,8 +32,14 @@ const ShopMain = () => {
       if (dogList.length === 0) {
         navigate("/add-dog");
       } else if (selectedDogId) {
-        if (selectedDog.bundle !== null) {
+        if (selectedDog.hasBundle === true && selectedDog.hasSubs === true) {
           alert("이미 구독 중인 강아지입니다!");
+          return;
+        } else if (
+          selectedDog.hasBundle === true &&
+          selectedDog.hasSubs === false
+        ) {
+          navigate("/cart");
           return;
         }
         navigate(`/list/${selectedDogId}`, {

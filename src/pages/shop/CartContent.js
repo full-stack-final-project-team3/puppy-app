@@ -99,7 +99,7 @@ const CartContent = ({
         <div key={bundle.id} className={styles.bundleContainer}>
           <div className={styles.bundleHeaderContainer}>
             <h4 className={styles.bundleHeader}>
-              반려견 전용 맞춤형 푸드 패키지 For {bundle.dogName}
+              강아지 맞춤형 펫 푸드 패키지 For {bundle.dogName}
             </h4>
             <select
               className={styles.subscriptionSelect}
