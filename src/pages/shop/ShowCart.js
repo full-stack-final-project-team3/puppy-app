@@ -31,6 +31,7 @@ const ShowCart = () => {
 
       const data = await response.json();
       setCart(data);
+      window.scrollTo(0, 0); // 페이지의 맨 위로 스크롤
       console.log(data);
     } catch (error) {
       setError(error.message);
@@ -105,8 +106,15 @@ const ShowCart = () => {
 
   if (loading) {
     return (
-      <div className={spinnerStyles.spinnerContainer}>
-        <PulseLoader className={spinnerStyles.loader} color="#0B593F" loading={loading} size={18} />{" "}
+      <div className={styles.loadingOverlay}>
+        <div className={spinnerStyles.spinnerContainer}>
+          <PulseLoader
+            className={spinnerStyles.loader}
+            color="#0B593F"
+            loading={loading}
+            size={18}
+          />{" "}
+        </div>
       </div>
     );
   }
@@ -115,7 +123,6 @@ const ShowCart = () => {
     <>
       <div className={styles.cartContainer}>
         <h2 className={styles.cartTitle}>CART</h2>
-
         {cart.bundles && cart.bundles.length > 0 ? (
           <CartContent
             cart={cart}
