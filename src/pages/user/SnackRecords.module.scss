@@ -1,11 +1,20 @@
 .wrap {
-  padding: 20px;
-  background-color: #f9f9f9;
+  width: 50%;
+  margin: 50px auto;
+  border-radius: 32px;
+  background: #F4E8D3;
+  padding-bottom: 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .subWrap {
-  max-width: 800px;
-  margin: 0 auto;
+  width: 86%;
+  margin: 50px auto 0;
+  background: #F0E1C4;
+  padding-bottom: 20px;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .title {
@@ -16,11 +25,12 @@
 }
 
 .card {
-  background-color: #fff;
+  background: #F4E9D3;
   border: 1px solid #e0e0e0;
-  border-radius: 8px;
+  border-radius: 16px;
   padding: 20px;
   margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
 }
@@ -40,7 +50,7 @@
   width: 100px;
   height: 100px;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 12px;
 }
 
 .details {
@@ -69,14 +79,72 @@
 .cancelButton {
   padding: 10px 15px;
   font-size: 14px;
-  color: #fff;
-  background-color: #ff6b6b;
-  border: none;
-  border-radius: 4px;
+  color: black;
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
   cursor: pointer;
   text-align: center;
+  transition: background-color 0.3s;
 }
 
 .cancelButton:hover {
-  background-color: #e63946;
+  background-color: #B3797A;
+  color: white;
+}
+
+@media (max-width: 400px) {
+  .wrap {
+    width: 100%;
+    margin: 10px auto;
+    padding: 10px;
+    border-radius: 16px;
+  }
+
+  .subWrap {
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 8px;
+  }
+
+  .title {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+
+  .cardContent {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .imageContainer {
+    margin-bottom: 10px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .dogImage {
+    width: 80px;
+    height: 80px;
+  }
+
+  .details {
+    width: 100%;
+    font-size: 0.9rem;
+  }
+
+  .actions {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    margin-top: 10px;
+  }
+
+  .cancelButton {
+    width: 48%;
+    padding: 8px;
+    font-size: 0.8rem;
+  }
 }

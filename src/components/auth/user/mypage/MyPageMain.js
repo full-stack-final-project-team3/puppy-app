@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from './MyPageMain.module.scss';
 import MyPageHeader from "./MyPageHeader";
 import MyPageBody from "./MyPageBody";
-import { useRouteLoaderData } from "react-router-dom";
-import { DOG_URL } from "../../../../config/user/host-config";
+import {useRouteLoaderData} from "react-router-dom";
+import {DOG_URL} from "../../../../config/user/host-config";
 import DogEdit from "../../dog/DogEdit";
-import { useSelector } from "react-redux";
+import {useSelector} from "react-redux";
 import UserEdit from "./UserEdit";
 import AboutMyInfo from "./AboutMyInfo.js";
 import AdminPage from "../../../../pages/user/AdminPage"
+import Footer from "../../../../layout/user/Footer";
 
 const MyPageMain = () => {
 
@@ -24,7 +25,7 @@ const MyPageMain = () => {
     const isDogEditMode = useSelector(state => state.dogEdit.isDogEditMode);
     const isUserEditMode = useSelector(state => state.userEdit.isUserEditMode);
 
-    const { id } = userDetail;
+    const {id} = userDetail;
 
     useEffect(() => {
         if (!id) return;
@@ -52,25 +53,31 @@ const MyPageMain = () => {
 
     return (
         userDetail.role === "USER" ? (
-            <div className={styles.wrap}>
-                <MyPageHeader />
-                {!isEditMode && <MyPageBody user={userDetail} dogList={dogList} />}
-                {isUserEditMode && <UserEdit />}
-                {isDogEditMode && <DogEdit user={userDetail} />}
-                {!isEditMode && <AboutMyInfo />}
-            </div>
-        ) : (
-            clickAdmin ?
-                <AdminPage exit={exit}/>
-                :
-                (<div className={styles.wrap}>
-                    <p onClick={startAdminMode} className={styles.admin}>Admin Page 가기</p>
+            <>
+                <div className={styles.wrap}>
                     <MyPageHeader/>
                     {!isEditMode && <MyPageBody user={userDetail} dogList={dogList}/>}
                     {isUserEditMode && <UserEdit/>}
                     {isDogEditMode && <DogEdit user={userDetail}/>}
                     {!isEditMode && <AboutMyInfo/>}
-                </div>)
+                </div>
+                <Footer/>
+            </>
+        ) : (
+            clickAdmin ?
+                <AdminPage exit={exit}/>
+                :
+                (<>
+                    <div className={styles.wrap}>
+                        <p onClick={startAdminMode} className={styles.admin}>Admin Page 가기</p>
+                        <MyPageHeader/>
+                        {!isEditMode && <MyPageBody user={userDetail} dogList={dogList}/>}
+                        {isUserEditMode && <UserEdit/>}
+                        {isDogEditMode && <DogEdit user={userDetail}/>}
+                        {!isEditMode && <AboutMyInfo/>}
+                    </div>
+                    <Footer/>
+                </>)
 
 
             // <>

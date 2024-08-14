@@ -12,10 +12,12 @@ const UserEdit = () => {
     const passwordRef = useRef();
     const confirmPasswordRef = useRef();
     const fileInputRef = useRef();
-    const pointInputRef = useRef(); // 포인트 입력 필드의 참조를 추가합니다.
+    const pointInputRef = useRef();
+    const detailRef = useRef();
     const [profileUrl, setProfileUrl] = useState(user.profileUrl);
     const [nickname, setNickname] = useState(user.nickname);
     const [address, setAddress] = useState(user.address);
+    const [detailAddress, setDetailAddress] = useState('');
     const [phoneNum, setPhoneNum] = useState(user.phoneNumber);
     const [name, setName] = useState(user.realName);
     const [point, setPoint] = useState(user.point);
@@ -31,10 +33,8 @@ const UserEdit = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        // if (showModal) {
-        //     console.log("Modal is now visible:", showModal);
-        // }
-    }, [showModal]);
+        console.log(address + detailAddress); // 주소와 상세주소가 합쳐진 값을 출력
+    }, [address, detailAddress]); // address와 detailAddress가 변경될 때마다 실행
 
     const handlePasswordChange = () => {
         if (passwordRef.current.value && confirmPasswordRef.current.value) {
@@ -51,6 +51,33 @@ const UserEdit = () => {
             setPasswordMessage('');
             setIsSubmitDisabled(true);
         }
+    };
+
+    const handleAddressSearch = () => {
+        new window.daum.Postcode({
+            oncomplete: function (data) {
+                let fullAddress = data.address;
+                let extraAddress = '';
+
+                if (data.addressType === 'R') {
+                    if (data.bname !== '') {
+                        extraAddress += data.bname;
+                    }
+                    if (data.buildingName !== '') {
+                        extraAddress += (extraAddress !== '' ? `, ${extraAddress}` : data.buildingName);
+                    }
+                    fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '');
+                }
+
+                setAddress(fullAddress);
+            }
+        }).open();
+    };
+
+    const detailAddressHandler = (e) => {
+        setDetailAddress(e.target.value);
+        console.log(detailAddress)
+        setIsSubmitDisabled(false);
     };
 
     const handleInputChange = (setter) => (e) => {
@@ -94,7 +121,7 @@ const UserEdit = () => {
     const handleSubmit = async () => {
         const payload = {
             email: user.email,
-            address,
+            address: address + ' ' + detailAddress,
             password: passwordRef.current.value,
             nickname,
             phoneNumber: phoneNum,
@@ -140,10 +167,10 @@ const UserEdit = () => {
         setShowModal(false);
         handleSubmit(); // 확인 버튼 클릭 시 handleSubmit 실행
     };
+
     const handleCloseModal = () => {
         setShowModal(false); // 모달을 닫습니다.
     };
-
 
     return (
         <div className={styles.wrap}>
@@ -240,14 +267,32 @@ const UserEdit = () => {
                 </div>
                 <div className={styles.section}>
                     <label htmlFor="address" className={styles.address}>주소</label>
+                    <div className={styles.inputWithButton}>
+                        <input
+                            id="address"
+                            type="text"
+                            className={styles.input}
+                            value={address}
+                            onChange={handleInputChange(setAddress)}
+                        />
+                        <button onClick={handleAddressSearch} className={styles.addressButton}>
+                            주소 검색
+                        </button>
+                    </div>
+                </div>
+
+                <div className={styles.section}>
+                    <label htmlFor="detailAddress" className={styles.address}>상세 주소</label>
                     <input
-                        id="address"
+                        ref={detailRef}
+                        id="detailAddress"
                         type="text"
                         className={styles.input}
-                        value={address}
-                        onChange={handleInputChange(setAddress)}
+                        value={detailAddress}
+                        onChange={detailAddressHandler}
                     />
                 </div>
+
                 <div className={styles.flex}>
                     <button
                         className={styles.submitButton}
@@ -264,7 +309,7 @@ const UserEdit = () => {
                     </button>
                 </div>
             </div>
-            {isModalOpen && <DeleteAccountModal onClose={closeModal} />} {/* 모달 컴포넌트 추가 */}
+            {isModalOpen && <DeleteAccountModal onClose={closeModal}/>} {/* 모달 컴포넌트 추가 */}
 
             {showModal && (
                 <UserModal

@@ -34,7 +34,7 @@ const MyBoards = () => {
             <div className={styles.subWrap}>
                 {data.length > 0 ?
                     <>
-                        <h1 className={styles.h1}>{userDetail.nickname}의 게시글</h1>
+                        <h1 className={styles.h1}>{userDetail.nickname}님의 게시글</h1>
                         <ul className={styles.postList}>
                             {data.map((post) => (
                                 <li key={post.id} className={styles.postItem}>

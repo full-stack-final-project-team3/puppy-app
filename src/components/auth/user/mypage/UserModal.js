@@ -1,11 +1,12 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import styles from './UserModal.module.scss';
 
 const UserModal = ({ title, message, onConfirm, onClose, confirmButtonText = "확인", showCloseButton = true }) => {
-    return (
-        <div className={styles.modalBackdrop}>
-            <div className={styles.modalContent}>
+    return ReactDOM.createPortal(
+        <div className={styles.modalBackdrop} onClick={onClose}>
+            <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
                 <h2 className={styles.modalTitle}>{title}</h2>
                 <p className={styles.modalMessage}>{message}</p>
                 <div className={styles.buttonContainer}>
@@ -15,7 +16,8 @@ const UserModal = ({ title, message, onConfirm, onClose, confirmButtonText = "�
                     )}
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 };
 
@@ -25,8 +27,7 @@ UserModal.propTypes = {
     onConfirm: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,
     confirmButtonText: PropTypes.string,
-    cancelButtonText: PropTypes.string,
-    isConfirm: PropTypes.bool, // 모달이 alert인지 confirm인지 결정하는 prop
+    showCloseButton: PropTypes.bool,
 };
 
 export default UserModal;
