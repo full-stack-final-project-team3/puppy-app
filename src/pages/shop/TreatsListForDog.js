@@ -6,6 +6,7 @@ import styles from "./TreatsListForDog.module.scss";
 import CreateBundle from "../../components/shop/CreateBundle";
 import Modal from "./TreatsDetailModal";
 import ShopStepIndicator from "./ShopStepIndicator";
+import Footer from "../../layout/user/Footer";
 
 const TreatsListForDog = () => {
   const { dogId } = useParams();
@@ -208,13 +209,6 @@ const TreatsListForDog = () => {
   return (
     <>
       <ShopStepIndicator step={currentStep} onStepClick={handleStepClick} />
-      {/* <TransitionGroup>
-        <CSSTransition
-          in={true} // 항상 true로 설정하여 애니메이션 적용
-          key={currentStep} // currentStep이 바뀔 때마다 애니메이션 재생
-          timeout={700} // 애니메이션 시간
-          classNames="page" // 애니메이션 클래스 이름
-        > */}
           <div className={`${styles.treatsList} page`}>
             <div className={styles.content}>
               <h1>{dogName ? `${dogName}` : "강아지"} 맞춤 간식</h1>
@@ -268,8 +262,6 @@ const TreatsListForDog = () => {
               </div>
             </div>
           </div>
-        {/* </CSSTransition>
-      </TransitionGroup> */}
 
       <div className={styles.selectedTreats}>
         <div className={styles.imageBoxContainer}>
@@ -308,6 +300,7 @@ const TreatsListForDog = () => {
             </div>
           ))}
         </div>
+        <Footer/>
       </div>
 
       <CreateBundle selectedTreats={selectedTreats} dogId={dogId} />
