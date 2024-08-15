@@ -1,3 +1,7 @@
+.loadingOverlay{
+  height: 100vh;
+}
+
 .cartContainer {
   width: 90%; // 너비 조정
   margin: 0px auto;
@@ -172,6 +176,7 @@
   .paymentButton {
     width: 20%;
     padding: 10px 20px;
+    margin-bottom: 40px;
     background-color: #218838; // 버튼 색상
     color: white;
     border: none;
