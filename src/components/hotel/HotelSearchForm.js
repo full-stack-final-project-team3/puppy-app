@@ -12,6 +12,7 @@ import {
 } from '../../components/store/hotel/ReservationSlice';
 import dayjs from 'dayjs';
 
+
 const cities = ["서울", "부산", "인천", "대구", "대전", "광주", "수원", "울산", "고양", "용인", "경기"];
 
 const HotelSearchForm = ({ isAdmin, handleNextStep, onSearch }) => {
@@ -42,6 +43,7 @@ const HotelSearchForm = ({ isAdmin, handleNextStep, onSearch }) => {
 
 
   return (
+    <>
       <div className={styles.stepContent}>
         {isAdmin && (
             <div className={styles.addHotelButtonContainer}>
@@ -81,6 +83,7 @@ const HotelSearchForm = ({ isAdmin, handleNextStep, onSearch }) => {
           )}
         </form>
       </div>
+      </>
   );
 };
 

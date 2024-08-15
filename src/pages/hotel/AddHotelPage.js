@@ -173,7 +173,7 @@ const AddHotelPage = () => {
 
             {showConfirmModal && (
                 <div className={styles.confirmModal}>
-                    <p>Hotel added successfully. Do you want to add rooms?</p>
+                    <p>호텔이 저장 되었습니다! 객실 추가하시나요?</p>
                     <button onClick={handleConfirmYes}>Yes</button>
                     <button onClick={handleConfirmNo}>No</button>
                 </div>

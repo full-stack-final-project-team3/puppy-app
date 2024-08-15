@@ -18,6 +18,7 @@
     margin: 0 auto;
     position: relative;
     top: 40px;
+    margin-bottom: 200px;
     box-sizing: border-box;
     color: black;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -116,3 +117,15 @@
 
 
 
+@media screen and (max-width: 400px) {
+  .stepContent {
+    width: 90% !important;
+    height: 0vh;
+  }
+  .hotel {
+    width: 90% !important;
+  }
+  .back {
+    display: none;
+  }
+}

@@ -73,6 +73,7 @@
     }
   }
 
+
   .warning {
     color: red;
     font-weight: bold;
@@ -81,7 +82,7 @@
 }
 
 /* 반응형 디자인을 위한 미디어 쿼리 */
-@media (max-width: 390px) {
+@media (max-width: 400px) {
   .stepContent {
     padding: 10px; /* 아이폰 12 화면에 맞게 패딩 추가 */
   }

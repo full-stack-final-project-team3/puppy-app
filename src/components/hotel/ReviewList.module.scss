@@ -1,72 +1,86 @@
 .reviewList {
-    width: 100%;
-    max-width: 1300px;
-    margin: 50px auto;
-  
-    .swiper {
+  width: 100%;
+  max-width: 1300px;
+  margin: 50px auto;
+
+  .swiper {
       width: 100%;
       height: 100%;
-    }
-  
-    .swiper-slide {
+  }
+
+  .swiper-slide {
       display: flex;
       justify-content: center;
       align-items: center;
       box-sizing: border-box;
-      width: calc(50% - 20px); /* 두 슬라이드가 화면에 정확히 맞도록 너비 설정, spaceBetween의 절반 값을 뺌 */
-    }
-  
-    .review {
+      width: calc(50% - 20px); // 원래 설정 유지
+      padding: 10px;
+  }
+
+  .review {
       background: #F4E8D3;
       border-radius: 8px;
       padding: 20px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       color: #5C4033;
-      width: 100%; /* 슬라이드 안에 꽉 차도록 설정 */
-      max-width: 600px; /* 슬라이드의 최대 너비 설정 */
-  
-      &Content {
-        font-size: 16px;
-        margin-bottom: 10px;
-      }
-  
-      &Details {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-      }
-  
-      &Rate {
-        display: flex;
-        align-items: center;
-        margin-bottom: 5px;
-      }
-  
-      &Date,
-      &User {
-        font-size: 14px;
-        color: #5C4033;
-        margin-bottom: 3px;
-      }
-  
-      .starIcon {
-        color: #ffc107;
-        margin-right: 5px;
-      }
-    }
-  
-    
-}
-  
-    .swiperButtonPrev,
-    .swiperButtonNext {
-      color: #860e0e !important; /* Change the color of the navigation buttons */
-    }
+      width: 100%; 
+      max-width: 600px;
+  }
 
-    
-    .reviewLoading{
+  .reviewContent {
+      font-size: 16px;
+      margin-bottom: 10px;
+  }
+
+  .reviewDetails {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+  }
+
+  .reviewRate {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+  }
+
+  .reviewDate,
+  .reviewUser {
+      font-size: 14px;
+      color: #5C4033;
+      margin-bottom: 3px;
+  }
+
+  .starIcon {
+      color: #ffc107;
+      margin-right: 5px;
+  }
+
+  .swiperButtonPrev,
+  .swiperButtonNext {
+      color: #860e0e !important;
+  }
+
+  .reviewLoading {
       display: flex;
       align-items: center;
       justify-content: center;
       margin-top: 40px;
-    }
+  }
+}
+
+@media (max-width: 400px) {
+  .swiper-slide {
+      width: 90%; // 400px 이하에서 슬라이드가 화면 전체 너비를 차지하도록 설정
+      padding: 0; // 슬라이드 간 여백 제거
+  }
+
+  .review {
+      padding: 15px; // 작은 화면에서의 패딩 조정
+      margin-left: 30px;
+      max-width: 300px !important;// 최대 너비 제한 해제
+  }
+  .swiperButtonNext {
+    display: none; // 400px 이하에서 오른쪽 버튼 숨기기
+  }
+}

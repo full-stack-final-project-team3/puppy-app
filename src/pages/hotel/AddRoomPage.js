@@ -112,8 +112,8 @@ const AddRoomPage = () => {
                         )}
                     </div>
                 ))}
-                <button type="button" onClick={handleAddImage}>Add Image</button>
-                <button type="submit">Save Room</button>
+                <button className={styles.RoomCreateButton} type="button" onClick={handleAddImage}>Add Image</button>
+                <button className={styles.RoomCreateButton} type="submit">Save Room</button>
                 {roomData.errorMessage && <p className={styles.error}>{roomData.errorMessage}</p>}
             </form>
             <button onClick={() => navigate('/hotel')}>Back to List</button>

@@ -9,6 +9,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import {useNavigate, useRouteLoaderData} from "react-router-dom";
 import {setTotalPrice} from "../store/hotel/ReservationSlice";
+import Footer from '../../layout/user/Footer';
 
 const BookingDetail = ({ hotel, startDate, endDate, onPay }) => {
     const [roomCount, setRoomCount] = React.useState(1);
@@ -139,6 +140,7 @@ const BookingDetail = ({ hotel, startDate, endDate, onPay }) => {
                     <p className={`${styles.policy} ${styles.cancelPolicy}`}>Cancel Policy: {hotel['cancel-policy']}</p>
                 </motion.div>
             </div>
+            <Footer />
         </>
     );
 };
