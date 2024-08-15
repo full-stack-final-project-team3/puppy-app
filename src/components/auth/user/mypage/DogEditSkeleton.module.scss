@@ -1,0 +1,108 @@
+.wrap {
+  width: 70%;
+  margin: 50px auto;
+  background: #F1E1C8;
+  padding: 20px 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  .skeleton {
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    min-height: 20px;
+    animation: skeleton-loading 1.2s infinite ease-in-out;
+  }
+
+  .logoSkeleton {
+    width: 45px;
+    height: 45px;
+  }
+
+  .titleSkeleton {
+    width: 200px;
+    height: 32px;
+    margin-top: 16px;
+  }
+
+  .flex {
+    display: flex;
+
+    .left {
+      width: 70%;
+
+      .row {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 20px;
+        align-items: center;
+
+        .labelSkeleton {
+          width: 107px;
+          height: 20px;
+        }
+
+        .answerSkeleton {
+          flex: 1;
+          height: 20px;
+          margin-left: 10px;
+        }
+
+        .inputSkeleton {
+          width: 30%;
+          height: 30px;
+          border-radius: 10px;
+          margin-left: 10px;
+        }
+
+        .badgeSkeleton {
+          width: 80px;
+          height: 30px;
+          border-radius: 15px;
+          margin-left: 10px;
+        }
+      }
+
+      .buttons {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin: 50px auto 30px;
+        width: 137%;
+
+        .buttonSkeleton {
+          width: 100px;
+          height: 40px;
+          border-radius: 5px;
+        }
+      }
+    }
+
+    .right {
+      width: 25%;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .dogProfileSkeleton {
+        width: 125px;
+        height: 113px;
+        border-radius: 50%;
+      }
+    }
+  }
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-color: #e0e0e0;
+  }
+  50% {
+    background-color: #d0d0d0; /* 중간 색상을 어둡게 조정 */
+  }
+  100% {
+    background-color: #e0e0e0;
+  }
+}

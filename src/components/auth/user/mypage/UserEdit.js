@@ -4,7 +4,10 @@ import { userEditActions } from "../../../store/user/UserEditSlice";
 import styles from "./UserEdit.module.scss";
 import { AUTH_URL } from "../../../../config/user/host-config";
 import DeleteAccountModal from "./DeleteAccountModal"; // 모달 컴포넌트 import
-import UserModal from "./UserModal"; // 모달 컴포넌트 import
+import UserModal from "./UserModal";
+import spinnerStyles from "../../../../layout/user/Spinner.module.scss";
+import {PulseLoader} from "react-spinners";
+import UserEditSkeleton from "./UserEditSkeleton"; // 모달 컴포넌트 import
 
 const UserEdit = () => {
     const user = useSelector(state => state.userEdit.userDetail);
@@ -25,6 +28,7 @@ const UserEdit = () => {
     const [passwordMatch, setPasswordMatch] = useState(false);
     const [passwordMessage, setPasswordMessage] = useState('');
     const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+    const [loading, setLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
 
     const [showModal, setShowModal] = useState(false);
@@ -35,6 +39,13 @@ const UserEdit = () => {
     useEffect(() => {
         console.log(address + detailAddress); // 주소와 상세주소가 합쳐진 값을 출력
     }, [address, detailAddress]); // address와 detailAddress가 변경될 때마다 실행
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoading(false);
+        }, 850); // 850ms 후에 loading을 false로 설정
+        return () => clearTimeout(timer); // 컴포넌트 언마운트 시 타이머를 정리
+    }, []); // 컴포넌트가 처음 로딩될 때만 실행
 
     const handlePasswordChange = () => {
         if (passwordRef.current.value && confirmPasswordRef.current.value) {
@@ -169,8 +180,17 @@ const UserEdit = () => {
     };
 
     const handleCloseModal = () => {
-        setShowModal(false); // 모달을 닫습니다.
+        setShowModal(false); // 모달 닫음
     };
+
+
+
+    if (loading) {
+        return (
+            <UserEditSkeleton/>
+        );
+    }
+
 
     return (
         <div className={styles.wrap}>
