@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import MapView from './MapView';
 import { deleteRoom, setRooms } from '../store/hotel/RoomAddSlice';
 import { fetchAvailableRooms } from '../store/hotel/ReservationSlice';
+import Footer from '../../layout/user/Footer';
 
 const RoomDetail = ({ hotel, onBook, getSliderSettings, onModifyRoom }) => {
 
@@ -139,22 +140,25 @@ const RoomDetail = ({ hotel, onBook, getSliderSettings, onModifyRoom }) => {
             </motion.div>
             <motion.div {...animateProps} className={styles.line}></motion.div>
             <motion.div {...animateProps}>
+            <div className={styles.instruction}>
                 <div className={styles.hotelTitle}>
                     {hotel['hotel-name']}
                 </div>
                 <div className={styles.description}>
                     {hotel['description']}
                 </div>
+            </div>
             </motion.div>
             <motion.div {...animateProps} className={styles.line}></motion.div>
             <motion.div {...animateProps} className={styles.location}>
                 <MapView location={hotel['location']} title={hotel['hotel-name']} />
                 <motion.div {...animateProps} className={styles.contact}>
-                    <h1>Location</h1>
+                    <h1 className={styles.contactTitle}>Location</h1>
                     {hotel['location']}<br></br><br></br>
                     Contact : {hotel['phone-number']}&nbsp;&nbsp;&nbsp;&nbsp;
                 </motion.div>
             </motion.div>
+            <Footer />
         </>
     );
 };

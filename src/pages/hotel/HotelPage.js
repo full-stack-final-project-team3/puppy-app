@@ -21,6 +21,7 @@ import HotelConfirmation from '../../components/hotel/HotelConfirmation';
 import styles from './HotelPage.module.scss';
 import './HotelPageAnimations.scss';
 import dayjs from 'dayjs';
+import Footer from '../../layout/user/Footer';
 
 const HotelPage = () => {
     const userData = useSelector((state) => state.userEdit.userDetail);
@@ -146,6 +147,7 @@ const HotelPage = () => {
 
 
     return (
+        <>
         <div
             className={styles.hotelReservationPage}
             style={{backgroundImage: backgroundImages[step - 1]}}
@@ -160,6 +162,7 @@ const HotelPage = () => {
                 >
                     <div ref={getNodeRef(step)} className={styles.page}>
                         {step === 1 ? (
+                            <>
                             <div className={styles.stepContent}>
                                 <HotelSearchForm
                                     isAdmin={isAdmin}
@@ -170,6 +173,8 @@ const HotelPage = () => {
                                     onSearch={handleSearch}
                                 />
                             </div>
+                            <Footer />
+                            </>
                         ) : step === 2 ? (
                             <div className={styles.hotelListContainer}>
                                 <h1 className={styles.selectedDate}>Selected date</h1>
@@ -250,6 +255,7 @@ const HotelPage = () => {
                 </CSSTransition>
             </TransitionGroup>
         </div>
+        </>
     );
 };
 

@@ -29,8 +29,14 @@ const sliderSettings = {
     speed: 500,
     loop: true,
     modules: [Pagination, Navigation],
+    breakpoints: {
+        400: {
+            slidesPerView: 1,
+            slidesPerGroup: 1,
+            loop: true,
+        },
+    },
 };
-
 
 const ReviewList = ({ hotelId }) => {
     const dispatch = useDispatch();
