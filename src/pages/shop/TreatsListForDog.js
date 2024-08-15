@@ -105,13 +105,13 @@ const TreatsListForDog = () => {
         if (pageNo === 1) {
           setTreatsList(data.treatsList);
           setTotalCount(data.totalCount);
-        window.scrollTo(0, 0); // 페이지의 맨 위로 스크롤
+          window.scrollTo(0, 0); // 페이지의 맨 위로 스크롤
         } else {
           setTreatsList((prevList) => [...prevList, ...data.treatsList]);
         }
         setLoading(false);
-      }, 850); 
-      
+      }, 850);
+
       console.log(data);
       console.log(currentStep);
     } catch (err) {
@@ -212,6 +212,7 @@ const TreatsListForDog = () => {
     <>
       <ShopStepIndicator step={currentStep} onStepClick={handleStepClick} />
       {loading && (
+        <div className={styles.loadingOverlay}>
           <div className={spinnerStyles.spinnerContainer}>
             <PulseLoader
               className={spinnerStyles.loader}
@@ -220,10 +221,19 @@ const TreatsListForDog = () => {
               size={18}
             />
           </div>
+        </div>
       )}
       <div className={`${styles.treatsList} page`}>
         <div className={styles.content}>
-          <h1>{dogName ? `${dogName}` : "강아지"} 맞춤 간식</h1>
+          <h1>
+            <span style={{ fontSize: "20px" }}>오직</span>
+            &nbsp;{dogName ? `${dogName}` : "강아지"}
+            <span style={{ fontSize: "20px" }}>만을 위해 준비했어요.</span>
+          </h1>
+          <span className={styles.subTitle}>
+            맞춤형 식단 옵션을 확인했습니다 For{" "}
+            {dogName ? `${dogName}` : "강아지"}
+          </span>
           <div>
             <div className={styles.cardContainer}>
               {treatsList.map((treat) => {
@@ -306,15 +316,15 @@ const TreatsListForDog = () => {
             </div>
           ))}
         </div>
+        <CreateBundle selectedTreats={selectedTreats} dogId={dogId} />
       </div>
 
-      <CreateBundle selectedTreats={selectedTreats} dogId={dogId} />
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}
         treatsId={currentTreatId}
       />
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };
