@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import styles from './DogEdit.module.scss';
 import { useDispatch, useSelector } from "react-redux";
 import { userEditActions } from "../../store/user/UserEditSlice";
@@ -7,7 +7,9 @@ import { DOG_URL } from "../../../config/user/host-config";
 import { useNavigate } from "react-router-dom";
 import { decideGender, decideSize, translateAllergy, translateBreed } from './dogUtil.js';
 import { LuBadgeX } from "react-icons/lu";
-import UserModal from "../user/mypage/UserModal"; // UserModal 컴포넌트 import
+import UserModal from "../user/mypage/UserModal";
+import UserEditSkeleton from "../user/mypage/UserEditSkeleton";
+import DogEditSkeleton from "../user/mypage/DogEditSkeleton"; // UserModal 컴포넌트 import
 
 const DogEdit = () => {
     const [dogProfileUrl, setDogProfileUrl] = useState('');
@@ -15,7 +17,7 @@ const DogEdit = () => {
     const [modalText, setModalText] = useState('');
     const [pendingFunction, setPendingFunction] = useState(null); // 모달에서 실행할 함수를 저장할 상태
     const [isDeleteConfirmation, setIsDeleteConfirmation] = useState(false); // 삭제 확인 모드인지 여부
-
+    const [loading, setLoading] = useState(true);
     const weightRef = useRef();
     const fileInputRef = useRef();
 
@@ -23,6 +25,14 @@ const DogEdit = () => {
     const userDetail = useSelector(state => state.userEdit.userDetail);
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        const timer = setTimeout(() => {
+            setLoading(false);
+        }, 850); // 850ms 후에 loading을 false로 설정
+        return () => clearTimeout(timer); // 컴포넌트 언마운트 시 타이머를 정리
+    }, []); // 컴포넌트가 처음 로딩될 때만 실행
 
     const handleImageClick = () => {
         fileInputRef.current.click();
@@ -139,6 +149,12 @@ const DogEdit = () => {
             }
         }
     };
+
+    if (loading) {
+        return (
+            <DogEditSkeleton/>
+        );
+    }
 
     const handleDeleteClick = () => {
         setModalText("정말 삭제하시겠습니까?");

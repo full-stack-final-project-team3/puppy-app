@@ -10,10 +10,14 @@ import UserEdit from "./UserEdit";
 import AboutMyInfo from "./AboutMyInfo.js";
 import AdminPage from "../../../../pages/user/AdminPage"
 import Footer from "../../../../layout/user/Footer";
+import spinnerStyles from "../../../../layout/user/Spinner.module.scss";
+import {PulseLoader} from "react-spinners";
 
 const MyPageMain = () => {
 
     const authCheck = useRouteLoaderData('auth-check-loader');
+
+    const [loading, setLoading] = useState(true);
 
     const [clickAdmin, setClickAdmin] = useState(false)
 
@@ -37,9 +41,13 @@ const MyPageMain = () => {
                 setDogList(dogData);
             } catch (error) {
                 console.error(error);
+            } finally {
+                setLoading(false)
             }
         };
-        fetchDogData();
+        const timer = setTimeout(() => {
+            fetchDogData();
+        }, 850)
     }, [id]);
 
     const startAdminMode = () => {
@@ -48,6 +56,21 @@ const MyPageMain = () => {
 
     const exit = (flag) => {
         setClickAdmin(flag)
+    }
+
+    if (loading) {
+        return (
+            <div className={styles.loadingOverlay}>
+                <div className={spinnerStyles.spinnerContainer}>
+                    <PulseLoader
+                        className={spinnerStyles.loader}
+                        color="#0B593F"
+                        loading={loading}
+                        size={18}
+                    />{" "}
+                </div>
+            </div>
+        );
     }
 
 
