@@ -88,7 +88,7 @@ const ShopMainBg = ({ content, manageShopBtn }) => {
                     간식 고르기 <span className={styles.stepIcon2}></span>
                   </h5>
                   <p>
-                    강아지 정보를 분석하여 추천한 몇 가지 간식 중 원하는 걸
+                    강아지 정보를 분석하여 추천한 몇 가지 상품 중 원하는 걸
                     선택해주세요!
                   </p>
                 </div>
