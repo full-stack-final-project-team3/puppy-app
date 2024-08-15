@@ -1,14 +1,129 @@
 .wrap {
-  width: 65%;
+  width: 50%;
   margin: 50px auto;
   border-radius: 32px;
   background: #F4E8D3;
   padding-bottom: 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
   .subWrap {
-    width: 90%;
+    width: 86%;
     margin: 50px auto 0;
     background: #F0E1C4;
-    padding-bottom: 20px
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 1.5em;
+    color: #555;
+  }
+
+  .imageContainer {
+    text-align: center;
+    margin-bottom: 30px;
+
+    .hotelImage {
+      width: 400px;
+      height: 250px;
+      object-fit: cover; /* 이미지가 박스를 꽉 채우도록 설정 */
+      border-radius: 16px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  .hotelDetailsContainer {
+    line-height: 32px;
+    padding: 20px;
+    background: #F4E9D3;
+    border-radius: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    
+    div {
+      margin-bottom: 10px;
+      font-size: 1.2em;
+      
+      strong {
+        font-weight: bold;
+        color: #333;
+      }
+    }
+
+    .totalPrice {
+      color: #000000;
+      font-size: 1.4em;
+      font-weight: bold;
+    }
+
+    .date {
+      color: #d9534f;
+      font-weight: bold;
+    }
+  }
+
+  .descriptionContainer {
+    line-height: 32px;
+    padding: 20px;
+    background: #F4E9D3;
+    border-radius: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    
+    div {
+      margin-bottom: 10px;
+      font-size: 1.2em;
+      
+      strong {
+        font-weight: bold;
+        color: #333;
+      }
+    }
+  }
+
+  .policiesContainer {
+    line-height: 32px;
+    padding: 20px;
+    background: #F4E9D3;
+    border-radius: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20%;
+
+    div {
+      margin-bottom: 10px;
+      font-size: 1.2em;
+      
+      strong {
+        font-weight: bold;
+        color: #333;
+      }
+    }
+
+    .rules {
+      margin-bottom: 5%;
+    }
+
+    .cancel{
+
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .wrap {
+    width: 90%;
+    margin: 20px auto;
+  }
+
+  .subWrap {
+    width: 95%;
+  }
+
+  .imageContainer .hotelImage {
+    width: 100%;
+    height: auto;
   }
 }
