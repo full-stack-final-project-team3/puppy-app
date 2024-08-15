@@ -5,9 +5,7 @@ import styles from "./UserEdit.module.scss";
 import { AUTH_URL } from "../../../../config/user/host-config";
 import DeleteAccountModal from "./DeleteAccountModal"; // 모달 컴포넌트 import
 import UserModal from "./UserModal";
-import spinnerStyles from "../../../../layout/user/Spinner.module.scss";
-import {PulseLoader} from "react-spinners";
-import UserEditSkeleton from "./UserEditSkeleton"; // 모달 컴포넌트 import
+import UserEditSkeleton from "./UserEditSkeleton.js"; // 모달 컴포넌트 import
 
 const UserEdit = () => {
     const user = useSelector(state => state.userEdit.userDetail);
@@ -20,7 +18,7 @@ const UserEdit = () => {
     const [profileUrl, setProfileUrl] = useState(user.profileUrl);
     const [nickname, setNickname] = useState(user.nickname);
     const [address, setAddress] = useState(user.address);
-    const [detailAddress, setDetailAddress] = useState('');
+    const [detailAddress, setDetailAddress] = useState(user.detailAddress || '');
     const [phoneNum, setPhoneNum] = useState(user.phoneNumber);
     const [name, setName] = useState(user.realName);
     const [point, setPoint] = useState(user.point);
@@ -35,10 +33,6 @@ const UserEdit = () => {
     const [modalText, setModalText] = useState('');
 
     const dispatch = useDispatch();
-
-    useEffect(() => {
-        console.log(address + detailAddress); // 주소와 상세주소가 합쳐진 값을 출력
-    }, [address, detailAddress]); // address와 detailAddress가 변경될 때마다 실행
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -87,7 +81,6 @@ const UserEdit = () => {
 
     const detailAddressHandler = (e) => {
         setDetailAddress(e.target.value);
-        console.log(detailAddress)
         setIsSubmitDisabled(false);
     };
 
@@ -132,7 +125,8 @@ const UserEdit = () => {
     const handleSubmit = async () => {
         const payload = {
             email: user.email,
-            address: address + ' ' + detailAddress,
+            address: address,
+            detailAddress: detailAddress,
             password: passwordRef.current.value,
             nickname,
             phoneNumber: phoneNum,
@@ -183,15 +177,11 @@ const UserEdit = () => {
         setShowModal(false); // 모달 닫음
     };
 
-
-
     if (loading) {
         return (
             <UserEditSkeleton/>
         );
     }
-
-
     return (
         <div className={styles.wrap}>
             <h2 className={styles.title}>회원 정보 수정</h2>
@@ -300,7 +290,6 @@ const UserEdit = () => {
                         </button>
                     </div>
                 </div>
-
                 <div className={styles.section}>
                     <label htmlFor="detailAddress" className={styles.address}>상세 주소</label>
                     <input
@@ -312,7 +301,6 @@ const UserEdit = () => {
                         onChange={detailAddressHandler}
                     />
                 </div>
-
                 <div className={styles.flex}>
                     <button
                         className={styles.submitButton}

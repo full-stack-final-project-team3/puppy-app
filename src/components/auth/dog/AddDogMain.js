@@ -180,6 +180,7 @@ const AddDogMain = () => {
 
     const switchStep = (num) => {
         if (visitedSteps.length >= num) setStep(num);
+
     };
 
     const handleConfirmModal = () => {
@@ -202,23 +203,23 @@ const AddDogMain = () => {
                     </div>
                     <div className={`${styles.stepLine} ${step >= 2 ? styles.finishLine : ''}`}></div>
                     <div className={`${styles.step} ${step >= 2 ? styles.finishStep : ''}`} onClick={() => switchStep(2)}>
-                        2 <span className={styles.stepText}>Breed</span>
+                        {step >= 2 && 2}  <span className={styles.stepText}>Breed</span>
                     </div>
                     <div className={`${styles.stepLine} ${step >= 3 ? styles.finishLine : ''}`}></div>
                     <div className={`${styles.step} ${step >= 3 ? styles.finishStep : ''}`} onClick={() => switchStep(3)}>
-                        3 <span className={styles.stepText}>Birthday</span>
+                        {step >= 3 && 3}  <span className={styles.stepText}>Birthday</span>
                     </div>
                     <div className={`${styles.stepLine} ${step >= 4 ? styles.finishLine : ''}`}></div>
                     <div className={`${styles.step} ${step >= 4 ? styles.finishStep : ''}`} onClick={() => switchStep(4)}>
-                        4 <span className={styles.stepText}>Gender</span>
+                        {step >= 4 && 4}  <span className={styles.stepText}>Gender</span>
                     </div>
                     <div className={`${styles.stepLine} ${step >= 5 ? styles.finishLine : ''}`}></div>
                     <div className={`${styles.step} ${step >= 5 ? styles.finishStep : ''}`} onClick={() => switchStep(5)}>
-                        5 <span className={styles.stepText}>Weight</span>
+                        {step >= 5 && 5}   <span className={styles.stepText}>Weight</span>
                     </div>
                     <div className={`${styles.stepLine} ${step >= 6 ? styles.finishLine : ''}`}></div>
                     <div className={`${styles.step} ${step >= 6 ? styles.finishStep : ''}`} onClick={() => switchStep(6)}>
-                        6 <span className={styles.stepText}>Allergy</span>
+                        {step >= 6 && 6} <span className={styles.stepText}>Allergy</span>
                     </div>
                 </div>
             </div>
