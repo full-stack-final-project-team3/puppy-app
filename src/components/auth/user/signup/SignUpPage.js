@@ -72,11 +72,12 @@ const SignUpPage = () => {
       nickname: enteredNickname,
       password: enteredPassword,
       phoneNumber: enteredPhoneNumber,
-      address: `${address.localAddress} ${address.detailAddress}`,
+      address: address.localAddress,
+      detailAddress: address.detailAddress,
     };
 
     console.log(payload);
-    
+
     const response = await fetch(`${AUTH_URL}/join`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -86,9 +87,6 @@ const SignUpPage = () => {
     const result = await response.text();
 
     if (result) {
-
-
-
       try {
         const response = await fetch(`${AUTH_URL}/sign-in`, {
           method: "POST",
@@ -134,7 +132,7 @@ const SignUpPage = () => {
   useEffect(() => {
     // 활성화 여부 감시
     const isActive =
-      enteredEmail && enteredPassword && enteredNickname;
+        enteredEmail && enteredPassword && enteredNickname;
 
     setStep2Button(isActive);
   }, [enteredEmail, enteredPassword, enteredNickname]);
@@ -144,8 +142,8 @@ const SignUpPage = () => {
   useEffect(() => {
     // 활성화 여부 감시
     const isActive = enteredEmail && enteredPassword
-      && enteredNickname && enteredPhoneNumber
-      && address.localAddress && address.detailAddress;
+        && enteredNickname && enteredPhoneNumber
+        && address.localAddress && address.detailAddress;
 
     setStep3Button(isActive);
   }, [enteredEmail, enteredPassword, enteredNickname, enteredPhoneNumber, address]);
@@ -155,7 +153,7 @@ const SignUpPage = () => {
       dispatch(setStep(num));
     }
   };
-  
+
   // 회원가입을 완료하면 자동로그인 실행
   const autoLoginHandler = async () => {
     const payload = {
@@ -163,11 +161,12 @@ const SignUpPage = () => {
       password: enteredPassword,
       nickname: enteredNickname,
       phoneNumber: enteredPhoneNumber,
-      address: `${address.localAddress} ${address.detailAddress}`,
+      address: address.localAddress,
+      detailAddress: address.detailAddress,
     };
 
     console.log(payload);
-    
+
     const response = await fetch(`${AUTH_URL}/register-and-login`, {
       method: "POST",
       headers: {
@@ -181,87 +180,87 @@ const SignUpPage = () => {
     localStorage.setItem("userData", JSON.stringify(responseData));
 
     setUser(responseData);
-    
+
     // 회원가입 유저 디테일 정보 전송
     const response1 = await fetch(`${AUTH_URL}/${enteredEmail}`);
     const userDetailData = await response1.json();
     dispatch(userEditActions.updateUserDetail(userDetailData));
-        
+
     changeIsLogin(true); // 상태 업데이트
-    alert("강아지 등록하러갑니다")
+    alert("강아지 등록하러갑니다");
     navigate("/add-dog"); // 로그인 후 리디렉트할 경로
   };
 
   return (
-    <>
-      <StepIndicator step={step} onStepClick={handleStepClick} />
-      <CSSTransition
-        key={step}
-        timeout={300}
-        classNames="page"
-        nodeRef={nodeRef}
-      >
-        <form onSubmit={submitHandler} onKeyDown={handleKeyDown}>
-          <div className={styles.signUpPage}>
-            <div className={styles.formStepActive}>
-              {step === 1 && (
-                <div className={styles.signUpBox}>
-                  <EmailInput onSuccess={emailSuccessHandler} />
-                  {emailVerified && (
-                    <VerificationInput
-                      email={enteredEmail}
-                      onSuccess={() => nextStep()}
-                    />
-                  )}
-                </div>
-              )}
+      <>
+        <StepIndicator step={step} onStepClick={handleStepClick} />
+        <CSSTransition
+            key={step}
+            timeout={300}
+            classNames="page"
+            nodeRef={nodeRef}
+        >
+          <form onSubmit={submitHandler} onKeyDown={handleKeyDown}>
+            <div className={styles.signUpPage}>
+              <div className={styles.formStepActive}>
+                {step === 1 && (
+                    <div className={styles.signUpBox}>
+                      <EmailInput onSuccess={emailSuccessHandler} />
+                      {emailVerified && (
+                          <VerificationInput
+                              email={enteredEmail}
+                              onSuccess={() => nextStep()}
+                          />
+                      )}
+                    </div>
+                )}
 
-              {step === 2 && (
-                <div className={styles.signUpBox}>
-                  <NicknameInput onSuccess={nicknameSuccessHandler} />
-                  <PasswordInput onSuccess={passwordSuccessHandler} />
-                  <button
-                    type="submit"
-                    className={`${styles.button} ${step2Button ? styles.active : styles.inactive}`}
-                    disabled={!step2Button}
-                  >가입 완료</button>
-                  <button
-                    type="button"
-                    className={`${styles.button} ${step2Button ? styles.active : styles.inactive}`}
-                    disabled={!step2Button}
-                    onClick={() => nextStep()}
-                  >추가정보 등록</button>
-                </div>
-              )}
+                {step === 2 && (
+                    <div className={styles.signUpBox}>
+                      <NicknameInput onSuccess={nicknameSuccessHandler} />
+                      <PasswordInput onSuccess={passwordSuccessHandler} />
+                      <button
+                          type="submit"
+                          className={`${styles.button} ${step2Button ? styles.active : styles.inactive}`}
+                          disabled={!step2Button}
+                      >가입 완료</button>
+                      <button
+                          type="button"
+                          className={`${styles.button} ${step2Button ? styles.active : styles.inactive}`}
+                          disabled={!step2Button}
+                          onClick={() => nextStep()}
+                      >추가정보 등록</button>
+                    </div>
+                )}
 
-              {step === 3 && (
-                <div className={styles.signUpBox}>
-                  <AddressInput onSuccess={handleAddressSuccess} />
-                  <PhoneNumberInput onSuccess={phoneNumberSuccessHandler} />
-                  <button
-                    type="submit"
-                    className={`${styles.button} ${step3Button ? styles.active : styles.inactive}`}
-                    disabled={!step3Button}
-                  >추가정보 등록 완료</button>
-                  <button
-                    type="button"
-                    className={`${styles.button} ${step3Button ? styles.active : styles.inactive}`}
-                    disabled={!step3Button}
-                    onClick={autoLoginHandler}
-                  >강아지 등록하기</button>
-                </div>
-              )}
+                {step === 3 && (
+                    <div className={styles.signUpBox}>
+                      <AddressInput onSuccess={handleAddressSuccess} />
+                      <PhoneNumberInput onSuccess={phoneNumberSuccessHandler} />
+                      <button
+                          type="submit"
+                          className={`${styles.button} ${step3Button ? styles.active : styles.inactive}`}
+                          disabled={!step3Button}
+                      >추가정보 등록 완료</button>
+                      <button
+                          type="button"
+                          className={`${styles.button} ${step3Button ? styles.active : styles.inactive}`}
+                          disabled={!step3Button}
+                          onClick={autoLoginHandler}
+                      >강아지 등록하기</button>
+                    </div>
+                )}
 
-              {step === 4 && (
-                <div className={styles.signUpBox}>
-                  <AddDogInput />
-                </div>
-              )}
+                {step === 4 && (
+                    <div className={styles.signUpBox}>
+                      <AddDogInput />
+                    </div>
+                )}
+              </div>
             </div>
-          </div>
-        </form>
-      </CSSTransition>
-    </>
+          </form>
+        </CSSTransition>
+      </>
   );
 };
 

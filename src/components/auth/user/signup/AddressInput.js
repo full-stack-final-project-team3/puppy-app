@@ -43,31 +43,31 @@ const AddressInput = ({ onSuccess }) => {
   }, [localAddress, detailAddress]); // onSuccess를 의존성 배열에서 제거
 
   return (
-    <>
-      <h1 className={styles.h1}>Step 3</h1>
-      <div className={styles.signUpInput}>
-        <h2 className={styles.h2}>주소</h2>
-        <div>
-          <input
-            ref={inputRef}
-            type="text"
-            value={localAddress}
-            onChange={localInputHandler}
-            className={styles.input}
-            placeholder="지역주소"
-          />
-          <button type="button" className={styles.addressBtn} onClick={openKakaoAddress}>주소 찾기</button>
-        </div>
+      <>
+        <h1 className={styles.h1}>Step 3</h1>
+        <div className={styles.signUpInput}>
+          <h2 className={styles.h2}>주소</h2>
+          <div>
+            <input
+                ref={inputRef}
+                type="text"
+                value={localAddress}
+                onChange={localInputHandler}
+                className={styles.input}
+                placeholder="지역주소"
+            />
+            <button type="button" className={styles.addressBtn} onClick={openKakaoAddress}>주소 찾기</button>
+          </div>
 
-        <input
-          type="text"
-          value={detailAddress}
-          onChange={detailInputHandler}
-          className={styles.input}
-          placeholder="상세주소"
-        />
-      </div>
-    </>
+          <input
+              type="text"
+              value={detailAddress}
+              onChange={detailInputHandler}
+              className={styles.input}
+              placeholder="상세주소"
+          />
+        </div>
+      </>
   );
 };
 
