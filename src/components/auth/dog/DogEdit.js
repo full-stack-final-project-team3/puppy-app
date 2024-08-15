@@ -8,8 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { decideGender, decideSize, translateAllergy, translateBreed } from './dogUtil.js';
 import { LuBadgeX } from "react-icons/lu";
 import UserModal from "../user/mypage/UserModal";
-import UserEditSkeleton from "../user/mypage/UserEditSkeleton";
-import DogEditSkeleton from "../user/mypage/DogEditSkeleton"; // UserModal 컴포넌트 import
+import DogEditSkeleton from "../user/mypage/DogEditSkeleton.js"; // UserModal 컴포넌트 import
 
 const DogEdit = () => {
     const [dogProfileUrl, setDogProfileUrl] = useState('');

@@ -5,9 +5,7 @@ import styles from "./UserEdit.module.scss";
 import { AUTH_URL } from "../../../../config/user/host-config";
 import DeleteAccountModal from "./DeleteAccountModal"; // 모달 컴포넌트 import
 import UserModal from "./UserModal";
-import spinnerStyles from "../../../../layout/user/Spinner.module.scss";
-import {PulseLoader} from "react-spinners";
-import UserEditSkeleton from "./UserEditSkeleton"; // 모달 컴포넌트 import
+import UserEditSkeleton from "./UserEditSkeleton.js"; // 모달 컴포넌트 import
 
 const UserEdit = () => {
     const user = useSelector(state => state.userEdit.userDetail);
