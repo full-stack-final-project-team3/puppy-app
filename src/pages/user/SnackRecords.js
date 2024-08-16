@@ -49,7 +49,7 @@ const SnackRecords = () => {
                 }
     
                 const data = await response.json();
-                console.log('주문 내역 데이터:', data); // 추가된 로그
+                console.log('주문 내역 데이터:', data); 
                 setOrderHistory(data);
             } catch (error) {
                 console.error('주문 내역을 가져오지 못했다:', error);
@@ -90,7 +90,7 @@ const SnackRecords = () => {
             }
 
             const updatedOrderHistory = orderHistory.map(order =>
-                order.id === orderId ? { ...order, orderStatus: 'CANCELLED' } : order
+                order.orderId === orderId ? { ...order, orderStatus: 'CANCELLED' } : order
             );
             setOrderHistory(updatedOrderHistory);
             setShowSuccessModal(true);
@@ -124,12 +124,18 @@ const SnackRecords = () => {
                 {orderHistory && orderHistory.length > 0 ? (
                     orderHistory.map((order, index) => (
                         <div key={index} className={styles.card}>
+                        <script>
+                            console.info(order);
+                        </script>
                             <div className={styles.cardContent}>
                                 <div className={styles.imageContainer}>
                                     <img src="https://via.placeholder.com/100" alt="반려견" className={styles.dogImage} />
                                 </div>
                                 <div className={styles.details}>
-                                    <h2><strong>{order.orderStatus === 'CANCELLED' ? '주문 취소' : '주문 완료'}</strong></h2>
+                                    <h2 
+                                        className={order.orderStatus === 'CANCELLED' ? styles.cancelledText : ''}>
+                                        <strong>{order.orderStatus === 'CANCELLED' ? '주문 취소' : '주문 완료'}</strong>
+                                    </h2>
                                     <p><strong>주문 날짜:</strong> {formatDateTime(order.orderDateTime) || '에러'}</p>
                                     {order.bundles && order.bundles.length > 0 && order.bundles.map((bundle, bundleIndex) => (
                                         <div key={bundleIndex} className={styles.bundleItem}>
@@ -160,8 +166,8 @@ const SnackRecords = () => {
                                         <button 
                                         className={styles.cancelButton}
                                         onClick={() => {
-                                            console.log('버튼 클릭 시 전달된 주문 ID:', order.id); // 추가된 로그
-                                            confirmCancelOrder(order.id);
+                                            console.log('버튼 클릭 시 전달된 주문 ID:', order.orderId); 
+                                            confirmCancelOrder(order.orderId);
                                         }}>
                                         주문 취소
                                     </button>
