@@ -173,4 +173,61 @@
       }
     }
   }
+
+  .addIcon {
+    font-size: 1.5rem;
+    color: #494e53;
+    cursor: pointer;
+    margin-left: 10px;
+    &:hover {
+      color: #B3797A;
+    }
+  }
+
+  .dropdown {
+    background-color: #F4E8D3;
+    border: 1px solid #B7AE9E;
+    padding: 10px;
+    border-radius: 5px;
+    position: absolute;
+    z-index: 1000;
+    max-height: 200px;
+    overflow-y: auto;
+    margin-top: 5px;
+  }
+
+  .dropdownItem {
+    display: flex;
+    align-items: center;
+    padding: 5px 0;
+
+    input[type="checkbox"] {
+      margin-right: 10px;
+    }
+
+    label {
+      cursor: pointer;
+    }
+
+    &:hover {
+      background-color: #E0D4BE;
+    }
+  }
+
+  .addAllergyButton {
+    background-color: #F4E9D3;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 100%;
+    text-align: center;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #B3797A;
+      color: #fff;
+    }
+  }
 }
