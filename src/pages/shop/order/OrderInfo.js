@@ -8,7 +8,7 @@ const OrderInfo = ({
   orderInfo,
   handleReceiverInfoUpdate,
   handleUserInfoUpdate,
-  handleDeliveryRequestChange,  // 부모 컴포넌트로부터 전달받은 함수
+  handleDeliveryRequestChange,
   handleCustomRequestChange,
 }) => {
   const [showModal, setShowModal] = useState(false);
@@ -16,9 +16,13 @@ const OrderInfo = ({
 
   const handleSave = (newName, newPhone, address, detailAddress) => {
     if (editingType === 'user') {
-      handleUserInfoUpdate(newName, newPhone); // 구매자 정보 수정
+      // 구매자 정보 수정
+      handleUserInfoUpdate(newName, newPhone);
+      // 구매자 정보가 업데이트되면, 받는 사람 정보도 동일하게 업데이트
+      handleReceiverInfoUpdate(newName, newPhone, orderInfo.receiverAddress, orderInfo.receiverDetailAddress);
     } else if (editingType === 'receiver') {
-      handleReceiverInfoUpdate(newName, newPhone, address, detailAddress); // 받는 사람 정보 수정
+      // 받는 사람 정보 수정
+      handleReceiverInfoUpdate(newName, newPhone, address, detailAddress);
     }
     setShowModal(false); // 모달 닫기
   };
@@ -29,7 +33,7 @@ const OrderInfo = ({
         <div className={styles['section-title']}>
           구매자 정보
           <button onClick={() => { setShowModal(true); setEditingType('user'); }}>
-            구매자 정보 수정
+            구매자 정보 입력
           </button>
         </div>
         <div className={styles['section-content']}>
@@ -49,12 +53,13 @@ const OrderInfo = ({
         <div className={styles['section-content']}>
           <p>이름: {orderInfo.receiverName || '정보 없음'}</p>
           <p>연락처: {orderInfo.receiverPhone || '정보 없음'}</p>
-          <p>주소: {orderInfo.receiverAddress || '정보 없음'}</p>
-          <p>상세 주소: {orderInfo.receiverDetailAddress || user.detailAddress}</p> {/* 상세 주소 출력 추가 */}
+          <p>주소: {orderInfo.receiverAddress || '정보 없음'} {orderInfo.receiverDetailAddress || user.detailAddress}</p>
+          {/* <p>주소: {orderInfo.receiverAddress || '정보 없음'}</p>
+          <p>상세 주소: {orderInfo.receiverDetailAddress || user.detailAddress}</p> */}
           <p>배송 요청 사항:</p>
           <select
             value={orderInfo.deliveryRequest}
-            onChange={handleDeliveryRequestChange}  // 이곳에서 handleDeliveryRequestChange 함수를 사용
+            onChange={handleDeliveryRequestChange}
             required
           >
             <option value="선택 안 함">선택 안 함</option>
@@ -93,7 +98,7 @@ const OrderInfo = ({
           receiverName={orderInfo.receiverName}
           receiverPhone={orderInfo.receiverPhone}
           receiverAddress={orderInfo.receiverAddress}
-          receiverDetailAddress={orderInfo.receiverDetailAddress} // 상세 주소를 넘겨줍니다
+          receiverDetailAddress={orderInfo.receiverDetailAddress}
           onSave={handleSave}
           onClose={() => setShowModal(false)}
         />

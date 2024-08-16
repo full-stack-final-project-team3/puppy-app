@@ -30,7 +30,7 @@ const EditUserInfoModal = ({ name, phone, onSave, onClose }) => {
           />
         </div>
         <div className={styles.buttons}>
-          <button onClick={handleSaveClick}>저장하기</button>
+          <button onClick={handleSaveClick}>적용하기</button>
           <button onClick={onClose}>취소</button>
         </div>
       </div>

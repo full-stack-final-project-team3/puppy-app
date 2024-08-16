@@ -22,11 +22,11 @@ const OrderPage = () => {
   };
 
   const [orderInfo, setOrderInfo] = useState({
-    buyerPhone: user.phoneNumber || '',
-    receiverName: user.name || '',
-    receiverPhone: user.phoneNumber || '',
-    receiverAddress: user.address || '',
-    receiverDetailAddress: '', // 추가: 상세 주소
+    buyerPhone: user.phoneNumber,
+    receiverName: user.realName,
+    receiverPhone: user.phoneNumber,
+    receiverAddress: user.address,
+    receiverDetailAddress: user.detailAddress, // 추가: 상세 주소
     deliveryRequest: '',  // 여기서 초기 상태가 빈 문자열로 설정되어 있는지 확인
     customRequest: '', 
   });
@@ -50,6 +50,10 @@ const OrderPage = () => {
     const remaining = user.point - totalPrice;
     setRemainingPoints(remaining);
     setCanPurchase(false);
+
+    console.log('user: '+ user);
+    console.log(user);
+    console.log(orderInfo);
   }, [user.point, totalPrice]);
 
   const handlePhoneNumberChange = (event) => {
@@ -161,9 +165,10 @@ const OrderPage = () => {
       cartId: 'dummy_cart_id',
       userId: user.id,
       postNum: 12345,
+      receiverName: orderInfo.receiverName,
+      receiverPhone: orderInfo.receiverPhone,
       address: orderInfo.receiverAddress,
       addressDetail: orderInfo.receiverDetailAddress,
-      phoneNumber: orderInfo.receiverPhone,
       deliveryRequest: orderInfo.deliveryRequest, // 배송 요청 사항 전달
       customRequest: orderInfo.customRequest,  // 기타 요청 사항 전달
       pointUsage,
@@ -176,6 +181,7 @@ const OrderPage = () => {
     console.log("Order Data:", orderData); // 로그를 통해 확인
     
     try {
+
       const response = await fetch('http://localhost:8888/shop/orders', {
         method: 'POST',
         headers: {
