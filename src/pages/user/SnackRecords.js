@@ -151,7 +151,7 @@ const SnackRecords = () => {
                                             </ul> */}
                                         </div>
                                     ))}
-                                    <p><strong>총 결제 금액:</strong> {order.totalPrice ? order.totalPrice.toLocaleString() : '에러'}원</p>
+                                    <p><strong>총 결제 금액:</strong> {order.totalPrice ? order.totalPrice.toLocaleString() : '0'}원</p>
                                 </div>
                                 <div className={styles.actions}>
                                     <button 
