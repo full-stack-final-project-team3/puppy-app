@@ -1,5 +1,3 @@
-// TreatsDetailContent.module.scss
-
 $treats-bg-color: #f9f9f9;
 $treats-title-color: #333;
 $treats-weight-color: #666;
@@ -25,15 +23,22 @@ p {
 }
 
 .treatsPics {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
   margin-bottom: 20px;
+  display: block; // Flex가 아닌 block으로 설정
 
-  // 이미지 스타일
+  .slick-slide {
+    display: flex;
+    justify-content: center; /* 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+  }
+
+  .slick-slide.slick-cloned {
+    display: none; // 클론된 슬라이드 숨기기
+  }
+
   img {
-    max-width: 100%;
-    height: auto;
+    width: 70%; /* 슬라이드 내에서 이미지 너비를 100%로 설정 */
+    height: auto; /* 비율 유지 */
     border-radius: 4px;
     border: $treats-image-border;
     transition: transform 0.3s;
@@ -53,12 +58,11 @@ p {
     border-radius: 4px;
     border: $treats-image-border;
     transition: transform 0.3s;
-
   }
 }
 
 @media (max-width: 768px) {
   .treatsPics {
-    flex-direction: column;
+    flex-direction: column; /* 모바일 화면에서 세로 정렬 */
   }
 }
