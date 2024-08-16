@@ -26,6 +26,7 @@ const TreatDetail = ({ treatsId }) => {
 
     if (treatsId) {
       fetchTreatDetail(); // treatId가 있을 때만 데이터 요청
+      console.log(treats);
     } else {
       setLoading(false); // treatId가 없으면 로딩 완료
     }

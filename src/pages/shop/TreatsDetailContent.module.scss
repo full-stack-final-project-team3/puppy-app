@@ -10,59 +10,101 @@ $treats-image-border: 1px solid #e0e0e0;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-h2 {
-  color: $treats-title-color;
+.contentWrapper {
+  display: flex; /* 이미지와 텍스트를 나란히 배치 */
+  flex-wrap: wrap; /* 줄 바꿈 허용 */
+  margin-bottom: 40px;
+}
+
+.imageContainer {
+  flex: 1; /* 이미지 영역에 공간을 할당 */
+  margin-right: 30px; /* 텍스트와의 간격 */
+  width: 50%;
+  
+}
+
+.customPrev, .customNext {
   font-size: 24px;
+  position: absolute; // 절대 위치 설정
+  top: 50%; // 세로 중앙 정렬
+  transform: translateY(-50%); // 중앙 정렬을 위한 변환
+  z-index: 1000; // 다른 요소 위에 위치하도록 설정;
+  cursor: pointer; // 클릭 가능하게 커서 변경
+}
+
+.customPrev {
+  left: 10px; // 왼쪽 위치 조정
+}
+
+.customNext {
+  right: 10px; // 오른쪽 위치 조정
+}
+
+// 호버 효과
+.customPrev:hover, .customNext:hover {
+  transform: translateY(-50%) scale(1.2); // 크기 증가
+  color: #000000; // 색상 변경 (예: 파란색)
+}
+
+.textContent {
+  flex: 1; /* 텍스트 영역에 공간을 할당 */
+}
+
+h4 {
+  color: $treats-title-color;
+  justify-content: center;
+  align-items: center;
+  font-size: 19px;
   margin-bottom: 10px;
 }
 
-p {
+.textContent p {
   color: $treats-weight-color;
-  font-size: 16px;
-  margin-bottom: 20px;
+  font-size: 14px;
+  margin-bottom: 5px;
 }
 
-.treatsPics {
-  margin-bottom: 20px;
-  display: block; // Flex가 아닌 block으로 설정
+/* react-slick 클래스 네임 */
+.slick-slider {
+  margin: 0 -10px; /* 슬라이드 간격 조정 */
+}
 
-  .slick-slide {
-    display: flex;
-    justify-content: center; /* 중앙 정렬 */
-    align-items: center; /* 수직 중앙 정렬 */
-  }
+.slick-list {
+  overflow: hidden; /* 슬라이드 리스트 오버플로우 숨김 */
+}
 
-  .slick-slide.slick-cloned {
-    display: none; // 클론된 슬라이드 숨기기
-  }
+.slick-track {
+  display: flex; /* 슬라이드 트랙을 플렉스 박스로 설정 */
+}
 
-  img {
-    width: 70%; /* 슬라이드 내에서 이미지 너비를 100%로 설정 */
-    height: auto; /* 비율 유지 */
-    border-radius: 4px;
-    border: $treats-image-border;
-    transition: transform 0.3s;
+.slick-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px; /* 슬라이드 간격 조정 */
+}
 
-  }
+.treatsImage {
+  width: 100%;
+  height: auto; /* 높이를 자동으로 조정 */
+  max-height: 500px; /* 최대 높이 설정 */
+  object-fit: cover;
+  border-radius: 4px;
+  border: $treats-image-border;
 }
 
 .detailPics {
+  margin-top: 100px;
   display: flex;
   flex-direction: column;
   gap: 15px;
   margin-bottom: 20px;
 
   img {
-    max-width: 100%;
+    max-width: 70%;
     height: auto;
+    margin: 0 auto;
     border-radius: 4px;
     border: $treats-image-border;
-    transition: transform 0.3s;
-  }
-}
-
-@media (max-width: 768px) {
-  .treatsPics {
-    flex-direction: column; /* 모바일 화면에서 세로 정렬 */
   }
 }
