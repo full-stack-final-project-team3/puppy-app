@@ -1,42 +1,43 @@
 .stepIndicator {
   display: flex;
-  
   height: 90px;
   width: 100%;
   background: #f1f1f1;
   align-items: center;
-  border-top: 0.2px solid #bcbcbc;
   
   .stepContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100px; /* 고정 너비 설정 */
-    text-align: center; /* 텍스트 중앙 정렬 */
+    width: 100px;
+    text-align: center;
   }
 
   .stepNumber {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    margin-right: 10px;
-    margin-left: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: lightgray;
+    text-align: center;
+    background: none;
+    border: 2px solid lightgray;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
     color: white;
-    cursor: default;
+    position: relative;
     pointer-events: none;
 
     &.active {
-      background-color: rgb(155, 0, 0);
+      background-color: #B3797A;
+      height: 30px;
+      width: 30px;
     }
   }
   .stepLabel {
-    color: #000;
-    position: relative;
-    top: 5px;
+    position: absolute;
+    font-size: 12px;
+    color: black;
+    margin-top: 36px;
   }
 
   .stepLine {
@@ -45,7 +46,7 @@
     background-color: lightgray;
 
     &.active {
-      background-color: rgb(155, 0, 0);
+      background-color: #B37A7A;
     }
   }
 }
