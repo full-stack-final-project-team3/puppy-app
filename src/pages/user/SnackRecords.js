@@ -124,9 +124,6 @@ const SnackRecords = () => {
                 {orderHistory && orderHistory.length > 0 ? (
                     orderHistory.map((order, index) => (
                         <div key={index} className={styles.card}>
-                        <script>
-                            console.info(order);
-                        </script>
                             <div className={styles.cardContent}>
                                 <div className={styles.imageContainer}>
                                     <img src="https://via.placeholder.com/100" alt="반려견" className={styles.dogImage} />
