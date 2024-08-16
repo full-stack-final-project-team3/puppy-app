@@ -57,10 +57,11 @@ const OrderInfo = ({
             onChange={handleDeliveryRequestChange}  // 이곳에서 handleDeliveryRequestChange 함수를 사용
             required
           >
-            <option value="문앞">문 앞</option>
-            <option value="직접">직접 받고 부재 시 문 앞</option>
-            <option value="경비실">경비실</option>
-            <option value="택배함">택배함</option>
+            <option value="선택 안 함">선택 안 함</option>
+            <option value="직접 받고 부재 시 문 앞">직접 받고 부재 시 문 앞</option>
+            <option value="문 앞에 놓아주세요">문 앞에 놓아주세요</option>
+            <option value="부재 시 연락 부탁드려요">부재 시 연락 부탁드려요</option>
+            <option value="배송 전 미리 연락해 주세요">배송 전 미리 연락해 주세요</option>
             <option value="기타사항">기타사항</option>
           </select>
 
