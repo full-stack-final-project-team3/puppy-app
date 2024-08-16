@@ -1,34 +1,79 @@
 .wrap {
   padding: 20px;
-  background-color: #f9f9f9;
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
-  border-radius: 8px;
-  border: 1px solid #e0e0e0;
+  font-family: 'Arial', sans-serif;
+  color: #333;
 }
 
-h1 {
+.title {
+  font-size: 28px;
+  margin-bottom: 20px;
   text-align: center;
-  font-size: 24px;
-  margin-bottom: 20px;
+  color: #111;
 }
 
-.orderInfo, .bundleItem, .totalPrice {
-  margin-bottom: 20px;
+.orderDetail {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.orderInfo p, .bundleItem p {
+.userInfo, .orderInfo, .bundles, .totalPrice {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  font-size: 20px;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.userInfo p, .orderInfo p {
   margin: 5px 0;
   font-size: 16px;
 }
 
-ul {
+.bundles {
+  margin-top: 20px;
+}
+
+.bundleItem {
+  border-top: 1px solid #e1e1e1;
+  padding-top: 15px;
+  margin-top: 15px;
+}
+
+.bundleItem h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #444;
+}
+
+.bundleItem ul {
   padding-left: 20px;
-  margin: 10px 0;
+  margin: 0;
+}
+
+.bundleItem li {
+  margin-bottom: 5px;
 }
 
 .totalPrice {
-  text-align: right;
-  font-size: 18px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.totalPrice h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.totalPrice p {
+  font-size: 24px;
   font-weight: bold;
+  color: #ff5722;
 }
