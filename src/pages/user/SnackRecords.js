@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import MyPageHeader from "../../components/auth/user/mypage/MyPageHeader";
 import OrderModal from '../../pages/shop/order/OrderModal';
 import styles from './SnackRecords.module.scss';
+import { SHOP_URL } from '../../config/user/host-config';
 
 const subscriptionPeriodLabels = {
     ONE: "1개월",
@@ -37,7 +38,7 @@ const SnackRecords = () => {
     useEffect(() => {
         const fetchOrderHistory = async () => {
             try {
-                const response = await fetch(`http://localhost:8888/shop/orders/user/${user.id}`, {
+                const response = await fetch(`${SHOP_URL}/orders/user/${user.id}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -78,7 +79,7 @@ const SnackRecords = () => {
         console.log('취소할 주문 ID:', orderId); // 추가된 로그
 
         try {
-            const response = await fetch(`http://localhost:8888/shop/orders/cancel/${orderId}`, {
+            const response = await fetch(`${SHOP_URL}/orders/cancel/${orderId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -126,7 +127,7 @@ const SnackRecords = () => {
                         <div key={index} className={styles.card}>
                             <div className={styles.cardContent}>
                                 <div className={styles.imageContainer}>
-                                    <img src="https://via.placeholder.com/100" alt="반려견" className={styles.dogImage} />
+                                    <img src="https://image.dongascience.com/Photo/2016/11/1478570523577.JPG" alt="반려견" className={styles.dogImage} />
                                 </div>
                                 <div className={styles.details}>
                                     <h2 

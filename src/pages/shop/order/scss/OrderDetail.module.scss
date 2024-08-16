@@ -1,40 +1,46 @@
 .wrap {
-  padding: 20px;
+  padding: 30px;
   max-width: 900px;
   margin: 0 auto;
   font-family: 'Arial', sans-serif;
   color: #333;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .title {
   font-size: 28px;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   text-align: center;
-  color: #111;
+  color: #14332C;
 }
 
 .orderDetail {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 30px;
 }
 
-.userInfo, .orderInfo, .bundles, .totalPrice {
+.section {
   background-color: #ffffff;
-  padding: 20px;
+  padding: 25px;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-h2 {
-  font-size: 20px;
+.section h2 {
+  font-size: 22px;
   margin-bottom: 15px;
-  color: #333;
+  color: #14332C;
+  border-bottom: 2px solid #14332C;
+  padding-bottom: 10px;
 }
 
-.userInfo p, .orderInfo p {
-  margin: 5px 0;
+.section p {
+  margin: 10px 0;
   font-size: 16px;
+  color: #555;
 }
 
 .bundles {
@@ -48,9 +54,9 @@ h2 {
 }
 
 .bundleItem h3 {
-  font-size: 18px;
+  font-size: 20px;
   margin-bottom: 10px;
-  color: #444;
+  color: #14332C;
 }
 
 .bundleItem ul {
@@ -59,24 +65,60 @@ h2 {
 }
 
 .bundleItem li {
-  margin-bottom: 5px;
+  margin-bottom: 8px;
+  color: #555;
 }
 
 .totalPrice {
-  margin-top: 20px;
   text-align: center;
+  background-color: #14332C;
+  color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  color: #ffffff;
 }
 
 .totalPrice h2 {
-  font-size: 20px;
+  font-size: 24px;
   margin-bottom: 10px;
+  color: #ffffff;
 }
 
 .totalPrice p {
-  font-size: 24px;
+  font-size: 26px;
+  color: #ffffff;
   font-weight: bold;
-  color: #ff5722;
 }
+
+.actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.cancelButton {
+  background-color: #14332C;
+  color: #ffffff;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 5px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cancelButton:hover {
+  background-color: #0f2b23;
+}
+
+.cancelledText {
+  color: red;
+  text-align: center;
+  font-size: 20px;
+  margin-top: 20px;
+}
+
+
 
 
 

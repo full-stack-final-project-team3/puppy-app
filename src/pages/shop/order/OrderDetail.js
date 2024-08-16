@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom'; 
 import OrderModal from './OrderModal'; // 모달 창 컴포넌트 임포트
 import styles from './scss/OrderDetail.module.scss';
+import { SHOP_URL } from '../../../config/user/host-config';
 
 const subscriptionPeriodLabels = {
     ONE: "1개월",
@@ -48,7 +49,7 @@ const OrderDetail = () => {
     useEffect(() => {
         const fetchOrderDetail = async () => {
             try {
-                const response = await fetch(`http://localhost:8888/shop/orders/${order.orderId}`, {
+                const response = await fetch(`${SHOP_URL}/orders/${order.orderId}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -72,7 +73,7 @@ const OrderDetail = () => {
     // 주문 취소 핸들러 추가
     const handleCancelOrder = async () => {
         try {
-            const response = await fetch(`http://localhost:8888/shop/orders/cancel/${order.orderId}`, {
+            const response = await fetch(`${SHOP_URL}/orders/cancel/${order.orderId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -111,6 +112,18 @@ const OrderDetail = () => {
                 className={orderDetail.orderStatus === 'CANCELLED' ? styles.cancelledText : ''}>
                 <strong>{orderDetail.orderStatus === 'CANCELLED' ? '주문 취소' : '주문 완료'}</strong>
             </h2>
+            {orderDetail.orderStatus !== 'CANCELLED' && (
+                <div className={styles.actions}>
+                    <button 
+                        className={styles.cancelButton}
+                        onClick={() => {
+                            console.log('오다 아이디 :', order.orderId); 
+                            confirmCancelOrder(); 
+                        }}>
+                        주문 취소
+                    </button>
+                </div>
+            )}
             <div className={styles.orderDetail}>
                 <div className={styles.userInfo}>
                     <h2>받는 사람 정보</h2>
@@ -142,18 +155,7 @@ const OrderDetail = () => {
                     <p>{orderDetail.totalPrice ? orderDetail.totalPrice.toLocaleString() : '0'} 원</p>
                 </div>
             </div>
-            {orderDetail.orderStatus !== 'CANCELLED' && (
-                <div className={styles.actions}>
-                    <button 
-                        className={styles.cancelButton}
-                        onClick={() => {
-                            console.log('오다 아이디 :', order.orderId); 
-                            confirmCancelOrder(); 
-                        }}>
-                        주문 취소
-                    </button>
-                </div>
-            )}
+            
             {showConfirmModal && (
                 <OrderModal
                     title="결제 확인"

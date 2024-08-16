@@ -7,6 +7,7 @@ import OrderModal from './OrderModal';
 import OrderInfo from './OrderInfo';
 import ProductInfo from './ProductInfo';
 import PaymentInfo from './PaymentInfo';
+import { SHOP_URL } from '../../../config/user/host-config';
 
 const OrderPage = () => {
   const user = useSelector((state) => state.userEdit.userDetail);
@@ -182,7 +183,7 @@ const OrderPage = () => {
     
     try {
 
-      const response = await fetch('http://localhost:8888/shop/orders', {
+      const response = await fetch('${SHOP_URL}/orders', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
