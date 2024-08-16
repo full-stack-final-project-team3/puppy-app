@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./ShopMainBg.module.scss";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import ShopMainBg from "./ShopMainBg";
 import ManageShop from "./NaviManageBtn.js";
+import { AUTH_URL } from "../../config/user/host-config.js";
+import { userEditActions } from "../../components/store/user/UserEditSlice"; // 유저 디테일 업데이트 액션 가져오기
 
 const ShopMain = () => {
   const [selectedDog, setSelectedDog] = useState("");
@@ -11,12 +13,38 @@ const ShopMain = () => {
   const [selectedDogName, setSelectedDogName] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.userEdit.userDetail);
   const dogList = isLoggedIn ? user.dogList || [] : [];
 
   useEffect(() => {
     setIsLoggedIn(user && Object.keys(user).length > 0);
   }, [user]);
+
+  useEffect(() => {
+    if (isLoggedIn && selectedDogId) {
+      const updatedDog = dogList.find((dog) => dog.id === selectedDogId);
+      setSelectedDog(updatedDog);
+    }
+  }, [dogList, selectedDogId]);
+
+  // 유저 정보 가져오기
+  const getUserData = async (email) => {
+    try {
+      const userDetailData = await (await fetch(`${AUTH_URL}/${email}`)).json();
+      dispatch(userEditActions.updateUserDetail(userDetailData)); // 유저 디테일 업데이트
+      console.log("유저 정보 업데이트 성공")
+    } catch (error) {
+      console.error("유저 정보를 가져오는 데 실패했습니다:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      const email = user.email; // 유저 이메일을 사용
+      getUserData(email); // 유저 정보 가져오기
+    }
+  }, [isLoggedIn, user.email, dispatch]);
 
   const handleSelectChange = (event) => {
     const selectedId = event.target.value;

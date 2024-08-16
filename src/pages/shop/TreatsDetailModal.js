@@ -1,4 +1,3 @@
-// Modal.js
 import React from "react";
 import styles from "./TreatsDetailModal.module.scss"; // 스타일 파일이 필요합니다.
 import TreatDetail from "./TreatsDetail";
