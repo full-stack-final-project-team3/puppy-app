@@ -24,11 +24,11 @@ const PaymentInfo = ({
           <p>최종 결제 금액: {finalPrice.toLocaleString()}원</p>
         </div>
         <div className={styles['payment-methods']}>
+          <button onClick={() => handlePaymentMethodClick('point')}>포인트</button>
           <button onClick={() => handlePaymentMethodClick('bankTransfer')}>무통장입금</button>
           <button onClick={() => handlePaymentMethodClick('creditCard')}>신용카드</button>
           <button onClick={() => handlePaymentMethodClick('virtualAccount')}>가상계좌</button>
           <button onClick={() => handlePaymentMethodClick('accountTransfer')}>계좌이체</button>
-          <button onClick={() => handlePaymentMethodClick('point')}>포인트</button>
         </div>
       </div>
 

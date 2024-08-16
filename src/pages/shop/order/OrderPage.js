@@ -7,7 +7,7 @@ import OrderModal from './OrderModal';
 import OrderInfo from './OrderInfo';
 import ProductInfo from './ProductInfo';
 import PaymentInfo from './PaymentInfo';
-import { AUTH_URL } from '../../../config/user/host-config';
+import { SHOP_URL } from '../../../config/user/host-config';
 
 const OrderPage = () => {
   const user = useSelector((state) => state.userEdit.userDetail);
@@ -15,7 +15,7 @@ const OrderPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { bundles, subscriptionPeriods, totalPrice } = location.state;
-  
+
   const subscriptionPeriodLabels = {
     ONE: "1개월",
     MONTH3: "3개월",
@@ -23,11 +23,20 @@ const OrderPage = () => {
   };
 
   const [orderInfo, setOrderInfo] = useState({
-    buyerPhone: user.phoneNumber || '',
-    receiverName: user.nickname || '',
-    receiverPhone: user.phoneNumber || '',
-    receiverAddress: user.address || '',
+    buyerPhone: user.phoneNumber,
+    receiverName: user.realName,
+    receiverPhone: user.phoneNumber,
+    receiverAddress: user.address,
+    receiverDetailAddress: user.detailAddress, // 추가: 상세 주소
+    deliveryRequest: '',  // 여기서 초기 상태가 빈 문자열로 설정되어 있는지 확인
+    customRequest: '', 
   });
+
+
+  // 배송 요청 사항 업데이트 함수 추가
+  const handleDeliveryMemoChange = (event) => {
+    setOrderInfo({ ...orderInfo, deliveryMemo: event.target.value });
+  };
 
   const [remainingPoints, setRemainingPoints] = useState(user.point);
   const [canPurchase, setCanPurchase] = useState(false);
@@ -41,11 +50,26 @@ const OrderPage = () => {
   useEffect(() => {
     const remaining = user.point - totalPrice;
     setRemainingPoints(remaining);
-    setCanPurchase(false); // 기본적으로 결제 버튼은 비활성화
+    setCanPurchase(false);
+
+    console.log('user: '+ user);
+    console.log(user);
+    console.log(orderInfo);
   }, [user.point, totalPrice]);
 
   const handlePhoneNumberChange = (event) => {
+    setOrderInfo({ ...orderInfo, buyerPhone: event.target.value });
+  };
+
+  const handleReceiverPhoneNumberChange = (event) => {
     setOrderInfo({ ...orderInfo, receiverPhone: event.target.value });
+  };
+
+  const handlePhoneNumberUpdate = () => {
+    dispatch(userEditActions.updateUserDetail({
+      ...user,
+      phoneNumber: orderInfo.receiverPhone
+    }));
   };
 
   const handleAddressChange = (event) => {
@@ -73,6 +97,36 @@ const OrderPage = () => {
     }).open();
   };
 
+  const handleDeliveryRequestChange = (event) => {
+    setOrderInfo({ ...orderInfo, deliveryRequest: event.target.value });
+    
+    // if (event.target.value !== '기타사항') {
+    //   setOrderInfo({ ...orderInfo, customRequest: '' }); // "기타사항"이 아닌 다른 옵션을 선택할 경우, 기존의 "기타사항" 내용을 초기화
+    // }
+  };
+
+  const handleCustomRequestChange = (event) => {
+    setOrderInfo({ ...orderInfo, customRequest: event.target.value });
+  };
+
+  const handleReceiverInfoUpdate = (name, phone, address, detailAddress) => {
+    setOrderInfo({
+      ...orderInfo,
+      receiverName: name,
+      receiverPhone: phone,
+      receiverAddress: address,
+      receiverDetailAddress: detailAddress,
+    });
+  };
+
+  const handleUserInfoUpdate = (name, phone) => {
+    dispatch(userEditActions.updateUserDetail({
+      ...user,
+      realName: name,
+      phoneNumber: phone,
+    }));
+  };
+
   const handleSubmit = () => {
     if (canPurchase) {
       setModalMessage("결제를 진행하시겠습니까?");
@@ -97,14 +151,14 @@ const OrderPage = () => {
     points = Math.min(points, totalPrice);
     setPointUsage(points);
     setFinalPrice(totalPrice - points);
-    setCanPurchase(points >= totalPrice); // 총 상품 가격만큼 포인트가 입력되었을 때 버튼 활성화
+    setCanPurchase(points >= totalPrice);
   };
 
   const handleUseAllPoints = () => {
     const pointsToUse = Math.min(user.point, totalPrice);
     setPointUsage(pointsToUse);
     setFinalPrice(totalPrice - pointsToUse);
-    setCanPurchase(pointsToUse >= totalPrice); // 모두 사용 시 버튼 활성화
+    setCanPurchase(pointsToUse >= totalPrice);
   };
 
   const handleReservation = async () => {
@@ -112,18 +166,24 @@ const OrderPage = () => {
       cartId: 'dummy_cart_id',
       userId: user.id,
       postNum: 12345,
+      receiverName: orderInfo.receiverName,
+      receiverPhone: orderInfo.receiverPhone,
       address: orderInfo.receiverAddress,
-      addressDetail: '상세 주소',
-      phoneNumber: orderInfo.receiverPhone,
+      addressDetail: orderInfo.receiverDetailAddress,
+      deliveryRequest: orderInfo.deliveryRequest, // 배송 요청 사항 전달
+      customRequest: orderInfo.customRequest,  // 기타 요청 사항 전달
       pointUsage,
-      bundles, // 주문된 상품들
-      subscriptionPeriods, // 구독 기간
-      totalPrice, // 총 가격
-      orderDate: new Date().toLocaleString(), // 날짜와 시간을 모두 포함한 문자열
+      bundles,
+      subscriptionPeriods,
+      totalPrice,
+      orderDate: new Date().toLocaleString(),
     };
 
+    console.log("Order Data:", orderData); // 로그를 통해 확인
+    
     try {
-      const response = await fetch('http://localhost:8888/shop/orders', {
+
+      const response = await fetch('${SHOP_URL}/orders', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -135,17 +195,17 @@ const OrderPage = () => {
         throw new Error('Failed to create order');
       }
 
-      // 주문 내역을 localStorage에 저장
-      const orderHistory = JSON.parse(localStorage.getItem('orderHistory')) || [];
-      orderHistory.push(orderData);
-      localStorage.setItem('orderHistory', JSON.stringify(orderHistory));
-
-      // 차감된 포인트를 계산하여 Redux 상태 업데이트
+      const createdOrder = await response.json();
       const deletedPoint = user.point - pointUsage;
       dispatch(userEditActions.updateUserDetail({ ...user, point: deletedPoint }));
 
-      setModalMessage("결제가 완료되었습니다.");
-      setIsConfirmStep(false);
+      navigate('/order-detail', {
+        state: {
+          order: createdOrder, // 이 객체에 deliveryRequest가 제대로 포함되어 있는지 확인
+          orderInfo: orderInfo,
+        },
+      });
+
     } catch (error) {
       console.error('Error creating order:', error);
       setModalMessage("결제에 실패했습니다.");
@@ -166,9 +226,10 @@ const OrderPage = () => {
       <OrderInfo
         user={user}
         orderInfo={orderInfo}
-        handlePhoneNumberChange={handlePhoneNumberChange}
-        handleAddressChange={handleAddressChange}
-        handleAddressSearch={handleAddressSearch}
+        handleReceiverInfoUpdate={handleReceiverInfoUpdate}
+        handleUserInfoUpdate={handleUserInfoUpdate}
+        handleDeliveryRequestChange={handleDeliveryRequestChange}
+        handleCustomRequestChange={handleCustomRequestChange}
       />
       <ProductInfo
         bundles={bundles}
