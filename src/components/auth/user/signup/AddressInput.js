@@ -44,7 +44,7 @@ const AddressInput = ({ onSuccess }) => {
 
   return (
     <>
-      <h1 className={styles.h1}>Step 3</h1>
+      <h1 className={styles.h1}>Address / PhoneNumber</h1>
       <div className={styles.signUpInput}>
         <h2 className={styles.h2}>주소</h2>
         <div>
@@ -56,7 +56,7 @@ const AddressInput = ({ onSuccess }) => {
             className={styles.input}
             placeholder="지역주소"
           />
-          <button type="button" className={styles.addressBtn} onClick={openKakaoAddress}>주소 찾기</button>
+          <button type="button" className={styles.addressBtn} onClick={openKakaoAddress}>주소 검색</button>
         </div>
 
         <input
