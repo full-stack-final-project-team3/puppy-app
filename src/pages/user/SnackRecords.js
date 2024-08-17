@@ -12,19 +12,17 @@ const subscriptionPeriodLabels = {
     MONTH6: "6개월",
 };
 
-const calculateExpiryDate = (startDate, subscriptionPeriod) => {
-    const expiryDate = new Date(startDate);
-    const monthsToAdd = {
-        ONE: 1,
-        MONTH3: 3,
-        MONTH6: 6,
-    };
-    expiryDate.setMonth(expiryDate.getMonth() + monthsToAdd[subscriptionPeriod]);
-    return expiryDate.toLocaleDateString('ko-KR', {
+const formatDate = (date) => {
+    if (!date) return ''; // 날짜가 없을 경우 빈 문자열 반환
+
+    const options = {
         year: 'numeric',
         month: '2-digit',
         day: '2-digit',
-    });
+    };
+
+    // Date 객체로 변환 후 원하는 형식으로 변환
+    return new Date(date).toLocaleString('ko-KR', options);
 };
 
 const SnackRecords = () => {
@@ -134,15 +132,21 @@ const SnackRecords = () => {
                                         className={order.orderStatus === 'CANCELLED' ? styles.cancelledText : ''}>
                                         <strong>{order.orderStatus === 'CANCELLED' ? '주문 취소' : '주문 완료'}</strong>
                                     </h2>
-                                    <p><strong>주문 날짜:</strong> {formatDateTime(order.orderDateTime) || '에러'}</p>
+                                    <p><strong>주문 날짜: </strong> {formatDateTime(order.orderDateTime) || '에러'}</p>
                                     {order.bundles && order.bundles.length > 0 && order.bundles.map((bundle, bundleIndex) => (
                                         <div key={bundleIndex} className={styles.bundleItem}>
                                             <h3>반려견 전용 맞춤형 푸드 패키지 For {bundle.dogName}</h3>
-                                            <p><strong>상품 구독 기간:</strong> 
+                                            <p><strong>상품 구독 기간: </strong> 
                                                 {subscriptionPeriodLabels[bundle.subsType]}
                                             </p>
-                                            <p><strong>구독 만료 기간:</strong> 
-                                                {calculateExpiryDate(order.orderDateTime, bundle.subsType)}
+                                            <p><strong>구독 시작일: </strong> 
+                                                {formatDate(bundle.subscriptionsStartDate)}
+                                            </p>
+                                            <p><strong>구독 만료일: </strong> 
+                                                {formatDate(bundle.subscriptionsEndDate)}
+                                            </p>
+                                            <p><strong>구독 회차: </strong> 
+                                                {bundle.subscriptionsCycle}회
                                             </p>
                                             {/* <p><strong>패키지 리스트:</strong></p>
                                             <ul>
@@ -152,7 +156,7 @@ const SnackRecords = () => {
                                             </ul> */}
                                         </div>
                                     ))}
-                                    <p><strong>총 결제 금액:</strong> {order.totalPrice ? order.totalPrice.toLocaleString() : '0'}원</p>
+                                    <p><strong>총 결제 금액: </strong> {order.totalPrice ? order.totalPrice.toLocaleString() : '0'}원</p>
                                 </div>
                                 <div className={styles.actions}>
                                     <button 
