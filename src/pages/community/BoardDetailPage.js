@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import styles from "./BoardDetailPage.module.scss";
-import { BOARD_URL, NOTICE_URL } from "../../config/user/host-config";
+import { BOARD_URL, NOTICE_URL, LIKE_URL } from "../../config/user/host-config";
 import {
   BsChat,
   BsEye,
@@ -13,6 +13,7 @@ import {
   BsChevronRight,
   BsReply,
 } from "react-icons/bs";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { AiOutlineExport } from "react-icons/ai";
 import { GoClock } from "react-icons/go";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
@@ -22,6 +23,9 @@ const BASE_URL = "http://localhost:8888";
 const BoardDetailPage = () => {
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   const [newComment, setNewComment] = useState("");
   const [newImage, setNewImage] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -38,75 +42,129 @@ const BoardDetailPage = () => {
 
   const [expandedComments, setExpandedComments] = useState({});
 
+  const [postLiked, setPostLiked] = useState(false);
+  const [commentLikes, setCommentLikes] = useState({});
+  const [subReplyLikes, setSubReplyLikes] = useState({});
+
+  const [boardLikeCount, setBoardLikeCount] = useState(0);
+  const [commentLikeCounts, setCommentLikeCounts] = useState({});
+  const [subReplyLikeCounts, setSubReplyLikeCounts] = useState({});
+
   const { id } = useParams();
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.userEdit.userDetail);
 
-  useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem("userData"));
-    setIsLoggedIn(!!userData && !!userData.token);
-    fetchPostDetail();
-  }, [id]);
+  // useEffect(() => {
+  //   const userData = JSON.parse(localStorage.getItem("userData"));
+  //   setIsLoggedIn(!!userData && !!userData.token);
 
-  const fetchPostDetail = async () => {
-    try {
-      const userData = JSON.parse(localStorage.getItem("userData"));
-      const headers = userData?.token
-        ? { Authorization: `Bearer ${userData.token}` }
-        : {};
-      const response = await fetch(`${BOARD_URL}/${id}`, { headers });
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "서버 응답이 실패했습니다.");
-      }
-      const data = await response.json();
+  //   const fetchData = async () => {
+  //     await fetchPostDetail();
+  //     await fetchLikeStatus();
+  //   };
 
-      // 댓글과 대댓글에서 사용된 이미지 경로 수집
-      const commentImageUrls = new Set();
-      if (data.replies) {
-        data.replies.forEach((comment) => {
-          if (comment.imageUrl) {
-            commentImageUrls.add(comment.imageUrl);
-          }
-          if (comment.subReplies) {
-            comment.subReplies.forEach((subReply) => {
-              if (subReply.imageUrl) {
-                commentImageUrls.add(subReply.imageUrl);
-              }
-            });
-          }
-        });
-      }
+  //   fetchData();
+  // }, [id]);
 
-      // 게시글 이미지만 필터링 (댓글이나 대댓글에서 사용되지 않은 이미지)
-      const filteredPostImages = data.images
-        ? data.images.filter((img) => !commentImageUrls.has(img))
-        : [];
+  // 로그인 상태 확인
+ useEffect(() => {
+   const fetchData = async () => {
+     setIsLoading(true);
+     setError(null);
+     try {
+       const userData = JSON.parse(localStorage.getItem("userData"));
+       const isLoggedIn = !!userData && !!userData.token;
+       setIsLoggedIn(isLoggedIn);
 
-      setPost({ ...data, images: filteredPostImages });
+       const postData = await fetchPostDetail(
+         isLoggedIn ? userData.token : null
+       );
+       setPost(postData);
+       setComments(postData.replies || []);
 
-      // 댓글과 대댓글 이미지 처리
-      const commentsWithImages = data.replies
-        ? data.replies.map((comment) => ({
-            ...comment,
-            imageUrl: comment.imageUrl,
-            subReplies: comment.subReplies
-              ? comment.subReplies.map((subReply) => ({
-                  ...subReply,
-                  imageUrl: subReply.imageUrl,
-                }))
-              : [],
-          }))
-        : [];
+       if (isLoggedIn) {
+         const likeStatusResponse = await fetch(
+           `${LIKE_URL}/board/${id}/like-status`,
+           {
+             headers: { Authorization: `Bearer ${userData.token}` },
+           }
+         );
+         const likeStatusData = await likeStatusResponse.json();
+         setPostLiked(likeStatusData.boardLiked);
+         setBoardLikeCount(likeStatusData.boardLikeCount);
+         setCommentLikes(likeStatusData.replyLikes);
+         setCommentLikeCounts(likeStatusData.replyLikeCounts);
+         setSubReplyLikes(likeStatusData.subReplyLikes);
+         setSubReplyLikeCounts(likeStatusData.subReplyLikeCounts);
+       }
+     } catch (error) {
+       console.error("데이터 로딩 중 오류 발생:", error);
+       setError("데이터를 불러오는 데 실패했습니다. 다시 시도해 주세요.");
+     } finally {
+       setIsLoading(false);
+     }
+   };
 
-      setComments(commentsWithImages);
-    } catch (error) {
-      console.error("게시물 상세 정보를 가져오는 중 오류 발생:", error);
-      // 사용자에게 오류 메시지 표시
-      // setError(error.message);
+   fetchData();
+ }, [id]);
+  //----------------------
+  //함수 목록들
+  const fetchPostDetail = async (token) => {
+    console.log("🐶 게시물 상세 정보를 가져오는 중...");
+    const headers = token ? { Authorization: `Bearer ${token}` } : {};
+    const response = await fetch(`${BOARD_URL}/${id}`, { headers });
+    if (!response.ok) {
+      throw new Error("게시물 정보를 가져오는 데 실패했습니다.");
     }
+    const data = await response.json();
+    console.log("🐶 게시물 데이터:", data);
+    return data;
   };
+  //
+  const fetchLikeStatus = async (token) => {
+    console.log("🐶 좋아요 상태 가져오는 중...");
+    const postLikeResponse = await fetch(`${LIKE_URL}/board/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!postLikeResponse.ok) {
+      throw new Error("좋아요 상태를 가져오는 데 실패했습니다.");
+    }
+    const postLikeData = await postLikeResponse.json();
+    setPostLiked(postLikeData.liked);
+
+    // 댓글 및 대댓글 좋아요 상태 가져오기
+    const commentIds = comments.map((comment) => comment.id);
+    const subReplyIds = comments.flatMap((comment) =>
+      (comment.subReplies || []).map((subReply) => subReply.id)
+    );
+
+    const [commentLikes, subReplyLikes] = await Promise.all([
+      fetchMultipleLikeStatus("reply", commentIds, token),
+      fetchMultipleLikeStatus("subReply", subReplyIds, token),
+    ]);
+
+    setCommentLikes(commentLikes);
+    setSubReplyLikes(subReplyLikes);
+  };
+
+  const fetchMultipleLikeStatus = async (type, ids, token) => {
+    if (ids.length === 0) return {};
+    const response = await fetch(`${LIKE_URL}/${type}/status`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(ids),
+    });
+    if (!response.ok) {
+      throw new Error(`${type} 좋아요 상태를 가져오는 데 실패했습니다.`);
+    }
+    return await response.json();
+  };
+
+  //
 
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
@@ -518,9 +576,47 @@ const BoardDetailPage = () => {
     0
   );
 
+  // 좋아요 상태 가져오기
+
+  //좋아요 컨트롤
+  const handleLike = async (type, id) => {
+    if (!isLoggedIn) {
+      alert("좋아요를 누르려면 로그인이 필요합니다.");
+      return;
+    }
+    try {
+      const userData = JSON.parse(localStorage.getItem("userData"));
+      const response = await fetch(`${LIKE_URL}/${type}/${id}`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${userData.token}` },
+      });
+      const data = await response.json();
+      if (type === "board") {
+        setPostLiked(data.liked);
+        setBoardLikeCount((prev) => (data.liked ? prev + 1 : prev - 1));
+      } else if (type === "reply") {
+        setCommentLikes((prev) => ({ ...prev, [id]: data.liked }));
+        setCommentLikeCounts((prev) => ({
+          ...prev,
+          [id]: data.liked ? (prev[id] || 0) + 1 : (prev[id] || 1) - 1,
+        }));
+      } else if (type === "subReply") {
+        setSubReplyLikes((prev) => ({ ...prev, [id]: data.liked }));
+        setSubReplyLikeCounts((prev) => ({
+          ...prev,
+          [id]: data.liked ? (prev[id] || 0) + 1 : (prev[id] || 1) - 1,
+        }));
+      }
+    } catch (error) {
+      console.error("Error toggling like:", error);
+    }
+  };
+
   //렌더링
 
-  if (!post) return <div className={styles.loading}>로딩 중...</div>;
+  if (isLoading) return <div className={styles.loading}>로딩 중...</div>;
+  if (error) return <div className={styles.error}>{error}</div>;
+  if (!post) return null;
   return (
     <div className={styles.postDetailPage}>
       <h1 className={styles.postTitle}>{post.boardTitle}</h1>
@@ -579,7 +675,14 @@ const BoardDetailPage = () => {
         </div>
       )}
       <div className={styles.postContent}>{post.boardContent}</div>
-      <div className={styles.shareButtonContainer}>
+      <div className={styles.likeShareContainer}>
+        <button
+          className={`${styles.likeButton} ${postLiked ? styles.active : ""}`}
+          onClick={() => handleLike("board", id)}
+        >
+          {postLiked ? <AiFillHeart /> : <AiOutlineHeart />}
+          {boardLikeCount}
+        </button>
         <button className={styles.shareButton} onClick={handleShare}>
           <AiOutlineExport /> 공유하기
         </button>
@@ -661,6 +764,19 @@ const BoardDetailPage = () => {
                       )}
                     </>
                   )}
+                  <button
+                    onClick={() => handleLike("reply", comment.id)}
+                    className={`${styles.likeButton} ${
+                      commentLikes[comment.id] ? styles.active : ""
+                    }`}
+                  >
+                    {commentLikes[comment.id] ? (
+                      <AiFillHeart />
+                    ) : (
+                      <AiOutlineHeart />
+                    )}{" "}
+                    {commentLikeCounts[comment.id] || 0}
+                  </button>
 
                   <button
                     onClick={() => setReplyingTo(comment.id)}
@@ -766,6 +882,19 @@ const BoardDetailPage = () => {
                               </button>
                             </div>
                           )}
+                          <button
+                            onClick={() => handleLike("subReply", subReply.id)}
+                            className={`${styles.likeButton} ${
+                              subReplyLikes[subReply.id] ? styles.active : ""
+                            }`}
+                          >
+                            {subReplyLikes[subReply.id] ? (
+                              <AiFillHeart />
+                            ) : (
+                              <AiOutlineHeart />
+                            )}{" "}
+                            {subReplyLikeCounts[subReply.id] || 0}
+                          </button>
                         </li>
                       ))}
                     </ul>
