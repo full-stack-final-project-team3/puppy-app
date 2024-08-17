@@ -15,6 +15,7 @@ import {
 } from "react-icons/bs";
 import { AiOutlineExport } from "react-icons/ai";
 import { GoClock } from "react-icons/go";
+import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 
 const BASE_URL = "http://localhost:8888";
 
@@ -34,6 +35,9 @@ const BoardDetailPage = () => {
 
   const [editingSubReplyId, setEditingSubReplyId] = useState(null);
   const [editedSubReplyContent, setEditedSubReplyContent] = useState("");
+
+  const [expandedComments, setExpandedComments] = useState({});
+
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -52,47 +56,55 @@ const BoardDetailPage = () => {
         ? { Authorization: `Bearer ${userData.token}` }
         : {};
       const response = await fetch(`${BOARD_URL}/${id}`, { headers });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "서버 응답이 실패했습니다.");
+      }
       const data = await response.json();
-
-      console.log(data);
-      console.log(data.images);
 
       // 댓글과 대댓글에서 사용된 이미지 경로 수집
       const commentImageUrls = new Set();
-      data.replies.forEach((comment) => {
-        // 댓글 이미지 경로 추가
-        if (comment.imageUrl) {
-          commentImageUrls.add(comment.imageUrl);
-        }
-
-        // 대댓글 이미지 경로 추가
-        comment.subReplies.forEach((subReply) => {
-          if (subReply.imageUrl) {
-            commentImageUrls.add(subReply.imageUrl);
+      if (data.replies) {
+        data.replies.forEach((comment) => {
+          if (comment.imageUrl) {
+            commentImageUrls.add(comment.imageUrl);
+          }
+          if (comment.subReplies) {
+            comment.subReplies.forEach((subReply) => {
+              if (subReply.imageUrl) {
+                commentImageUrls.add(subReply.imageUrl);
+              }
+            });
           }
         });
-      });
+      }
 
       // 게시글 이미지만 필터링 (댓글이나 대댓글에서 사용되지 않은 이미지)
-      const filteredPostImages = data.images.filter(
-        (img) => !commentImageUrls.has(img)
-      );
+      const filteredPostImages = data.images
+        ? data.images.filter((img) => !commentImageUrls.has(img))
+        : [];
 
       setPost({ ...data, images: filteredPostImages });
 
       // 댓글과 대댓글 이미지 처리
-      const commentsWithImages = data.replies.map((comment) => ({
-        ...comment,
-        imageUrl: comment.imageUrl, // 댓글 이미지
-        subReplies: comment.subReplies.map((subReply) => ({
-          ...subReply,
-          imageUrl: subReply.imageUrl, // 대댓글 이미지
-        })),
-      }));
+      const commentsWithImages = data.replies
+        ? data.replies.map((comment) => ({
+            ...comment,
+            imageUrl: comment.imageUrl,
+            subReplies: comment.subReplies
+              ? comment.subReplies.map((subReply) => ({
+                  ...subReply,
+                  imageUrl: subReply.imageUrl,
+                }))
+              : [],
+          }))
+        : [];
 
       setComments(commentsWithImages);
     } catch (error) {
       console.error("게시물 상세 정보를 가져오는 중 오류 발생:", error);
+      // 사용자에게 오류 메시지 표시
+      // setError(error.message);
     }
   };
 
@@ -502,12 +514,28 @@ const BoardDetailPage = () => {
       if (diffInMinutes < 60) {
         return `${diffInMinutes}분 전`;
       } else {
-        return `${diffInHours}시간 ${diffInMinutes % 60}분 전`;
+        // return `${diffInHours}시간 ${diffInMinutes % 60}분 전`;
+        return `${diffInHours}시간 전`;
       }
     } else {
       return new Date(date).toLocaleString();
     }
   };
+
+  const toggleSubReplies = (commentId) => {
+    setExpandedComments((prev) => ({
+      ...prev,
+      [commentId]: !prev[commentId],
+    }));
+  };
+
+  const totalComments = comments.reduce(
+    (acc, comment) =>
+      acc + 1 + (comment.subReplies ? comment.subReplies.length : 0),
+    0
+  );
+
+  //렌더링
 
   if (!post) return <div className={styles.loading}>로딩 중...</div>;
   return (
@@ -575,7 +603,7 @@ const BoardDetailPage = () => {
       </div>
       <div className={styles.commentsSection}>
         <h2>
-          <BsChat /> 댓글
+          <BsChat /> 댓글 ({totalComments})
         </h2>
         <ul className={styles.commentList}>
           {comments && comments.length > 0 ? (
@@ -659,6 +687,21 @@ const BoardDetailPage = () => {
                   </button>
 
                   {comment.subReplies && comment.subReplies.length > 0 && (
+                    //   <button
+                    //     onClick={() => toggleSubReplies(comment.id)}
+                    //     className={styles.toggleSubRepliesButton}
+                    //   >
+                    //     {expandedComments[comment.id] ? (
+                    //       <BsChevronUp />
+                    //     ) : (
+                    //       <BsChevronDown />
+                    //     )}
+                    //     답글 {comment.subReplies.length}개
+                    //   </button>
+                    // )}
+                    // {expandedComments[comment.id] &&
+                    //   comment.subReplies &&
+                    //   comment.subReplies.length > 0 && (
                     <ul className={styles.subReplyList}>
                       {comment.subReplies.map((subReply) => (
                         <li key={subReply.id} className={styles.subReplyItem}>
