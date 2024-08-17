@@ -53,8 +53,44 @@ const BoardDetailPage = () => {
         : {};
       const response = await fetch(`${BOARD_URL}/${id}`, { headers });
       const data = await response.json();
-      setPost(data);
-      setComments(data.replies || []);
+
+      console.log(data);
+      console.log(data.images);
+
+      // 댓글과 대댓글에서 사용된 이미지 경로 수집
+      const commentImageUrls = new Set();
+      data.replies.forEach((comment) => {
+        // 댓글 이미지 경로 추가
+        if (comment.imageUrl) {
+          commentImageUrls.add(comment.imageUrl);
+        }
+
+        // 대댓글 이미지 경로 추가
+        comment.subReplies.forEach((subReply) => {
+          if (subReply.imageUrl) {
+            commentImageUrls.add(subReply.imageUrl);
+          }
+        });
+      });
+
+      // 게시글 이미지만 필터링 (댓글이나 대댓글에서 사용되지 않은 이미지)
+      const filteredPostImages = data.images.filter(
+        (img) => !commentImageUrls.has(img)
+      );
+
+      setPost({ ...data, images: filteredPostImages });
+
+      // 댓글과 대댓글 이미지 처리
+      const commentsWithImages = data.replies.map((comment) => ({
+        ...comment,
+        imageUrl: comment.imageUrl, // 댓글 이미지
+        subReplies: comment.subReplies.map((subReply) => ({
+          ...subReply,
+          imageUrl: subReply.imageUrl, // 대댓글 이미지
+        })),
+      }));
+
+      setComments(commentsWithImages);
     } catch (error) {
       console.error("게시물 상세 정보를 가져오는 중 오류 발생:", error);
     }
@@ -92,31 +128,20 @@ const BoardDetailPage = () => {
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorData = await response.json();
+        throw new Error(errorData.message || "댓글 작성에 실패했습니다.");
       }
 
-      const updatedPostData = await response.json();
-      console.log("Updated post data:", updatedPostData);
-
-      if (updatedPostData && updatedPostData.replies) {
-        setPost(updatedPostData);
-        setComments(updatedPostData.replies || []);
-      } else {
-        console.error(
-          "Invalid data structure received from server:",
-          updatedPostData
-        );
-        await fetchPostDetail();
-      }
-
+      const newReplyData = await response.json();
+      setComments((prevComments) => [...prevComments, newReplyData]);
       setNewComment("");
       setNewImage(null);
       if (document.getElementById("imageUpload")) {
         document.getElementById("imageUpload").value = "";
       }
     } catch (error) {
-      console.error("댓글을 제출하는 중 오류 발생:", error);
-      alert("댓글 제출에 실패했습니다. 다시 시도해 주세요.");
+      console.error("댓글 작성 중 오류 발생:", error);
+      alert(error.message);
     }
 
     if (user.id !== post.user.id) {
@@ -236,18 +261,22 @@ const BoardDetailPage = () => {
         }),
       });
 
-      if (response.ok) {
-        const updatedBoardData = await response.json();
-        setPost(updatedBoardData);
-        setComments(updatedBoardData.replies || []);
-        setEditingCommentId(null);
-        setEditedCommentContent("");
-      } else {
-        throw new Error("댓글 수정에 실패했습니다.");
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "댓글 수정에 실패했습니다.");
       }
+
+      const updatedReply = await response.json();
+      setComments((prevComments) =>
+        prevComments.map((comment) =>
+          comment.id === commentId ? updatedReply : comment
+        )
+      );
+      setEditingCommentId(null);
+      setEditedCommentContent("");
     } catch (error) {
       console.error("댓글 수정 중 오류 발생:", error);
-      alert("댓글 수정에 실패했습니다. 다시 시도해 주세요.");
+      alert(error.message);
     }
   };
 
@@ -277,7 +306,6 @@ const BoardDetailPage = () => {
     }
   };
 
-  //대댓글 작성
   const handleSubReplySubmit = async (e, commentId) => {
     e.preventDefault();
     if (!isLoggedIn) {
@@ -287,7 +315,7 @@ const BoardDetailPage = () => {
     try {
       const userData = JSON.parse(localStorage.getItem("userData"));
       const formData = new FormData();
-      formData.append("subReplyContent", newSubReply); // 'content' 대신 'subReplyContent' 사용
+      formData.append("subReplyContent", newSubReply);
       formData.append(
         "user",
         JSON.stringify({
@@ -333,7 +361,7 @@ const BoardDetailPage = () => {
                       profileUrl: user.profileUrl,
                       email: user.email,
                     },
-                    subReplyCreatedAt: new Date().toISOString(), // 'createdAt' 대신 'subReplyCreatedAt' 사용
+                    subReplyCreatedAt: new Date().toISOString(),
                   },
                 ],
               }
@@ -353,101 +381,117 @@ const BoardDetailPage = () => {
     }
   };
 
-  //대댓글 이미지 추가
   const handleSubReplyImageChange = (e) => {
     if (e.target.files[0]) {
       setNewSubReplyImage(e.target.files[0]);
     }
   };
 
-  //대댓글 수정 / 삭제
-const handleSubReplyEdit = (subReplyId, content) => {
-  setEditingSubReplyId(subReplyId);
-  setEditedSubReplyContent(content);
-};
+  const handleSubReplyEdit = (subReplyId, content) => {
+    setEditingSubReplyId(subReplyId);
+    setEditedSubReplyContent(content);
+  };
 
-const handleSubReplyUpdate = async (commentId, subReplyId) => {
-  try {
-    const userData = JSON.parse(localStorage.getItem("userData"));
-    const response = await fetch(
-      `${BOARD_URL}/${id}/comments/${commentId}/subReplies/${subReplyId}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${userData.token}`,
-        },
-        body: JSON.stringify({
-          content: editedSubReplyContent,
-          userId: user.id,
-        }),
-      }
-    );
-
-    if (response.ok) {
-      const updatedSubReply = await response.json();
-      setComments((prevComments) =>
-        prevComments.map((comment) =>
-          comment.id === commentId
-            ? {
-                ...comment,
-                subReplies: comment.subReplies.map((subReply) =>
-                  subReply.id === subReplyId
-                    ? { ...subReply, subReplyContent: editedSubReplyContent }
-                    : subReply
-                ),
-              }
-            : comment
-        )
-      );
-      setEditingSubReplyId(null);
-      setEditedSubReplyContent("");
-    } else {
-      throw new Error("대댓글 수정에 실패했습니다.");
-    }
-  } catch (error) {
-    console.error("대댓글 수정 중 오류 발생:", error);
-    alert("대댓글 수정에 실패했습니다. 다시 시도해 주세요.");
-  }
-};
-
-const handleSubReplyDelete = async (commentId, subReplyId) => {
-  if (window.confirm("정말로 이 대댓글을 삭제하시겠습니까?")) {
+  const handleSubReplyUpdate = async (commentId, subReplyId) => {
     try {
       const userData = JSON.parse(localStorage.getItem("userData"));
       const response = await fetch(
-        `${BOARD_URL}/${id}/comments/${commentId}/subReplies/${subReplyId}?userId=${user.id}`,
+        `${BOARD_URL}/${id}/comments/${commentId}/subReplies/${subReplyId}`,
         {
-          method: "DELETE",
+          method: "PUT",
           headers: {
+            "Content-Type": "application/json",
             Authorization: `Bearer ${userData.token}`,
           },
+          body: JSON.stringify({
+            content: editedSubReplyContent,
+            userId: user.id,
+          }),
         }
       );
 
       if (response.ok) {
+        const updatedSubReply = await response.json();
         setComments((prevComments) =>
           prevComments.map((comment) =>
             comment.id === commentId
               ? {
                   ...comment,
-                  subReplies: comment.subReplies.filter(
-                    (subReply) => subReply.id !== subReplyId
+                  subReplies: comment.subReplies.map((subReply) =>
+                    subReply.id === subReplyId
+                      ? { ...subReply, subReplyContent: editedSubReplyContent }
+                      : subReply
                   ),
                 }
               : comment
           )
         );
+        setEditingSubReplyId(null);
+        setEditedSubReplyContent("");
       } else {
-        throw new Error("대댓글 삭제에 실패했습니다.");
+        throw new Error("대댓글 수정에 실패했습니다.");
       }
     } catch (error) {
-      console.error("대댓글 삭제 중 오류 발생:", error);
-      alert("대댓글 삭제에 실패했습니다. 다시 시도해 주세요.");
+      console.error("대댓글 수정 중 오류 발생:", error);
+      alert("대댓글 수정에 실패했습니다. 다시 시도해 주세요.");
     }
-  }
-};
-  //렌더링 시작 부분!@
+  };
+
+  const handleSubReplyDelete = async (commentId, subReplyId) => {
+    if (window.confirm("정말로 이 대댓글을 삭제하시겠습니까?")) {
+      try {
+        const userData = JSON.parse(localStorage.getItem("userData"));
+        const response = await fetch(
+          `${BOARD_URL}/${id}/comments/${commentId}/subReplies/${subReplyId}?userId=${user.id}`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${userData.token}`,
+            },
+          }
+        );
+
+        if (response.ok) {
+          setComments((prevComments) =>
+            prevComments.map((comment) =>
+              comment.id === commentId
+                ? {
+                    ...comment,
+                    subReplies: comment.subReplies.filter(
+                      (subReply) => subReply.id !== subReplyId
+                    ),
+                  }
+                : comment
+            )
+          );
+        } else {
+          throw new Error("대댓글 삭제에 실패했습니다.");
+        }
+      } catch (error) {
+        console.error("대댓글 삭제 중 오류 발생:", error);
+        alert("대댓글 삭제에 실패했습니다. 다시 시도해 주세요.");
+      }
+    }
+  };
+
+  //시간 관련 처리
+  const formatTimeAgo = (date) => {
+    const now = new Date();
+    const diffInSeconds = Math.floor((now - new Date(date)) / 1000);
+    const diffInMinutes = Math.floor(diffInSeconds / 60);
+    const diffInHours = Math.floor(diffInMinutes / 60);
+
+    if (diffInHours < 24) {
+      if (diffInMinutes < 60) {
+        return `${diffInMinutes}분 전`;
+      } else {
+        return `${diffInHours}시간 ${diffInMinutes % 60}분 전`;
+      }
+    } else {
+      return new Date(date).toLocaleString();
+    }
+  };
+
   if (!post) return <div className={styles.loading}>로딩 중...</div>;
   return (
     <div className={styles.postDetailPage}>
@@ -463,7 +507,7 @@ const handleSubReplyDelete = async (commentId, subReplyId) => {
         </span>
         <span className={styles.date}>
           <GoClock className={styles.iconWithSpacing} />
-          {new Date(post.boardCreatedAt).toLocaleDateString()}
+          {formatTimeAgo(post.boardCreatedAt)}
         </span>
         <span className={styles.viewCount}>
           <BsEye className={styles.iconWithSpacing} /> {post.viewCount}
@@ -530,8 +574,27 @@ const handleSubReplyDelete = async (commentId, subReplyId) => {
                     {comment.user?.nickname || "익명의강아지주인"}
                   </span>
                   <span className={styles.commentDate}>
-                    {new Date(comment.replyCreatedAt).toLocaleDateString()}
+                    <GoClock className={styles.iconWithSpacing} />
+                    {formatTimeAgo(comment.replyCreatedAt)}
                   </span>
+                  {user && user.id === comment.user?.id && (
+                    <div className={styles.commentActions}>
+                      <button
+                        onClick={() =>
+                          handleCommentEdit(comment.id, comment.replyContent)
+                        }
+                        className={styles.editCommentButton}
+                      >
+                        수정
+                      </button>
+                      <button
+                        onClick={() => handleCommentDelete(comment.id)}
+                        className={styles.deleteCommentButton}
+                      >
+                        삭제
+                      </button>
+                    </div>
+                  )}
                   {editingCommentId === comment.id ? (
                     <div>
                       <textarea
@@ -555,35 +618,22 @@ const handleSubReplyDelete = async (commentId, subReplyId) => {
                       </button>
                     </div>
                   ) : (
-                    <p>{comment.replyContent}</p>
-                  )}
-                  {comment.imageUrl && (
-                    <img
-                      src={comment.imageUrl}
-                      alt="댓글 이미지"
-                      className={styles.commentImage}
-                    />
-                  )}
-                  {user && user.id === comment.user?.id && (
-                    <div className={styles.commentActions}>
-                      <button
-                        onClick={() =>
-                          handleCommentEdit(comment.id, comment.replyContent)
-                        }
-                        className={styles.editCommentButton}
-                      >
-                        수정
-                      </button>
-                      <button
-                        onClick={() => handleCommentDelete(comment.id)}
-                        className={styles.deleteCommentButton}
-                      >
-                        삭제
-                      </button>
-                    </div>
+                    <>
+                      <p>{comment.replyContent}</p>
+                      {comment.imageUrl && (
+                        <img
+                          src={
+                            comment.imageUrl.startsWith("http")
+                              ? comment.imageUrl
+                              : `${BASE_URL}${comment.imageUrl}`
+                          }
+                          alt="댓글 이미지"
+                          className={styles.commentImage}
+                        />
+                      )}
+                    </>
                   )}
 
-                  {/* 답글 버튼 */}
                   <button
                     onClick={() => setReplyingTo(comment.id)}
                     className={styles.replyButton}
@@ -591,7 +641,6 @@ const handleSubReplyDelete = async (commentId, subReplyId) => {
                     <BsReply /> 답글
                   </button>
 
-                  {/* 대댓글 목록 */}
                   {comment.subReplies && comment.subReplies.length > 0 && (
                     <ul className={styles.subReplyList}>
                       {comment.subReplies.map((subReply) => (
@@ -608,9 +657,8 @@ const handleSubReplyDelete = async (commentId, subReplyId) => {
                             {subReply.user?.nickname || "익명의강아지주인"}
                           </span>
                           <span className={styles.subReplyDate}>
-                            {new Date(
-                              subReply.subReplyCreatedAt
-                            ).toLocaleString()}
+                            <GoClock className={styles.iconWithSpacing} />
+                            {formatTimeAgo(subReply.subReplyCreatedAt)}
                           </span>
                           {editingSubReplyId === subReply.id ? (
                             <div>
@@ -637,14 +685,20 @@ const handleSubReplyDelete = async (commentId, subReplyId) => {
                               </button>
                             </div>
                           ) : (
-                            <p>{subReply.subReplyContent}</p>
-                          )}
-                          {subReply.imageUrl && (
-                            <img
-                              src={subReply.imageUrl}
-                              alt="대댓글 이미지"
-                              className={styles.subReplyImage}
-                            />
+                            <>
+                              <p>{subReply.subReplyContent}</p>
+                              {subReply.imageUrl && (
+                                <img
+                                  src={
+                                    subReply.imageUrl.startsWith("http")
+                                      ? subReply.imageUrl
+                                      : `${BASE_URL}${subReply.imageUrl}`
+                                  }
+                                  alt="대댓글 이미지"
+                                  className={styles.subReplyImage}
+                                />
+                              )}
+                            </>
                           )}
                           {user && user.id === subReply.user?.id && (
                             <div className={styles.subReplyActions}>
@@ -674,7 +728,6 @@ const handleSubReplyDelete = async (commentId, subReplyId) => {
                     </ul>
                   )}
 
-                  {/* 대댓글 입력 폼 */}
                   {replyingTo === comment.id && (
                     <form
                       onSubmit={(e) => handleSubReplySubmit(e, comment.id)}
