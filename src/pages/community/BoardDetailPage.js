@@ -56,47 +56,55 @@ const BoardDetailPage = () => {
         ? { Authorization: `Bearer ${userData.token}` }
         : {};
       const response = await fetch(`${BOARD_URL}/${id}`, { headers });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "서버 응답이 실패했습니다.");
+      }
       const data = await response.json();
-
-      console.log(data);
-      console.log(data.images);
 
       // 댓글과 대댓글에서 사용된 이미지 경로 수집
       const commentImageUrls = new Set();
-      data.replies.forEach((comment) => {
-        // 댓글 이미지 경로 추가
-        if (comment.imageUrl) {
-          commentImageUrls.add(comment.imageUrl);
-        }
-
-        // 대댓글 이미지 경로 추가
-        comment.subReplies.forEach((subReply) => {
-          if (subReply.imageUrl) {
-            commentImageUrls.add(subReply.imageUrl);
+      if (data.replies) {
+        data.replies.forEach((comment) => {
+          if (comment.imageUrl) {
+            commentImageUrls.add(comment.imageUrl);
+          }
+          if (comment.subReplies) {
+            comment.subReplies.forEach((subReply) => {
+              if (subReply.imageUrl) {
+                commentImageUrls.add(subReply.imageUrl);
+              }
+            });
           }
         });
-      });
+      }
 
       // 게시글 이미지만 필터링 (댓글이나 대댓글에서 사용되지 않은 이미지)
-      const filteredPostImages = data.images.filter(
-        (img) => !commentImageUrls.has(img)
-      );
+      const filteredPostImages = data.images
+        ? data.images.filter((img) => !commentImageUrls.has(img))
+        : [];
 
       setPost({ ...data, images: filteredPostImages });
 
       // 댓글과 대댓글 이미지 처리
-      const commentsWithImages = data.replies.map((comment) => ({
-        ...comment,
-        imageUrl: comment.imageUrl, // 댓글 이미지
-        subReplies: comment.subReplies.map((subReply) => ({
-          ...subReply,
-          imageUrl: subReply.imageUrl, // 대댓글 이미지
-        })),
-      }));
+      const commentsWithImages = data.replies
+        ? data.replies.map((comment) => ({
+            ...comment,
+            imageUrl: comment.imageUrl,
+            subReplies: comment.subReplies
+              ? comment.subReplies.map((subReply) => ({
+                  ...subReply,
+                  imageUrl: subReply.imageUrl,
+                }))
+              : [],
+          }))
+        : [];
 
       setComments(commentsWithImages);
     } catch (error) {
       console.error("게시물 상세 정보를 가져오는 중 오류 발생:", error);
+      // 사용자에게 오류 메시지 표시
+      // setError(error.message);
     }
   };
 
