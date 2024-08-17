@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Rating from '@mui/material/Rating';
 import styles from './Review.module.scss';
+import { REVIEW_URL } from "../../../config/user/host-config";
 
-const ReviewPage = () => {
+const ReviewPage = ({ treatsId }) => {
   const [reviews, setReviews] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -13,9 +14,11 @@ const ReviewPage = () => {
   const user = useSelector((state) => state.userEdit.userDetail);
 
   useEffect(() => {
+
+    console.info("ReviewPage treatId: "+ treatsId);
     const fetchReviews = async () => {
       try {
-        const response = await fetch('http://localhost:8888/shop/reviews');
+        const response = await fetch(`${REVIEW_URL}/treats/${treatsId}`);
         if (!response.ok) {
           throw new Error('네트워크 응답이 실패했습니다.');
         }
@@ -63,7 +66,7 @@ const ReviewPage = () => {
 
   return (
     <div className={`${styles.review_common_box} ${styles.review_page_box}`}>
-      <button onClick={handleButtonClick}>리뷰 작성하기</button>
+      {/* <button onClick={handleButtonClick}>리뷰 작성하기</button> */}
       <div>
         <h1>리뷰 목록 조회</h1>
         <ul className={styles.review_list_box}>
@@ -85,7 +88,7 @@ const ReviewPage = () => {
                   {review.reviewPics && review.reviewPics.map((pic, index) => (
                     <img
                       key={index}
-                      src={`http://localhost:8888/shop/reviews/review-img/${pic.reviewPic}`}
+                      src={`${REVIEW_URL}/review-img/${pic.reviewPic}`}
                       alt={`Review Pic ${index + 1}`}
                       className={styles.review_image}
                       onClick={() => openModal(review.reviewPics, index)}
