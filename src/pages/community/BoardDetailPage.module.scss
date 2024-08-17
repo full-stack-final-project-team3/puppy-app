@@ -52,7 +52,7 @@
     position: absolute;
     top: 0;
     right: 0;
-    padding: 20px;
+    // padding: 10px;
 }
 
 .optionsButton {
@@ -513,4 +513,32 @@
 .subReplyAuthor {
     margin-right: 15px;
     /* 아이디와 날짜 사이 간격 조정 */
+}
+
+.toggleSubRepliesButton {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    margin-top: 10px;
+    padding: 5px 10px;
+    border-radius: 15px;
+    transition: background-color 0.3s;
+
+    &:hover {
+        background-color: #f0f0f0;
+    }
+
+    svg {
+        margin-right: 5px;
+    }
+}
+
+.subReplyList {
+    margin-top: 10px;
+    padding-left: 20px;
+    border-left: 2px solid #e0e0e0;
 }

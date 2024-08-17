@@ -15,6 +15,7 @@ import {
 } from "react-icons/bs";
 import { AiOutlineExport } from "react-icons/ai";
 import { GoClock } from "react-icons/go";
+import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 
 const BASE_URL = "http://localhost:8888";
 
@@ -34,6 +35,9 @@ const BoardDetailPage = () => {
 
   const [editingSubReplyId, setEditingSubReplyId] = useState(null);
   const [editedSubReplyContent, setEditedSubReplyContent] = useState("");
+
+  const [expandedComments, setExpandedComments] = useState({});
+
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -485,12 +489,28 @@ const BoardDetailPage = () => {
       if (diffInMinutes < 60) {
         return `${diffInMinutes}분 전`;
       } else {
-        return `${diffInHours}시간 ${diffInMinutes % 60}분 전`;
+        // return `${diffInHours}시간 ${diffInMinutes % 60}분 전`;
+        return `${diffInHours}시간 전`;
       }
     } else {
       return new Date(date).toLocaleString();
     }
   };
+
+  const toggleSubReplies = (commentId) => {
+    setExpandedComments((prev) => ({
+      ...prev,
+      [commentId]: !prev[commentId],
+    }));
+  };
+
+  const totalComments = comments.reduce(
+    (acc, comment) =>
+      acc + 1 + (comment.subReplies ? comment.subReplies.length : 0),
+    0
+  );
+
+  //렌더링
 
   if (!post) return <div className={styles.loading}>로딩 중...</div>;
   return (
@@ -558,7 +578,7 @@ const BoardDetailPage = () => {
       </div>
       <div className={styles.commentsSection}>
         <h2>
-          <BsChat /> 댓글
+          <BsChat /> 댓글 ({totalComments})
         </h2>
         <ul className={styles.commentList}>
           {comments && comments.length > 0 ? (
@@ -642,6 +662,21 @@ const BoardDetailPage = () => {
                   </button>
 
                   {comment.subReplies && comment.subReplies.length > 0 && (
+                    //   <button
+                    //     onClick={() => toggleSubReplies(comment.id)}
+                    //     className={styles.toggleSubRepliesButton}
+                    //   >
+                    //     {expandedComments[comment.id] ? (
+                    //       <BsChevronUp />
+                    //     ) : (
+                    //       <BsChevronDown />
+                    //     )}
+                    //     답글 {comment.subReplies.length}개
+                    //   </button>
+                    // )}
+                    // {expandedComments[comment.id] &&
+                    //   comment.subReplies &&
+                    //   comment.subReplies.length > 0 && (
                     <ul className={styles.subReplyList}>
                       {comment.subReplies.map((subReply) => (
                         <li key={subReply.id} className={styles.subReplyItem}>
