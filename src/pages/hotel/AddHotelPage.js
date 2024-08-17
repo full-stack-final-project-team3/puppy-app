@@ -128,14 +128,6 @@ const AddHotelPage = () => {
                     onChange={handleHotelChange}
                 />
                 <input
-                    type="number"
-                    name="price"
-                    placeholder="Price"
-                    value={hotelData.price}
-                    onChange={handleHotelChange}
-                    required
-                />
-                <input
                     type="text"
                     name="phoneNumber"
                     placeholder="Phone Number"

@@ -18,7 +18,6 @@ function ModifyHotelPage() {
         location: '',
         rulesPolicy: '',
         cancelPolicy: '',
-        price: '',
         phoneNumber: '',
         hotelImages: [] // 초기값을 빈 배열로 설정
     });
@@ -62,7 +61,6 @@ function ModifyHotelPage() {
             hotelImages: hotelData.hotelImages.filter((_, imgIndex) => imgIndex !== index)
         });
     };
-    
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -135,15 +133,6 @@ function ModifyHotelPage() {
                         type="text"
                         name="cancelPolicy"
                         value={hotelData.cancelPolicy}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div>
-                    <label>Price:</label>
-                    <input
-                        type="number"
-                        name="price"
-                        value={hotelData.price}
                         onChange={handleChange}
                     />
                 </div>
