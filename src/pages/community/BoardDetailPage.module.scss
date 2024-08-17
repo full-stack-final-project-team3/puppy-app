@@ -542,3 +542,41 @@
     padding-left: 20px;
     border-left: 2px solid #e0e0e0;
 }
+
+.likeShareContainer {
+display: flex;
+    justify-content: center; // 중앙 정렬
+    align-items: center; // 세로 방향으로도 중앙 정렬
+    margin: 20px 0;
+    gap: 20px; // 버튼 사이의 간격
+}
+
+.likeButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #999; // 기본 색상을 회색으로 변경
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+        background-color: #777; // 호버 시 약간 어두운 회색
+    }
+
+    &.active {
+        background-color: #B3797A; // 눌렸을 때 공유하기 버튼과 같은 색상
+
+        &:hover {
+            background-color: #9F5A5B; // 눌린 상태에서 호버 시
+        }
+    }
+
+    svg {
+        margin-right: 8px;
+    }
+}

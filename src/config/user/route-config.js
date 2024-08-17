@@ -196,11 +196,30 @@ export const router = createBrowserRouter([
         element: <BoardDetailPage />,
         loader: authCheckLoader, // 로그인 정보를 확인하는 loader 추가
       },
-
+      {
+        path: "likes/board/:id/like-status", // 좋아요 - 전체 상태 처리
+        element: <BoardDetailPage />,
+        loader: authCheckLoader,
+      },
       {
         path: "board/:id/edit", // 게시글 상세 페이지 경로 추가
         element: <BoardEditPage />,
         loader: authCheckLoader, // 로그인 정보를 확인하는 loader 추가
+      },
+      {
+        path: "likes/board/:id", // 좋아요 - 게시글
+        element: <BoardEditPage />,
+        loader: authCheckLoader,
+      },
+      {
+        path: "likes/reply/:id", // 좋아요 - 댓글
+        element: <BoardEditPage />,
+        loader: authCheckLoader,
+      },
+      {
+        path: "likes/subreply/:id", // 좋아요 - 대댓글
+        element: <BoardEditPage />,
+        loader: authCheckLoader,
       },
       {
         path: "forgot-info",
