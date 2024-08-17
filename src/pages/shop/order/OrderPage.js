@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
-import { userEditActions } from "../../../components/store/user/UserEditSlice";
-import styles from "./scss/OrderPage.module.scss";
-import OrderModal from "./OrderModal";
-import OrderInfo from "./OrderInfo";
-import ProductInfo from "./ProductInfo";
-import PaymentInfo from "./PaymentInfo";
-import { SHOP_URL } from "../../../config/user/host-config";
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { userEditActions } from '../../../components/store/user/UserEditSlice';
+import styles from './scss/OrderPage.module.scss';
+import OrderModal from './OrderModal';
+import OrderInfo from './OrderInfo';
+import ProductInfo from './ProductInfo';
+import PaymentInfo from './PaymentInfo';
+import { SHOP_URL } from '../../../config/user/host-config';
 
 const OrderPage = () => {
   const user = useSelector((state) => state.userEdit.userDetail);
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { cart, bundles, subscriptionPeriods, totalPrice } = location.state;
+  const { bundles, subscriptionPeriods, totalPrice } = location.state;
 
   const subscriptionPeriodLabels = {
     ONE: "1개월",
@@ -28,9 +28,10 @@ const OrderPage = () => {
     receiverPhone: user.phoneNumber,
     receiverAddress: user.address,
     receiverDetailAddress: user.detailAddress, // 추가: 상세 주소
-    deliveryRequest: "", // 여기서 초기 상태가 빈 문자열로 설정되어 있는지 확인
-    customRequest: "",
+    deliveryRequest: '',  // 여기서 초기 상태가 빈 문자열로 설정되어 있는지 확인
+    customRequest: '', 
   });
+
 
   // 배송 요청 사항 업데이트 함수 추가
   const handleDeliveryMemoChange = (event) => {
@@ -40,7 +41,7 @@ const OrderPage = () => {
   const [remainingPoints, setRemainingPoints] = useState(user.point);
   const [canPurchase, setCanPurchase] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [modalMessage, setModalMessage] = useState("");
+  const [modalMessage, setModalMessage] = useState('');
   const [isConfirmStep, setIsConfirmStep] = useState(true);
   const [showPointPayment, setShowPointPayment] = useState(false);
   const [pointUsage, setPointUsage] = useState(0);
@@ -51,7 +52,7 @@ const OrderPage = () => {
     setRemainingPoints(remaining);
     setCanPurchase(false);
 
-    console.log("user: " + user);
+    console.log('user: '+ user);
     console.log(user);
     console.log(orderInfo);
   }, [user.point, totalPrice]);
@@ -65,12 +66,10 @@ const OrderPage = () => {
   };
 
   const handlePhoneNumberUpdate = () => {
-    dispatch(
-      userEditActions.updateUserDetail({
-        ...user,
-        phoneNumber: orderInfo.receiverPhone,
-      })
-    );
+    dispatch(userEditActions.updateUserDetail({
+      ...user,
+      phoneNumber: orderInfo.receiverPhone
+    }));
   };
 
   const handleAddressChange = (event) => {
@@ -81,27 +80,26 @@ const OrderPage = () => {
     new window.daum.Postcode({
       oncomplete: function (data) {
         let fullAddress = data.address;
-        let extraAddress = "";
+        let extraAddress = '';
 
-        if (data.addressType === "R") {
-          if (data.bname !== "") {
+        if (data.addressType === 'R') {
+          if (data.bname !== '') {
             extraAddress += data.bname;
           }
-          if (data.buildingName !== "") {
-            extraAddress +=
-              extraAddress !== "" ? `, ${extraAddress}` : data.buildingName;
+          if (data.buildingName !== '') {
+            extraAddress += (extraAddress !== '' ? `, ${extraAddress}` : data.buildingName);
           }
-          fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
+          fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '');
         }
 
         setOrderInfo({ ...orderInfo, receiverAddress: fullAddress });
-      },
+      }
     }).open();
   };
 
   const handleDeliveryRequestChange = (event) => {
     setOrderInfo({ ...orderInfo, deliveryRequest: event.target.value });
-
+    
     // if (event.target.value !== '기타사항') {
     //   setOrderInfo({ ...orderInfo, customRequest: '' }); // "기타사항"이 아닌 다른 옵션을 선택할 경우, 기존의 "기타사항" 내용을 초기화
     // }
@@ -122,13 +120,11 @@ const OrderPage = () => {
   };
 
   const handleUserInfoUpdate = (name, phone) => {
-    dispatch(
-      userEditActions.updateUserDetail({
-        ...user,
-        realName: name,
-        phoneNumber: phone,
-      })
-    );
+    dispatch(userEditActions.updateUserDetail({
+      ...user,
+      realName: name,
+      phoneNumber: phone,
+    }));
   };
 
   const handleSubmit = () => {
@@ -140,7 +136,7 @@ const OrderPage = () => {
   };
 
   const handlePaymentMethodClick = (method) => {
-    if (method === "point") {
+    if (method === 'point') {
       setShowPointPayment(!showPointPayment);
     } else {
       setModalMessage("추후 업데이트 예정입니다.");
@@ -167,7 +163,7 @@ const OrderPage = () => {
 
   const handleReservation = async () => {
     const orderData = {
-      cartId: cart.id,
+      // cartId: 'dummy_cart_id',
       userId: user.id,
       postNum: 12345,
       receiverName: orderInfo.receiverName,
@@ -175,7 +171,7 @@ const OrderPage = () => {
       address: orderInfo.receiverAddress,
       addressDetail: orderInfo.receiverDetailAddress,
       deliveryRequest: orderInfo.deliveryRequest, // 배송 요청 사항 전달
-      customRequest: orderInfo.customRequest, // 기타 요청 사항 전달
+      customRequest: orderInfo.customRequest,  // 기타 요청 사항 전달
       pointUsage,
       bundles,
       subscriptionPeriods,
@@ -184,34 +180,34 @@ const OrderPage = () => {
     };
 
     console.log("Order Data:", orderData); // 로그를 통해 확인
-
+    
     try {
+
       const response = await fetch(`${SHOP_URL}/orders`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(orderData),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to create order");
+        throw new Error('Failed to create order');
       }
 
       const createdOrder = await response.json();
       const deletedPoint = user.point - pointUsage;
-      dispatch(
-        userEditActions.updateUserDetail({ ...user, point: deletedPoint })
-      );
+      dispatch(userEditActions.updateUserDetail({ ...user, point: deletedPoint }));
 
-      navigate("/order-detail", {
+      navigate('/order-detail', {
         state: {
           order: createdOrder, // 이 객체에 deliveryRequest가 제대로 포함되어 있는지 확인
           orderInfo: orderInfo,
         },
       });
+
     } catch (error) {
-      console.error("Error creating order:", error);
+      console.error('Error creating order:', error);
       setModalMessage("결제에 실패했습니다.");
       setIsConfirmStep(false);
     }
@@ -220,12 +216,12 @@ const OrderPage = () => {
   const handleCloseModal = () => {
     setShowModal(false);
     if (isConfirmStep === false) {
-      navigate("/treats");
+      navigate('/treats');
     }
   };
 
   return (
-    <div className={styles["order-page-container"]}>
+    <div className={styles['order-page-container']}>
       <h1>결제 확인</h1>
       <OrderInfo
         user={user}

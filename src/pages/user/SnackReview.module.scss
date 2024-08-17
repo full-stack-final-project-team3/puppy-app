@@ -1,4 +1,204 @@
+
+
 .wrap {
   width: 90%;
   margin: 0 auto;
+  border-radius: 32px;
+  background: #F4E8D3;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.subWrap {
+  width: 100%;
+  margin: 50px auto 0;
+  background: #F0E1C4;
+  padding-bottom: 20px;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #333;
+}
+
+.card {
+  background: #F4E9D3;
+  border: 1px solid #e0e0e0;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.imageContainer {
+  flex: 0 0 100px;
+  margin-right: 20px;
+}
+
+.dogImage {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.details {
+  flex: 1;
+  font-size: 14px;
+  color: #555;
+}
+
+.details p {
+  margin: 5px 0;
+}
+
+// .details ul {
+//   padding-left: 20px;
+//   margin: 5px 0;
+// }
+
+.actions {
+  flex: 0 0 100px;
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cancelButton {
+  padding: 10px 15px;
+  font-size: 14px;
+  color: black;
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s;
+}
+
+.cancelButton:hover {
+  background-color: #B3797A;
+  color: white;
+}
+
+@media (max-width: 400px) {
+  .wrap {
+    width: 100%;
+    margin: 10px auto;
+    padding: 10px;
+    border-radius: 16px;
+  }
+
+  .subWrap {
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 8px;
+  }
+
+  .title {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+
+  .cardContent {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .imageContainer {
+    margin-bottom: 10px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .dogImage {
+    width: 80px;
+    height: 80px;
+  }
+
+  .details {
+    width: 100%;
+    font-size: 0.9rem;
+  }
+
+  .actions {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    margin-top: 10px;
+  }
+
+  .cancelButton {
+    width: 48%;
+    padding: 8px;
+    font-size: 0.8rem;
+  }
+}
+
+.cancelledText {
+  color: red;
+}
+
+.snack_review_ul {
+  margin: 0;
+  padding: 0;
+}
+
+.snack_review_li {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin-bottom: 20px;
+}
+
+.snack_review_box {
+  width: 50px;
+  height: 50px;
+  margin-right: 20px;
+}
+
+.snack_review_img_sm {
+  max-width: 100%;
+}
+
+.review_button {
+  margin-left: auto; 
+}
+
+
+
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 600px;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
 }

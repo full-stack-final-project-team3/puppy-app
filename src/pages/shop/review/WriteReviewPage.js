@@ -4,27 +4,30 @@ import { useDispatch, useSelector } from 'react-redux';
 import RatingInput from './RatingInput';
 import styles from './Review.module.scss';
 import { userEditActions } from "../../../components/store/user/UserEditSlice";
-import { NOTICE_URL } from "../../../config/user/host-config";
+import { NOTICE_URL, REVIEW_URL } from "../../../config/user/host-config";
 
-const WriteReviewPage = ({ treatsId }) => {
+const WriteReviewPage = ({ orderId, treatId, dogId, treatTitle }) => {  // props로 treatId와 treatTitle 받음
+
+console.info("WriteReviewPage orderId: "+ orderId);
+console.info("WriteReviewPage dogId: "+ dogId);
+
   const [reviewContent, setReviewContent] = useState('');
   const [rate, setRate] = useState(5);
-  const [reviewPics, setReviewPics] = useState([{ id: Date.now(), files: [] }]);
+  const [reviewPics, setReviewPics] = useState([{ id: Date.now(), files: [], fileNames: [] }]); // 파일 이름을 저장할 상태 추가
   const navigate = useNavigate();
   const user = useSelector((state) => state.userEdit.userDetail);
   const dispatch = useDispatch();
 
-  // const treatsId = 'b1c2d3e4-f5g6-7890-ab12-c3d4e5f67891'; // 실제 treatsId 값
-
   const handleFileChange = (index, event) => {
     const files = Array.from(event.target.files);
+    const fileNames = files.map(file => file.name); // 파일 이름 저장
     setReviewPics((prevPics) =>
-      prevPics.map((pic, i) => (i === index ? { ...pic, files } : pic))
+      prevPics.map((pic, i) => (i === index ? { ...pic, files, fileNames } : pic))
     );
   };
 
   const handleAddPic = () => {
-    setReviewPics((prevPics) => [...prevPics, { id: Date.now(), files: [] }]);
+    setReviewPics((prevPics) => [...prevPics, { id: Date.now(), files: [], fileNames: [] }]);
   };
 
   const handleRemovePic = (index) => {
@@ -50,7 +53,9 @@ const WriteReviewPage = ({ treatsId }) => {
         reviewContent,
         rate,
         userId: user.id,
-        treatsId: treatsId
+        treatsId: treatId,  // treatId 사용
+        orderId: orderId,
+        dogId: dogId
       })], { type: "application/json" }));
 
       reviewPics.forEach((pic) => {
@@ -59,7 +64,7 @@ const WriteReviewPage = ({ treatsId }) => {
         });
       });
 
-      const response = await fetch('http://localhost:8888/shop/reviews', {
+      const response = await fetch(`${REVIEW_URL}`, {
         method: 'POST',
         body: formData
       });
@@ -102,7 +107,7 @@ const WriteReviewPage = ({ treatsId }) => {
         };
         dispatch(userEditActions.updateUserDetail(updatedUserDetailWithNoticeCount));
 
-        navigate('/review-page');
+        window.location.reload();
       } catch (error) {
         console.error('알림 등록 오류:', error);
       }
@@ -114,33 +119,42 @@ const WriteReviewPage = ({ treatsId }) => {
   return (
     <div className={`${styles.review_common_box} ${styles.review_writer_box}`}>
       <h1>리뷰 작성하기</h1>
-      <p>닉네임: {user.nickname}</p>
-      <p>이메일: {user.email}</p>
-      <p>Treats ID: {treatsId}</p>
+      <p><strong>닉네임:</strong> {user.nickname}</p>
+      <p><strong>이메일:</strong> {user.email}</p>
+      <p><strong>Treats ID:</strong> {treatId}</p> {/* treatsId를 화면에 출력 */}
+      <p><strong>간식 이름:</strong> {treatTitle}</p> {/* treatTitle 출력 */}
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="review">리뷰</label>
+          <p htmlFor="review">리뷰</p>
           <textarea
             id="review"
             className={styles.review_text}
             value={reviewContent}
             onChange={(e) => setReviewContent(e.target.value)}
+            placeholder="리뷰를 작성해 주세요."
           ></textarea>
         </div>
         <div>
-          <label htmlFor="rate">별점</label>
+          <p htmlFor="rate">별점</p>
           <RatingInput value={rate} onChange={setRate} />
         </div>
         <div>
-          <label>대표 사진</label>
+          <p>대표 사진</p>
           {reviewPics.map((pic, index) => (
             <div key={pic.id} className={styles.file_input_wrapper}>
+              <label htmlFor={`file-upload-${index}`}>파일 선택</label>
               <input
+                id={`file-upload-${index}`}
                 type="file"
                 multiple
                 accept="image/*"
                 onChange={(e) => handleFileChange(index, e)}
               />
+              {pic.fileNames.length > 0 && (
+                <p className={styles.file_name_list}>
+                  {pic.fileNames.join(', ')}
+                </p>
+              )}
               {index > 0 && (
                 <button type="button" onClick={() => handleRemovePic(index)}>제거</button>
               )}
