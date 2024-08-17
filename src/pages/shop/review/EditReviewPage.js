@@ -4,8 +4,8 @@ import { useSelector } from 'react-redux';
 import Rating from '@mui/material/Rating';
 import styles from './Review.module.scss';
 
-const EditReviewPage = () => {
-  const { reviewId } = useParams();
+const EditReviewPage = ({ reviewId }) => {
+  //const { reviewId } = useParams();
   const [reviewContent, setReviewContent] = useState('');
   const [rate, setRate] = useState(5);
   const [reviewPics, setReviewPics] = useState([]);
@@ -66,7 +66,7 @@ const EditReviewPage = () => {
       }
 
       console.log('리뷰 수정 성공');
-      navigate('/review-page');
+      window.location.reload();
     } catch (error) {
       console.error('리뷰 수정 오류:', error);
       console.log('리뷰 수정 실패:', error.message);

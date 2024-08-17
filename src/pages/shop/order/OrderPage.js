@@ -163,7 +163,7 @@ const OrderPage = () => {
 
   const handleReservation = async () => {
     const orderData = {
-      cartId: 'dummy_cart_id',
+      // cartId: 'dummy_cart_id',
       userId: user.id,
       postNum: 12345,
       receiverName: orderInfo.receiverName,

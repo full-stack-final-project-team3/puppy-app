@@ -6,6 +6,8 @@ import ReviewPage from "./review/ReviewPage";
 const Modal = ({ isOpen, onClose, treatsId }) => {
   if (!isOpen) return null;
 
+  console.info("TreatsDetailModal: "+ treatsId);
+
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
