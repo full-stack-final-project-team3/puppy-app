@@ -1,0 +1,131 @@
+/* From Uiverse.io by cssbuttons-io */
+
+@keyframes customFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(30px); // 아래에서 위로 올라오는 효과
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.buttonContainer {
+  position: fixed;
+  bottom: 4vh; // 화면 높이의 5%
+  left: 45vw; // 화면 너비의 10%
+  z-index: 2000; // 다른 요소 위에 표시되도록 설정
+  width: auto; // 필요에 따라 너비 조정
+  margin: 0; // 마진 설정
+  padding: 0; // 패딩 설정
+}
+
+.learnMore {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  outline: none;
+  border: 0;
+  vertical-align: middle;
+  text-decoration: none;
+  background: transparent;
+  padding: 0;
+  font-size: inherit;
+  font-family: inherit;
+  animation: customFadeIn 0.8s ease-in-out; // 애니메이션 효과 적용
+
+  &.learnMore {
+    width: 12rem;
+    height: auto;
+
+    .circle {
+      transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+      position: relative;
+      display: block;
+      margin: 0;
+      width: 3rem;
+      height: 3rem;
+      background: #0b593f;
+      border-radius: 1.625rem;
+
+      .icon {
+        transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        background: #fff;
+
+        &.arrow {
+          transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+          left: 0.625rem;
+          width: 1.125rem;
+          height: 0.125rem;
+          background: none;
+
+          &::before {
+            position: absolute;
+            content: "";
+            top: -0.29rem;
+            right: 0.0625rem;
+            width: 0.625rem;
+            height: 0.625rem;
+            border-top: 0.125rem solid #fff;
+            border-right: 0.125rem solid #fff;
+            transform: rotate(45deg);
+          }
+        }
+      }
+    }
+
+    .buttonText {
+      transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 0.75rem 0;
+      margin: 0 0 0 1.85rem;
+      color: #282936;
+      font-weight: 700;
+      line-height: 1.6;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    &:hover {
+      .circle {
+        width: 100%;
+      }
+
+      .circle .icon.arrow {
+        background: #fff;
+        transform: translate(1rem, 0);
+      }
+
+      .buttonText {
+        color: #fff;
+      }
+    }
+  }
+}
+// 반응형 디자인을 위한 미디어 쿼리 추가
+@media (max-width: 850px) {
+  .buttonContainer {
+    top: 8vh; // 중간 화면에서 위치를 위로 조정
+    .learnMore {
+      margin: 20px 0 ;
+    }
+  }
+}
+
+@media (max-width: 400px) {
+  .buttonContainer {
+    top: 9vh; // 작은 화면에서 위치를 더 위로 조정
+    .learnMore {
+      margin: 20px 0;
+    }
+  }
+}

@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { getUserToken } from "../../config/user/auth";
 import { BUNDLE_URL, CART_URL } from "../../config/user/host-config";
+import styles from "./CreateBundle.module.scss";
 
 const CreateBundle = ({ selectedTreats, dogId }) => {
   const treatArray = Array.isArray(selectedTreats)
@@ -67,7 +68,20 @@ const CreateBundle = ({ selectedTreats, dogId }) => {
     }
   };
 
-  return <button onClick={handleCreateBundle}>번들 생성</button>;
+  return (
+    <>
+    <div className={styles.buttonContainer}>
+      {treatArray.length === 5 && (
+        <button onClick={handleCreateBundle} className={styles.learnMore}>
+          <span className={styles.circle} aria-hidden="true">
+            <span className={`${styles.icon} ${styles.arrow}`}></span>
+          </span>
+          <span className={styles.buttonText}>Get Started!</span>
+        </button>
+      )}
+      </div>
+    </>
+  );
 };
 
 export default CreateBundle;

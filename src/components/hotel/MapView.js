@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Map, MapMarker, ZoomControl } from 'react-kakao-maps-sdk';
+import { Map, MapMarker } from 'react-kakao-maps-sdk';
 
 const MapView = ({ location, title }) => {
   const [coords, setCoords] = useState({ lat: 37.506320759000715, lng: 127.05368251210247 });
@@ -51,14 +51,21 @@ const MapView = ({ location, title }) => {
     }
   };
 
+  let mapContainerStyle = {
+    position: 'relative',
+    width: '100%',
+    height: '100%',
+  };
+
   const mapStyle = {
-    width: '1400px',
+    width: '100%',
     height: '500px',
+    maxWidth: '1400px', // 최대 너비 1400px 설정
     filter: 'sepia(10%) hue-rotate(0deg) saturate(60%) brightness(100%) contrast(100%)',
   };
 
   return (
-    <div style={{ position: 'relative' }}>
+    <div style={mapContainerStyle}>
       <Map
         center={coords}
         level={3}
@@ -82,7 +89,7 @@ const MapView = ({ location, title }) => {
           </div>
         </MapMarker>
       </Map>
-      <div style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 10 }}>
+      <div style={{ position: 'absolute', top: '10px', right: '550px', zIndex: 10 }}>
         <button onClick={handleZoomIn} style={buttonStyle}>➕</button>
         <button onClick={handleZoomOut} style={buttonStyle}>➖</button>
       </div>

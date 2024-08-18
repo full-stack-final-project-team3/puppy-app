@@ -15,6 +15,14 @@ const AddRoomPage = () => {
     const roomData = useSelector((state) => state.roomAdd);
     const isUploading = useSelector((state) => state.roomAdd.isUploading);
 
+    // 이미지 URL 생성 함수
+    const createImageUrl = (image) => {
+        if (!image || !image.hotelImgUri) return '';
+        return image.type === 'LOCAL'
+            ? image.hotelImgUri
+            : `http://localhost:8888${image.hotelImgUri.replace('/local', '/hotel/images')}`;
+    };
+
     const handleRoomChange = (e) => {
         const { name, value } = e.target;
         dispatch(updateRoomData({ [name]: value }));
@@ -98,14 +106,14 @@ const AddRoomPage = () => {
                         />
                         {image.hotelImgUri && (
                             <>
-                                <img src={`${ROOM_URL}/images/${image.hotelImgUri}`} alt="Hotel" />
+                                <img src={createImageUrl(image)} alt="ROOM" style={{maxWidth: '150px', maxHeight: '150px', width: 'auto', height: 'auto'}}/>
                                 <button type="button" onClick={() => handleRemoveImage(index)}>Remove</button>
                             </>
                         )}
                     </div>
                 ))}
-                <button type="button" onClick={handleAddImage}>Add Image</button>
-                <button type="submit">Save Room</button>
+                <button className={styles.RoomCreateButton} type="button" onClick={handleAddImage}>Add Image</button>
+                <button className={styles.RoomCreateButton} type="submit">Save Room</button>
                 {roomData.errorMessage && <p className={styles.error}>{roomData.errorMessage}</p>}
             </form>
             <button onClick={() => navigate('/hotel')}>Back to List</button>

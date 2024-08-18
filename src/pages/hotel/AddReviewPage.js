@@ -5,6 +5,7 @@ import { addReview, setReviewContent, setRate, fetchReviews } from '../../compon
 import styles from './AddReviewPage.module.scss';
 import RatingInput from '../shop/review/RatingInput';
 import MyPageHeader from '../../components/auth/user/mypage/MyPageHeader';
+import HotelModal from '../../components/hotel/HotelModal';
 
 const AddReviewPage = () => {
     const { hotelId, reservationId } = useParams();
@@ -15,33 +16,22 @@ const AddReviewPage = () => {
     const { reviewContent, rate, loading, reviews } = useSelector((state) => state.reviews);
     const [customError, setCustomError] = useState('');
     const [hasReviewed, setHasReviewed] = useState(false);
-    const { userReservations } = useSelector(state => state.reservation);
-    // const reservationId = userReservations.reservationId;
-
-    console.log("호텔과, 룸의 정보 가져오기 ", userReservations)
-    console.log("예약 번호", reservationId);
-    console.log("호텔번호", hotelId)
-
+    const [showModal, setShowModal] = useState(false); // 모달 상태 관리
 
     useEffect(() => {
-        // 리뷰 목록을 가져와서 이미 작성된 리뷰가 있는지 확인
         dispatch(fetchReviews(reservationId)).then(({ payload }) => {
             if (payload && Array.isArray(payload.reviews)) {
                 const userHasReviewed = payload.reviews.some(review => review.userId === userId);
                 if (userHasReviewed) {
                     setHasReviewed(true);
-                    alert('이미 이 예약에 대한 리뷰를 작성했습니다.');
                     navigate('/mypage');
                 }
-            } else {
-                console.error('Unexpected payload format:', payload);
             }
         }).catch(error => {
             console.error('Error fetching reviews:', error);
         });
-    }, [dispatch, hotelId, userId, navigate, userReservations]);
+    }, [dispatch, hotelId, userId, navigate, reservationId]);
 
-    // 에러 메시지를 사용자 친화적인 형태로 변환하는 함수
     const handleError = (error) => {
         const errorMessage = typeof error === 'string' ? error : error.error;
         if (errorMessage.includes('예약이 존재하지 않습니다')) {
@@ -63,9 +53,7 @@ const AddReviewPage = () => {
         dispatch(addReview(reviewData))
             .unwrap()
             .then(() => {
-                alert('리뷰가 작성되었습니다!');
-                navigate('/mypage');
-
+                setShowModal(true); // 리뷰 작성 성공 시 모달 표시
             })
             .catch((err) => {
                 const { message, status } = handleError(err);
@@ -74,34 +62,46 @@ const AddReviewPage = () => {
             });
     };
 
-    // 이미 리뷰를 작성한 경우 빈 컴포넌트를 반환하여 렌더링을 막음
+    const handleClose = () => {
+        setShowModal(false);
+        navigate('/mypage');
+    };
+
     if (hasReviewed) {
         return null;
     }
 
     return (
         <div className={styles.wrap}>
-            <MyPageHeader/>
+            <MyPageHeader />
             <div className={styles.subWrap}>
-            <div className={styles.addReviewPage}>
-                <form onSubmit={handleReviewSubmit}>
-
-                    <textarea
-                        name="reviewContent"
-                        placeholder="Write your review here..."
-                        value={reviewContent}
-                        onChange={(e) => dispatch(setReviewContent(e.target.value))}
-                        required
+                <div className={styles.addReviewPage}>
+                    <form onSubmit={handleReviewSubmit}>
+                        <textarea
+                            name="reviewContent"
+                            placeholder="Write your review here..."
+                            value={reviewContent}
+                            onChange={(e) => dispatch(setReviewContent(e.target.value))}
+                            required
+                        />
+                        <label>
+                            Rate:
+                            <RatingInput onClick={styles.star} value={rate} onChange={(newRate) => dispatch(setRate(newRate))} />
+                        </label>
+                        <button type="submit" disabled={loading}>Submit Review</button>
+                        {customError && <p className={styles.error}>{customError}</p>}
+                    </form>
+                    <button onClick={() => navigate('/hotel')}>Back to List</button>
+                </div>
+                {showModal && (
+                    <HotelModal
+                        title="리뷰 작성 완료"
+                        message="리뷰가 성공적으로 등록되었습니다!"
+                        onConfirm={handleClose}
+                        onClose={() => setShowModal(false)}
+                        confirmButtonText="확인"
                     />
-                    <label>
-                    Rate:
-                    <RatingInput onClick={styles.star}value={rate} onChange={(newRate) => dispatch(setRate(newRate))} />
-                </label>
-                    <button type="submit" disabled={loading}>Submit Review</button>
-                    {customError && <p className={styles.error}>{customError}</p>}
-                </form>
-                <button onClick={() => navigate('/hotel')}>Back to List</button>
-            </div>
+                )}
             </div>
         </div>
     );

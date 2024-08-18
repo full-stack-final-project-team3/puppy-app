@@ -47,6 +47,7 @@ import SeasonalityChart from "../../pages/hotel/SeasonalityChart.js";
 import OrderPage from "../../pages/shop/order/OrderPage"; //쇼핑몰오더
 import ManagementTreats from "../../pages/shop/ManagementTreats.js";
 import EditTreat from "../../pages/shop/EditTreats.js";
+import OrderDetail from "../../pages/shop/order/OrderDetail.js"; //쇼핑몰상세페이지
 
 const homeRouter = [
   {
@@ -191,9 +192,34 @@ export const router = createBrowserRouter([
         loader: authCheckLoader, // 로그인 정보를 확인하는 loader 추가
       },
       {
+        path: "board/:id/comments/:commentId/subReplies", // 게시글 상세 페이지 경로 추가
+        element: <BoardDetailPage />,
+        loader: authCheckLoader, // 로그인 정보를 확인하는 loader 추가
+      },
+      {
+        path: "likes/board/:id/like-status", // 좋아요 - 전체 상태 처리
+        element: <BoardDetailPage />,
+        loader: authCheckLoader,
+      },
+      {
         path: "board/:id/edit", // 게시글 상세 페이지 경로 추가
         element: <BoardEditPage />,
         loader: authCheckLoader, // 로그인 정보를 확인하는 loader 추가
+      },
+      {
+        path: "likes/board/:id", // 좋아요 - 게시글
+        element: <BoardEditPage />,
+        loader: authCheckLoader,
+      },
+      {
+        path: "likes/reply/:id", // 좋아요 - 댓글
+        element: <BoardEditPage />,
+        loader: authCheckLoader,
+      },
+      {
+        path: "likes/subreply/:id", // 좋아요 - 대댓글
+        element: <BoardEditPage />,
+        loader: authCheckLoader,
       },
       {
         path: "forgot-info",
@@ -253,6 +279,11 @@ export const router = createBrowserRouter([
         path: "/order-page",
         element: <OrderPage />,
         loader: authCheckLoader, // 오더
+      },
+      {
+        path: "/order-detail",
+        element: <OrderDetail />,
+        loader: authCheckLoader, // 오더상세
       },
     ],
   },

@@ -4,7 +4,8 @@ import { userEditActions } from "../../../store/user/UserEditSlice";
 import styles from "./UserEdit.module.scss";
 import { AUTH_URL } from "../../../../config/user/host-config";
 import DeleteAccountModal from "./DeleteAccountModal"; // 모달 컴포넌트 import
-import UserModal from "./UserModal"; // 모달 컴포넌트 import
+import UserModal from "./UserModal";
+import UserEditSkeleton from "./UserEditSkeleton.js"; // 모달 컴포넌트 import
 
 const UserEdit = () => {
     const user = useSelector(state => state.userEdit.userDetail);
@@ -12,10 +13,12 @@ const UserEdit = () => {
     const passwordRef = useRef();
     const confirmPasswordRef = useRef();
     const fileInputRef = useRef();
-    const pointInputRef = useRef(); // 포인트 입력 필드의 참조를 추가합니다.
+    const pointInputRef = useRef();
+    const detailRef = useRef();
     const [profileUrl, setProfileUrl] = useState(user.profileUrl);
     const [nickname, setNickname] = useState(user.nickname);
     const [address, setAddress] = useState(user.address);
+    const [detailAddress, setDetailAddress] = useState(user.detailAddress || '');
     const [phoneNum, setPhoneNum] = useState(user.phoneNumber);
     const [name, setName] = useState(user.realName);
     const [point, setPoint] = useState(user.point);
@@ -23,6 +26,7 @@ const UserEdit = () => {
     const [passwordMatch, setPasswordMatch] = useState(false);
     const [passwordMessage, setPasswordMessage] = useState('');
     const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+    const [loading, setLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
 
     const [showModal, setShowModal] = useState(false);
@@ -31,10 +35,11 @@ const UserEdit = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        // if (showModal) {
-        //     console.log("Modal is now visible:", showModal);
-        // }
-    }, [showModal]);
+        const timer = setTimeout(() => {
+            setLoading(false);
+        }, 850); // 850ms 후에 loading을 false로 설정
+        return () => clearTimeout(timer); // 컴포넌트 언마운트 시 타이머를 정리
+    }, []); // 컴포넌트가 처음 로딩될 때만 실행
 
     const handlePasswordChange = () => {
         if (passwordRef.current.value && confirmPasswordRef.current.value) {
@@ -51,6 +56,32 @@ const UserEdit = () => {
             setPasswordMessage('');
             setIsSubmitDisabled(true);
         }
+    };
+
+    const handleAddressSearch = () => {
+        new window.daum.Postcode({
+            oncomplete: function (data) {
+                let fullAddress = data.address;
+                let extraAddress = '';
+
+                if (data.addressType === 'R') {
+                    if (data.bname !== '') {
+                        extraAddress += data.bname;
+                    }
+                    if (data.buildingName !== '') {
+                        extraAddress += (extraAddress !== '' ? `, ${extraAddress}` : data.buildingName);
+                    }
+                    fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '');
+                }
+
+                setAddress(fullAddress);
+            }
+        }).open();
+    };
+
+    const detailAddressHandler = (e) => {
+        setDetailAddress(e.target.value);
+        setIsSubmitDisabled(false);
     };
 
     const handleInputChange = (setter) => (e) => {
@@ -94,7 +125,8 @@ const UserEdit = () => {
     const handleSubmit = async () => {
         const payload = {
             email: user.email,
-            address,
+            address: address,
+            detailAddress: detailAddress,
             password: passwordRef.current.value,
             nickname,
             phoneNumber: phoneNum,
@@ -140,11 +172,16 @@ const UserEdit = () => {
         setShowModal(false);
         handleSubmit(); // 확인 버튼 클릭 시 handleSubmit 실행
     };
+
     const handleCloseModal = () => {
-        setShowModal(false); // 모달을 닫습니다.
+        setShowModal(false); // 모달 닫음
     };
 
-
+    if (loading) {
+        return (
+            <UserEditSkeleton/>
+        );
+    }
     return (
         <div className={styles.wrap}>
             <h2 className={styles.title}>회원 정보 수정</h2>
@@ -240,12 +277,28 @@ const UserEdit = () => {
                 </div>
                 <div className={styles.section}>
                     <label htmlFor="address" className={styles.address}>주소</label>
+                    <div className={styles.inputWithButton}>
+                        <input
+                            id="address"
+                            type="text"
+                            className={styles.input}
+                            value={address}
+                            onChange={handleInputChange(setAddress)}
+                        />
+                        <button onClick={handleAddressSearch} className={styles.addressButton}>
+                            주소 검색
+                        </button>
+                    </div>
+                </div>
+                <div className={styles.section}>
+                    <label htmlFor="detailAddress" className={styles.address}>상세 주소</label>
                     <input
-                        id="address"
+                        ref={detailRef}
+                        id="detailAddress"
                         type="text"
                         className={styles.input}
-                        value={address}
-                        onChange={handleInputChange(setAddress)}
+                        value={detailAddress}
+                        onChange={detailAddressHandler}
                     />
                 </div>
                 <div className={styles.flex}>
@@ -264,7 +317,7 @@ const UserEdit = () => {
                     </button>
                 </div>
             </div>
-            {isModalOpen && <DeleteAccountModal onClose={closeModal} />} {/* 모달 컴포넌트 추가 */}
+            {isModalOpen && <DeleteAccountModal onClose={closeModal}/>} {/* 모달 컴포넌트 추가 */}
 
             {showModal && (
                 <UserModal

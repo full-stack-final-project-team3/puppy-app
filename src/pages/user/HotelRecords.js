@@ -106,6 +106,7 @@ const HotelRecords = () => {
                 ) : (
                     <ul className={styles.reservationList}>
                         {userReservations.map(reservation => {
+                            const hotel = reservation.hotel;
                             const hotelImages = reservation.hotel["hotel-images"];
                             const firstImageUrl = hotelImages && hotelImages[0]
                                 ? getImageUrl(hotelImages[0].hotelImgUri)
@@ -131,9 +132,20 @@ const HotelRecords = () => {
                                         <div><strong>예약 종료 날짜:</strong> {new Date(reservation.reservationEndAt).toLocaleDateString()}</div>
                                     </div>
                                     <div className={styles.reservationActions}>
-                                        <Link to={`/detail-reservation`} className={styles.link}>
-                                            상세조회
-                                        </Link>
+                                <Link 
+                                    to={`/detail-reservation`}
+                                    state={{
+                                        hotel,
+                                        roomName: reservation.room.room_name,
+                                        totalPrice: reservation.price,
+                                        reservationDate: reservation.reservationAt,
+                                        reservationEndDate: reservation.reservationEndAt,
+                                        hotelImage: firstImageUrl
+                                    }}
+                                    className={styles.link}
+                                >
+                                    상세조회
+                                </Link>
                                         {isCancelable(reservation.reservationAt) && (
                                             <button
                                                 onClick={() => confirmDeleteReservation(reservation.reservationId)}

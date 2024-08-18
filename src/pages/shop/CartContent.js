@@ -5,6 +5,7 @@ import { AUTH_URL } from "../../config/user/host-config";
 import { CART_URL } from "../../config/user/host-config";
 import { useNavigate } from "react-router-dom"; // yj추가
 
+
 const CartContent = ({
   cart,
   bundles,
@@ -32,6 +33,15 @@ const CartContent = ({
   };
 
   const handleUpdateCart = async () => {
+    // 구독 기간이 설정되지 않은 경우 체크
+    const hasSubscription = bundles.every(
+      (bundle) => subscriptionPeriods[bundle.id] !== ""
+    );
+
+    if (!hasSubscription) {
+      alert("구독 기간을 설정해주세요.");
+      return; // 업데이트를 중단
+    }
 
     const updatedCartInfo = {
       bundles: bundles.map((bundle) => ({
@@ -55,31 +65,14 @@ const CartContent = ({
       // OrderPage로 이동하면서 데이터 전달
       navigate("/order-page", {
         state: {
+          cart,
           bundles,
           subscriptionPeriods,
           totalPrice: cart.totalPrice,
         },
       });
 
-      // 2. 결제 요청
-      //   const response = await fetch('/api/processPayment', {
-      //     method: 'POST',
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //     },
-      //     body: JSON.stringify({ cartId: cart.id }),
-      //   });
-
-      //   if (response.ok) {
-      //     const paymentResult = await response.json();
-      //     onPaymentSuccess(paymentResult); // 결제가 성공했을 때 호출
-      //   } else {
-      //     // 결제 실패 처리
-      //     console.error('결제에 실패했습니다.');
-      //   }
-
-      console.log("업데이트 완료")
-
+      console.log("업데이트 완료");
     } catch (error) {
       console.error("오류 발생:", error);
     }
@@ -91,7 +84,7 @@ const CartContent = ({
         <div key={bundle.id} className={styles.bundleContainer}>
           <div className={styles.bundleHeaderContainer}>
             <h4 className={styles.bundleHeader}>
-              반려견 전용 맞춤형 푸드 패키지 For {bundle.dogName}
+              강아지 맞춤형 펫 푸드 패키지 For {bundle.dogName}
             </h4>
             <select
               className={styles.subscriptionSelect}

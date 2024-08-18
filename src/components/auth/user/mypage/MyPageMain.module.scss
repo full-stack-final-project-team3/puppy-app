@@ -7,6 +7,10 @@
   //font-family: " Noto Sans KR", sans-serif;
 }
 
+.loadingOverlay {
+  height: 100vh;
+}
+
 .admin {
   width: 20%;
   margin: 0 auto;
@@ -23,7 +27,7 @@
 
 @media screen and (width: 400px) {
   .wrap {
-    width: 100%; /* 모바일에서 완전한 폭 사용 */
+    width: 95%; /* 모바일에서 완전한 폭 사용 */
     margin: 0;
     padding: 10px; /* 모바일에서 패딩 추가 */
     border-radius: 0;

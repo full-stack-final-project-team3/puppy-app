@@ -17,13 +17,17 @@ const BoardPage = () => {
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.userEdit.userDetail);
+  
+  useEffect(() => {
+    fetchPosts();
+  }, []);
 
   const fetchPosts = useCallback(async () => {
     if (loading || !hasMore) return;
     setLoading(true);
     try {
       const response = await fetch(
-        `${BOARD_URL}?sort=date&page=${page}&limit=5`
+        `${BOARD_URL}?sort=boardCreatedAt&page=${page}&limit=10`
       );
 
       if (!response.ok) {
@@ -34,48 +38,34 @@ const BoardPage = () => {
       if (newPosts.length === 0) {
         setHasMore(false);
       } else {
-        setPosts((prevPosts) => {
-          const uniquePosts = newPosts.filter(
-            (newPost) => !prevPosts.some((post) => post.id === newPost.id)
-          );
-          return [...prevPosts, ...uniquePosts];
-        });
+        setPosts((prevPosts) => [...prevPosts, ...newPosts]);
         setPage((prevPage) => prevPage + 1);
       }
     } catch (error) {
       console.error("게시글 가져오기 오류:", error.message);
       setHasMore(false);
-      // 사용자에게 오류 메시지를 표시하는 로직 추가
     } finally {
       setLoading(false);
     }
   }, [page, loading, hasMore]);
 
-  useEffect(() => {
-    fetchPosts();
-  }, []);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (scrollRef.current && !loading && hasMore) {
-        const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
-        if (scrollTop + clientHeight > scrollHeight * 0.95) {
-          fetchPosts();
-        }
+
+useEffect(() => {
+  const handleScroll = () => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop >=
+      document.documentElement.offsetHeight - 100
+    ) {
+      if (!loading && hasMore) {
+        fetchPosts();
       }
-    };
-
-    const scrollContainer = scrollRef.current;
-    if (scrollContainer) {
-      scrollContainer.addEventListener("scroll", handleScroll);
     }
+  };
 
-    return () => {
-      if (scrollContainer) {
-        scrollContainer.removeEventListener("scroll", handleScroll);
-      }
-    };
-  }, [loading, hasMore, fetchPosts]);
+  window.addEventListener("scroll", handleScroll);
+  return () => window.removeEventListener("scroll", handleScroll);
+}, [loading, hasMore, fetchPosts]);
 
   const handleWritePost = () => {
     if (user) {
@@ -83,6 +73,24 @@ const BoardPage = () => {
     } else {
       alert("글을 작성하려면 로그인이 필요합니다.");
       navigate("/login");
+    }
+  };
+
+  const formatTimeAgo = (date) => {
+    const now = new Date();
+    const diffInSeconds = Math.floor((now - new Date(date)) / 1000);
+    const diffInMinutes = Math.floor(diffInSeconds / 60);
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    const diffInDays = Math.floor(diffInHours / 24);
+
+    if (diffInDays > 0) {
+      return new Date(date).toLocaleDateString();
+    } else if (diffInHours > 0) {
+      return `${diffInHours}시간 전`;
+    } else if (diffInMinutes > 0) {
+      return `${diffInMinutes}분 전`;
+    } else {
+      return "방금 전";
     }
   };
 
@@ -112,7 +120,7 @@ const BoardPage = () => {
                         <BsPerson /> {post.user.nickname || "익명의강아지주인"}
                       </span>
                       <span className={styles.date}>
-                        {new Date(post.boardCreatedAt).toLocaleDateString()}
+                        {formatTimeAgo(post.boardCreatedAt)}
                       </span>
                       <span className={styles.comments}>
                         <BsChat /> {post.replyCount || 0}
@@ -121,7 +129,7 @@ const BoardPage = () => {
                         <BsEye /> {post.viewCount}
                       </span>
                       <span className={styles.likes}>
-                        <HiOutlineHeart /> 0
+                        <HiOutlineHeart /> {post.likeCount}
                       </span>
                     </div>
                   </div>

@@ -73,9 +73,10 @@ const SignUpPage = () => {
       nickname: enteredNickname,
       password: enteredPassword,
       phoneNumber: enteredPhoneNumber,
-      address: `${address.localAddress} ${address.detailAddress}`,
+      address: address.localAddress,
+      detailAddress: address.detailAddress,
     };
-
+    
     const response = await fetch(`${AUTH_URL}/join`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -124,15 +125,19 @@ const SignUpPage = () => {
 
   // 스텝2 가입완료 버튼, 스텝2 추가정보 등록 버튼
   useEffect(() => {
-    const isActive = enteredEmail && enteredPassword && enteredNickname;
+    // 활성화 여부 감시
+    const isActive =
+        enteredEmail && enteredPassword && enteredNickname;
+    
     setStep2Button(isActive);
   }, [enteredEmail, enteredPassword, enteredNickname]);
 
   // 스텝3 추가정보 등록 완료 버튼, 스텝3 강아지 등록하기 버튼
   useEffect(() => {
     const isActive = enteredEmail && enteredPassword
-      && enteredNickname && enteredPhoneNumber
-      && address.localAddress && address.detailAddress;
+        && enteredNickname && enteredPhoneNumber
+        && address.localAddress && address.detailAddress;
+
     setStep3Button(isActive);
   }, [enteredEmail, enteredPassword, enteredNickname, enteredPhoneNumber, address]);
 
@@ -149,7 +154,8 @@ const SignUpPage = () => {
       password: enteredPassword,
       nickname: enteredNickname,
       phoneNumber: enteredPhoneNumber,
-      address: `${address.localAddress} ${address.detailAddress}`,
+      address: address.localAddress,
+      detailAddress: address.detailAddress,
     };
 
     const response = await fetch(`${AUTH_URL}/register-and-login`, {
@@ -162,10 +168,10 @@ const SignUpPage = () => {
     localStorage.setItem("userData", JSON.stringify(responseData));
     setUser(responseData);
 
+    // 회원가입 유저 디테일 정보 전송
     const response1 = await fetch(`${AUTH_URL}/${enteredEmail}`);
     const userDetailData = await response1.json();
     dispatch(userEditActions.updateUserDetail(userDetailData));
-
     changeIsLogin(true);
     navigate("/add-dog");
   };
@@ -233,10 +239,9 @@ const SignUpPage = () => {
                 <WelcomePage onAddDogClick={autoLoginHandler} />
               )}
             </div>
-          </div>
-        </form>
-      </CSSTransition>
-    </>
+          </form>
+        </CSSTransition>
+      </>
   );
 };
 

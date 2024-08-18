@@ -18,7 +18,6 @@ function ModifyHotelPage() {
         location: '',
         rulesPolicy: '',
         cancelPolicy: '',
-        price: '',
         phoneNumber: '',
         hotelImages: [] // 초기값을 빈 배열로 설정
     });
@@ -62,7 +61,6 @@ function ModifyHotelPage() {
             hotelImages: hotelData.hotelImages.filter((_, imgIndex) => imgIndex !== index)
         });
     };
-    
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -139,15 +137,6 @@ function ModifyHotelPage() {
                     />
                 </div>
                 <div>
-                    <label>Price:</label>
-                    <input
-                        type="number"
-                        name="price"
-                        value={hotelData.price}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div>
                     <label>Phone Number:</label>
                     <input
                         type="text"
@@ -169,7 +158,7 @@ function ModifyHotelPage() {
                                     <img
                                         src={imageUrl}
                                         alt={`${hotelData.name} 이미지`}
-                                        className={styles.image}
+                                        style={{maxWidth: '150px', maxHeight: '150px', width: 'auto', height: 'auto'}}
                                     />
                                     <button type="button" onClick={() => handleDeleteImage(index)}>
                                         Delete

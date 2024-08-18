@@ -8,6 +8,10 @@
   position: relative;
 }
 
+.loadingOverlay {
+  height: 100vh;
+}
+
 .title {
   text-align: center;
   margin-bottom: 20px;
@@ -129,6 +133,7 @@
   align-items: center;
   justify-content: space-around;
   flex-direction: row;
+  margin-top: 30px;
 
   .submitButton {
     display: block;
@@ -152,6 +157,31 @@
     &:disabled {
       background-color: #ccc;
       cursor: not-allowed;
+    }
+  }
+}
+
+.inputWithButton {
+  display: flex;
+  align-items: center;
+
+  .input {
+    flex: 1;
+    margin-right: 10px;
+  }
+
+  .addressButton {
+    padding: 10px;
+    background-color: #F4E8D3;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: #B4787A;
+      color: #fff;
     }
   }
 }

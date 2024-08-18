@@ -1,4 +1,3 @@
-// Modal.js
 import React from "react";
 import styles from "./TreatsDetailModal.module.scss"; // 스타일 파일이 필요합니다.
 import TreatDetail from "./TreatsDetail";
@@ -6,6 +5,8 @@ import ReviewPage from "./review/ReviewPage";
 
 const Modal = ({ isOpen, onClose, treatsId }) => {
   if (!isOpen) return null;
+
+  console.info("TreatsDetailModal: "+ treatsId);
 
   return (
     <div className={styles.modalOverlay} onClick={onClose}>

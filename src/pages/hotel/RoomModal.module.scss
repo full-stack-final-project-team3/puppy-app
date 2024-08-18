@@ -34,37 +34,19 @@
     }
 
     select {
-      height: 45px; /* 높이를 키워서 옵션 태그 크기 조정 */
+      height: 45px;
     }
 
     textarea {
       resize: vertical;
     }
 
-    .imageContainer {
+    .addImageContainer {
       display: flex;
       flex-direction: column;
-      align-items: center;
       margin-bottom: 15px;
-
-      img {
-        max-width: 100%;
-        border-radius: 4px;
-        margin-bottom: 10px;
-      }
-
-      button {
-        padding: 5px 10px;
-        border: none;
-        border-radius: 4px;
-        background-color: #dc3545;
-        color: white;
-        font-size: 14px;
-        cursor: pointer;
-
-        &:hover {
-          background-color: #c82333;
-        }
+      input {
+        margin-top: 10px;
       }
     }
 
@@ -86,10 +68,106 @@
       }
     }
   }
-}
 
-.error {
-  color: red;
-  font-size: 14px;
-  margin-top: 10px;
+  .imageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 15px;
+
+    img {
+      max-width: 100%;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+
+    button {
+      padding: 5px 10px;
+      border: none;
+      border-radius: 4px;
+      background-color: #dc3545;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #c82333;
+      }
+    }
+  }
+
+  .slick-slider {
+    margin-bottom: 20px;
+
+    .slick-prev,
+    .slick-next {
+      color: #000;
+      z-index: 1;
+
+      &:hover {
+        color: #007bff;
+      }
+    }
+
+    .slick-dots {
+      bottom: -30px;
+
+      li button:before {
+        color: #007bff;
+      }
+
+      li.slick-active button:before {
+        color: #0056b3;
+      }
+    }
+
+    .slick-list {
+      padding: 0 10px;
+    }
+  }
+
+  .confirmBackdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1100;
+
+    .confirmDialog {
+      background: #FFF;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      text-align: center;
+
+      .roomBtn {
+        font-size: 1.5em;
+        margin: 10px;
+
+        &:hover {
+          background-color: #0056b3;
+        }
+      }
+    }
+  }
+
+  .error {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+
+  .roomBtn {
+    font-size: 1.5em;
+    margin-top: 20px;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
 }

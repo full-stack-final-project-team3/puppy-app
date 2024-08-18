@@ -12,6 +12,7 @@ import {deleteHotel, updateHotel} from '../store/hotel/HotelAddSlice';
 import store from '../store';
 import {setHotels} from '../store/hotel/HotelPageSlice';
 import HotelNoRoom from './HotelNoRoom';
+import Footer from '../../layout/user/Footer';
 
 const HotelList = ({onShowProperty, getSliderSettings}) => {
     // const userData = useSelector(state => state.userEdit.userDetail);
@@ -89,6 +90,7 @@ const HotelList = ({onShowProperty, getSliderSettings}) => {
     }
 
     return (
+        <>
         <div className={styles.hotelList}>
             {hotels.map((hotel) => (
                 <div key={hotel.id} className={styles.hotel}>
@@ -129,6 +131,8 @@ const HotelList = ({onShowProperty, getSliderSettings}) => {
                 </div>
             ))}
         </div>
+        <Footer />
+        </>
     );
 };
 

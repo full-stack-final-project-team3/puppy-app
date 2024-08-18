@@ -6,8 +6,9 @@ import styles from "./BoardEditPage.module.scss";
 
 const BoardEditPage = () => {
   const [post, setPost] = useState({ boardTitle: "", boardContent: "" });
-  const [files, setFiles] = useState([]);
+  const [newFiles, setNewFiles] = useState([]);
   const [currentImages, setCurrentImages] = useState([]);
+  const [imagesToDelete, setImagesToDelete] = useState([]);
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -16,7 +17,12 @@ const BoardEditPage = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await fetch(`${BOARD_URL}/${id}`);
+        const userData = JSON.parse(localStorage.getItem("userData"));
+        const response = await fetch(`${BOARD_URL}/${id}`, {
+          headers: {
+            Authorization: `Bearer ${userData.token}`,
+          },
+        });
         if (!response.ok) throw new Error("Failed to fetch post");
         const data = await response.json();
         setPost({
@@ -39,7 +45,16 @@ const BoardEditPage = () => {
   };
 
   const handleFileChange = (e) => {
-    setFiles(Array.from(e.target.files));
+    setNewFiles(Array.from(e.target.files));
+  };
+
+  const handleImageDelete = (imageUrl) => {
+    // 현재 이미지 배열에서 삭제할 이미지를 제거합니다.
+    const updatedImages = currentImages.filter((img) => img !== imageUrl);
+    setCurrentImages(updatedImages);
+
+    // 삭제할 이미지를 별도의 배열에 추가합니다.
+    setImagesToDelete((prev) => [...prev, imageUrl]);
   };
 
   const handleSubmit = async (e) => {
@@ -50,13 +65,17 @@ const BoardEditPage = () => {
       boardTitle: post.boardTitle,
       boardContent: post.boardContent,
       user: { id: user.id },
+      imagesToDelete: imagesToDelete,
     };
 
     formData.append(
       "dto",
       new Blob([JSON.stringify(dto)], { type: "application/json" })
     );
-    files.forEach((file) => formData.append("files", file));
+    newFiles.forEach((file) => formData.append("newFiles", file));
+
+    // 디버깅을 위해 formData 출력
+    console.log([...formData]);
 
     try {
       const userData = JSON.parse(localStorage.getItem("userData"));
@@ -102,12 +121,20 @@ const BoardEditPage = () => {
         <div className={styles.currentImages}>
           <p>현재 이미지:</p>
           {currentImages.map((img, index) => (
-            <img
-              key={index}
-              src={img}
-              alt={`Current ${index}`}
-              className={styles.thumbnails}
-            />
+            <div key={index} className={styles.imageWrapper}>
+              <img
+                src={img}
+                alt={`Current ${index}`}
+                className={styles.thumbnails}
+              />
+              <button
+                type="button"
+                onClick={() => handleImageDelete(img)}
+                className={styles.deleteImageButton}
+              >
+                삭제
+              </button>
+            </div>
           ))}
         </div>
         <div className={styles.imageUpload}>
@@ -122,9 +149,9 @@ const BoardEditPage = () => {
             multiple
             className={styles.imageInput}
           />
-          {files.length > 0 && (
+          {newFiles.length > 0 && (
             <p className={styles.fileName}>
-              {files.length} 개의 새 이미지 선택됨
+              {newFiles.length} 개의 새 이미지 선택됨
             </p>
           )}
         </div>

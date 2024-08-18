@@ -162,7 +162,7 @@ const MainNavigation = ({ drawerOpen, onToggleDrawer }) => {
                 {" "}
                 <BiBasket className={`${styles.icon} ${styles.basket}`} />
               </Link>
-              <BsBell className={styles.icon} onClick={toggleNotice} ref={bellRef}></BsBell>
+              <BsBell className={styles.bell} onClick={toggleNotice} ref={bellRef}></BsBell>
               {Array.isArray(noticeList) && userDetail.noticeCount !== 0 && (
                 <span className={styles.count}>{userDetail.noticeCount}</span>
                 // <span className={styles.count}></span>

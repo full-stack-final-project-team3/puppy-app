@@ -19,7 +19,7 @@ const DogList = () => {
     };
 
     const onClose = async (flag) => {
-        setShowModal(flag);
+        setShowModal(false); // 모달을 닫음
         if (!flag && selectedDogId) {  // 모달이 닫힐 때만 작동
             try {
                 const response = await fetch(`${DOG_URL}/${selectedDogId}`, {
@@ -43,8 +43,8 @@ const DogList = () => {
         }
     };
 
-    const cancelEdit = (flag) => {
-        setShowModal(flag);
+    const cancelEdit = () => {
+        setShowModal(false);
     }
 
     return (
@@ -62,9 +62,9 @@ const DogList = () => {
                             <div className={styles.age}>{dog.age}년 {dog.month}개월</div>
                             <span className={styles.breed}>{translateBreed(dog.dogBreed)}</span>
                         </div>
-                        {showModal &&
+                        {showModal && selectedDogId === dog.id && (
                             <CheckPasswordModal onClose={onClose} cancelEdit={cancelEdit}/>
-                        }
+                        )}
                     </div>
                 ))
             ) : (

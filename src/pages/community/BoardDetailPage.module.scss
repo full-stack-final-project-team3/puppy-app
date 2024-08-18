@@ -1,13 +1,14 @@
 .postDetailPage {
     background-color: #F1E1C8;
     padding: 20px;
-    font-family: 'Arial', sans-serif;
     position: relative;
     min-height: 100vh;
     padding-bottom: 60px;
     max-width: 800px;
     margin: 0 auto;
     overflow-x: hidden;
+    font-family: 'Arial', sans-serif;
+    font-size: 16px;
 }
 
 .postTitle {
@@ -51,7 +52,7 @@
     position: absolute;
     top: 0;
     right: 0;
-    padding: 20px;
+    // padding: 10px;
 }
 
 .optionsButton {
@@ -247,20 +248,25 @@
     border-radius: 20px;
     overflow: hidden;
     background-color: white;
+    padding: 5px;
+    margin-top: 10px;
 }
 
-.commentInput {
+.commentInput,
+.subReplyInput {
     flex-grow: 1;
     padding: 10px 15px;
     border: none;
     font-size: 1rem;
 }
 
-.commentInput:focus {
+.commentInput:focus,
+.subReplyInput:focus {
     outline: none;
 }
 
-.iconButton {
+.iconButton,
+.subReplyIconButton {
     background: none;
     border: none;
     cursor: pointer;
@@ -269,23 +275,47 @@
     padding: 0 10px;
 }
 
-.iconButton:hover {
+.iconButton:hover,
+.subReplyIconButton:hover {
     color: #333;
 }
 
-.submitButton {
-    padding: 10px 20px;
+.submitButton,
+.cancelButton,
+.subReplySubmitButton,
+.subReplyCancelButton {
+    padding: 8px 15px;
     background-color: #B3797A;
     color: white;
     border: none;
     cursor: pointer;
     transition: background-color 0.3s;
-    border-radius: 20px;
-    margin-right: 1px;
+    border-radius: 15px;
+    margin-left: 5px;
+    font-size: 0.9rem;
 }
 
-.submitButton:hover {
+.submitButton:hover,
+.cancelButton:hover,
+.subReplySubmitButton:hover,
+.subReplyCancelButton:hover {
     background-color: #9F5A5B;
+}
+
+.cancelButton,
+.subReplyCancelButton {
+    background-color: #999;
+}
+
+.cancelButton:hover,
+.subReplyCancelButton:hover {
+    background-color: #777;
+}
+
+.imageSelected {
+    font-size: 0.8rem;
+    color: #666;
+    margin-left: 10px;
 }
 
 .commentList {
@@ -306,17 +336,19 @@
 }
 
 .commentAuthor,
-.replyAuthor {
+.replyAuthor,
+.subReplyAuthor {
     font-size: 0.9rem;
     font-weight: bold;
-    margin-right: 10px;
+    margin-right: 15px;
     color: #333;
     display: flex;
     align-items: center;
 }
 
 .commentDate,
-.replyDate {
+.replyDate,
+.subReplyDate {
     font-size: 0.8rem;
     color: #999;
 }
@@ -327,12 +359,27 @@
     margin-top: 10px;
 }
 
-.replyItem {
+.replyItem,
+.subReplyItem {
     background-color: #f9f9f9;
     border-radius: 8px;
     margin-bottom: 10px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     padding: 10px;
+}
+
+.subReplyItem {
+    position: relative;
+    padding-left: 20px;
+    border-left: 2px solid #e0e0e0;
+    margin-left: 10px;
+}
+
+.commentActions,
+.subReplyActions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 5px;
 }
 
 .loading {
@@ -352,15 +399,184 @@
     margin-right: 8px;
 }
 
-.commentImage {
+.commentImage,
+.subReplyImage {
     max-width: 100%;
     height: auto;
     border-radius: 8px;
     margin-top: 10px;
+    object-fit: contain;
+    max-height: 300px;
 }
 
-.imageSelected {
+.commentActions,
+.subReplyActions {
+    display: flex;
+    justify-content: flex-end;
+    // margin-top: 10px;
+}
+
+.editCommentButton,
+.deleteCommentButton,
+.replyButton,
+.editSubReplyButton,
+.deleteSubReplyButton {
+    background-color: #f0f0f0;
+    border: none;
+    border-radius: 15px;
+    padding: 5px 10px;
     margin-left: 10px;
+    font-size: 0.8rem;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.editCommentButton:hover,
+.deleteCommentButton:hover,
+.replyButton:hover,
+.editSubReplyButton:hover,
+.deleteSubReplyButton:hover {
+    background-color: #e0e0e0;
+}
+
+.imageContainer {
+    width: 100%;
+    max-width: 500px;
+    margin: 10px auto;
+    overflow: hidden;
+}
+
+.subReplyForm {
+    margin-top: 10px;
+    margin-left: 20px;
+}
+
+.subReplyInputWrapper {
+    display: flex;
+    align-items: center;
+    background-color: #f0f0f0;
+    border-radius: 20px;
+    padding: 5px;
+    margin-top: 5px;
+}
+
+.subReplyInput {
+    flex-grow: 1;
+    padding: 8px 12px;
+    border: none;
+    background-color: transparent;
+    font-size: 0.9rem;
+}
+
+.subReplyInput:focus {
+    outline: none;
+}
+
+.subReplyIconButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
     color: #666;
-    font-style: italic;
+    padding: 0 8px;
+}
+
+.subReplyIconButton:hover {
+    color: #333;
+}
+
+.subReplySubmitButton,
+.subReplyCancelButton {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+}
+
+.replyButton{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.subReplyItem::before {
+    content: "";
+    position: absolute;
+    left: -15px;
+    color: #999;
+}
+
+.subReplyItem {
+    position: relative;
+    padding-left: 20px;
+}
+
+.commentAuthor,
+.subReplyAuthor {
+    margin-right: 15px;
+    /* 아이디와 날짜 사이 간격 조정 */
+}
+
+.toggleSubRepliesButton {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    margin-top: 10px;
+    padding: 5px 10px;
+    border-radius: 15px;
+    transition: background-color 0.3s;
+
+    &:hover {
+        background-color: #f0f0f0;
+    }
+
+    svg {
+        margin-right: 5px;
+    }
+}
+
+.subReplyList {
+    margin-top: 10px;
+    padding-left: 20px;
+    border-left: 2px solid #e0e0e0;
+}
+
+.likeShareContainer {
+display: flex;
+    justify-content: center; // 중앙 정렬
+    align-items: center; // 세로 방향으로도 중앙 정렬
+    margin: 20px 0;
+    gap: 20px; // 버튼 사이의 간격
+}
+
+.likeButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #999; // 기본 색상을 회색으로 변경
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+        background-color: #777; // 호버 시 약간 어두운 회색
+    }
+
+    &.active {
+        background-color: #B3797A; // 눌렸을 때 공유하기 버튼과 같은 색상
+
+        &:hover {
+            background-color: #9F5A5B; // 눌린 상태에서 호버 시
+        }
+    }
+
+    svg {
+        margin-right: 8px;
+    }
 }

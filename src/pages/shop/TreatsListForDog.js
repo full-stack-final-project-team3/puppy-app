@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { useParams, useLocation } from "react-router-dom";
 import { TREATS_URL, AUTH_URL } from "../../config/user/host-config";
 import styles from "./TreatsListForDog.module.scss";
 import CreateBundle from "../../components/shop/CreateBundle";
 import Modal from "./TreatsDetailModal";
 import ShopStepIndicator from "./ShopStepIndicator";
+import Footer from "../../layout/user/Footer";
+import { PulseLoader } from "react-spinners";
+import spinnerStyles from "../../layout/user/Spinner.module.scss";
 
 const TreatsListForDog = () => {
   const { dogId } = useParams();
@@ -16,6 +18,7 @@ const TreatsListForDog = () => {
   const [error, setError] = useState(null);
   const [pageNo, setPageNo] = useState(1);
   const [currentStep, setCurrentStep] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
   const [selectedTreats, setSelectedTreats] = useState({
     DRY: [],
     WET: [],
@@ -31,6 +34,27 @@ const TreatsListForDog = () => {
   const handleStepClick = (stepIndex) => {
     setCurrentStep(stepIndex); // 클릭한 스텝으로 이동
   };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const { scrollTop, clientHeight, scrollHeight } =
+        document.documentElement;
+
+      if (scrollTop + clientHeight >= scrollHeight - 5) {
+        console.log("무한 스크롤 이벤트 실행");
+        if (treatsList.length < totalCount) {
+          setPageNo((prevPage) => prevPage + 1); // 페이지 번호 증가
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    // 컴포넌트 언마운트 시 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [loading, treatsList, totalCount]);
 
   const fetchTreatsList = async () => {
     // 현재 타입 가져오기
@@ -59,7 +83,8 @@ const TreatsListForDog = () => {
     }
 
     try {
-      setLoading(true); // 로딩 상태 시작
+      setLoading(true);
+
       const response = await fetch(
         `${TREATS_URL}/list/${dogId}?pageNo=${pageNo}&sort=${currentType}`,
         {
@@ -73,12 +98,24 @@ const TreatsListForDog = () => {
         throw new Error("네트워크 응답이 올바르지 않습니다.");
       }
       const data = await response.json();
-      setTreatsList(data.treatsList);
+
+      // 1초 후에 데이터를 렌더링
+      setTimeout(() => {
+        // currentStep이 바뀔 때는 리스트 초기화
+        if (pageNo === 1) {
+          setTreatsList(data.treatsList);
+          setTotalCount(data.totalCount);
+          window.scrollTo(0, 0); // 페이지의 맨 위로 스크롤
+        } else {
+          setTreatsList((prevList) => [...prevList, ...data.treatsList]);
+        }
+        setLoading(false);
+      }, 850);
+
       console.log(data);
       console.log(currentStep);
     } catch (err) {
       setError(err);
-    } finally {
       setLoading(false);
     }
   };
@@ -104,7 +141,11 @@ const TreatsListForDog = () => {
     });
 
     // 다음 타입으로 스텝 이동
-    setCurrentStep((prevStep) => Math.min(prevStep + 1, treatTypes.length - 1));
+    setCurrentStep((prevStep) => {
+      const nextStep = Math.min(prevStep + 1, treatTypes.length - 1);
+      setPageNo(1); // 간식 선택 시 pageNo를 1로 초기화
+      return nextStep;
+    });
   };
 
   const handleRemoveTreat = (type, treat) => {
@@ -121,7 +162,7 @@ const TreatsListForDog = () => {
         const { [treat.title]: _, ...rest } = prev; // 애니메이션이 끝난 후 상태에서 제거
         return rest;
       });
-    }, 500); // 애니메이션 시간과 일치
+    }, 800); // 애니메이션 시간과 일치
   };
 
   const removeTreat = (type, treat) => {
@@ -147,6 +188,7 @@ const TreatsListForDog = () => {
       );
 
       if (emptyTypes.length > 0) {
+        setPageNo(1); // 간식 선택 시 pageNo를 1로 초기화
         return treatTypes.indexOf(emptyTypes[0]); // 비어있는 타입으로 스텝 이동
       }
 
@@ -169,66 +211,73 @@ const TreatsListForDog = () => {
   return (
     <>
       <ShopStepIndicator step={currentStep} onStepClick={handleStepClick} />
-      <TransitionGroup>
-        <CSSTransition
-          in={true} // 항상 true로 설정하여 애니메이션 적용
-          key={currentStep} // currentStep이 바뀔 때마다 애니메이션 재생
-          timeout={500} // 애니메이션 시간
-          classNames="page" // 애니메이션 클래스 이름
-        >
-          <div className={`${styles.treatsList} page`}>
-            <div className={styles.content}>
-              <h1>{dogName ? `${dogName}` : "강아지"} 맞춤 간식</h1>
-              <div>
-                {/* <h2>{treatTypes[currentStep]}</h2> */}
-                {treatsList.length === 0 ? (
-                  <p>등록된 {treatTypes[currentStep]} 간식이 없습니다.</p>
-                ) : (
-                  <div className={styles.cardContainer}>
-                    {treatsList.map((treat) => {
-                      const hasTreatPics =
-                        Array.isArray(treat["treats-pics"]) &&
-                        treat["treats-pics"].length > 0;
-                      const imageUrl = hasTreatPics
-                        ? `${AUTH_URL}${treat[
-                            "treats-pics"
-                          ][0].treatsPic.replace("/local", "/treats/images")}`
-                        : `${AUTH_URL}/treats/images/default.webp`;
+      {loading && (
+        <div className={styles.loadingOverlay}>
+          <div className={spinnerStyles.spinnerContainer}>
+            <PulseLoader
+              className={spinnerStyles.loader}
+              color="#0B593F"
+              loading={loading}
+              size={18}
+            />
+          </div>
+        </div>
+      )}
+      <div className={`${styles.treatsList} page`}>
+        <div className={styles.content}>
+          <h1>
+            <span style={{ fontSize: "20px" }}>오직</span>
+            &nbsp;{dogName ? `${dogName}` : "강아지"}
+            <span style={{ fontSize: "20px" }}>만을 위해 준비했어요.</span>
+          </h1>
+          <span className={styles.subTitle}>
+            맞춤형 식단 옵션을 확인했습니다 For{" "}
+            {dogName ? `${dogName}` : "강아지"}
+          </span>
+          <div>
+            <div className={styles.cardContainer}>
+              {treatsList.map((treat) => {
+                const hasTreatPics =
+                  Array.isArray(treat["treats-pics"]) &&
+                  treat["treats-pics"].length > 0;
+                const imageUrl = hasTreatPics
+                  ? `${AUTH_URL}${treat["treats-pics"][0].treatsPic.replace(
+                      "/local",
+                      "/treats/images"
+                    )}`
+                  : `${AUTH_URL}/treats/images/default.webp`;
 
-                      return (
-                        <div className={styles.card} key={treat.id}>
-                          <img
-                            src={imageUrl}
-                            className={`${styles.cardImageTop} img-fluid`}
-                            alt={treat.title}
-                            onClick={() => openModal(treat)}
-                          />
-                          <div className={styles.cardBody}>
-                            <h4
-                              className={styles.cardTitle}
-                              onClick={() => openModal(treat)}
-                            >
-                              {treat.title}
-                            </h4>
-                          </div>
-                          <div className={styles.addBtnContainer}>
-                            <button
-                              className={styles.addBtn}
-                              onClick={() => toggleTreatSelection(treat)}
-                            >
-                              선택하기
-                            </button>
-                          </div>
-                        </div>
-                      );
-                    })}
+                return (
+                  <div className={styles.card} key={treat.id}>
+                    <img
+                      src={imageUrl}
+                      className={`${styles.cardImageTop} img-fluid`}
+                      alt={treat.title}
+                      onClick={() => openModal(treat)}
+                    />
+                    <div className={styles.cardBody}>
+                      <h4
+                        className={styles.cardTitle}
+                        onClick={() => openModal(treat)}
+                      >
+                        {treat.title}
+                      </h4>
+                    </div>
+                    <div className={styles.addBtnContainer}>
+                      <button
+                        className={styles.addBtn}
+                        onClick={() => toggleTreatSelection(treat)}
+                      >
+                        선택하기
+                      </button>
+                    </div>
                   </div>
-                )}
-              </div>
+                );
+              })}
             </div>
           </div>
-        </CSSTransition>
-      </TransitionGroup>
+        </div>
+      </div>
 
       <div className={styles.selectedTreats}>
         <div className={styles.imageBoxContainer}>
@@ -267,14 +316,15 @@ const TreatsListForDog = () => {
             </div>
           ))}
         </div>
+        <CreateBundle selectedTreats={selectedTreats} dogId={dogId} />
       </div>
 
-      <CreateBundle selectedTreats={selectedTreats} dogId={dogId} />
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}
         treatsId={currentTreatId}
       />
+      {/* <Footer /> */}
     </>
   );
 };

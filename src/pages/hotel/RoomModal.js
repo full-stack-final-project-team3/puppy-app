@@ -1,14 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { uploadFile, submitRoom, updateRoomData, addRoomImage, removeRoomImage, setErrorMessage } from '../../components/store/hotel/RoomAddSlice';
+import {
+    uploadFile, submitRoom, updateRoomData, addRoomImage, removeRoomImage, setErrorMessage
+} from '../../components/store/hotel/RoomAddSlice';
 import styles from './RoomModal.module.scss';
 import { ROOM_URL } from "../../config/user/host-config";
 
 const RoomModal = ({ hotelId, onClose, onRoomAdded, backHandler }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const roomData = useSelector((state) => state.roomAdd);
+    const roomData = useSelector(state => state.roomAdd);
+    const [showConfirm, setShowConfirm] = useState(false);  // 상태를 추가하여 확인 창 표시 여부 관리
+
+    const createImageUrl = (image) => {
+        if (!image || !image.hotelImgUri) return '';
+        return image.type === 'LOCAL'
+            ? image.hotelImgUri
+            : `http://localhost:8888${image.hotelImgUri.replace('/local', '/hotel/images')}`;
+    };
 
     const handleRoomChange = (e) => {
         const { name, value } = e.target;
@@ -35,13 +45,28 @@ const RoomModal = ({ hotelId, onClose, onRoomAdded, backHandler }) => {
             .unwrap()
             .then((response) => {
                 console.log('Room added successfully:', response);
-                alert('룸 생성이 완료되었습니다.');
-                onRoomAdded(); // 부모 컴포넌트에 룸 추가 완료 알림
+                setShowConfirm(true);  // 객실 추가 후 확인 창 표시
             })
             .catch((error) => {
                 console.error('Failed to add room:', error);
                 dispatch(setErrorMessage(error));
             });
+    };
+
+    const handleAddAnotherRoom = () => {
+        // 폼 초기화
+        dispatch(updateRoomData({
+            name: '',
+            content: '',
+            type: '',
+            price: '',
+            roomImages: []
+        }));
+        setShowConfirm(false);  // 확인 창 숨기기
+    };
+
+    const handleCloseConfirm = () => {
+        setShowConfirm(false);  // 확인 창 숨기기
     };
 
     return (
@@ -90,7 +115,7 @@ const RoomModal = ({ hotelId, onClose, onRoomAdded, backHandler }) => {
                         />
                         {image.hotelImgUri && (
                             <>
-                                <img src={`${ROOM_URL}/images/${image.hotelImgUri}`} alt="Hotel" />
+                                <img src={createImageUrl(image)} alt="Room" style={{maxWidth: '150px', maxHeight: '150px', width: 'auto', height: 'auto'}}/>
                                 <button type="button" onClick={() => handleRemoveImage(index)}>Remove</button>
                             </>
                         )}
@@ -100,6 +125,15 @@ const RoomModal = ({ hotelId, onClose, onRoomAdded, backHandler }) => {
                 <button type="submit">객실 저장</button>
                 {roomData.errorMessage && <p className={styles.error}>{roomData.errorMessage}</p>}
             </form>
+            {showConfirm && (
+                <div className="confirmBackdrop">
+                    <div className="confirmDialog">
+                        <p>추가 객실을 더 생성하시겠습니까?</p>
+                        <button onClick={handleAddAnotherRoom}>예</button>
+                        <button onClick={handleCloseConfirm}>아니요</button>
+                    </div>
+                </div>
+            )}
             <button onClick={onClose}>닫기</button>
             <button onClick={backHandler}>목록으로 돌아가기</button>
         </div>
