@@ -106,7 +106,7 @@ const AddRoomPage = () => {
                         />
                         {image.hotelImgUri && (
                             <>
-                                <img src={createImageUrl(image)} alt="ROOM"/>
+                                <img src={createImageUrl(image)} alt="ROOM" style={{maxWidth: '150px', maxHeight: '150px', width: 'auto', height: 'auto'}}/>
                                 <button type="button" onClick={() => handleRemoveImage(index)}>Remove</button>
                             </>
                         )}
