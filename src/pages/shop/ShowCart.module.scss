@@ -1,4 +1,4 @@
-.loadingOverlay{
+.loadingOverlay {
   height: 100vh;
 }
 
@@ -83,6 +83,7 @@
     border-top: 1px solid #ccc; // 상단 경계선 추가
     padding-top: 20px; // 상단 패딩
   }
+
   .bundlePrice {
     color: #858585;
   }
@@ -192,21 +193,44 @@
   }
 }
 
-.totalDisCount{
-  margin-right: 4px;
-  color: #BF424A;
-  text-decoration: line-through; // 줄 그기
+// 반응형 디자인을 위한 미디어 쿼리
+@media (max-width: 850px) {
+  .cartContainer {
+    width: 95%; // 너비 조정
+    padding: 10px; // 패딩 조정
+
+    .bundleContainer {
+      width: 100%; // 너비를 100%로 조정
+    }
+
+    .emptyCartContainer {
+      width: 90%; // 너비 조정
+    }
+
+    .paymentButton {
+      width: 80%; // 버튼 너비 조정
+    }
+  }
 }
 
-.bundleHeaderContainer {
-  display: flex;
-  justify-content: space-between; // 양쪽 끝으로 정렬
-  align-items: center; // 수직 가운데 정렬
-}
+@media (max-width: 400px) {
+  .cartContainer {
+    .bundleContainer {
+      padding: 10px; // 패딩 조정
+    }
 
-.subscriptionSelect {
-  margin-right: 20px; // h4와의 간격 조정
-  padding: 5px; // 패딩 추가
-  font-size: 14px; // 폰트 크기 조정
-  margin-top: 25px; // 위쪽 마진 추가하여 아래로 내리기
+    .clearCartButton {
+      font-size: 10px; // 폰트 크기 조정
+    }
+
+    .shopButton {
+      padding: 8px 16px; // 버튼 패딩 조정
+      font-size: 14px; // 폰트 크기 조정
+    }
+
+    .paymentButton {
+      padding: 8px 16px; // 버튼 패딩 조정
+      font-size: 14px; // 폰트 크기 조정
+    }
+  }
 }

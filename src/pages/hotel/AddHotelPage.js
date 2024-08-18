@@ -144,7 +144,11 @@ const AddHotelPage = () => {
                         />
                         {image.hotelImgUri && (
                             <>
-                                <img src={createImageUrl(image)} alt="Hotel" />
+                                <img
+                                    src={createImageUrl(image)}
+                                    alt="Hotel"
+                                    style={{maxWidth: '150px', maxHeight: '150px', width: 'auto', height: 'auto'}}
+                                />
                                 <input
                                     type="hidden"
                                     name="type"

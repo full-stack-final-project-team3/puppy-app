@@ -119,7 +119,7 @@ const SnackRecords = () => {
         <div className={styles.wrap}>
             <MyPageHeader />
             <div className={styles.subWrap}>
-                <h1 className={styles.title}>내가 구매한 간식들</h1>
+                <h1 className={styles.title}>나의 구독 정보</h1>
                 {orderHistory && orderHistory.length > 0 ? (
                     orderHistory.map((order, index) => (
                         <div key={index} className={styles.card}>
@@ -210,3 +210,4 @@ const SnackRecords = () => {
 };
 
 export default SnackRecords;
+//원본

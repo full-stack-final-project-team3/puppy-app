@@ -10,9 +10,25 @@ const OrderInfo = ({
   handleUserInfoUpdate,
   handleDeliveryRequestChange,
   handleCustomRequestChange,
+  setValidationErrors, // 추가: validation 에러 전달을 위한 함수
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [editingType, setEditingType] = useState(null); // 모달창의 용도 구분
+
+  const validateFields = () => { // 추가: 필드 검증 함수
+    const errors = {};
+    if (!orderInfo.receiverName) {
+      errors.receiverName = '이름을 입력해 주세요.';
+    }
+    if (!orderInfo.receiverPhone) {
+      errors.receiverPhone = '연락처를 입력해 주세요.';
+    }
+    if (!orderInfo.receiverAddress || !orderInfo.receiverDetailAddress) {
+      errors.receiverAddress = '주소를 입력해 주세요.';
+    }
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
 
   const handleSave = (newName, newPhone, address, detailAddress) => {
     if (editingType === 'user') {
@@ -31,33 +47,19 @@ const OrderInfo = ({
     <div>
       <div className={styles.section}>
         <div className={styles['section-title']}>
-          구매자 정보
-          <button onClick={() => { setShowModal(true); setEditingType('user'); }}>
-            구매자 정보 입력
-          </button>
-        </div>
-        <div className={styles['section-content']}>
-          <p>이름: {user.realName || '정보 없음'}</p>
-          <p>이메일: {user.email || '정보 없음'}</p>
-          <p>연락처: {user.phoneNumber || '정보 없음'}</p>
-        </div>
-      </div>
-
-      <div className={styles.section}>
-        <div className={styles['section-title']}>
           받는 사람 정보
-          <button onClick={() => { setShowModal(true); setEditingType('receiver'); }}>
-            받는 사람 정보 수정
+          <button className={styles.order_info_btn} onClick={() => { setShowModal(true); setEditingType('receiver'); }}>
+            <span className={styles.transition} ></span>
+            <span className={styles.gradient} ></span>
+            <span className={styles.labels} >입력</span>
           </button>
         </div>
         <div className={styles['section-content']}>
           <p>이름: {orderInfo.receiverName || '정보 없음'}</p>
           <p>연락처: {orderInfo.receiverPhone || '정보 없음'}</p>
           <p>주소: {orderInfo.receiverAddress || '정보 없음'} {orderInfo.receiverDetailAddress || user.detailAddress}</p>
-          {/* <p>주소: {orderInfo.receiverAddress || '정보 없음'}</p>
-          <p>상세 주소: {orderInfo.receiverDetailAddress || user.detailAddress}</p> */}
-          <p>배송 요청 사항:</p>
           <select
+            className={styles.custom_select}
             value={orderInfo.deliveryRequest}
             onChange={handleDeliveryRequestChange}
             required
