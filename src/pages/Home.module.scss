@@ -71,3 +71,12 @@
     object-fit: cover; /* 비디오가 컨테이너를 가득 채우도록 */
   }
 }
+
+@media screen and (max-width: 400px) {
+  .videoBox {
+    display: none;
+  }
+  .textBox {
+    width: 100% !important;
+  }
+}

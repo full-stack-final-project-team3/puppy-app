@@ -111,6 +111,12 @@
     }
   }
 }
+@media screen and (max-width: 400px) {
+  .hotelImage {
+    width: 310px !important;
+    height: 200px !important;
+  }
+}
 
 @media screen and (max-width: 768px) {
   .wrap {
