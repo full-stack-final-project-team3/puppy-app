@@ -18,7 +18,7 @@ const AboutMyInfo = () => {
                     </Link>
                     <Link to={'/snack-record'} className={styles.suggest}>
                         <FaBone className={styles.snackIcon}/>
-                        간식 구독 내역
+                        펫 푸드 구독 내역
                     </Link>
                 </div>
                 <div className={styles.subWrap}>
