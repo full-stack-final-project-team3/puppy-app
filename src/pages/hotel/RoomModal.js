@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import Slider from 'react-slick';
 import {
     uploadFile, submitRoom, updateRoomData, addRoomImage, removeRoomImage, setErrorMessage
 } from '../../components/store/hotel/RoomAddSlice';
@@ -70,15 +69,6 @@ const RoomModal = ({ hotelId, onClose, onRoomAdded, backHandler }) => {
         setShowConfirm(false);  // 확인 창 숨기기
     };
 
-    const sliderSettings = {
-        dots: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1
-    };
-
-
     return (
         <div className={styles.roomModal}>
             <form onSubmit={handleRoomSubmit}>
@@ -116,43 +106,36 @@ const RoomModal = ({ hotelId, onClose, onRoomAdded, backHandler }) => {
                     onChange={handleRoomChange}
                     required
                 />
-                {roomData.roomImages.length > 0 && (
-                    <Slider {...sliderSettings}>
-                        {roomData.roomImages.map((image, index) => (
-                            <div key={index} className={styles.imageContainer}>
-                                <img src={createImageUrl(image)} alt="Room" />
-                                <button type="button" onClick={() => handleRemoveImage(index)}>Remove</button>
-                            </div>
-                        ))}
-                    </Slider>
-                )}
-
-                <div className={styles.addImageContainer}>
-                    <button type="button" onClick={handleAddImage}>Add Image</button>
-                    {roomData.roomImages.map((image, index) => (
+                {roomData.roomImages.map((image, index) => (
+                    <div key={index}>
                         <input
-                            key={index}
                             type="file"
                             onChange={(e) => handleFileChange(e, index)}
                             required
                         />
-                    ))}
-                </div>
+                        {image.hotelImgUri && (
+                            <>
+                                <img src={createImageUrl(image)} alt="Room" style={{maxWidth: '150px', maxHeight: '150px', width: 'auto', height: 'auto'}}/>
+                                <button type="button" onClick={() => handleRemoveImage(index)}>Remove</button>
+                            </>
+                        )}
+                    </div>
+                ))}
                 <button type="button" onClick={handleAddImage}>Add Image</button>
                 <button type="submit">객실 저장</button>
                 {roomData.errorMessage && <p className={styles.error}>{roomData.errorMessage}</p>}
             </form>
             {showConfirm && (
-                <div className={styles.confirmBackdrop}>
-                    <div className={styles.confirmDialog}>
+                <div className="confirmBackdrop">
+                    <div className="confirmDialog">
                         <p>추가 객실을 더 생성하시겠습니까?</p>
-                        <button className={styles.roomBtn} onClick={handleAddAnotherRoom}>예</button>
-                        <button className={styles.roomBtn} onClick={handleCloseConfirm}>아니요</button>
+                        <button onClick={handleAddAnotherRoom}>예</button>
+                        <button onClick={handleCloseConfirm}>아니요</button>
                     </div>
                 </div>
             )}
-            <button className={styles.roomBtn} onClick={onClose}>닫기</button>
-            <button className={styles.roomBtn} onClick={backHandler}>목록으로 돌아가기</button>
+            <button onClick={onClose}>닫기</button>
+            <button onClick={backHandler}>목록으로 돌아가기</button>
         </div>
     );
 };
