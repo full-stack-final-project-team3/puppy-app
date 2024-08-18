@@ -23,7 +23,7 @@ const BoardPage = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        `${BOARD_URL}?sort=date&page=${page}&limit=5`
+        `${BOARD_URL}?sort=boardCreatedAt&page=${page}&limit=10`
       );
 
       if (!response.ok) {
@@ -121,7 +121,7 @@ const BoardPage = () => {
                         <BsEye /> {post.viewCount}
                       </span>
                       <span className={styles.likes}>
-                        <HiOutlineHeart /> 0
+                        <HiOutlineHeart /> {post.likeCount}
                       </span>
                     </div>
                   </div>
