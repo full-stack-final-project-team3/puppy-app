@@ -45,7 +45,7 @@ const NicknameInput = ({ onSuccess }) => {
 
   return (
     <>
-      <h1 className={styles.h1}>Step 2</h1>
+      <h1 className={styles.h1}>Nickname / Password</h1>
       <div className={styles.signUpInput}>
         <h2>닉네임</h2>
         <input

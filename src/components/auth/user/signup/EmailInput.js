@@ -56,7 +56,7 @@ const EmailInput = ({ onSuccess }) => {
 
   return (
     <>
-      <h1 className={styles.h1}>Step 1</h1>
+      <h1 className={styles.h1}>Email</h1>
       <div className={styles.signUpInput}>
         <h2 className={styles.h2}>이메일</h2>
         <input
