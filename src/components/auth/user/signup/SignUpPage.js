@@ -239,6 +239,7 @@ const SignUpPage = () => {
                 <WelcomePage onAddDogClick={autoLoginHandler} />
               )}
             </div>
+            </div>
           </form>
         </CSSTransition>
       </>
