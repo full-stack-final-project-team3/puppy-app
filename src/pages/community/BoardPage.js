@@ -17,6 +17,10 @@ const BoardPage = () => {
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.userEdit.userDetail);
+  
+  useEffect(() => {
+    fetchPosts();
+  }, []);
 
   const fetchPosts = useCallback(async () => {
     if (loading || !hasMore) return;
@@ -34,48 +38,34 @@ const BoardPage = () => {
       if (newPosts.length === 0) {
         setHasMore(false);
       } else {
-        setPosts((prevPosts) => {
-          const uniquePosts = newPosts.filter(
-            (newPost) => !prevPosts.some((post) => post.id === newPost.id)
-          );
-          return [...prevPosts, ...uniquePosts];
-        });
+        setPosts((prevPosts) => [...prevPosts, ...newPosts]);
         setPage((prevPage) => prevPage + 1);
       }
     } catch (error) {
       console.error("게시글 가져오기 오류:", error.message);
       setHasMore(false);
-      // 사용자에게 오류 메시지를 표시하는 로직 추가
     } finally {
       setLoading(false);
     }
   }, [page, loading, hasMore]);
 
-  useEffect(() => {
-    fetchPosts();
-  }, []);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (scrollRef.current && !loading && hasMore) {
-        const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
-        if (scrollTop + clientHeight > scrollHeight * 0.95) {
-          fetchPosts();
-        }
+
+useEffect(() => {
+  const handleScroll = () => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop >=
+      document.documentElement.offsetHeight - 100
+    ) {
+      if (!loading && hasMore) {
+        fetchPosts();
       }
-    };
-
-    const scrollContainer = scrollRef.current;
-    if (scrollContainer) {
-      scrollContainer.addEventListener("scroll", handleScroll);
     }
+  };
 
-    return () => {
-      if (scrollContainer) {
-        scrollContainer.removeEventListener("scroll", handleScroll);
-      }
-    };
-  }, [loading, hasMore, fetchPosts]);
+  window.addEventListener("scroll", handleScroll);
+  return () => window.removeEventListener("scroll", handleScroll);
+}, [loading, hasMore, fetchPosts]);
 
   const handleWritePost = () => {
     if (user) {
