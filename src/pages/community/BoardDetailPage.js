@@ -50,66 +50,59 @@ const BoardDetailPage = () => {
   const [commentLikeCounts, setCommentLikeCounts] = useState({});
   const [subReplyLikeCounts, setSubReplyLikeCounts] = useState({});
 
+  const [sortOrder, setSortOrder] = useState("latest"); // 'latest' 또는 'oldest'
+  const [showSortOptions, setShowSortOptions] = useState(false);
+
   const { id } = useParams();
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.userEdit.userDetail);
 
-  // useEffect(() => {
-  //   const userData = JSON.parse(localStorage.getItem("userData"));
-  //   setIsLoggedIn(!!userData && !!userData.token);
-
-  //   const fetchData = async () => {
-  //     await fetchPostDetail();
-  //     await fetchLikeStatus();
-  //   };
-
-  //   fetchData();
-  // }, [id]);
-
   // 로그인 상태 확인
- useEffect(() => {
-   const fetchData = async () => {
-     setIsLoading(true);
-     setError(null);
-     try {
-       const userData = JSON.parse(localStorage.getItem("userData"));
-       const isLoggedIn = !!userData && !!userData.token;
-       setIsLoggedIn(isLoggedIn);
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const userData = JSON.parse(localStorage.getItem("userData"));
+        const isLoggedIn = !!userData && !!userData.token;
+        setIsLoggedIn(isLoggedIn);
 
-       const postData = await fetchPostDetail(
-         isLoggedIn ? userData.token : null
-       );
-       setPost(postData);
-       setComments(postData.replies || []);
+        const postData = await fetchPostDetail(
+          isLoggedIn ? userData.token : null
+        );
+        setPost(postData);
+        setComments(postData.replies || []);
 
-       if (isLoggedIn) {
-         const likeStatusResponse = await fetch(
-           `${LIKE_URL}/board/${id}/like-status`,
-           {
-             headers: { Authorization: `Bearer ${userData.token}` },
-           }
-         );
-         const likeStatusData = await likeStatusResponse.json();
-         setPostLiked(likeStatusData.boardLiked);
-         setBoardLikeCount(likeStatusData.boardLikeCount);
-         setCommentLikes(likeStatusData.replyLikes);
-         setCommentLikeCounts(likeStatusData.replyLikeCounts);
-         setSubReplyLikes(likeStatusData.subReplyLikes);
-         setSubReplyLikeCounts(likeStatusData.subReplyLikeCounts);
-       }
-     } catch (error) {
-       console.error("데이터 로딩 중 오류 발생:", error);
-       setError("데이터를 불러오는 데 실패했습니다. 다시 시도해 주세요.");
-     } finally {
-       setIsLoading(false);
-     }
-   };
+        if (isLoggedIn) {
+          const likeStatusResponse = await fetch(
+            `${LIKE_URL}/board/${id}/like-status`,
+            {
+              headers: { Authorization: `Bearer ${userData.token}` },
+            }
+          );
+          const likeStatusData = await likeStatusResponse.json();
+          setPostLiked(likeStatusData.boardLiked);
+          setBoardLikeCount(likeStatusData.boardLikeCount);
+          setCommentLikes(likeStatusData.replyLikes);
+          setCommentLikeCounts(likeStatusData.replyLikeCounts);
+          setSubReplyLikes(likeStatusData.subReplyLikes);
+          setSubReplyLikeCounts(likeStatusData.subReplyLikeCounts);
+        }
+      } catch (error) {
+        console.error("데이터 로딩 중 오류 발생:", error);
+        setError("데이터를 불러오는 데 실패했습니다. 다시 시도해 주세요.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-   fetchData();
- }, [id]);
+    fetchData();
+  }, [id]);
+
   //----------------------
   //함수 목록들
+  //----------------------
   const fetchPostDetail = async (token) => {
     console.log("🐶 게시물 상세 정보를 가져오는 중...");
     const headers = token ? { Authorization: `Bearer ${token}` } : {};
@@ -612,8 +605,31 @@ const BoardDetailPage = () => {
     }
   };
 
-  //렌더링
+  const toggleSortOptions = () => {
+    setShowSortOptions(!showSortOptions);
+  };
 
+  const handleSort = (order) => {
+    setSortOrder(order);
+    setShowSortOptions(false);
+  };
+
+  const sortComments = (commentsToSort) => {
+    return [...commentsToSort].sort((a, b) => {
+      if (sortOrder === "latest") {
+        return new Date(b.replyCreatedAt) - new Date(a.replyCreatedAt);
+      } else {
+        return new Date(a.replyCreatedAt) - new Date(b.replyCreatedAt);
+      }
+    });
+  };
+
+  // 정렬된 댓글
+  const sortedComments = sortComments(comments);
+
+  //---------
+  // 렌더링
+  //---------
   if (isLoading) return <div className={styles.loading}>로딩 중...</div>;
   if (error) return <div className={styles.error}>{error}</div>;
   if (!post) return null;
@@ -688,12 +704,25 @@ const BoardDetailPage = () => {
         </button>
       </div>
       <div className={styles.commentsSection}>
-        <h2>
-          <BsChat /> 댓글 ({totalComments})
-        </h2>
+        <div className={styles.commentHeader}>
+          <h2>
+            <BsChat /> 댓글 ({totalComments})
+          </h2>
+          <div className={styles.sortContainer}>
+            <button onClick={toggleSortOptions} className={styles.sortButton}>
+              {sortOrder === "latest" ? "최신순" : "등록순"} <BsChevronDown />
+            </button>
+            {showSortOptions && (
+              <div className={styles.sortOptions}>
+                <button onClick={() => handleSort("latest")}>최신순</button>
+                <button onClick={() => handleSort("oldest")}>등록순</button>
+              </div>
+            )}
+          </div>
+        </div>
         <ul className={styles.commentList}>
-          {comments && comments.length > 0 ? (
-            comments.map((comment) => (
+          {sortedComments && sortedComments.length > 0 ? (
+            sortedComments.map((comment) => (
               <li key={comment.id} className={styles.commentItem}>
                 <div className={styles.commentContent}>
                   <span className={styles.commentAuthor}>
