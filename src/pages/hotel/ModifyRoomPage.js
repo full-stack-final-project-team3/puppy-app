@@ -169,7 +169,7 @@ const ModifyRoomPage = () => {
                                     <img
                                         src={imageUrl}
                                         alt={`${roomData.name} 이미지`}
-                                        className={styles.image}
+                                        style={{maxWidth: '150px', maxHeight: '150px', width: 'auto', height: 'auto'}}
                                     />
                                     <button type="button" onClick={() => handleDeleteImage(index)}>
                                         Delete
