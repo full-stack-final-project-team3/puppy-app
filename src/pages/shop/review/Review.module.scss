@@ -227,5 +227,121 @@ p {
 
 
 
+.review_wraps_b{
+  width: 100%;
+  background-color: #f9f9f9;
+}
+.review_common_box {
+  padding: 30px;
+  border-radius: 10px;
+  max-width:70%;
+  margin: 0 auto;
+  font-family: 'Arial', sans-serif;
+}
 
+.review_writer_box h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
+}
+
+.review_text {
+  width: 100%;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 20px;
+  min-height: 150px;
+  resize: vertical;
+}
+
+.review_text:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.file_input_wrapper {
+  margin-bottom: 20px;
+}
+
+.file_input_wrapper label {
+  display: inline-block;
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.file_input_wrapper input[type="file"] {
+  display: none;
+}
+
+.file_name_list {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #555;
+}
+
+.file_input_wrapper button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.file_input_wrapper button:hover {
+  background-color: #c82333;
+}
+
+.rating_input_wrapper {
+  margin-bottom: 20px;
+}
+
+.rating_input_wrapper p {
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.review_writer_box button[type="submit"] {
+  width: 100%;
+  padding: 15px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.review_writer_box button[type="submit"]:hover {
+  background-color: #218838;
+}
+
+.review_writer_box button[type="button"] {
+  margin-top: 10px;
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.review_writer_box button[type="button"]:hover {
+  background-color: #0056b3;
+}
 

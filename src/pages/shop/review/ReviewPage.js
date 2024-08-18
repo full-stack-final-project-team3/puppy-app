@@ -65,51 +65,53 @@ const ReviewPage = ({ treatsId }) => {
   };
 
   return (
-    <div className={`${styles.review_common_box} ${styles.review_page_box}`}>
-      {/* <button onClick={handleButtonClick}>리뷰 작성하기</button> */}
-      <div>
-        <h1>리뷰 목록 조회</h1>
-        <ul className={styles.review_list_box}>
-          {reviews.map((review) => (
-            <li key={review.id} className={styles.review_item}>
-              <div className={styles.review_profile_box} onClick={() => handleReviewClick(review.id)}>
-                <div className={styles.review_left}>
-                  <img className={styles.image} src={review.user.profileUrl} alt="Profile" />
+    <div className={styles.review_wraps_b}>
+      <div className={`${styles.review_common_box} ${styles.review_page_box}`}>
+        {/* <button onClick={handleButtonClick}>리뷰 작성하기</button> */}
+        <div>
+          {/* <h1>리뷰 목록 조회</h1> */}
+          <ul className={styles.review_list_box}>
+            {reviews.map((review) => (
+              <li key={review.id} className={styles.review_item}>
+                <div className={styles.review_profile_box} onClick={() => handleReviewClick(review.id)}>
+                  <div className={styles.review_left}>
+                    <img className={styles.image} src={review.user.profileUrl} alt="Profile" />
+                  </div>
+                  <div className={styles.review_header}>
+                    <p className={styles.nickname}>{review.user.nickname}</p>
+                    <Rating name="read-only" value={review.rate} readOnly precision={0.5} />
+                    <p className={styles.date}>{new Date(review.createdAt).toLocaleDateString()}</p>
+                  </div>
                 </div>
-                <div className={styles.review_header}>
-                  <p className={styles.nickname}>{review.user.nickname}</p>
-                  <Rating name="read-only" value={review.rate} readOnly precision={0.5} />
-                  <p className={styles.date}>{new Date(review.createdAt).toLocaleDateString()}</p>
+                <div className={styles.review_body}>
+                  {/* <p>내가 구매한 상품명 이름</p> */}
+                  <div className={styles.review_images}>
+                    {review.reviewPics && review.reviewPics.map((pic, index) => (
+                      <img
+                        key={index}
+                        src={`${REVIEW_URL}/review-img/${pic.reviewPic}`}
+                        alt={`Review Pic ${index + 1}`}
+                        className={styles.review_image}
+                        onClick={() => openModal(review.reviewPics, index)}
+                      />
+                    ))}
+                  </div>
+                  <ReviewText text={review.reviewContent} />
                 </div>
-              </div>
-              <div className={styles.review_body}>
-                <p>내가 구매한 상품명 이름</p>
-                <div className={styles.review_images}>
-                  {review.reviewPics && review.reviewPics.map((pic, index) => (
-                    <img
-                      key={index}
-                      src={`${REVIEW_URL}/review-img/${pic.reviewPic}`}
-                      alt={`Review Pic ${index + 1}`}
-                      className={styles.review_image}
-                      onClick={() => openModal(review.reviewPics, index)}
-                    />
-                  ))}
-                </div>
-                <ReviewText text={review.reviewContent} />
-              </div>
-            </li>
-          ))}
-        </ul>
+              </li>
+            ))}
+          </ul>
+        </div>
+        {modalOpen && (
+          <Modal
+            images={selectedImages}
+            currentIndex={currentImageIndex}
+            onClose={closeModal}
+            onPrev={prevImage}
+            onNext={nextImage}
+          />
+        )}
       </div>
-      {modalOpen && (
-        <Modal
-          images={selectedImages}
-          currentIndex={currentImageIndex}
-          onClose={closeModal}
-          onPrev={prevImage}
-          onNext={nextImage}
-        />
-      )}
     </div>
   );
 };

@@ -6,21 +6,17 @@ import styles from './Review.module.scss';
 import { userEditActions } from "../../../components/store/user/UserEditSlice";
 import { NOTICE_URL, REVIEW_URL } from "../../../config/user/host-config";
 
-const WriteReviewPage = ({ orderId, treatId, dogId, treatTitle }) => {  // props로 treatId와 treatTitle 받음
-
-console.info("WriteReviewPage orderId: "+ orderId);
-console.info("WriteReviewPage dogId: "+ dogId);
-
+const WriteReviewPage = ({ orderId, treatId, dogId, treatTitle }) => {
   const [reviewContent, setReviewContent] = useState('');
   const [rate, setRate] = useState(5);
-  const [reviewPics, setReviewPics] = useState([{ id: Date.now(), files: [], fileNames: [] }]); // 파일 이름을 저장할 상태 추가
+  const [reviewPics, setReviewPics] = useState([{ id: Date.now(), files: [], fileNames: [] }]);
   const navigate = useNavigate();
   const user = useSelector((state) => state.userEdit.userDetail);
   const dispatch = useDispatch();
 
   const handleFileChange = (index, event) => {
     const files = Array.from(event.target.files);
-    const fileNames = files.map(file => file.name); // 파일 이름 저장
+    const fileNames = files.map(file => file.name);
     setReviewPics((prevPics) =>
       prevPics.map((pic, i) => (i === index ? { ...pic, files, fileNames } : pic))
     );
@@ -53,7 +49,7 @@ console.info("WriteReviewPage dogId: "+ dogId);
         reviewContent,
         rate,
         userId: user.id,
-        treatsId: treatId,  // treatId 사용
+        treatsId: treatId,
         orderId: orderId,
         dogId: dogId
       })], { type: "application/json" }));
@@ -119,10 +115,6 @@ console.info("WriteReviewPage dogId: "+ dogId);
   return (
     <div className={`${styles.review_common_box} ${styles.review_writer_box}`}>
       <h1>리뷰 작성하기</h1>
-      <p><strong>닉네임:</strong> {user.nickname}</p>
-      <p><strong>이메일:</strong> {user.email}</p>
-      <p><strong>Treats ID:</strong> {treatId}</p> {/* treatsId를 화면에 출력 */}
-      <p><strong>간식 이름:</strong> {treatTitle}</p> {/* treatTitle 출력 */}
       <form onSubmit={handleSubmit}>
         <div>
           <p htmlFor="review">리뷰</p>
@@ -134,7 +126,7 @@ console.info("WriteReviewPage dogId: "+ dogId);
             placeholder="리뷰를 작성해 주세요."
           ></textarea>
         </div>
-        <div>
+        <div className={styles.rating_input_wrapper}>
           <p htmlFor="rate">별점</p>
           <RatingInput value={rate} onChange={setRate} />
         </div>

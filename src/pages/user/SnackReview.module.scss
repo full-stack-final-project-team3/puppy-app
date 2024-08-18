@@ -4,8 +4,6 @@
   width: 90%;
   margin: 0 auto;
   border-radius: 32px;
-  background: #F4E8D3;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .subWrap {
@@ -177,7 +175,17 @@
 }
 
 .review_button {
-  margin-left: auto; 
+  background-color: #1a463c;
+  color: #ffffff;
+  border: none;
+  padding: 7px 15px;
+  border-radius: 25px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+  margin-bottom: 0;
+  margin-left: auto;
 }
 
 
@@ -201,4 +209,20 @@
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
+}
+
+
+.more_button{
+  background-color: #14332C;
+  color: #ffffff;
+  border: none;
+  padding: 20px 50px;
+  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+  /* margin-bottom: 0; */
+  margin: 10px auto 10px;
+  display: block;
 }
