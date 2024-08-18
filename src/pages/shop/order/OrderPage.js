@@ -32,6 +32,9 @@ const OrderPage = () => {
     customRequest: '', 
   });
 
+  const [validationErrors, setValidationErrors] = useState({}); // 추가: 검증 오류 상태
+
+
 
   // 배송 요청 사항 업데이트 함수 추가
   const handleDeliveryMemoChange = (event) => {
@@ -127,12 +130,34 @@ const OrderPage = () => {
     }));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = () => { // 결제 버튼 클릭 시 검증 로직 추가햠
+    const isValid = validateFields();
+    if (!isValid) {
+      setModalMessage("받는 사람 정보에 입력이 되지 않았씁니다.");
+      setIsConfirmStep(null);
+      setShowModal(true);
+      return;
+    }
     if (canPurchase) {
       setModalMessage("결제를 진행하시겠습니까?");
       setIsConfirmStep(true);
       setShowModal(true);
     }
+  };
+
+  const validateFields = () => { // 추가: 필드 검증 함수
+    const errors = {};
+    if (!orderInfo.receiverName) {
+      errors.receiverName = '이름을 입력해 주세요.';
+    }
+    if (!orderInfo.receiverPhone) {
+      errors.receiverPhone = '연락처를 입력해 주세요.';
+    }
+    if (!orderInfo.receiverAddress || !orderInfo.receiverDetailAddress) {
+      errors.receiverAddress = '주소를 입력해 주세요.';
+    }
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
   };
 
   const handlePaymentMethodClick = (method) => {
@@ -246,9 +271,12 @@ const OrderPage = () => {
         handleUseAllPoints={handleUseAllPoints}
         user={user}
       />
-      <button onClick={handleSubmit} disabled={!canPurchase}>
-        결제하기
-      </button>
+      <div className={styles.order_price_box}>
+        <p>{finalPrice.toLocaleString()}</p>
+        <button onClick={handleSubmit} disabled={!canPurchase} className={styles.order_btn}>
+          결제하기
+        </button>
+      </div>
       {showModal && (
         <OrderModal
           title={isConfirmStep ? "결제 확인" : "알림"}

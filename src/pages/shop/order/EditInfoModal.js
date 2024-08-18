@@ -61,19 +61,21 @@ const EditInfoModal = ({
           />
         </div>
         <div>
-          <label>주소</label>
-          <input
-            type="text"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            placeholder="주소를 검색해 주세요"
-          />
-          <button type="button" onClick={handleAddressSearch}>
-            주소 검색
-          </button>
+          <label>주소 </label>
+          <div className={styles.addressGroup}>
+            <input
+              type="text"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              placeholder="주소를 검색해 주세요"
+              readOnly
+            />
+            <button type="button" onClick={handleAddressSearch}>
+              주소 검색
+            </button>
+          </div>
         </div>
         <div>
-          <label>상세 주소</label>
           <input
             type="text"
             value={detailAddress}
@@ -82,8 +84,8 @@ const EditInfoModal = ({
           />
         </div>
         <div className={styles.buttons}>
-          <button onClick={handleSaveClick}>적용하기</button>
-          <button onClick={onClose}>취소</button>
+          <button className={styles.applyButton} onClick={handleSaveClick}>적용하기</button>
+          <button className={styles.cancelButton} onClick={onClose}>취소</button>
         </div>
       </div>
     </div>
