@@ -1,5 +1,10 @@
+:root {
+  --padding-top: 50px;
+  --padding-left: 120px;
+  --img-section-display: flex; 
+}
+
 .shopMainBgContainer {
-  
   .mainSection {
     height: 95vh;
 
@@ -117,13 +122,13 @@
       height: 600px; // 원하는 높이 설정
       width: 50%; // 너비를 절반으로 설정
       left: 0;
-      display: flex; // 내부 요소 배치를 위한 플렉스 박스 사용
+      display: var(--img-section-display); 
       flex-direction: column; // 세로 방향으로 배치
     }
 
     .processContainer {
       width: 50%;
-      background-color: #E8E4D7; // 배경 색상
+      background-color: #e8e4d7; // 배경 색상
       text-align: left;
 
       .content {
@@ -140,7 +145,7 @@
           width: 100%; /* 부모 요소의 너비를 상속 */
 
           .dogList {
-            background: #E8E4D7;
+            background: #e8e4d7;
             color: #403c36;
             width: 42%;
             margin-left: 35px;
@@ -153,7 +158,7 @@
 
           .startButton {
             width: 42%;
-            background-color: #4D5D4C; // 버튼 배경색
+            background-color: #4d5d4c; // 버튼 배경색
             padding: 18px;
             margin-top: 20px;
             margin-left: 35px;
@@ -173,10 +178,10 @@
       }
 
       .processContent {
-        padding-top: 50px;
-        padding-left: 120px;
+        padding-top: var(--padding-top);
+        padding-left: var(--padding-left);
       }
-
+      
       .processTitle {
         color: #403c36;
         font-size: 36px;
@@ -288,5 +293,202 @@
       height: 70px; /* 아이콘 높이 설정 */
       width: 70px; /* 아이콘 너비 설정 */
     }
+  }
+}
+
+// 반응형 설정
+@media (max-width: 400px) {
+  .mainSection {
+    height: auto; /* 모바일에서 높이를 자동으로 조정 */
+
+    .imgSection {
+      height: 50% !important; /* 모바일에서 높이 조정 */
+      max-height: 400px;
+      background-size: contain;
+      background-image: url(../../../public/shop_img/shop_img_phone.png) !important; // 배경 이미지 경로
+    }
+
+    .manageShopBtn {
+      top: 5px; /* 버튼 위치 조정 */
+      right: 5px; /* 버튼 위치 조정 */
+    }
+  }
+}
+
+@media (max-height: 850px) {
+  .mainSection {
+    .imgSection {
+      height: 65%; /* 세로 크기가 작을 경우 높이 조정 */
+    }
+  }
+}
+
+// 반응형 설정
+@media (max-width: 400px) {
+  .sliderContainer {
+    height: 120px; // 모바일에서 슬라이드 높이 조정
+  }
+
+  .slider {
+    width: calc(200px * 5 * 2); // 슬라이드 총 너비 조정
+  }
+
+  .slideImgBox {
+    width: 200px; // 슬라이드 이미지 박스 너비 조정
+
+    .slide {
+      &.slide1,
+      &.slide2,
+      &.slide3,
+      &.slide4,
+      &.slide5 {
+        width: 45px; // 슬라이드 너비 조정
+        height: 40px; // 슬라이드 높이 조정
+        margin-right: 10px; // 슬라이드 간격 조정
+      }
+    }
+  }
+
+  .slideText {
+    padding-top: 5px; // 모바일에서 텍스트 패딩 조정
+    margin-right: 5px; // 모바일에서 여백 조정
+  }
+}
+
+@media (max-height: 850px) {
+  .sliderContainer {
+    height: 100px; // 세로 크기가 작을 경우 슬라이드 높이 조정
+  }
+
+  .slideImgBox {
+    .slide {
+      &.slide1,
+      &.slide2,
+      &.slide3,
+      &.slide4,
+      &.slide5 {
+        height: 35px; // 슬라이드 높이 조정
+      }
+    }
+  }
+}
+
+// 반응형 설정
+@media (max-width: 400px) {
+
+  :root {
+    --img-section-display: none; // 모바일에서 섹션 숨기기
+  }
+
+  .imgSection2 {
+    height: 50% !important; /* 모바일에서 높이 조정 */
+    max-height: 400px;
+    background-size: contain;
+    background-image: url(../../../public/shop_img/shop_img_phone2.png) !important; // 배경 이미지 경로
+  }
+
+  .imgSection3Box {
+    flex-direction: column; /* 세로 방향으로 배치 */
+  }
+
+  .imgSection3 {
+  display: var(--img-section-display); // 변수를 사용하여 display 설정
+  }
+
+  .processContainer {
+    width: 100% !important; // 프로세스 컨테이너 너비 조정
+
+    .content {
+      margin-top: 20px; // 모바일에서 여백 조정
+
+      .guide {
+        width: 90%; // 모바일에서 너비 조정
+        margin-left: auto; // 중앙 정렬
+        margin-right: auto; // 중앙 정렬
+      }
+
+      .selectDogBox {
+        .dogList {
+          width: 100%; // 모바일에서 너비 조정
+          margin: 0 auto !important;
+        }
+      }
+
+      .startBtnBox {
+        .startButton {
+          width: 100%; // 모바일에서 버튼 너비 조정
+          margin-left: auto !important; // 중앙 정렬
+          margin-right: auto !important; // 중앙 정렬
+          margin-bottom: 20px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-height: 850px) {
+  .imgSection3 {
+    display: none;
+  }
+
+  .processContainer {
+    .content {
+      margin-top: 10px; // 여백 조정
+    }
+  }
+}
+
+// 반응형 설정
+@media (max-width: 400px) {
+  :root {
+    --padding-left: 30px;
+    --padding-right: 30px;
+    --padding-top: 20px;
+  }
+
+  .processContent {
+    padding-left: var(--padding-left);
+    padding-right: var(--padding-right);
+    padding-top: var(--padding-top);
+  }
+
+  .processTitle {
+    font-size: 28px; /* 모바일에서 폰트 크기 조정 */
+    margin-bottom: 20px; /* 여백 조정 */
+  }
+
+  .processStep {
+    flex-direction: column; /* 세로 방향으로 배치 */
+
+    .stepNumber {
+      margin-bottom: 10px; /* 여백 조정 */
+    }
+
+    .stepContent {
+      h5 {
+        font-size: 16px; /* 모바일에서 폰트 크기 조정 */
+      }
+
+      p {
+        font-size: 14px; /* 모바일에서 폰트 크기 조정 */
+      }
+    }
+  }
+
+  .featuresContainer {
+    flex-direction: column; /* 세로 방향으로 배치 */
+    gap: 25px; /* 항목 간의 간격 조정 */
+    padding: 20px 0; /* 상하 패딩 조정 */
+  }
+
+  .featureItem {
+    max-width: 90%; /* 모바일에서 최대 너비 조정 */
+    margin-left: 30px;
+  }
+
+  .subsIcon,
+  .qualityIcon {
+    height: 50px; /* 아이콘 높이 조정 */
+    width: 50px; /* 아이콘 너비 조정 */
   }
 }
