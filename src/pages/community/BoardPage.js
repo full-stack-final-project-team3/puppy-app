@@ -76,6 +76,24 @@ useEffect(() => {
     }
   };
 
+  const formatTimeAgo = (date) => {
+    const now = new Date();
+    const diffInSeconds = Math.floor((now - new Date(date)) / 1000);
+    const diffInMinutes = Math.floor(diffInSeconds / 60);
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    const diffInDays = Math.floor(diffInHours / 24);
+
+    if (diffInDays > 0) {
+      return new Date(date).toLocaleDateString();
+    } else if (diffInHours > 0) {
+      return `${diffInHours}시간 전`;
+    } else if (diffInMinutes > 0) {
+      return `${diffInMinutes}분 전`;
+    } else {
+      return "방금 전";
+    }
+  };
+
   console.log(posts);
 
   return (
@@ -102,7 +120,7 @@ useEffect(() => {
                         <BsPerson /> {post.user.nickname || "익명의강아지주인"}
                       </span>
                       <span className={styles.date}>
-                        {new Date(post.boardCreatedAt).toLocaleDateString()}
+                        {formatTimeAgo(post.boardCreatedAt)}
                       </span>
                       <span className={styles.comments}>
                         <BsChat /> {post.replyCount || 0}
