@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap');
+
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+  background-color: #f0e1c4;
+  align-items: center;
+  justify-content: center;
+}
+
+.welcomeContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.welcomeCard {
+  background-color: #f4e8d3;
+  padding: 40px;
+  border-radius: 16px;
+  width: 500px;
+  position: relative;
+}
+
+.topSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.iconPlaceholder {
+  font-size: 20px;
+  color: green;
+  font-family: 'Raleway', sans-serif;
+}
+
+.navLinks {
+  display: flex;
+  gap: 15px;
+}
+
+.navLinks a {
+  color: #333;
+  text-decoration: none;
+  font-size: 14px;
+  font-family: 'Raleway', sans-serif;
+
+  &:hover {
+    color: #9A5A5A;
+  }
+}
+
+.welcomeTitle {
+  font-size: 48px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+  text-align: center;
+  font-family: 'Raleway', sans-serif;
+}
+
+.welcomeText {
+  font-size: 18px;
+  color: #666;
+  margin-bottom: 30px;
+  text-align: center;
+  font-family: 'Raleway', sans-serif;
+}
+
+.welcomeButton {
+  background-color: #B37A7A;
+  color: #fffff0;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  width: 100%;
+  font-family: 'Raleway', sans-serif;
+
+  &:hover {
+    background-color: #9A5A5A;
+  }
+}
