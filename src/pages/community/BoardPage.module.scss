@@ -199,3 +199,62 @@
         height: 200px;
     }
 }
+
+.headerContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    position: relative;
+    padding: 0 10px;
+}
+
+.title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
+
+.searchContainer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.searchIcon {
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.searchInput {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    width: 0;
+    opacity: 0;
+    transition: width 0.3s ease, opacity 0.3s ease;
+    position: absolute;
+    right: 40px; // 아이콘의 너비와 여백을 고려한 값
+
+    &.active {
+        width: 200px;
+        opacity: 1;
+    }
+}
+
+// 모바일 대응 (400px 이하)
+@media (max-width: 400px) {
+    .searchInput {
+        &.active {
+            width: calc(100% - 50px); // 아이콘 공간과 여백 고려
+            right: 30px; // 모바일에서 아이콘 크기가 작아지므로 조정
+        }
+    }
+
+    .searchIcon {
+        font-size: 20px;
+    }
+}

@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import styles from "./BoardPage.module.scss";
 import { BOARD_URL } from "../../config/user/host-config";
 import { useSelector } from "react-redux";
-import { BsChat, BsEye, BsPerson, BsImages } from "react-icons/bs";
+import { BsChat, BsEye, BsPerson, BsImages, BsSearch } from "react-icons/bs";
 import { HiOutlineHeart } from "react-icons/hi2";
 
 const BASE_URL = "http://localhost:8888"; // 백엔드가 실행되는 기본 URL
@@ -16,8 +16,12 @@ const BoardPage = () => {
   const scrollRef = useRef();
   const navigate = useNavigate();
 
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
+  const [filteredPosts, setFilteredPosts] = useState([]);
+
   const user = useSelector((state) => state.userEdit.userDetail);
-  
+
   useEffect(() => {
     fetchPosts();
   }, []);
@@ -49,23 +53,21 @@ const BoardPage = () => {
     }
   }, [page, loading, hasMore]);
 
-
-
-useEffect(() => {
-  const handleScroll = () => {
-    if (
-      window.innerHeight + document.documentElement.scrollTop >=
-      document.documentElement.offsetHeight - 100
-    ) {
-      if (!loading && hasMore) {
-        fetchPosts();
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + document.documentElement.scrollTop >=
+        document.documentElement.offsetHeight - 100
+      ) {
+        if (!loading && hasMore) {
+          fetchPosts();
+        }
       }
-    }
-  };
+    };
 
-  window.addEventListener("scroll", handleScroll);
-  return () => window.removeEventListener("scroll", handleScroll);
-}, [loading, hasMore, fetchPosts]);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [loading, hasMore, fetchPosts]);
 
   const handleWritePost = () => {
     if (user) {
@@ -94,17 +96,52 @@ useEffect(() => {
     }
   };
 
-  console.log(posts);
+  const handleSearchClick = () => {
+    setIsSearching(!isSearching);
+    if (!isSearching) {
+      setSearchTerm("");
+      setFilteredPosts([]);
+    }
+  };
+
+  const handleSearchChange = (e) => {
+    const term = e.target.value;
+    setSearchTerm(term);
+    const filtered = posts.filter((post) =>
+      post.boardTitle.toLowerCase().includes(term.toLowerCase())
+    );
+    setFilteredPosts(filtered);
+  };
+
+  const displayPosts = searchTerm ? filteredPosts : posts;
 
   return (
     <div className={styles.boardPageWrapper}>
       <div className={styles.boardPage} ref={scrollRef}>
-        <h1 className={styles.title}>커뮤니티</h1>
-        {posts.length === 0 && !loading && !hasMore ? (
+        <div className={styles.headerContainer}>
+          <h1 className={styles.title}>커뮤니티</h1>
+          <div className={styles.searchContainer}>
+            <input
+              type="text"
+              placeholder="검색할 제목 입력"
+              value={searchTerm}
+              onChange={handleSearchChange}
+              className={`${styles.searchInput} ${
+                isSearching ? styles.active : ""
+              }`}
+            />
+            <BsSearch
+              className={styles.searchIcon}
+              onClick={handleSearchClick}
+            />
+          </div>
+        </div>
+
+        {displayPosts.length === 0 && !loading && !hasMore ? (
           <div className={styles.noPosts}>게시글이 없습니다!</div>
         ) : (
           <ul className={styles.postList}>
-            {posts.map((post) => (
+            {displayPosts.map((post) => (
               <li key={post.id} className={styles.postItem}>
                 <Link to={`/board/${post.id}`} className={styles.postLink}>
                   <div className={styles.postContent}>
