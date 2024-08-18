@@ -158,7 +158,7 @@ function ModifyHotelPage() {
                                     <img
                                         src={imageUrl}
                                         alt={`${hotelData.name} 이미지`}
-                                        className={styles.image}
+                                        style={{maxWidth: '150px', maxHeight: '150px', width: 'auto', height: 'auto'}}
                                     />
                                     <button type="button" onClick={() => handleDeleteImage(index)}>
                                         Delete
