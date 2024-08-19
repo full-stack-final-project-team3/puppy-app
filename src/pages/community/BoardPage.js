@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./BoardPage.module.scss";
-import { BOARD_URL } from "../../config/user/host-config";
+import { BOARD_URL, BASE_URL } from "../../config/user/host-config";
 import { useSelector } from "react-redux";
 import { BsChat, BsEye, BsPerson, BsImages, BsSearch } from "react-icons/bs";
 import { HiOutlineHeart } from "react-icons/hi2";
 
-const BASE_URL = "http://localhost:8888"; // 백엔드가 실행되는 기본 URL
+//const BASE_URL = "http://localhost:8888"; // 백엔드가 실행되는 기본 URL
 
 const BoardPage = () => {
   const [posts, setPosts] = useState([]);
