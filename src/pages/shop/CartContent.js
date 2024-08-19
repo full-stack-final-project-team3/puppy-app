@@ -5,7 +5,6 @@ import { AUTH_URL } from "../../config/user/host-config";
 import { CART_URL } from "../../config/user/host-config";
 import { useNavigate } from "react-router-dom"; // yj추가
 
-
 const CartContent = ({
   cart,
   bundles,
@@ -148,7 +147,7 @@ const CartContent = ({
           <span>결제예정금액</span>
           <span>
             <span className={styles.totalDisCount}>
-              {totalDiscountedPrice.toLocaleString()}원
+              {totalDiscountedPrice.toLocaleString()}원&nbsp;
             </span>
             = {cart.totalPrice.toLocaleString()}원
           </span>

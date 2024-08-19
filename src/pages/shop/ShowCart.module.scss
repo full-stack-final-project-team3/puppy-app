@@ -82,6 +82,11 @@
     width: 100%; // 너비 100%
     border-top: 1px solid #ccc; // 상단 경계선 추가
     padding-top: 20px; // 상단 패딩
+
+    .totalDisCount {
+      color: #e74c3c;
+      text-decoration: line-through;
+    }
   }
 
   .bundlePrice {
