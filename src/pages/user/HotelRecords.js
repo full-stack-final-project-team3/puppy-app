@@ -102,7 +102,7 @@ const HotelRecords = () => {
             <div className={styles.subWrap}>
                 <h1 className={styles.title}>호텔 예약 내역</h1>
                 {userReservations.length === 0 ? (
-                    <p>No reservations found.</p>
+                    <p className={styles.noReservation}>예약 내역이 없습니다.</p>
                 ) : (
                     <ul className={styles.reservationList}>
                         {userReservations.map(reservation => {
