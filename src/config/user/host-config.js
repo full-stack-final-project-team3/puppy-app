@@ -27,6 +27,7 @@ const admin = "/admin";
 const REVIEW = "/shop/reviews";
 const likes = "/likes";
 const RESERVATION = "api/reservation";
+const HOTEL_REVIEW = "api/reviews"
 // const AUTH = '/auth'
 
 export const EVENT_URL = API_BASE_URL + EVENT;
@@ -45,5 +46,6 @@ export const ADMIN_URL = API_BASE_URL + admin;
 export const REVIEW_URL = API_BASE_URL + REVIEW;
 export const LIKE_URL = API_BASE_URL + likes;
 export const RESERVATION_URL = API_BASE_URL + RESERVATION;
+export const HOTEL_REVIEW_URL = API_BASE_URL + HOTEL_REVIEW;
 
 export const RESOURCES_URL = API_BASE_URL;
