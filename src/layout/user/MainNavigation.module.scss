@@ -135,6 +135,13 @@
 .noticeWrap::-webkit-scrollbar {
   display: none;
 }
+
+.nothingNotice {
+  text-align: center;
+  padding-top: 50px;
+  color: black;
+}
+
 @media screen and (max-width: 400px) {
   .nav {
     width: 100%;
