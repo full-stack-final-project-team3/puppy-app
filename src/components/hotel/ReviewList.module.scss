@@ -61,12 +61,6 @@
       color: #860e0e !important;
   }
 
-  .reviewLoading {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-top: 40px;
-  }
 }
 
 @media (max-width: 400px) {
@@ -83,4 +77,16 @@
   .swiperButtonNext {
     display: none; // 400px 이하에서 오른쪽 버튼 숨기기
   }
+}
+
+.reviewLoading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 40px;
+  height: 100px; /* 높이 설정 */
+  font-size: 18px; /* 글자 크기 설정 */
+  color: #5C4033; /* 글자 색상 설정 */
+  text-align: center; /* 텍스트 중앙 정렬 */
+  width: 100%; /* 메시지를 화면 중앙으로 배치 */
 }
