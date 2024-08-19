@@ -73,7 +73,7 @@ const MyLikeHotel = () => {
                         ))}
                     </ul>
                 ) : (
-                    <p>찜한 호텔이 없습니다.</p>
+                    <p className={styles.noHotel}>찜한 호텔이 없습니다.</p>
                 )}
             </div>
         </div>
