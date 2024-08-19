@@ -15,6 +15,7 @@
   }
 
   .bundleContainer {
+
     width: 900px;
     padding: 20px;
     margin-bottom: 15px; // 항목 간 간격 추가
@@ -22,6 +23,14 @@
     background-color: #f4e8d3; // 항목 배경색
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s, box-shadow 0.2s; // 애니메이션 추가
+
+    .subscriptionSelect {
+      margin-right: 20px; // h4와의 간격 조정
+      padding: 5px; // 패딩 추가
+      font-size: 14px; // 폰트 크기 조정
+      margin-top: 25px; // 위쪽 마진 추가하여 아래로 내리기
+    }
+
   }
 
   .bundleHeader {
@@ -84,6 +93,7 @@
     padding-top: 20px; // 상단 패딩
 
     .totalDisCount {
+      margin-right: 5px;
       color: #e74c3c;
       text-decoration: line-through;
     }

@@ -147,7 +147,7 @@ const CartContent = ({
           <span>결제예정금액</span>
           <span>
             <span className={styles.totalDisCount}>
-              {totalDiscountedPrice.toLocaleString()}원&nbsp;
+              {totalDiscountedPrice.toLocaleString()}원
             </span>
             = {cart.totalPrice.toLocaleString()}원
           </span>
