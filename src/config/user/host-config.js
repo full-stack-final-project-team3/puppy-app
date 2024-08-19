@@ -26,8 +26,8 @@ const notice = "/notice";
 const admin = "/admin";
 const REVIEW = "/shop/reviews";
 const likes = "/likes";
-const RESERVATION = "api/reservation";
-const HOTEL_REVIEW = "api/reviews"
+const RESERVATION = "/api/reservation";
+const HOTEL_REVIEW = "/api/reviews"
 // const AUTH = '/auth'
 
 export const EVENT_URL = API_BASE_URL + EVENT;
