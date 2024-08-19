@@ -6,10 +6,9 @@ let backendHostName;
 
 if (clientHostName === "localhost") {
   backendHostName = "http://localhost:" + LOCAL_PORT;
+} else {
+  backendHostName = 'https://3.34.195.72:8888';
 }
-// } else if (clientHostName === 'www.bananagrape.co.kr') {
-//   backendHostName = 'https://api.myapi.com';
-// }
 
 const API_BASE_URL = backendHostName;
 
@@ -27,6 +26,7 @@ const notice = "/notice";
 const admin = "/admin";
 const REVIEW = "/shop/reviews";
 const likes = "/likes";
+const RESERVATION = "api/reservation";
 // const AUTH = '/auth'
 
 export const EVENT_URL = API_BASE_URL + EVENT;
@@ -44,5 +44,6 @@ export const NOTICE_URL = API_BASE_URL + notice;
 export const ADMIN_URL = API_BASE_URL + admin;
 export const REVIEW_URL = API_BASE_URL + REVIEW;
 export const LIKE_URL = API_BASE_URL + likes;
+export const RESERVATION_URL = API_BASE_URL + RESERVATION;
 
 export const RESOURCES_URL = API_BASE_URL;
