@@ -181,9 +181,9 @@ const MainNavigation = ({ drawerOpen, onToggleDrawer }) => {
               <NavLink className={styles.login} to="/login">
                 Login
               </NavLink>
-              <BiUser onClick={loginHandler} className={styles.icon} />
+              <BiUser onClick={loginHandler} className={`${styles.icon} ${styles.user}`} />
               <GiHamburgerMenu
-                className={styles.icon}
+                className={`${styles.icon} ${styles.hamburger}`}
                 onClick={onToggleDrawer} // 기존 toggleMenuHandler에서 toggleDrawerHandler로 변경
               />
             </>
