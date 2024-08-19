@@ -11,7 +11,7 @@ const CartContent = ({
   handleRemoveBundle,
   handleRemoveCart,
 }) => {
-  const discountedPrice = 69000; // 단일 번들 할인 전 가격
+  const discountedPrice = 79000; // 단일 번들 할인 전 가격
   const totalDiscountedPrice = discountedPrice * bundles.length; // 할인된 총 가격
   const token = getUserToken();
   const navigate = useNavigate(); // yj추가
@@ -50,7 +50,7 @@ const CartContent = ({
     };
 
     try {
-      // 1. 장바구니 정보 업데이트 요청
+      // 장바구니 정보 업데이트 요청
       await fetch(`${CART_URL}`, {
         method: "PUT",
         headers: {
