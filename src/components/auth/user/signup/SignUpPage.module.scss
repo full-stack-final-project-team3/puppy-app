@@ -25,7 +25,7 @@
 */
 .signUpBox {
   width: 55%;
-  margin: 0 auto;
+  margin: -60px auto 40px;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 32px;
@@ -48,7 +48,6 @@
   text-align: center;
   margin: 20px 0;
   width: 90%;
-  // margin: 50px auto 0;
   background: #F0E1C4;
   padding-bottom: 20px;
   border-radius: 32px;
@@ -72,15 +71,6 @@
   text-align: center;
 }
 
-.invalidInput {
-  width: 60%;
-  padding: 10px;
-  border: 1px solid #B7AE9E;
-  border-radius: 32px;
-  box-sizing: border-box;
-  border-color: #ff0000; // 유효하지 않은 입력을 빨간색 테두리로 표시
-}
-
 
 /*
   회원가입 개인정보를 입력하는 input 박스
@@ -91,7 +81,7 @@
   border: 1px solid #B7AE9E;
   border-radius: 32px;
   box-sizing: border-box;
-  border-color: green;
+  margin-bottom: 5px;
 }
 
 .codeInput {
@@ -116,52 +106,53 @@
 /*
   button css
 */
+.btnBox {
+  display: flex;
+  justify-content: space-around;
+}
+
 .button {
-  background-color: var(--color-primary-700);
-  color: #000;
-  border: 1px solid #000;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  background-color: #B37A7A;
+  color: #FFFFF0;
   border: none;
+  width: 40%;
+  padding: 15px;
+  margin: 5px 0;
+  border-radius: 5px;
+  cursor: not-allowed;
+  font-size: 16px;
+  font-weight: bold;
 
   &:hover {
-    background-color: #004494;
+    background-color: #9A5A5A;
   }
 }
 
-.button.active {
-  transition: background-color 0.3s ease;
-  width: 30%;
+.active {
+  background-color: #B37A7A;
+  color: #FFFFF0;
+  border: none;
+  width: 40%;
   padding: 15px;
   margin: 5px 0;
-  border: 1px solid #ccc;
-  border-radius: 50px;
-  text-align: center;
-  background-color: #004494; // 활성화 상태 색상
+  border-radius: 5px;
   cursor: pointer;
-}
+  font-size: 16px;
+  font-weight: bold;
 
-.button.inactive {
-  transition: background-color 0.3s ease;
-  width: 30%;
-  padding: 15px;
-  margin: 5px 0;
-  border: 1px solid #ccc;
-  border-radius: 50px;
-  text-align: center;
-  cursor: not-allowed;
+  &:hover {
+    background-color: #9A5A5A;
+  }
 }
 
 .addressBtn {
-  background-color: var(--color-primary-700);
-  margin-left: 10px;
+  background-color: #B37A7A;
+  color: #FFFFF0;
+  border: none;
+  margin-left: 5px;
+  padding: 5px;
   border-radius: 50px;
-  border: 1px solid #000;
   cursor: pointer;
-
-  &:hover {
-    background-color: #004494;
-  }
 }
 
 .signUpBtn {

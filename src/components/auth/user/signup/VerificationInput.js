@@ -82,7 +82,6 @@ const VerificationInput = ({ email, onSuccess }) => {
   return (
     <div className={styles.signUpInput}>
       <h2 className={styles.h2}>인증코드</h2>
-      <div className={styles.codeInputContainer}>
         {Array.from(new Array(4)).map((_, index) => (
           <input
             ref={($input) => (inputsRef.current[index] = $input)}
@@ -94,7 +93,6 @@ const VerificationInput = ({ email, onSuccess }) => {
             value={codes[index]}
           />
         ))}
-      </div>
       <div className={styles.timer}>
         {`${"0" + Math.floor(timer / 60)}:${("0" + (timer % 60)).slice(-2)}`}
       </div>
