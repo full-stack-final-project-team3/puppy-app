@@ -70,6 +70,7 @@ const SnackReview = () => {
 
     return (
         <div className={styles.wrap}>
+            <h2 className={styles.h2}>Snack Reviews</h2>
             {orderHistory && orderHistory.length > 0 ? (
                 orderHistory
                     .filter(order => order.orderStatus !== 'CANCELLED')
@@ -85,23 +86,23 @@ const SnackReview = () => {
                                                 {bundle.treats?.map((treat, treatIndex) => (
                                                     <li className={styles.snack_review_li} key={treatIndex}>
                                                         <div className={styles.snack_review_box}>
-                                                            <img 
-                                                                className={styles.snack_review_img_sm} 
-                                                                src={`${RESOURCES_URL}${treat.treatUrl}`} 
-                                                                alt="간식 이미지" 
+                                                            <img
+                                                                className={styles.snack_review_img_sm}
+                                                                src={`${RESOURCES_URL}${treat.treatUrl}`}
+                                                                alt="간식 이미지"
                                                             />
                                                         </div>
                                                         <a onClick={() => openProductModal(treat.treatId)}>
-                                                            <p style={{ cursor: 'pointer' }}>{treat.treatTitle}</p>
+                                                            <p style={{cursor: 'pointer'}}>{treat.treatTitle}</p>
                                                         </a>
-                                                        <button 
+                                                        <button
                                                             hidden={!!treat.reviewId}
                                                             className={styles.review_button}
                                                             onClick={() => openReviewModal(order.orderId, treat.treatId, bundle.dogId, treat.treatTitle)}
                                                         >
                                                             리뷰 작성하기
                                                         </button>
-                                                        <button 
+                                                        <button
                                                             hidden={!treat.reviewId}
                                                             className={styles.review_button}
                                                             onClick={() => openEditModal(treat.reviewId, order.orderId, treat.treatId, treat.treatTitle)}
@@ -118,7 +119,7 @@ const SnackReview = () => {
                         </div>
                     ))
             ) : (
-                <p>주문 내역이 없습니다.</p>
+                <p className={styles.noReview}>작성하신 리뷰가 없습니다!</p>
             )}
             {orderHistory.length > visibleCount && ( // 더보기 버튼 표시 조건
                 <button onClick={showMoreCards} className={styles.more_button}>
@@ -132,7 +133,8 @@ const SnackReview = () => {
                 className={styles.modal}
                 overlayClassName={styles.overlay}
             >
-                <WriteReviewPage orderId={selectedTreat.orderId} treatId={selectedTreat.treatId} dogId={selectedTreat.dogId} treatTitle={selectedTreat.treatTitle} />
+                <WriteReviewPage orderId={selectedTreat.orderId} treatId={selectedTreat.treatId}
+                                 dogId={selectedTreat.dogId} treatTitle={selectedTreat.treatTitle}/>
             </Modal>
 
             <Modal
@@ -142,7 +144,8 @@ const SnackReview = () => {
                 className={styles.modal}
                 overlayClassName={styles.overlay}
             >
-                <EditReviewPage reviewId={selectedTreat.reviewId} orderId={selectedTreat.orderId} treatId={selectedTreat.treatId} treatTitle={selectedTreat.treatTitle} />
+                <EditReviewPage reviewId={selectedTreat.reviewId} orderId={selectedTreat.orderId}
+                                treatId={selectedTreat.treatId} treatTitle={selectedTreat.treatTitle}/>
             </Modal>
 
             <TreatsDetailModal
