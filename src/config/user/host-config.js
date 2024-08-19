@@ -30,6 +30,7 @@ const RESERVATION = "/api/reservation";
 const HOTEL_REVIEW = "/api/reviews"
 // const AUTH = '/auth'
 
+export const BASE_URL = API_BASE_URL;
 export const EVENT_URL = API_BASE_URL + EVENT;
 export const HOTEL_URL = API_BASE_URL + HOTEL;
 export const ROOM_URL = API_BASE_URL + ROOM;

@@ -2,7 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import styles from "./BoardDetailPage.module.scss";
-import { BOARD_URL, NOTICE_URL, LIKE_URL } from "../../config/user/host-config";
+import {
+  BOARD_URL,
+  NOTICE_URL,
+  LIKE_URL,
+  BASE_URL,
+} from "../../config/user/host-config";
 import {
   BsChat,
   BsEye,
@@ -18,7 +23,7 @@ import { AiOutlineExport } from "react-icons/ai";
 import { GoClock } from "react-icons/go";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 
-const BASE_URL = "http://localhost:8888";
+// const BASE_URL = "http://localhost:8888";
 
 const BoardDetailPage = () => {
   const [post, setPost] = useState(null);
