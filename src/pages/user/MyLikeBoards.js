@@ -49,7 +49,7 @@ const MyBoards = () => {
                                                     alt="Profile"
                                                 />
                                                 <span className={styles.author}>
-                        <BsPerson/> {user.nickname}
+                        <BsPerson/> {post.user.nickname}
                       </span>
 
                                                 <span className={styles.date}>

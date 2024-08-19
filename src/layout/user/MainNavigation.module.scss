@@ -135,13 +135,24 @@
 .noticeWrap::-webkit-scrollbar {
   display: none;
 }
+
+.nothingNotice {
+  text-align: center;
+  padding-top: 50px;
+  color: black;
+}
+
 @media screen and (max-width: 400px) {
   .nav {
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 10px; /* 좌우 여백 추가 */
+    //padding: 0 10px; /* 좌우 여백 추가 */
+  }
+
+  .img {
+    padding-left: 10px;
   }
 
   .left, .center, .right {
@@ -167,7 +178,7 @@
     margin-right: 0px !important; /* 모든 아이콘 사이의 마진을 0px로 설정 */
   }
   .login {
-    margin-right: 20px !important;
+    //margin-right: 20px !important;
   }
   .logout {
     margin-right: 10px !important;
@@ -197,6 +208,14 @@
   .icon {
     margin-left: 10px; /* 아이콘 간격 조절 */
     margin-right: 20px !important; /* 아이콘 사이의 오른쪽 마진을 0px로 강제 설정 */
+  }
+
+  .user {
+    padding-left: 14px;
+  }
+
+  .hamburger {
+    margin-left: 0;
   }
   
 
