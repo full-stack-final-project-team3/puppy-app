@@ -408,6 +408,23 @@ const BoardDetailPage = () => {
         }
       );
 
+
+      // 대댓글 작성 시 상대방에게 알람 보내는 코드 (일단 실패 / 원인 아직 안봄) 0817 기범
+      // if (user.id !== post.user.id) {
+      //   const noticePayload = {
+      //     userId: post.user.id,
+      //     message: `'${user.nickname}'님께서 '${post.boardTitle}'댓글에 대한 답글을 남기셨습니다.`,
+      //   };
+      //   await fetch(`${NOTICE_URL}/add`, {
+      //     method: "POST",
+      //     headers: { "Content-Type": "application/json" },
+      //     body: JSON.stringify(noticePayload),
+      //   });
+      // }
+
+
+
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }

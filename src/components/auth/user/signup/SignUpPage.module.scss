@@ -63,14 +63,19 @@
   color: #ff0000; // 경고 메시지를 빨간색으로 표시
   font-size: 0.8em;
   text-align: center;
+  margin-top: 15px;
 }
 
 .successMessage {
   color: green; // 성공 메시지를 초록색으로 표시
   font-size: 0.8em;
   text-align: center;
+  margin-top: 15px;
 }
 
+.timer {
+  margin-top: 20px;
+}
 
 /*
   회원가입 개인정보를 입력하는 input 박스
@@ -82,7 +87,10 @@
   border-radius: 32px;
   box-sizing: border-box;
   margin-bottom: 5px;
+  outline: none;
 }
+
+
 
 .codeInput {
   width: 40px;
@@ -91,6 +99,7 @@
   text-align: center;
   font-size: 24px;
   font-weight: bold;
+  outline: none;
 
   &:focus {
     border-color: #007bff;

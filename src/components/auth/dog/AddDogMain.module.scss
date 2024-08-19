@@ -12,6 +12,8 @@
   display: none;
 }
 
+
+
 .stepWrap {
   width: 100%;
   height: 90px;
@@ -78,5 +80,9 @@
     background-color: #efe1c6;
     border-radius: 32px;
     overflow: scroll;
+
+  }
+  .stepLine {
+    display: none !important;
   }
 }
