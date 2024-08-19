@@ -14,7 +14,7 @@ const OrderPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { bundles, subscriptionPeriods, totalPrice } = location.state;
+  const { cart, bundles, subscriptionPeriods, totalPrice } = location.state;
 
   const subscriptionPeriodLabels = {
     ONE: "1개월",
@@ -188,7 +188,7 @@ const OrderPage = () => {
 
   const handleReservation = async () => {
     const orderData = {
-      // cartId: 'dummy_cart_id',
+      cartId: cart.id,
       userId: user.id,
       postNum: 12345,
       receiverName: orderInfo.receiverName,
