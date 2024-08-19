@@ -1,4 +1,5 @@
-import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { REVIEW_URL } from "../../../config/user/host-config";
 
 const initialState = {
     reviews: [],
@@ -9,38 +10,36 @@ const initialState = {
     error: null,
 };
 
-
 // 유저 리뷰 목록 조회
 export const fetchReviews = createAsyncThunk(
     'reviews/fetchReviews',
     async (reservationId, thunkAPI) => {
         try {
-            const response = await fetch(`http://localhost:8888/api/reviews?reservationId=${reservationId}`);
+            const response = await fetch(`${REVIEW_URL}?reservationId=${reservationId}`);
             if (!response.ok) {
                 const errorText = await response.json();
                 throw new Error(`Failed to fetch reviews: ${errorText}`);
             }
             const data = await response.json();
-            return {reservationId, reviews: data}; // 리뷰 데이터와 호텔 ID를 함께 반환
+            return { reservationId, reviews: data };
         } catch (error) {
             return thunkAPI.rejectWithValue(error.toString());
         }
     }
 );
 
-
 // 호텔 리뷰 목록 조회
 export const fetchReviewsByHotelId = createAsyncThunk(
     'reviews/fetchReviewsByHotelId',
     async (hotelId, thunkAPI) => {
         try {
-            const response = await fetch(`http://localhost:8888/api/reviews/hotel?hotelId=${hotelId}`);
+            const response = await fetch(`${REVIEW_URL}/hotel?hotelId=${hotelId}`);
             if (!response.ok) {
                 const errorText = await response.json();
                 throw new Error(`Failed to fetch reviews: ${errorText}`);
             }
             const data = await response.json();
-            return { hotelId, reviews: data }; // 리뷰 데이터와 호텔 ID를 함께 반환
+            return { hotelId, reviews: data };
         } catch (error) {
             return thunkAPI.rejectWithValue(error.toString());
         }
@@ -50,11 +49,11 @@ export const fetchReviewsByHotelId = createAsyncThunk(
 // 리뷰 추가
 export const addReview = createAsyncThunk(
     'reviews/addReview',
-    async ({hotelId, reviewContent, rate, userId, reservationId}, thunkAPI) => {
+    async ({ hotelId, reviewContent, rate, userId, reservationId }, thunkAPI) => {
         const token = JSON.parse(localStorage.getItem('userData')).token;
-        const reviewData = {hotelId, reviewContent, rate, userId, reservationId};
+        const reviewData = { hotelId, reviewContent, rate, userId, reservationId };
         try {
-            const response = await fetch('http://localhost:8888/api/reviews', {
+            const response = await fetch(REVIEW_URL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -82,7 +81,7 @@ export const deleteReview = createAsyncThunk(
     async ({ reviewId, userId }, thunkAPI) => {
         const token = JSON.parse(localStorage.getItem('userData')).token;
         try {
-            const response = await fetch(`http://localhost:8888/api/reviews/${reviewId}?userId=${userId}`, {
+            const response = await fetch(`${REVIEW_URL}/${reviewId}?userId=${userId}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -101,14 +100,13 @@ export const deleteReview = createAsyncThunk(
     }
 );
 
-
-// 리뷰 수정 비동기
+// 리뷰 수정
 export const modifyReview = createAsyncThunk(
     'reviews/modifyReview',
     async ({ reviewId, reviewContent, rate, userId }, thunkAPI) => {
         const token = JSON.parse(localStorage.getItem('userData')).token;
         try {
-            const response = await fetch(`http://localhost:8888/api/reviews/${reviewId}`, {
+            const response = await fetch(`${REVIEW_URL}/${reviewId}`, {
                 method: 'PATCH',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -127,8 +125,6 @@ export const modifyReview = createAsyncThunk(
         }
     }
 );
-
-
 
 const reviewSlice = createSlice({
     name: 'reviews',
@@ -150,8 +146,8 @@ const reviewSlice = createSlice({
             .addCase(addReview.fulfilled, (state, action) => {
                 state.loading = false;
                 state.reviews.push(action.payload);
-                state.reviewContent = ''; // Clear the review content
-                state.rate = 0; // Reset the rate
+                state.reviewContent = '';
+                state.rate = 0;
             })
             .addCase(addReview.rejected, (state, action) => {
                 state.loading = false;
@@ -192,7 +188,6 @@ const reviewSlice = createSlice({
             })
             .addCase(fetchReviewsByHotelId.fulfilled, (state, action) => {
                 state.loading = false;
-                // 기존 리뷰에 새로운 리뷰 데이터를 추가
                 state.reviews = [
                     ...state.reviews.filter(review => review.hotelId !== action.payload.hotelId),
                     ...action.payload.reviews
@@ -205,5 +200,5 @@ const reviewSlice = createSlice({
     },
 });
 
-export const {setReviewContent, setRate} = reviewSlice.actions;
+export const { setReviewContent, setRate } = reviewSlice.actions;
 export default reviewSlice.reducer;
