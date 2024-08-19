@@ -1,4 +1,6 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
+import { HOTEL_REVIEW_URL } from "../../../config/user/host-config";
+
 
 const initialState = {
     reviews: [],
@@ -15,7 +17,7 @@ export const fetchReviews = createAsyncThunk(
     'reviews/fetchReviews',
     async (reservationId, thunkAPI) => {
         try {
-            const response = await fetch(`http://localhost:8888/api/reviews?reservationId=${reservationId}`);
+            const response = await fetch(`${HOTEL_REVIEW_URL}?reservationId=${reservationId}`);
             if (!response.ok) {
                 const errorText = await response.json();
                 throw new Error(`Failed to fetch reviews: ${errorText}`);
@@ -34,7 +36,7 @@ export const fetchReviewsByHotelId = createAsyncThunk(
     'reviews/fetchReviewsByHotelId',
     async (hotelId, thunkAPI) => {
         try {
-            const response = await fetch(`http://localhost:8888/api/reviews/hotel?hotelId=${hotelId}`);
+            const response = await fetch(`${HOTEL_REVIEW_URL}/hotel?hotelId=${hotelId}`);
             if (!response.ok) {
                 const errorText = await response.json();
                 throw new Error(`Failed to fetch reviews: ${errorText}`);
@@ -54,7 +56,7 @@ export const addReview = createAsyncThunk(
         const token = JSON.parse(localStorage.getItem('userData')).token;
         const reviewData = {hotelId, reviewContent, rate, userId, reservationId};
         try {
-            const response = await fetch('http://localhost:8888/api/reviews', {
+            const response = await fetch(`${HOTEL_REVIEW_URL}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -82,7 +84,7 @@ export const deleteReview = createAsyncThunk(
     async ({ reviewId, userId }, thunkAPI) => {
         const token = JSON.parse(localStorage.getItem('userData')).token;
         try {
-            const response = await fetch(`http://localhost:8888/api/reviews/${reviewId}?userId=${userId}`, {
+            const response = await fetch(`${HOTEL_REVIEW_URL}/${reviewId}?userId=${userId}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -108,7 +110,7 @@ export const modifyReview = createAsyncThunk(
     async ({ reviewId, reviewContent, rate, userId }, thunkAPI) => {
         const token = JSON.parse(localStorage.getItem('userData')).token;
         try {
-            const response = await fetch(`http://localhost:8888/api/reviews/${reviewId}`, {
+            const response = await fetch(`${HOTEL_REVIEW_URL}/${reviewId}`, {
                 method: 'PATCH',
                 headers: {
                     'Authorization': `Bearer ${token}`,
