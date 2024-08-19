@@ -212,16 +212,16 @@ const TreatsListForDog = () => {
     <>
       <ShopStepIndicator step={currentStep} onStepClick={handleStepClick} />
       {loading && (
-        <div className={styles.loadingOverlay}>
-          <div className={spinnerStyles.spinnerContainer}>
-            <PulseLoader
-              className={spinnerStyles.loader}
-              color="#0B593F"
-              loading={loading}
-              size={18}
-            />
+          <div className={styles.loadingOverlay}>
+            <div className={styles.spinnerContainer}>
+              <PulseLoader
+                className={styles.loader}
+                color="#0B593F"
+                loading={loading}
+                size={18}
+              />
+            </div>
           </div>
-        </div>
       )}
       <div className={`${styles.treatsList} page`}>
         <div className={styles.content}>

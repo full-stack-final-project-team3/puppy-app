@@ -64,7 +64,7 @@ const CartContent = ({
       // OrderPage로 이동하면서 데이터 전달
       navigate("/order-page", {
         state: {
-          cart,
+          cartId: cart.id,
           bundles,
           subscriptionPeriods,
           totalPrice: cart.totalPrice,
