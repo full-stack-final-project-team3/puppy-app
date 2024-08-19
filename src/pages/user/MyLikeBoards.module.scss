@@ -12,3 +12,15 @@
     padding-bottom: 20px
   }
 }
+
+@media screen and (max-width: 400px) {
+  .wrap {
+    width: 90%;
+    margin: 20px auto;
+  }
+
+  .subWrap {
+    width: 100%;
+    margin-top: 20px;
+  }
+}
