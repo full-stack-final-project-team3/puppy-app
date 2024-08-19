@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchReviewsByHotelId } from '../store/hotel/HotelReviewSlice'; // Adjust the file path accordingly
+import { fetchReviewsByHotelId } from '../store/hotel/HotelReviewSlice'; // 파일 경로 조정 필요
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -40,7 +40,9 @@ const sliderSettings = {
 
 const ReviewList = ({ hotelId }) => {
     const dispatch = useDispatch();
-    const { loading, reviews, error } = useSelector((state) => state.reviews);
+    const { loading, error, reviewsByHotelId } = useSelector((state) => state.reviews);
+    const reviews = reviewsByHotelId[hotelId] || []; // 현재 호텔의 리뷰 가져오기
+
 
     useEffect(() => {
         if (hotelId) {
@@ -49,7 +51,7 @@ const ReviewList = ({ hotelId }) => {
     }, [dispatch, hotelId]);
 
     const sortedReviews = useMemo(() => {
-        return reviews ? [...reviews].sort((a, b) => new Date(b.reviewDate) - new Date(a.reviewDate)) : [];
+        return reviews.length > 0 ? [...reviews].sort((a, b) => new Date(b.reviewDate) - new Date(a.reviewDate)) : [];
     }, [reviews]);
 
     if (loading) {
@@ -60,7 +62,7 @@ const ReviewList = ({ hotelId }) => {
         return <p className={styles.reviewLoading}>Error loading reviews: {error.message}</p>;
     }
 
-    if (!reviews || reviews.length === 0) {
+    if (reviews.length === 0) {
         return <p className={styles.reviewLoading}>리뷰가 없습니다!</p>;
     }
 
