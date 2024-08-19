@@ -10,7 +10,6 @@ const WelcomePage = ({ onAddDogClick }) => {
           <div className={styles.topSection}>
             <span className={styles.iconPlaceholder}>@DOOGLE</span>
             <nav className={styles.navLinks}>
-              <a href="/">HOME</a>
               <a href="/hotel">HOTEL</a>
               <a href="/treats">SHOP</a>
               <a href="/board">COMMUNITY</a>
@@ -21,13 +20,21 @@ const WelcomePage = ({ onAddDogClick }) => {
           <p className={styles.welcomeText}>
             We invite you to visit our page
           </p>
+          <div className={styles.btnBox}>
+          <button
+            type="submit"
+            className={styles.button}
+          >
+            HOME
+          </button>
           <button
             type="button"
-            className={styles.welcomeButton}
+            className={styles.button}
             onClick={onAddDogClick}
           >
             ADD DOG
           </button>
+          </div>
         </div>
       </div>
     </div>
