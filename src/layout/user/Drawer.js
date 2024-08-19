@@ -1,10 +1,16 @@
 // src/components/Drawer.js
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import styles from './Drawer.module.scss';
+import { useNavigate } from 'react-router-dom'; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInstagram } from '@fortawesome/free-brands-svg-icons';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { motion } from "framer-motion";
+import { PulseLoader } from "react-spinners";
+
+import spinnerStyles from "../../layout/user/Spinner.module.scss";
+
 
 const DrawerContainer = styled.div`
   font-family: 'NotoSansKR';
@@ -213,8 +219,38 @@ const CloseButton = styled(motion.button)`
 
 
 const Drawer = ({ open, onClose }) => {
+
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate
+
+  const handleNavClick = async (path) => {
+    setLoading(true); // 로딩 시작
+    try {
+      // 비동기 작업 또는 페이지 로딩 처리
+      await new Promise(resolve => setTimeout(resolve, 1000)); // 실제 비동기 작업으로 대체 가능
+      navigate(path); // 페이지 이동
+      setTimeout(() => {
+        onClose(); // 페이지 이동 후 Drawer 닫기
+      }, 300); // navigate 후 약간의 딜레이 후 onClose 호출
+    } finally {
+      setLoading(false); // 로딩 종료
+    }
+  };
+
   return (
     <>
+    {loading && (
+        <div className={styles.loadingOverlay}>
+        <div className={spinnerStyles.spinnerContainer}>
+          <PulseLoader
+            className={spinnerStyles.loader}
+            color="#0B593F" 
+            loading={loading}
+            size={18}
+          />{" "}
+        </div>
+      </div>
+      )}
       <DrawerContainer open={open}>
       <CloseButton
           className={CloseButton}
@@ -226,11 +262,11 @@ const Drawer = ({ open, onClose }) => {
         >
           <div className="x-shape"></div>
         </CloseButton>
-        <NavItem href="/" className="special-spacing-home">Home</NavItem>
+        <NavItem onClick={() => handleNavClick("/")} className="special-spacing-home">Home</NavItem>
         <NavItem href="/mypage" className="special-spacing">My Page</NavItem>
-        <NavItem href="/hotel">Hotel</NavItem>
-        <NavItem href="/treats">Shop</NavItem>
-        <NavItem href="/board">Community</NavItem>
+        <NavItem onClick={() => handleNavClick("/hotel")}>Hotel</NavItem>
+        <NavItem onClick={() => handleNavClick("/treats")}>Shop</NavItem>
+        <NavItem onClick={() => handleNavClick("/board")}>Community</NavItem>
         <IconContainer className="navIcons">
           <a href="mailto:example@example.com" target="_blank" rel="noopener noreferrer">
             <FontAwesomeIcon icon={faEnvelope} />
