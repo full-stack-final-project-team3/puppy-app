@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import MyPageHeader from "../../components/auth/user/mypage/MyPageHeader";
 import styles from './MyLikeBoards.module.scss'
-import { AUTH_URL } from "../../config/user/host-config";
-import { useSelector } from "react-redux";
+import {AUTH_URL} from "../../config/user/host-config";
+import {useSelector} from "react-redux";
 import {Link} from "react-router-dom";
 import {BsChat, BsEye, BsPerson} from "react-icons/bs";
 
@@ -49,7 +49,7 @@ const MyBoards = () => {
                                                     alt="Profile"
                                                 />
                                                 <span className={styles.author}>
-                        <BsPerson/> {user.nickname }
+                        <BsPerson/> {user.nickname}
                       </span>
 
                                                 <span className={styles.date}>
@@ -74,7 +74,11 @@ const MyBoards = () => {
                         </ul>
                     </>
 
-                    : <div>등록된 게시글이 없습니다.</div>
+                    :
+                    <>
+                        <h1 className={styles.h1}>좋아요 누른 게시글</h1>
+                        <p className={styles.noLike}>좋아요 누른 글이 없습니다.</p>
+                    </>
                 }
 
             </div>
