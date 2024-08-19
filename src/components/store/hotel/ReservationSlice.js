@@ -1,10 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { userEditActions } from '../user/UserEditSlice';
-import { ROOM_URL, NOTICE_URL } from "../../../config/user/host-config";
+import { ROOM_URL, NOTICE_URL, RESERVATION_URL, HOTEL_URL } from "../../../config/user/host-config";
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
-import { deleteHotel } from "./HotelAddSlice";
 
 // Dayjs 플러그인 등록
 dayjs.extend(utc);
@@ -45,7 +44,7 @@ export const fetchReservation = createAsyncThunk(
     async ({ reservationId }, { rejectWithValue }) => {
         try {
             const token = JSON.parse(localStorage.getItem('userData')).token;
-            const response = await fetch(`http://localhost:8888/api/reservation/${reservationId}`, {
+            const response = await fetch(`${RESERVATION_URL}/${reservationId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
@@ -67,7 +66,7 @@ export const fetchUserReservations = createAsyncThunk(
     async ({ userId }, { rejectWithValue, dispatch }) => {
         try {
             const token = JSON.parse(localStorage.getItem('userData')).token;
-            const response = await fetch(`http://localhost:8888/api/reservation/user/${userId}`, {
+            const response = await fetch(`${RESERVATION_URL}/user/${userId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
@@ -82,13 +81,13 @@ export const fetchUserReservations = createAsyncThunk(
 
             const detailedReservations = await Promise.all(reservations.map(async (reservation) => {
                 const [hotelResponse, roomResponse] = await Promise.all([
-                    fetch(`http://localhost:8888/hotel/${reservation.hotelId}`, {
+                    fetch(`${HOTEL_URL}/${reservation.hotelId}`, {
                         headers: {
                             'Authorization': `Bearer ${token}`,
                             'Content-Type': 'application/json',
                         },
                     }),
-                    fetch(`http://localhost:8888/room/${reservation.roomId}`, {
+                    fetch(`${ROOM_URL}/${reservation.roomId}`, {
                         headers: {
                             'Authorization': `Bearer ${token}`,
                             'Content-Type': 'application/json',
@@ -123,7 +122,7 @@ export const submitReservation = createAsyncThunk(
             const reservationAt = dayjs(startDate).tz('Asia/Seoul').format();
             const reservationEndAt = dayjs(endDate).tz('Asia/Seoul').format();
 
-            const response = await fetch('http://localhost:8888/api/reservation', {
+            const response = await fetch(`${RESERVATION_URL}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -185,7 +184,7 @@ export const deleteReservation = createAsyncThunk(
     async (reservationId, { getState, rejectWithValue }) => {
         const token = JSON.parse(localStorage.getItem('userData')).token;
         try {
-            const response = await fetch(`http://localhost:8888/api/reservation/${reservationId}`, {
+            const response = await fetch(`${RESERVATION_URL}/${reservationId}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`,
