@@ -77,7 +77,7 @@ const MyBoards = () => {
                     :
                     <>
                         <h1 className={styles.h1}>{userDetail.nickname}님의 게시글</h1>
-                        <div className={styles.noBoard}>등록된 게시글이 없습니다.</div>
+                        <p className={styles.noBoard}>등록된 게시글이 없습니다.</p>
                     </>
                 }
 
