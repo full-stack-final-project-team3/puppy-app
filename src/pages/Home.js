@@ -40,6 +40,7 @@ const Home = () => {
     };
   }, []);
   return (
+    <>
     <div className={styles.homeContainer}>
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
@@ -97,6 +98,12 @@ const Home = () => {
         </SwiperSlide>
       </Swiper>
     </div>
+      <div className={styles.adContainer}>
+        <img className={styles.ad} src="/main_ad/메인1.png"></img>
+        <img className={styles.ad} src="/main_ad/메인2.png"></img>
+        <img className={styles.ad} src="/main_ad/메인3.png"></img>
+      </div>
+    </>
   );
 };
 
