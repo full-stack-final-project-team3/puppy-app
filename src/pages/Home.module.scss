@@ -1,8 +1,30 @@
+.loadingOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; // 화면 전체를 덮음
+  background-color: rgba(0, 0, 0, 0.5); // 반투명한 오버레이 배경
+  z-index: 2222; // 스피너가 위에 표시되도록 설정
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.spinnerWrapper {
+  position: absolute;
+  top: 500px; // 페이지 상단에서 500px 아래에 위치
+  left: 50%;
+  transform: translateX(-50%); // 중앙 정렬
+}
+
 .homeContainer {
   width: 100%;
   height: 90vh;
+  font-family:  'Poppins';
   display: flex;
   align-items: center;
+  flex-direction: column;
   font-family: 'NotoSansKR';
   justify-content: center;
 }
@@ -29,12 +51,14 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  font-family:  'Poppins';
   background-color: #4B4B4B; // 배경색 추가
 
   h1 {
     margin: 0px auto;
     font-size: 2.5em;
     margin-bottom: 80px;
+    font-family:  'Poppins';
     color: white; /* 텍스트 색상 */
   }
 
@@ -42,15 +66,20 @@
     margin: 0px auto;
     font-size: 1.2em;
     margin-bottom: 40px;
+    font-family:  'Poppins';
     color: white; /* 텍스트 색상 */
   }
 
   .getStartedBtn {
     background-color: #ffa500;
-    color: white;
+    text-decoration: none;
+    font-size: 20px;
+    color: rgb(66, 45, 45);
     width: 30%;
     margin: 0px auto;
+    text-align: center;
     padding: 10px 20px;
+    font-family:  'Poppins';
     border: none;
     border-radius: 5px;
     cursor: pointer;
