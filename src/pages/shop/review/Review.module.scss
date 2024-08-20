@@ -346,3 +346,27 @@ p {
   background-color: #0056b3;
 }
 
+.review_array,
+.review_array a:first-child{
+  display: flex;
+  align-items: center;
+}
+.review_array a{
+  cursor: pointer;
+}
+.review_array a:last-child::after{
+  display: none;
+}
+.review_array a::after{
+  content: "｜";
+  clear: both;
+  display: inline-block;
+  padding: 0 10px;
+}
+
+
+
+
+
+
+
