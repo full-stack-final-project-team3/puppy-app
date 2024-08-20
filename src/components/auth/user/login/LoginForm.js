@@ -95,7 +95,6 @@ const LoginForm = () => {
             localStorage.setItem("userData", JSON.stringify(response));
             dispatch(userEditActions.saveUserNotice(noticeData));
             dispatch(userEditActions.updateUserDetail(userDetailData));
-            localStorage.setItem('provider', 'kakao');
         }
     }
 
