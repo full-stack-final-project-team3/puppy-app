@@ -24,7 +24,7 @@ const MyReviews = () => {
             <MyPageHeader/>
             <div className={styles.subWrap}>
                 <div className={styles.header}>
-                    <span className={styles.menu} onClick={renderSnackHandler}>Snack</span>
+                    <span className={styles.menu} onClick={renderSnackHandler}>Shop</span>
                     <span className={styles.menu} onClick={renderHotelHandler}>Hotel</span>
                 </div>
                     <hr className={styles.hr}/>
