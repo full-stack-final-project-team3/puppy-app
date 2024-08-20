@@ -20,7 +20,6 @@
   align-items: flex-start;
   padding: 10px;
   border-bottom: 1px solid #ddd;
-  cursor: pointer;
 }
 
 .review_item:hover {
@@ -365,16 +364,22 @@ p {
   cursor: pointer;
   color: #fff;
 }
-.review_array a:last-child::after{
-  display: none;
+.review_array span{
+  color: #fff;
+  font-size: 10px;
+  padding: 0 15px;
 }
-.review_array a::after{
-  content: "｜";
-  clear: both;
-  display: inline-block;
-  padding: 0 10px;
+.review_array a.active {
+  color: #F4D35E ; /* 선택된 링크는 빨간색으로 */
 }
 
+.review_array a.inactive {
+  color: white; /* 선택되지 않은 링크는 흰색으로 */
+}
+.no_reviews_message{
+  text-align: center;
+  padding: 20px 0;
+}
 @media (max-width: 400px) {
   .review_common_box{
     padding: 10px;
