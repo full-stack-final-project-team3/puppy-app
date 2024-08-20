@@ -73,44 +73,11 @@
   margin-top: 15px;
 }
 
-.timer {
-  margin-top: 20px;
-}
-
 /*
   회원가입 개인정보를 입력하는 input 박스
 */
 .input {
   width: 60%;
-  padding: 10px;
-  border: 1px solid #B7AE9E;
-  border-radius: 32px;
-  box-sizing: border-box;
-  margin-bottom: 5px;
-  outline: none;
-}
-
-.codeInput {
-  width: 40px;
-  height: 40px;
-  border: 2px solid #ccc;
-  text-align: center;
-  font-size: 24px;
-  font-weight: bold;
-  outline: none;
-
-  &:focus {
-    border-color: #007bff;
-    outline: none;
-  }
-
-  &::placeholder {
-    color: #ccc;
-  }
-}
-
-.detailInput {
-  width: 78%;
   padding: 10px;
   border: 1px solid #B7AE9E;
   border-radius: 32px;
@@ -162,16 +129,6 @@
   }
 }
 
-.addressBtn {
-  background-color: #B37A7A;
-  color: #FFFFF0;
-  border: none;
-  margin-left: 5px;
-  padding: 5px;
-  border-radius: 50px;
-  cursor: pointer;
-}
-
 .signUpBtn {
   transition: background-color 0.3s ease;
   width: 30%;
@@ -187,14 +144,25 @@
   }
 }
 
-.timerHighlight {
-  color: #fff;
-  background-color: #f44336; // 시간이 얼마 남지 않았을 때 빨간색 배경
-  animation: blink 1s step-start 0s infinite;
+.codeInput {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #ccc;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  outline: none;
+
+  &:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+
+  &::placeholder {
+    color: #ccc;
+  }
 }
 
-@keyframes blink {
-  50% {
-    opacity: 0.5;
-  }
+.timer {
+  margin-top: 10px;
 }
