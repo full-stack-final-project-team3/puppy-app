@@ -32,7 +32,7 @@ const sliderSettings = {
   nextArrow: <CustomNextArrow />,
 };
 
-const TreatsDetailContent = ({ treat }) => {
+const TreatsDetailContent = ({ treat, toggleTreatSelection }) => {
   return (
     <div className={styles.treatDetail}>
       <div className={styles.contentWrapper}>
@@ -68,6 +68,9 @@ const TreatsDetailContent = ({ treat }) => {
           )}
           <p>대상 강아지 크기: {treat.dogSize}</p>
           <p>대상 연령대: {treat.treatsAgeType}</p>
+          <div className={styles.addBtnContainer}>
+            <button className={styles.addBtn} onClick={() => toggleTreatSelection(treat)}>선택하기</button>
+          </div>
         </div>
       </div>
 

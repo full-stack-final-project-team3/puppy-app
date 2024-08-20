@@ -13,41 +13,69 @@ $treats-image-border: 1px solid #e0e0e0;
 .contentWrapper {
   display: flex; /* 이미지와 텍스트를 나란히 배치 */
   flex-wrap: wrap; /* 줄 바꿈 허용 */
-  margin-bottom: 40px;
+  margin-bottom: 100px;
 }
 
 .imageContainer {
   flex: 1; /* 이미지 영역에 공간을 할당 */
   margin-right: 30px; /* 텍스트와의 간격 */
   width: 50%;
-  
 }
 
-.customPrev, .customNext {
+.customPrev,
+.customNext {
   font-size: 24px;
-  position: absolute; // 절대 위치 설정
-  top: 50%; // 세로 중앙 정렬
-  transform: translateY(-50%); // 중앙 정렬을 위한 변환
-  z-index: 1000; // 다른 요소 위에 위치하도록 설정;
-  cursor: pointer; // 클릭 가능하게 커서 변경
+  position: absolute; /* 절대 위치 설정 */
+  top: 50%; /* 세로 중앙 정렬 */
+  transform: translateY(-50%); /* 중앙 정렬을 위한 변환 */
+  z-index: 1000; /* 다른 요소 위에 위치하도록 설정 */
+  cursor: pointer; /* 클릭 가능하게 커서 변경 */
 }
 
 .customPrev {
-  left: 10px; // 왼쪽 위치 조정
+  left: 10px; /* 왼쪽 위치 조정 */
 }
 
 .customNext {
-  right: 10px; // 오른쪽 위치 조정
+  right: 10px; /* 오른쪽 위치 조정 */
 }
 
-// 호버 효과
-.customPrev:hover, .customNext:hover {
-  transform: translateY(-50%) scale(1.2); // 크기 증가
-  color: #000000; // 색상 변경 (예: 파란색)
+/* 호버 효과 */
+.customPrev:hover,
+.customNext:hover {
+  transform: translateY(-50%) scale(1.2); /* 크기 증가 */
+  color: #000000; /* 색상 변경 (예: 파란색) */
 }
 
 .textContent {
   flex: 1; /* 텍스트 영역에 공간을 할당 */
+
+  .addBtnContainer {
+    display: flex; /* 플렉스박스 설정 */
+    justify-content: center; /* 중앙 정렬 */
+    margin-top: 20px; /* 위쪽 여백 추가 */
+    .addBtn {
+      margin-top: 280px;
+      background-color: #e88b4f; // 버튼 배경색
+      width: var(--btn-width); // 버튼 너비 변수 사용
+      color: white; // 글자색
+      border: none; // 테두리 없음
+      border-radius: 25px; // 모서리 둥글게
+      padding: 12px 20px; // 패딩
+
+      cursor: pointer; // 커서 포인터로 변경
+      font-size: var(--btn-fz);
+      transition: background-color 0.3s, transform 0.2s; // 애니메이션 효과
+
+      &:hover {
+        transform: scale(1.05); // 호버 시 약간 확대
+      }
+
+      &:active {
+        transform: scale(0.95); // 클릭 시 약간 축소
+      }
+    }
+  }
 }
 
 h4 {
@@ -94,7 +122,8 @@ h4 {
 }
 
 .detailPics {
-  margin-top: 100px;
+  border-top: 1px solid #cacaca;
+  padding-top: 100px;
   display: flex;
   flex-direction: column;
   gap: 15px;
