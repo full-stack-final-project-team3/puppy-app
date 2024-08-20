@@ -2,14 +2,13 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 import styles from './BookingDetail.module.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import {useNavigate, useRouteLoaderData} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {setTotalPrice} from "../store/hotel/ReservationSlice";
 import Footer from '../../layout/user/Footer';
+import {AUTH_URL} from "../../config/user/host-config"
 
 const BookingDetail = ({ hotel, startDate, endDate, onPay }) => {
     const [roomCount, setRoomCount] = React.useState(1);
@@ -68,7 +67,7 @@ const BookingDetail = ({ hotel, startDate, endDate, onPay }) => {
 
     const getImageUrl = (imageUri) => {
         if (imageUri && imageUri.startsWith('/local/')) {
-            return `http://localhost:8888${imageUri.replace('/local', '/hotel/images')}`;
+            return `${AUTH_URL}${imageUri.replace('/local', '/hotel/images')}`;
         }
         return imageUri;
     };
