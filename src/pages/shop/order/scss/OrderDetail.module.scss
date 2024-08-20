@@ -173,6 +173,21 @@
   width: 80px;
 }
 
+@media (max-width: 400px) {
+  .order_status{
+    width: 100%;
+  }
+  .order_status h4{
+    text-align: center;
+  }
+  .wrap h4{
+    font-size: 17px;
+  }
+  .wrap .order_detail_common_box{
+    width: 90%;
+    padding: 20px 10px;
+  }
+}
 
 
 

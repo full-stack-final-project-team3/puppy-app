@@ -100,14 +100,14 @@ const SnackReview = () => {
                                                             className={styles.review_button}
                                                             onClick={() => openReviewModal(order.orderId, treat.treatId, bundle.dogId, treat.treatTitle)}
                                                         >
-                                                            리뷰 작성하기
+                                                            리뷰 작성
                                                         </button>
                                                         <button
                                                             hidden={!treat.reviewId}
                                                             className={`${styles.review_button} ${styles.review_button_red}`}
                                                             onClick={() => openEditModal(treat.reviewId, order.orderId, treat.treatId, treat.treatTitle)}
                                                         >
-                                                            리뷰 수정하기
+                                                            리뷰 수정
                                                         </button>
                                                     </li>
                                                 ))}
