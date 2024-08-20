@@ -72,6 +72,17 @@
   }
 }
 
+.adContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  // .ad {
+  //   width: 100%;
+  //   height: 800px;
+  // }
+}
+
 @media screen and (max-width: 400px) {
   .videoBox {
     display: none;

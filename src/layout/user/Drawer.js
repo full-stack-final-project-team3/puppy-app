@@ -29,6 +29,10 @@ const DrawerContainer = styled.div`
   flex-direction: column;
   align-items: flex-start;
   padding: 20px;
+  @media (max-width: 400px) {
+    width: 100%;
+    transform: translateX(${(props) => (props.open ? '0' : '100%')});
+  }
 
   @media (max-width: 768px) {
     width: 100%;
@@ -108,7 +112,7 @@ const BottomDrawerContainer = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  height: 100px;
+  height: 127px;
   background-color: #14332C;
   transform: translateY(${(props) => (props.open ? '0' : '100%')});
   transition: transform 0.3s ease-in-out;

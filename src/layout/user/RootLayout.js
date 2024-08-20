@@ -11,19 +11,23 @@ const Container = styled.div`
   transition: transform 0.3s ease-in-out, margin-right 0.3s ease-in-out;
   transform: ${(props) => 
     props.open 
-      ? 'scale(0.75) translateY(calc(-60px + 1vh))' // 기본값 -70px에 1vh를 더해서 계산
+      ? 'scale(0.75) translateY(calc(-10px + 1vh))'
       : 'scale(1) translateY(0)'};
   transform-origin: left center;
   margin-right: ${(props) => (props.open ? '150px' : '0')};
+  overflow: auto; /* 내부 스크롤 유지, 외부 여백 제거 */
+  height: 100vh; /* 화면 높이에 맞게 설정 */
 
   @media (max-width: 1000px) {
     margin-right: ${(props) => (props.open ? '100%' : '0')};
     transform: ${(props) => 
       props.open 
-        ? 'scale(0.53) translateY(calc(-60px + 1vh))' // 기본값 -70px에 1vh를 더해서 계산
+        ? 'scale(0.53) translateY(calc(-60px + 1vh))'
         : 'scale(1) translateY(0)'};
   }
 `;
+
+
 
 const MainContent = styled.main`
   flex: 1;
