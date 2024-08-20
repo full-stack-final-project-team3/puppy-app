@@ -4,6 +4,7 @@
   width: 90%;
   margin: 0 auto;
   border-radius: 32px;
+  padding-bottom: 50px;
 
   .h2 {
     text-align: center;
@@ -68,7 +69,9 @@
 }
 
 .details p {
+  font-size: 16px;
   margin: 5px 0;
+  font-weight: bold;
 }
 
 // .details ul {
@@ -192,7 +195,7 @@
   color: #ffffff;
   border: none;
   padding: 7px 15px;
-  border-radius: 25px;
+  border-radius: 15px;
   font-size: 14px;
   cursor: pointer;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
@@ -244,4 +247,14 @@
   padding: 40px;
   text-align: center;
 
+}
+
+//20240820
+.review_button_red{
+  background-color: #577590;
+  // #8ecae6
+}
+
+.review_dog_name{
+  font-size: 19px;
 }

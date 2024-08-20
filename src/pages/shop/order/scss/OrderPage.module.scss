@@ -16,7 +16,7 @@
   }
 
   .section {
-    margin-bottom: 20px;
+    margin-bottom: 70px;
   }
 
   .section-title {
@@ -31,6 +31,13 @@
 
     p {
       margin: 5px 0;
+      padding: 0 0 10px 0;
+      font-weight: bold;
+
+      span{
+        width: 60px;
+        display: inline-block;
+      }
     }
 
 
@@ -256,8 +263,28 @@
 }
 
 
-
-
-
-
+//20240820 
+.Product_title{
+  display:flex;
+  justify-content: space-between;
+  padding: 15px 0;
+}
+.Product_title h3{
+  margin: 0;
+}
+.Product_title p span{
+  font-weight: bold;
+}
+.customRequest{
+  width: 100%;
+}
+.customRequest input{
+  width: 100%;
+  padding: 10px 0;
+  background-color: transparent;
+  border: 1px solid #ccc;
+  margin-top: 10px;
+  border-radius: 5px;
+  text-indent: 10px;
+}
 

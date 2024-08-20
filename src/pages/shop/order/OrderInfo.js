@@ -55,9 +55,9 @@ const OrderInfo = ({
           </button>
         </div>
         <div className={styles['section-content']}>
-          <p>이름: {orderInfo.receiverName || '정보 없음'}</p>
-          <p>연락처: {orderInfo.receiverPhone || '정보 없음'}</p>
-          <p>주소: {orderInfo.receiverAddress || '정보 없음'} {orderInfo.receiverDetailAddress || user.detailAddress}</p>
+          <p><span>이름:  </span>{orderInfo.receiverName || '정보 없음'}</p>
+          <p><span>연락처: </span>{orderInfo.receiverPhone || '정보 없음'}</p>
+          <p><span>주소: </span>{orderInfo.receiverAddress || '정보 없음'} {orderInfo.receiverDetailAddress || user.detailAddress}</p>
           <select
             className={styles.custom_select}
             value={orderInfo.deliveryRequest}

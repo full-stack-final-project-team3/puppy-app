@@ -5,8 +5,8 @@
     background-color: #F4E8D3;
     border-radius: 10px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    font-family: Arial, sans-serif;
     color: #333;
+    margin-top: 50px;
 }
 
 .title {
@@ -43,31 +43,8 @@
   color: #555;
 }
 
-.bundles {
-  margin-top: 20px;
-}
 
-.bundleItem {
-  border-top: 1px solid #e1e1e1;
-  padding-top: 15px;
-  margin-top: 15px;
-}
 
-.bundleItem h3 {
-  font-size: 20px;
-  margin-bottom: 10px;
-  color: #14332C;
-}
-
-.bundleItem ul {
-  padding-left: 20px;
-  margin: 0;
-}
-
-.bundleItem li {
-  margin-bottom: 8px;
-  color: #555;
-}
 
 .totalPrice {
   text-align: center;
@@ -132,25 +109,13 @@
 
 //20240820
 
-.order_detail_wraps{        outline: 2px solid red;
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #F4E8D3;
-  border-radius: 10px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  font-family: Arial, sans-serif;
-  color: #333;
-}
-.order_detail_wraps > h3{
+.wrap > h3{
   text-align: center;
   font-size: 24px;
 }
-.order_detail_wraps h4{
-  font-size: 22px;
-}
-.pay_info{
-
+.wrap h4{
+  font-size: 20px;
+  margin: 0 0 20px 0;
 }
 .pay_info p{
   width: 100;
@@ -173,12 +138,41 @@
 .bundleItem ul, .bundleItem li{
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 0 0 10px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #000;
 }
 
-.wrap > div{
-  padding: 10px 30px;
-  margin-bottom: 25px;
+.wrap .order_detail_common_box{
+  width: 80%;
+  padding: 20px 30px;
   border-radius: 10px;
-  border: 1px solid #999;
+  border: 1px solid #bebebe;
+  margin: 0 auto 25px;
 }
+.wrap .order_detail_common_box p{
+  padding-bottom: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #000;
+}
+
+.order_status{
+  width: 86%;
+  margin: 0 auto 15px;
+}
+.order_status span{
+  margin-left: 20px;
+  color: blue;
+}
+.order_status h4{
+  text-align: right;
+}
+.order_delivery p span{ outline: 1px solid red;
+  width: 80px;
+}
+
+
+
+

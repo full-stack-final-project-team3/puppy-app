@@ -81,7 +81,7 @@ const SnackReview = () => {
                                 <div className={styles.details}>
                                     {order.bundles && order.bundles.length > 0 && order.bundles.map((bundle, bundleIndex) => (
                                         <div key={bundleIndex} className={styles.bundleItem}>
-                                            <h3 className={styles.h3}>반려견 전용 맞춤형 푸드 패키지 For {bundle.dogName}</h3>
+                                            <h3 className={styles.review_dog_name}>반려견 전용 맞춤형 푸드 패키지 For <span>{bundle.dogName}</span></h3>
                                             <ul className={styles.snack_review_ul}>
                                                 {bundle.treats?.map((treat, treatIndex) => (
                                                     <li className={styles.snack_review_li} key={treatIndex}>
@@ -104,7 +104,7 @@ const SnackReview = () => {
                                                         </button>
                                                         <button
                                                             hidden={!treat.reviewId}
-                                                            className={styles.review_button}
+                                                            className={`${styles.review_button} ${styles.review_button_red}`}
                                                             onClick={() => openEditModal(treat.reviewId, order.orderId, treat.treatId, treat.treatTitle)}
                                                         >
                                                             리뷰 수정하기
