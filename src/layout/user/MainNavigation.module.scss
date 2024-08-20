@@ -165,7 +165,7 @@
 
   .center {
     justify-content: flex-start !important;
-    margin-right: 160px;
+    margin-right: 120px;
   }
 
   .left {
@@ -191,15 +191,16 @@
   .bell {
     width: 27px !important;
     height: 27px !important;
+    padding-right: 7px;
   }
-
+  .basket{
+    width: 27px !important;
+    height: 27px !important;
+    padding-top: 7px;
+  }
 
 
   .welcome {
-    display: none;
-  }
-
-  .basket {
     display: none;
   }
 

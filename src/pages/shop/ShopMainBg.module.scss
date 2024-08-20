@@ -426,18 +426,6 @@
   }
 }
 
-@media (max-height: 850px) {
-  .imgSection3 {
-    display: none;
-  }
-
-  .processContainer {
-    .content {
-      margin-top: 10px; // 여백 조정
-    }
-  }
-}
-
 // 반응형 설정
 @media (max-width: 400px) {
   :root {

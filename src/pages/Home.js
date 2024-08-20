@@ -83,6 +83,11 @@ const Home = () => {
     }
   };
 
+  const handleNavigate = (path) => {
+    navigate(path);
+    window.scrollTo(0, 0);
+  };
+
   return (
     <>
       {loading && (
@@ -173,9 +178,24 @@ const Home = () => {
         <MarqueeBanner className={styles.Banner} />
       </div>
       <div className={styles.adContainer}>
-        <img className={styles.ad} src="/main_ad/메인2.png"></img>
-        <img className={styles.ad} src="/main_ad/메인1.png"></img>
-        <img className={styles.ad} src="/main_ad/메인3.png"></img>
+        <img
+          className={styles.ad}
+          src="/main_ad/메인2.png"
+          onClick={() => handleNavigate("/hotel")}
+          alt="메인2"
+        />
+        <img
+          className={styles.ad}
+          src="/main_ad/메인1.png"
+          onClick={() => handleNavigate("/board")}
+          alt="메인1"
+        />
+        <img
+          className={styles.ad}
+          src="/main_ad/메인3.png"
+          onClick={() => handleNavigate("/treats")}
+          alt="메인3"
+        />
       </div>
     </>
   );
