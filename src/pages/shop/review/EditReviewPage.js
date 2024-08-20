@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Rating from '@mui/material/Rating';
 import styles from './Review.module.scss';
+import { REVIEW_URL } from "../../../config/user/host-config";
 
 const EditReviewPage = ({ reviewId }) => {
   //const { reviewId } = useParams();
@@ -15,7 +16,7 @@ const EditReviewPage = ({ reviewId }) => {
   useEffect(() => {
     const fetchReview = async () => {
       try {
-        const response = await fetch(`http://localhost:8888/shop/reviews/${reviewId}`);
+        const response = await fetch(`${REVIEW_URL}/${reviewId}`);
         if (!response.ok) {
           throw new Error('네트워크 응답이 실패했습니다.');
         }
@@ -51,7 +52,7 @@ const EditReviewPage = ({ reviewId }) => {
         formData.append('reviewPics', pic);
       });
 
-      const response = await fetch(`http://localhost:8888/shop/reviews/${reviewId}`, {
+      const response = await fetch(`${REVIEW_URL}/${reviewId}`, {
         method: 'PUT',
         headers: {
           'userId': user.id
@@ -111,7 +112,7 @@ const EditReviewPage = ({ reviewId }) => {
           {reviewPics.map((pic, index) => (
             <img
               key={index}
-              src={`http://localhost:8888/shop/reviews/review-img/${pic.reviewPic}`}
+              src={`${REVIEW_URL}/review-img/${pic.reviewPic}`}
               alt={`Review Pic ${index + 1}`}
               className={styles.review_image}
             />

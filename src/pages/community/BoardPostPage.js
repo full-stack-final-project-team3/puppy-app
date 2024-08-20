@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import styles from "./BoardPostPage.module.scss";
 import { BOARD_URL } from "../../config/user/host-config";
+import { IoChevronBack } from "react-icons/io5";
+import { GiDogHouse } from "react-icons/gi";
 
 const BoardPostPage = () => {
   const [title, setTitle] = useState("");
@@ -63,6 +65,18 @@ const BoardPostPage = () => {
 
   return (
     <div className={styles.createPostPage}>
+      <div className={styles.headerNav}>
+        <button
+          onClick={() => navigate("/board")}
+          className={styles.backButton}
+        >
+          <IoChevronBack />
+        </button>
+        <h1 className={styles.postTitle}>커뮤니티</h1>
+        <button onClick={() => navigate("/")} className={styles.homeButton}>
+          <GiDogHouse />
+        </button>
+      </div>
       <h1 className={styles.title}>새 게시글 작성</h1>
       <form onSubmit={handleSubmit} className={styles.form}>
         <input

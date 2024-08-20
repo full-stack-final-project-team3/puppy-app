@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { BOARD_URL } from "../../config/user/host-config";
 import styles from "./BoardEditPage.module.scss";
+import { IoChevronBack } from "react-icons/io5";
+import { GiDogHouse } from "react-icons/gi";
 
 const BoardEditPage = () => {
   const [post, setPost] = useState({ boardTitle: "", boardContent: "" });
@@ -99,6 +101,20 @@ const BoardEditPage = () => {
 
   return (
     <div className={styles.editPostPage}>
+      <div className={styles.headerNav}>
+        <button
+          onClick={() => navigate(`/board/${id}`)}
+          className={styles.backButton}
+        >
+          <IoChevronBack />
+        </button>
+        <h1 className={styles.postTitle} onClick={() => navigate("/board")}>
+          커뮤니티
+        </h1>
+        <button onClick={() => navigate("/")} className={styles.homeButton}>
+          <GiDogHouse />
+        </button>
+      </div>
       <h1 className={styles.title}>게시글 수정</h1>
       <form onSubmit={handleSubmit} className={styles.form}>
         <input

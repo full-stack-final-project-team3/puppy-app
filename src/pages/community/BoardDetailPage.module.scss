@@ -430,6 +430,7 @@
     color: #333;
     cursor: pointer;
     transition: background-color 0.3s;
+    margin-bottom: 10px;
 }
 
 .editCommentButton:hover,
@@ -563,6 +564,7 @@ display: flex;
     border-radius: 30px;
     cursor: pointer;
     transition: background-color 0.3s;
+    margin-top: 10px;
 
     &:hover {
         background-color: #777; // 호버 시 약간 어두운 회색
@@ -634,4 +636,47 @@ display: flex;
             background-color: #f0f0f0;
         }
     }
+}
+
+//
+.headerNav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    margin-bottom: 20px;
+}
+
+.backButton,
+.homeButton {
+    font-size: 24px;
+    color: #333;
+    /* 텍스트 색상 유지 */
+    text-decoration: none;
+    /* 밑줄 제거 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    /* 너비 자동 조정 */
+    height: auto;
+    /* 높이 자동 조정 */
+    border: none;
+    /* 테두리 제거 */
+    background: none;
+    /* 배경 제거 */
+    transition: color 0.3s ease;
+    /* 색상 변화의 부드러움 추가 */
+}
+
+.backButton:hover,
+.homeButton:hover {
+    cursor: pointer;
+        /* 호버 시 포인터로 변경 */
+        transform: scale(1.1);
+            /* 호버 시 약간 확대 */
+}
+
+.postTitle{
+    cursor: pointer;
 }

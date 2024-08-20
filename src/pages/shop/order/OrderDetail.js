@@ -108,51 +108,76 @@ const OrderDetail = () => {
     return (
         <div className={styles.wrap}>
             <h1 className={styles.title}>주문 상세 내역</h1>
-            <div className={styles.pay_info}>
+            <div className={`${styles.order_status}`}>
                 <h4>
                     {formatDateTime(order.orderDateTime) || '에러'}
                     <span className={orderDetail.orderStatus === 'CANCELLED' ? styles.cancelledText : ''}>
                         {orderDetail.orderStatus === 'CANCELLED' ? '주문 취소' : '주문 완료'}
                     </span>
                 </h4>
+            </div>
+            <div className={`${styles.pay_info} ${styles.order_detail_common_box}`}>
                 <div>
                     <h4>결제 정보</h4>
                     <div>
-                        <p>상품 가격 <span>{orderDetail.totalPrice ? orderDetail.totalPrice.toLocaleString() : '0'} 원</span></p>
-                        <p>배송비<span>0</span></p>
+                        <p>
+                            상품 가격 
+                            <span>
+                                {orderDetail.totalPrice ? orderDetail.totalPrice.toLocaleString() : '0'} 원
+                            </span>
+                            </p>
+                        <p>배송비<span>0</span>
+                        </p>
                         <hr />
-                        <p>포인트<span>{orderDetail.totalPrice ? orderDetail.totalPrice.toLocaleString() : '0'} 원</span></p>
-                        <p>총 결제금액<span>0</span></p>
+                        <p>
+                            포인트
+                            <span>
+                                {orderDetail.totalPrice ? orderDetail.totalPrice.toLocaleString() : '0'} 원
+                                </span>
+                            </p>
+                        <p>
+                            총 결제금액
+                            <span>0 원</span>
+                        </p>
                     </div>
                 </div>
             </div>
 
-            <div>
+            <div className={`${styles.order_delivery} ${styles.order_detail_common_box}`}>
                 <h4>배송정보</h4>
                 <p>{orderDetail.receiverName || '정보 없음'}</p>
                 <p>{orderDetail.receiverPhone || '정보 없음'}</p>
                 <p>{orderDetail.address || '정보 없음'} {orderDetail.addressDetail || ''}</p>
-                <p>배송 요청사항 :  {orderDetail.deliveryRequest === "기타사항" ? orderDetail.customRequest : orderDetail.deliveryRequest || '없음'}</p>
+                {/* <p><span>이름 : </span>{orderDetail.receiverName || '정보 없음'}</p>
+                <p><span>연락처 : </span>{orderDetail.receiverPhone || '정보 없음'}</p>
+                <p><span>주소 : </span>{orderDetail.address || '정보 없음'} {orderDetail.addressDetail || ''}</p> */}
+                <p>
+                    배송 요청사항 : 
+                    {orderDetail.deliveryRequest === "기타사항" ? orderDetail.customRequest : orderDetail.deliveryRequest || '없음'}
+                    </p>
             </div>
 
-
-
-
-            <div className={styles.orderDetail}>
+            <div className={`${styles.orderDetail} ${styles.order_detail_common_box}`}>
                 <div className={styles.bundles}>
                     <h4>상품정보</h4>
                     {order.bundles?.map((bundle, index) => (
                         <div key={index} className={styles.bundleItem}>
-                            <h3>반려견 전용 맞춤형 푸드 패키지 For {bundle.dogName}</h3>
-                            <p><strong>상품 구독 기간:</strong> {subscriptionPeriodLabels[bundle.subsType] || '구독 기간 정보 없음'}</p>
-                            <p><strong>구독 만료 기간:</strong>
-                                {calculateExpiryDate(order.orderDateTime, bundle.subsType)}
-                            </p>
+                            <h3>
+                                반려견 전용 맞춤형 푸드 패키지 For "{bundle.dogName}"
+                            </h3>
                             <ul>
                                 {bundle.treats?.map((treat, treatIndex) => (
                                     <li key={treatIndex}>{treat.treatTitle}</li>
                                 ))}
                             </ul>
+                            <p>
+                                <strong>상품 구독 기간:</strong> 
+                                {subscriptionPeriodLabels[bundle.subsType] || '구독 기간 정보 없음'}
+                            </p>
+                            <p>
+                                <strong>구독 만료 기간:</strong>
+                                {calculateExpiryDate(order.orderDateTime, bundle.subsType)}
+                            </p>
                         </div>
                     ))}
                 </div>

@@ -143,35 +143,7 @@
     color: #666;
 }
 
-.writeButton {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 12px 24px;
-    background-color: #B3797A;
-    color: white;
-    border: none;
-    border-radius: 30px;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
 
-    &:hover {
-        background-color: #9F5A5B;
-        transform: translateY(-2px);
-    }
-
-    svg {
-        margin-right: 8px;
-    }
-
-    span {
-        font-weight: bold;
-    }
-}
 
 .noPosts,
 .endMessage {
@@ -244,6 +216,7 @@
         opacity: 1;
     }
 }
+
 
 // 모바일 대응 (400px 이하)
 @media (max-width: 400px) {
