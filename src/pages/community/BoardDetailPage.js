@@ -22,6 +22,8 @@ import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { AiOutlineExport } from "react-icons/ai";
 import { GoClock } from "react-icons/go";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
+import { IoChevronBack } from "react-icons/io5";
+import { GiDogHouse } from "react-icons/gi";
 
 // const BASE_URL = "http://localhost:8888";
 
@@ -408,7 +410,6 @@ const BoardDetailPage = () => {
         }
       );
 
-
       // 대댓글 작성 시 상대방에게 알람 보내는 코드 (일단 실패 / 원인 아직 안봄) 0817 기범
       // if (user.id !== post.user.id) {
       //   const noticePayload = {
@@ -421,9 +422,6 @@ const BoardDetailPage = () => {
       //     body: JSON.stringify(noticePayload),
       //   });
       // }
-
-
-
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -657,6 +655,20 @@ const BoardDetailPage = () => {
   if (!post) return null;
   return (
     <div className={styles.postDetailPage}>
+      <div className={styles.headerNav}>
+        <button
+          onClick={() => navigate("/board")}
+          className={styles.backButton}
+        >
+          <IoChevronBack />
+        </button>
+        <h1 className={styles.postTitle} onClick={() => navigate("/board")}>
+          커뮤니티
+        </h1>
+        <button onClick={() => navigate("/")} className={styles.homeButton}>
+          <GiDogHouse />
+        </button>
+      </div>
       <h1 className={styles.postTitle}>{post.boardTitle}</h1>
       <div className={styles.postMeta}>
         <span className={styles.author}>
@@ -759,24 +771,7 @@ const BoardDetailPage = () => {
                     <GoClock className={styles.iconWithSpacing} />
                     {formatTimeAgo(comment.replyCreatedAt)}
                   </span>
-                  {user && user.id === comment.user?.id && (
-                    <div className={styles.commentActions}>
-                      <button
-                        onClick={() =>
-                          handleCommentEdit(comment.id, comment.replyContent)
-                        }
-                        className={styles.editCommentButton}
-                      >
-                        수정
-                      </button>
-                      <button
-                        onClick={() => handleCommentDelete(comment.id)}
-                        className={styles.deleteCommentButton}
-                      >
-                        삭제
-                      </button>
-                    </div>
-                  )}
+
                   {editingCommentId === comment.id ? (
                     <div>
                       <textarea
@@ -813,29 +808,48 @@ const BoardDetailPage = () => {
                           className={styles.commentImage}
                         />
                       )}
+                      {user && user.id === comment.user?.id && (
+                        <div className={styles.commentActions}>
+                          <button
+                            onClick={() =>
+                              handleCommentEdit(
+                                comment.id,
+                                comment.replyContent
+                              )
+                            }
+                            className={styles.editCommentButton}
+                          >
+                            수정
+                          </button>
+                          <button
+                            onClick={() => handleCommentDelete(comment.id)}
+                            className={styles.deleteCommentButton}
+                          >
+                            삭제
+                          </button>
+                        </div>
+                      )}
+                      <button
+                        onClick={() => handleLike("reply", comment.id)}
+                        className={`${styles.likeButton} ${
+                          commentLikes[comment.id] ? styles.active : ""
+                        }`}
+                      >
+                        {commentLikes[comment.id] ? (
+                          <AiFillHeart />
+                        ) : (
+                          <AiOutlineHeart />
+                        )}{" "}
+                        {commentLikeCounts[comment.id] || 0}
+                      </button>
+                      <button
+                        onClick={() => setReplyingTo(comment.id)}
+                        className={styles.replyButton}
+                      >
+                        <BsReply /> 답글
+                      </button>
                     </>
                   )}
-                  <button
-                    onClick={() => handleLike("reply", comment.id)}
-                    className={`${styles.likeButton} ${
-                      commentLikes[comment.id] ? styles.active : ""
-                    }`}
-                  >
-                    {commentLikes[comment.id] ? (
-                      <AiFillHeart />
-                    ) : (
-                      <AiOutlineHeart />
-                    )}{" "}
-                    {commentLikeCounts[comment.id] || 0}
-                  </button>
-
-                  <button
-                    onClick={() => setReplyingTo(comment.id)}
-                    className={styles.replyButton}
-                  >
-                    <BsReply /> 답글
-                  </button>
-
                   {comment.subReplies && comment.subReplies.length > 0 && (
                     //   <button
                     //     onClick={() => toggleSubReplies(comment.id)}
