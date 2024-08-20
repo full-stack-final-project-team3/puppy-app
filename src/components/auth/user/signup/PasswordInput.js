@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import styles from './SignUpPage.module.scss';
+import styles from './PasswordInput.module.scss';
 
 const PasswordInput = ({ onSuccess }) => {
 
@@ -59,7 +59,7 @@ const PasswordInput = ({ onSuccess }) => {
             type="password"
             value={password}
             onChange={passwordHandler}
-            className={styles.input}
+            className={styles.pwInput}
             placeholder="Enter your password"
         />
         {passwordValid && <p className={styles.successMessage}>{success}</p>}
@@ -70,7 +70,7 @@ const PasswordInput = ({ onSuccess }) => {
             type="password"
             value={passwordCheck}
             onChange={passwordCheckHandler}
-            className={styles.input}
+            className={styles.pwCheckInput}
             placeholder="Enter your password again"
         />
         {passwordCheck && <p className={styles.successMessage}>{checkSuccess}</p>}
