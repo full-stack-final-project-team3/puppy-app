@@ -8,7 +8,7 @@
   justify-content: center;
 }
 
-.welcomeContainer {
+.container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -52,7 +52,7 @@
   }
 }
 
-.welcomeTitle {
+.title {
   font-size: 48px;
   font-weight: bold;
   color: #333;
@@ -61,7 +61,7 @@
   font-family: 'Raleway', sans-serif;
 }
 
-.welcomeText {
+.text {
   font-size: 18px;
   color: #666;
   margin-bottom: 30px;
