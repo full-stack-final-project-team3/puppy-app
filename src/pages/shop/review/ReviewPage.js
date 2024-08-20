@@ -186,7 +186,7 @@ const Modal = ({ images, currentIndex, onClose, onPrev, onNext }) => {
         <div className={styles.modal_image_container}>
           <button className={styles.prev_button} onClick={onPrev}>‹</button>
           <img
-            src={`http://localhost:8888/shop/reviews/review-img/${images[currentIndex].reviewPic}`}
+            src={`${REVIEW_URL}/review-img/${images[currentIndex].reviewPic}`}
             alt={`Review Pic ${currentIndex + 1}`}
             className={styles.modal_image}
           />

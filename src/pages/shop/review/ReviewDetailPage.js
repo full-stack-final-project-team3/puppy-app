@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import Rating from '@mui/material/Rating';
 import styles from './Review.module.scss';
 import { SHOP_URL } from '../../../config/user/host-config';
+import { REVIEW_URL } from "../../../config/user/host-config";
 
 const ReviewDetailPage = () => {
   const { reviewId } = useParams();
@@ -61,7 +62,7 @@ const ReviewDetailPage = () => {
           return (
             <img 
               key={index} 
-              src={`http://localhost:8888/shop/reviews/review-img/${pic.reviewPic}`} 
+              src={`${REVIEW_URL}/review-img/${pic.reviewPic}`} 
               alt={`Review Pic ${index + 1}`} 
               className={styles.review_image} 
             />
