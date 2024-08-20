@@ -12,7 +12,7 @@ import { PulseLoader } from "react-spinners";
 import spinnerStyles from "../../layout/user/Spinner.module.scss";
 
 
-const DrawerContainer = styled.div`
+const DrawerContainer = styled(motion.div)`
   font-family: 'NotoSansKR';
   position: fixed;
   top: 0;
@@ -22,23 +22,21 @@ const DrawerContainer = styled.div`
   width: 600px;
   height: 100%;
   background-color: #14332C;
-  transform: translateX(${(props) => (props.open ? '0' : '100%')});
-  transition: transform 0.3s ease-in-out;
   z-index: 1400;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   padding: 20px;
+
   @media (max-width: 400px) {
     width: 100%;
-    transform: translateX(${(props) => (props.open ? '0' : '100%')});
   }
 
   @media (max-width: 768px) {
     width: 100%;
-    transform: translateX(${(props) => (props.open ? '0' : '100%')});
   }
 `;
+
 
 const NavItem = styled.a`
   position: relative;
@@ -92,30 +90,26 @@ const IconContainer = styled.div`
 `;
 
 
-const TopDrawerContainer = styled.div`
+const TopDrawerContainer = styled(motion.div)`
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   height: 135px;
   background-color: #14332C;
-  transform: translateY(${(props) => (props.open ? '0' : '-100%')});
-  transition: transform 0.3s ease-in-out;
   z-index: 1000;
   @media (max-width: 768px) {
     height: 50%;
   }
 `;
 
-const BottomDrawerContainer = styled.div`
+const BottomDrawerContainer = styled(motion.div)`
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   height: 145px;
   background-color: #14332C;
-  transform: translateY(${(props) => (props.open ? '0' : '100%')});
-  transition: transform 0.3s ease-in-out;
   z-index: 1200;
 
   @media (max-width: 768px) {
@@ -255,7 +249,17 @@ const Drawer = ({ open, onClose }) => {
         </div>
       </div>
       )}
-      <DrawerContainer open={open}>
+      <DrawerContainer
+        initial={{ x: '100%' }}  // Drawer가 화면 밖에 시작
+        animate={{ x: open ? 0 : '100%' }}  // 열리고 닫힐 때 위치 변화
+        transition={{
+          type: 'spring',  // inertia 대신 spring 사용
+          stiffness: 180,  // 스프링의 강성도
+          damping: 30,     // 감쇠 비율
+          mass: 1,         // 질량
+          restDelta: 0.001,  // 애니메이션 종료 조건
+        }}
+        open={open}>
       <CloseButton
           className={CloseButton}
           open={open}
@@ -280,10 +284,29 @@ const Drawer = ({ open, onClose }) => {
           </a>
         </IconContainer>
       </DrawerContainer>
-      <TopDrawerContainer open={open}>
+      <TopDrawerContainer
+        initial={{ y: '-100%' }}  // 위에서 시작
+        animate={{ y: open ? 0 : '-100%' }}  // 열리고 닫힐 때 위치 변화
+        transition={{
+          type: 'spring',  // inertia 대신 spring 사용
+          stiffness: 180,  // 스프링의 강성도
+          damping: 30,     // 감쇠 비율
+          mass: 1,         // 질량
+          restDelta: 0.001,  // 애니메이션 종료 조건
+        }}
+      open={open}>
       </TopDrawerContainer>
-      <BottomDrawerContainer open={open}>
-      
+      <BottomDrawerContainer
+        initial={{ y: '100%' }}  // 아래에서 시작
+        animate={{ y: open ? 0 : '100%' }}  // 열리고 닫힐 때 위치 변화
+        transition={{
+          type: 'spring',  // inertia 대신 spring 사용
+          stiffness: 180,  // 스프링의 강성도
+          damping: 30,     // 감쇠 비율
+          mass: 1,         // 질량
+          restDelta: 0.001,  // 애니메이션 종료 조건
+        }}
+        open={open}>
       </BottomDrawerContainer>
     </>
   );
