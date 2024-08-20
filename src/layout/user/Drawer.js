@@ -50,6 +50,7 @@ const NavItem = styled.a`
   font-weight: bold;
   margin-bottom: 20px;
   cursor: pointer;
+  font-family: "Poppins";
 
   &:hover {
     color: #D88254;
@@ -60,7 +61,7 @@ const NavItem = styled.a`
   }
 
   &.special-spacing-home {
-    margin-top: 100px;
+    margin-top: 120px;
     font-size: 45px;
   }
 `;
@@ -96,12 +97,11 @@ const TopDrawerContainer = styled.div`
   top: 0;
   left: 0;
   right: 0;
-  height: 100px;
+  height: 135px;
   background-color: #14332C;
   transform: translateY(${(props) => (props.open ? '0' : '-100%')});
   transition: transform 0.3s ease-in-out;
   z-index: 1000;
-
   @media (max-width: 768px) {
     height: 50%;
   }
@@ -112,7 +112,7 @@ const BottomDrawerContainer = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  height: 127px;
+  height: 145px;
   background-color: #14332C;
   transform: translateY(${(props) => (props.open ? '0' : '100%')});
   transition: transform 0.3s ease-in-out;
