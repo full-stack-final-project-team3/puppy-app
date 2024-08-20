@@ -130,3 +130,55 @@
 
 
 
+//20240820
+
+.order_detail_wraps{        outline: 2px solid red;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #F4E8D3;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+.order_detail_wraps > h3{
+  text-align: center;
+  font-size: 24px;
+}
+.order_detail_wraps h4{
+  font-size: 22px;
+}
+.pay_info{   
+ 
+}
+.pay_info p{
+  width: 100;
+  display: flex;
+  justify-content: space-between;
+}
+.order_cancel_btn{
+  background-color: #14332C;
+  color: #ffffff;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 5px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin: 0 auto;
+  display: block;
+}
+
+.bundleItem ul, .bundleItem li{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.wrap > div{
+  padding: 10px 30px;
+  margin-bottom: 25px;
+  border-radius: 10px;
+  border: 1px solid #999;
+}
