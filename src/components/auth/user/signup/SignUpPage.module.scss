@@ -86,16 +86,6 @@
   outline: none;
 }
 
-.detailInput {
-  width: 78%;
-  padding: 10px;
-  border: 1px solid #B7AE9E;
-  border-radius: 32px;
-  box-sizing: border-box;
-  margin-bottom: 5px;
-  outline: none;
-}
-
 
 /*
   button css
@@ -137,16 +127,6 @@
   &:hover {
     background-color: #9A5A5A;
   }
-}
-
-.addressBtn {
-  background-color: #B37A7A;
-  color: #FFFFF0;
-  border: none;
-  margin-left: 5px;
-  padding: 5px;
-  border-radius: 50px;
-  cursor: pointer;
 }
 
 .signUpBtn {
