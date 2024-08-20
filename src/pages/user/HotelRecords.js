@@ -6,6 +6,7 @@ import MyPageHeader from "../../components/auth/user/mypage/MyPageHeader";
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './HotelRecords.module.scss';
 import HotelModal from '../../components/hotel/HotelModal';
+import {AUTH_URL} from "../../config/user/host-config";
 
 const HotelRecords = () => {
     const dispatch = useDispatch();
@@ -41,7 +42,7 @@ const HotelRecords = () => {
 
     const getImageUrl = (imageUri) => {
         if (imageUri && imageUri.startsWith('/local/')) {
-            return `http://localhost:8888${imageUri.replace('/local', '/hotel/images')}`;
+            return `${AUTH_URL}${imageUri.replace('/local', '/hotel/images')}`;
         }
         return imageUri;
     };
