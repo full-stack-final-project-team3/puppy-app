@@ -83,6 +83,11 @@ const Home = () => {
     }
   };
 
+  const handleNavigate = (path) => {
+    navigate(path);
+    window.scrollTo(0, 0);
+  };
+
   return (
     <>
       {loading && (
@@ -112,7 +117,7 @@ const Home = () => {
           <SwiperSlide className={styles.swiperSlide}>
             <div className={styles.slideContent}>
               <div className={styles.textBox}>
-                <h1>반려견을 위한 최적의 음식만 담아보세요.</h1>
+                <h1>반려견을 위한 최적의 음식들만 담아보세요.</h1>
                 <p>맞춤형 펫 푸드, 정기 배송, 할인 모두 한번에</p>
                 <NavItem
                   onClick={() => handleNavClick("/treats")}
@@ -173,9 +178,24 @@ const Home = () => {
         <MarqueeBanner className={styles.Banner} />
       </div>
       <div className={styles.adContainer}>
-        <img className={styles.ad} src="/main_ad/메인2.png"></img>
-        <img className={styles.ad} src="/main_ad/메인1.png"></img>
-        <img className={styles.ad} src="/main_ad/메인3.png"></img>
+        <img
+          className={styles.ad}
+          src="/main_ad/메인2.png"
+          onClick={() => handleNavigate("/hotel")}
+          alt="메인2"
+        />
+        <img
+          className={styles.ad}
+          src="/main_ad/메인1.png"
+          onClick={() => handleNavigate("/board")}
+          alt="메인1"
+        />
+        <img
+          className={styles.ad}
+          src="/main_ad/메인3.png"
+          onClick={() => handleNavigate("/treats")}
+          alt="메인3"
+        />
       </div>
     </>
   );

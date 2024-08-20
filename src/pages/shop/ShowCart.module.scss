@@ -211,29 +211,6 @@
   margin-top: 25px; // 위쪽 마진 추가하여 아래로 내리기
 }
 
-// 반응형 디자인을 위한 미디어 쿼리
-@media (max-width: 850px) {
-  .cartContainer {
-    width: 80%; // 너비 조정
-
-    .bundleContainer {
-      width: 95%; // 너비를 100%로 조정
-
-      h4 {
-        font-size: 17px;
-      }
-    }
-
-    .emptyCartContainer {
-      width: 90%; // 너비 조정
-    }
-
-    .paymentButton {
-      width: 80%; // 버튼 너비 조정
-    }
-  }
-}
-
 @media (max-width: 400px) {
   .cartContainer {
     .bundleContainer {
