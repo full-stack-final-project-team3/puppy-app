@@ -30,7 +30,7 @@
   .reservationList {
     list-style-type: none;
     padding: 0;
-    width: 90%;
+    width: 100%;
     margin: 0 auto;
 
     .reservationItem {
@@ -146,12 +146,15 @@
   .imageContainer {
     margin-bottom: 10px;
     width: 100%;
-    text-align: center;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    margin-right: 0px !important;
   }
 
   .reservationImage {
-    width: 80px;
-    height: 80px;
+    width: 180px !important;
+    height: 130px !important;
   }
 
   .reservationDetails {
@@ -166,10 +169,8 @@
   div.reservationActions {
     position: relative !important;
     width: 100%;
-    display: flex;
-    justify-content: space-between;
     flex-direction: row !important; /* Arrange buttons horizontally */
-    margin-top: 10px;
+    margin-left: 25px;
   }
 
   .link {
