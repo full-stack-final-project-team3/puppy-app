@@ -69,15 +69,21 @@
   font-family: 'Raleway', sans-serif;
 }
 
-.welcomeButton {
+.btnBox {
+  display: flex;
+  justify-content: space-around;
+}
+
+.button {
   background-color: #B37A7A;
-  color: #fffff0;
+  color: #FFFFF0;
   border: none;
-  padding: 15px 30px;
+  width: 40%;
+  padding: 15px;
+  margin: 5px 0;
   border-radius: 5px;
-  cursor: pointer;
   font-size: 16px;
-  width: 100%;
+  font-weight: bold;
   font-family: 'Raleway', sans-serif;
 
   &:hover {

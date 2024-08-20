@@ -63,7 +63,7 @@ const AddressInput = ({ onSuccess }) => {
               type="text"
               value={detailAddress}
               onChange={detailInputHandler}
-              className={styles.input}
+              className={styles.detailInput}
               placeholder="상세주소"
           />
         </div>
