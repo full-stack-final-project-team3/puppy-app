@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
-import {useNavigate, useRouteLoaderData} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import styles from './HotelList.module.scss';
 import Slider from 'react-slick';
@@ -8,11 +8,13 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faTimes, faBookmark as filledBookmark} from '@fortawesome/free-solid-svg-icons';
 import {faBookmark as emptyBookmark} from '@fortawesome/free-regular-svg-icons';
 import {addFavorite, fetchFavorites, removeFavorite} from '../store/hotel/FavoriteSlice';
-import {deleteHotel, updateHotel} from '../store/hotel/HotelAddSlice';
+import {deleteHotel} from '../store/hotel/HotelAddSlice';
 import store from '../store';
 import {setHotels} from '../store/hotel/HotelPageSlice';
 import HotelNoRoom from './HotelNoRoom';
 import Footer from '../../layout/user/Footer';
+import {AUTH_URL} from "../../config/user/host-config"
+
 
 const HotelList = ({onShowProperty, getSliderSettings}) => {
     // const userData = useSelector(state => state.userEdit.userDetail);
@@ -107,7 +109,7 @@ const HotelList = ({onShowProperty, getSliderSettings}) => {
                         {/* Slider 적용 */}
                         <Slider {...getSliderSettings(hotel["hotel-images"].length)} className={styles.imageGallery}>
                             {hotel["hotel-images"] && hotel["hotel-images"].map(image => {
-                                const imageUrl = `http://localhost:8888${image.hotelImgUri.replace('/local', '/hotel/images')}`;
+                                const imageUrl = `${AUTH_URL}${image.hotelImgUri.replace('/local', '/hotel/images')}`;
                                 return (
                                     <img
                                         key={image.imageId}

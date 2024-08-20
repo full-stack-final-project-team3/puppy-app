@@ -172,6 +172,11 @@ export const router = createBrowserRouter([
         // loader: authCheckLoader,
       },
       {
+        path: "board/search",
+        element: <BoardPage />,
+        // loader: authCheckLoader,
+      },
+      {
         path: "board/:id",
         element: <BoardDetailPage />,
         // loader: authCheckLoader,

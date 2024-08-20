@@ -49,7 +49,7 @@ const MyBoards = () => {
                                                     alt="Profile"
                                                 />
                                                 <span className={styles.author}>
-                        <BsPerson/> {userDetail.nickname }
+                        <BsPerson/> {userDetail.nickname}
                       </span>
 
                                                 <span className={styles.date}>
@@ -74,7 +74,11 @@ const MyBoards = () => {
                         </ul>
                     </>
 
-                    : <div>등록된 게시글이 없습니다.</div>
+                    :
+                    <>
+                        <h1 className={styles.h1}>{userDetail.nickname}님의 게시글</h1>
+                        <p className={styles.noBoard}>등록된 게시글이 없습니다.</p>
+                    </>
                 }
 
             </div>

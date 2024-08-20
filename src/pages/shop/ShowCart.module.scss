@@ -83,7 +83,6 @@
     border-top: 1px solid #ccc; // 상단 경계선 추가
     padding-top: 20px; // 상단 패딩
   }
-
   .bundlePrice {
     color: #858585;
   }
@@ -193,14 +192,36 @@
   }
 }
 
+.totalDisCount {
+  margin-right: 5px;
+  color: #bf424a;
+  text-decoration: line-through; // 줄 그기
+}
+
+.bundleHeaderContainer {
+  display: flex;
+  justify-content: space-between; // 양쪽 끝으로 정렬
+  align-items: center; // 수직 가운데 정렬
+}
+
+.subscriptionSelect {
+  margin-right: 20px; // h4와의 간격 조정
+  padding: 5px; // 패딩 추가
+  font-size: 14px; // 폰트 크기 조정
+  margin-top: 25px; // 위쪽 마진 추가하여 아래로 내리기
+}
+
 // 반응형 디자인을 위한 미디어 쿼리
 @media (max-width: 850px) {
   .cartContainer {
-    width: 95%; // 너비 조정
-    padding: 10px; // 패딩 조정
+    width: 80%; // 너비 조정
 
     .bundleContainer {
-      width: 100%; // 너비를 100%로 조정
+      width: 95%; // 너비를 100%로 조정
+
+      h4 {
+        font-size: 17px;
+      }
     }
 
     .emptyCartContainer {
@@ -217,6 +238,10 @@
   .cartContainer {
     .bundleContainer {
       padding: 10px; // 패딩 조정
+
+      h4 {
+        font-size: 17px;
+      }
     }
 
     .clearCartButton {

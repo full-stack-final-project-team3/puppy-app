@@ -5,7 +5,7 @@ import {
     uploadFile, submitRoom, updateRoomData, addRoomImage, removeRoomImage, setErrorMessage
 } from '../../components/store/hotel/RoomAddSlice';
 import styles from './RoomModal.module.scss';
-import { ROOM_URL } from "../../config/user/host-config";
+import { AUTH_URL } from "../../config/user/host-config";
 
 const RoomModal = ({ hotelId, onClose, onRoomAdded, backHandler }) => {
     const dispatch = useDispatch();
@@ -17,7 +17,7 @@ const RoomModal = ({ hotelId, onClose, onRoomAdded, backHandler }) => {
         if (!image || !image.hotelImgUri) return '';
         return image.type === 'LOCAL'
             ? image.hotelImgUri
-            : `http://localhost:8888${image.hotelImgUri.replace('/local', '/hotel/images')}`;
+            : `${AUTH_URL}${image.hotelImgUri.replace('/local', '/hotel/images')}`;
     };
 
     const handleRoomChange = (e) => {

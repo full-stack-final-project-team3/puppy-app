@@ -75,6 +75,11 @@
   margin-top: 20px;
 }
 
+.noOrder {
+  text-align: center;
+  padding: 20px;
+}
+
 .cancelButton {
   background-color: #14332C;
   color: #ffffff;
@@ -101,22 +106,27 @@
 
 @media (max-width: 400px) {
   .wrap {
-    width: 100%;
+    width: 87%;
     margin: 10px auto;
     padding: 10px;
     border-radius: 16px;
   }
 
   .subWrap {
-    width: 100%;
-    margin: 10px 0;
+    width: 88%;
+    margin: 40px auto 20px;
     padding: 10px;
     border-radius: 8px;
   }
 
   .title {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     margin-bottom: 20px;
+  }
+
+  .noOrder {
+    padding: 20px;
+    text-align: center;
   }
 
   .cardContent {
