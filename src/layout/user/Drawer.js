@@ -19,7 +19,7 @@ const DrawerContainer = styled(motion.div)`
   right: 0;
   bottom: 0;
   left: auto;
-  width: 600px;
+  width: 440px;
   height: 100%;
   background-color: #14332C;
   z-index: 1400;
@@ -143,7 +143,7 @@ const CloseButton = styled(motion.button)`
 
   @media (max-width: 1920px) {
     z-index: 1600;
-    left: -8%;
+    left: -10%;
   }
 
   @media (max-width: 1000px) {
@@ -255,7 +255,7 @@ const Drawer = ({ open, onClose }) => {
         transition={{
           type: 'spring',  // inertia 대신 spring 사용
           stiffness: 180,  // 스프링의 강성도
-          damping: 30,     // 감쇠 비율
+          damping: open ? 25 : 35,     // 감쇠 비율
           mass: 1,         // 질량
           restDelta: 0.001,  // 애니메이션 종료 조건
         }}
@@ -290,7 +290,7 @@ const Drawer = ({ open, onClose }) => {
         transition={{
           type: 'spring',  // inertia 대신 spring 사용
           stiffness: 180,  // 스프링의 강성도
-          damping: 30,     // 감쇠 비율
+          damping: open ? 27 : 33,     // 감쇠 비율
           mass: 1,         // 질량
           restDelta: 0.001,  // 애니메이션 종료 조건
         }}
@@ -302,7 +302,7 @@ const Drawer = ({ open, onClose }) => {
         transition={{
           type: 'spring',  // inertia 대신 spring 사용
           stiffness: 180,  // 스프링의 강성도
-          damping: 30,     // 감쇠 비율
+          damping: open ? 27 : 33,      // 감쇠 비율
           mass: 1,         // 질량
           restDelta: 0.001,  // 애니메이션 종료 조건
         }}

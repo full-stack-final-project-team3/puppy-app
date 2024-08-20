@@ -65,8 +65,8 @@ const RootLayout = () => {
         transition={{
           type: 'spring',  // inertia 대신 spring 사용
           stiffness: 180,  // 스프링의 강성도
-          damping: 30,     // 감쇠 비율
-          mass: 1,         // 질량
+          damping: drawerOpen ? 25 : 35,  // drawerOpen에 따라 damping 값 조절
+          mass: 1,       // 질량
           restDelta: 0.001,  // 애니메이션 종료 조건
         }}
       >
