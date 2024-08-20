@@ -118,7 +118,10 @@ const SnackReview = () => {
                         </div>
                     ))
             ) : (
-                <p>주문 내역이 없습니다.</p>
+                <>
+                <h2 className={styles.h2}>Shop Reviews</h2>
+                <p className={styles.noReview}>주문하신 내역이 없습니다.</p>
+                </>
             )}
             {orderHistory.length > visibleCount && ( // 더보기 버튼 표시 조건
                 <button onClick={showMoreCards} className={styles.more_button}>
