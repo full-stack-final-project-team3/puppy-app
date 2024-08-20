@@ -53,7 +53,7 @@ const AddressInput = ({ onSuccess }) => {
                 type="text"
                 value={localAddress}
                 onChange={localInputHandler}
-                className={styles.localinput}
+                className={styles.localInput}
                 placeholder="지역주소"
             />
             <button type="button" className={styles.addressBtn} onClick={openKakaoAddress}>주소 찾기</button>
