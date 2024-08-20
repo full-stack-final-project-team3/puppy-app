@@ -6,13 +6,11 @@ import { useSelector } from "react-redux";
 import { BsChat, BsEye, BsPerson, BsImages, BsSearch } from "react-icons/bs";
 import { HiOutlineHeart } from "react-icons/hi2";
 
-//const BASE_URL = "http://localhost:8888"; // 백엔드가 실행되는 기본 URL
-
 const BoardPage = () => {
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
+  const [isAllLoaded, setIsAllLoaded] = useState(false);
   const scrollRef = useRef();
   const navigate = useNavigate();
 
@@ -22,36 +20,63 @@ const BoardPage = () => {
 
   const user = useSelector((state) => state.userEdit.userDetail);
 
+  const debounce = (func, delay) => {
+    let timeoutId;
+    return (...args) => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => func(...args), delay);
+    };
+  };
+
+  const fetchPosts = useCallback(
+    async (searchKeyword = "") => {
+      if (loading || isAllLoaded) return;
+      setLoading(true);
+      try {
+        let url = `${BOARD_URL}?sort=boardCreatedAt&page=${page}&limit=10`;
+        if (searchKeyword) {
+          url = `${BOARD_URL}/search?keyword=${searchKeyword}&page=${page}&limit=10`;
+        }
+        const response = await fetch(url);
+
+        if (!response.ok) {
+          throw new Error(`서버 오류! 상태 코드: ${response.status}`);
+        }
+
+        const newPosts = await response.json();
+        if (newPosts.length === 0) {
+          setIsAllLoaded(true);
+        } else {
+          const updatedPosts = searchKeyword ? filteredPosts : posts;
+          const existingPostIds = new Set(updatedPosts.map((post) => post.id));
+          const uniquePosts = newPosts.filter(
+            (post) => !existingPostIds.has(post.id)
+          );
+
+          if (uniquePosts.length === 0) {
+            setIsAllLoaded(true);
+          } else {
+            if (searchKeyword) {
+              setFilteredPosts((prevPosts) => [...prevPosts, ...uniquePosts]);
+            } else {
+              setPosts((prevPosts) => [...prevPosts, ...uniquePosts]);
+            }
+            setPage((prevPage) => prevPage + 1);
+          }
+        }
+      } catch (error) {
+        console.error("게시글 가져오기 오류:", error.message);
+        setIsAllLoaded(true);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [page, loading, posts, filteredPosts, isAllLoaded]
+  );
+
   useEffect(() => {
     fetchPosts();
   }, []);
-
-  const fetchPosts = useCallback(async () => {
-    if (loading || !hasMore) return;
-    setLoading(true);
-    try {
-      const response = await fetch(
-        `${BOARD_URL}?sort=boardCreatedAt&page=${page}&limit=10`
-      );
-
-      if (!response.ok) {
-        throw new Error(`서버 오류! 상태 코드: ${response.status}`);
-      }
-
-      const newPosts = await response.json();
-      if (newPosts.length === 0) {
-        setHasMore(false);
-      } else {
-        setPosts((prevPosts) => [...prevPosts, ...newPosts]);
-        setPage((prevPage) => prevPage + 1);
-      }
-    } catch (error) {
-      console.error("게시글 가져오기 오류:", error.message);
-      setHasMore(false);
-    } finally {
-      setLoading(false);
-    }
-  }, [page, loading, hasMore]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -59,15 +84,15 @@ const BoardPage = () => {
         window.innerHeight + document.documentElement.scrollTop >=
         document.documentElement.offsetHeight - 100
       ) {
-        if (!loading && hasMore) {
-          fetchPosts();
+        if (!loading && !isAllLoaded) {
+          fetchPosts(searchTerm);
         }
       }
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [loading, hasMore, fetchPosts]);
+  }, [loading, isAllLoaded, fetchPosts, searchTerm]);
 
   const handleWritePost = () => {
     if (user) {
@@ -98,20 +123,40 @@ const BoardPage = () => {
 
   const handleSearchClick = () => {
     setIsSearching(!isSearching);
-    if (!isSearching) {
+    if (isSearching) {
       setSearchTerm("");
       setFilteredPosts([]);
+      setPage(1);
+      setIsAllLoaded(false);
+      fetchPosts();
     }
   };
 
   const handleSearchChange = (e) => {
-    const term = e.target.value;
-    setSearchTerm(term);
-    const filtered = posts.filter((post) =>
-      post.boardTitle.toLowerCase().includes(term.toLowerCase())
-    );
-    setFilteredPosts(filtered);
+    const newSearchTerm = e.target.value;
+    setSearchTerm(newSearchTerm);
   };
+
+  const handleSearch = useCallback(
+    debounce(async (term) => {
+      if (term) {
+        setPage(1);
+        setFilteredPosts([]);
+        setIsAllLoaded(false);
+        await fetchPosts(term);
+      } else {
+        setFilteredPosts([]);
+        setPage(1);
+        setIsAllLoaded(false);
+        fetchPosts();
+      }
+    }, 300),
+    []
+  );
+
+  useEffect(() => {
+    handleSearch(searchTerm);
+  }, [searchTerm, handleSearch]);
 
   const displayPosts = searchTerm ? filteredPosts : posts;
 
@@ -137,7 +182,7 @@ const BoardPage = () => {
           </div>
         </div>
 
-        {displayPosts.length === 0 && !loading && !hasMore ? (
+        {displayPosts.length === 0 && !loading ? (
           <div className={styles.noPosts}>게시글이 없습니다!</div>
         ) : (
           <ul className={styles.postList}>
@@ -189,7 +234,7 @@ const BoardPage = () => {
           </ul>
         )}
         {loading && <div className={styles.loading}>Loading...</div>}
-        {!hasMore && posts.length > 0 && (
+        {isAllLoaded && displayPosts.length > 0 && (
           <div className={styles.endMessage}>모든 게시글을 불러왔습니다.</div>
         )}
         <button className={styles.writeButton} onClick={handleWritePost}>

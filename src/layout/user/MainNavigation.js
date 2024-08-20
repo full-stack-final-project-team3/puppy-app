@@ -181,9 +181,9 @@ const MainNavigation = ({ drawerOpen, onToggleDrawer }) => {
               <NavLink className={styles.login} to="/login">
                 Login
               </NavLink>
-              <BiUser onClick={loginHandler} className={styles.icon} />
+              <BiUser onClick={loginHandler} className={`${styles.icon} ${styles.user}`} />
               <GiHamburgerMenu
-                className={styles.icon}
+                className={`${styles.icon} ${styles.hamburger}`}
                 onClick={onToggleDrawer} // 기존 toggleMenuHandler에서 toggleDrawerHandler로 변경
               />
             </>
@@ -192,8 +192,9 @@ const MainNavigation = ({ drawerOpen, onToggleDrawer }) => {
       </nav>
       {openNotice && (
         <div className={styles.noticeWrap} ref={noticeRef}>
-          {Array.isArray(noticeList) &&
-            noticeList.length > 0 &&
+          {
+            // Array.isArray(noticeList) &&
+            noticeList.length > 0 ?
             noticeList
               .slice()
               .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // 시간 순서대로 정렬
@@ -215,7 +216,10 @@ const MainNavigation = ({ drawerOpen, onToggleDrawer }) => {
                     ).toLocaleString()}
                   </div>
                 </React.Fragment>
-              ))}
+              ))
+                : <div className={styles.nothingNotice}>알림이 없습니다.</div>
+          }
+
         </div>
       )}
     </header>

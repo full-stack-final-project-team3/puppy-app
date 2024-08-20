@@ -15,7 +15,7 @@ const StepIndicator = ({ step, onStepClick }) => {
               onClick={num < step ? () => onStepClick(num) : null}
               style={{ cursor: num < step ? 'pointer' : 'default' }}
             >
-              {num === step ? num : num}
+              {num <= step ? num : ''}
             </div>
             <div className={styles.stepLabel}>{stepLabels[num - 1]}</div>
           </div>

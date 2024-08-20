@@ -6,6 +6,7 @@ import { addFavorite, fetchFavorites, removeFavorite } from "../../components/st
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark as filledBookmark } from "@fortawesome/free-solid-svg-icons";
 import { faBookmark as emptyBookmark } from "@fortawesome/free-regular-svg-icons";
+import {AUTH_URL} from "../../config/user/host-config";
 
 const MyLikeHotel = () => {
     const { favorites, status } = useSelector(state => state.favorites);
@@ -20,7 +21,7 @@ const MyLikeHotel = () => {
 
     const getImageUrl = (imageUri) => {
         if (imageUri && imageUri.startsWith('/local/')) {
-            return `http://localhost:8888${imageUri.replace('/local', '/hotel/images')}`;
+            return `${AUTH_URL}${imageUri.replace('/local', '/hotel/images')}`;
         }
         return imageUri;
     };
@@ -73,7 +74,7 @@ const MyLikeHotel = () => {
                         ))}
                     </ul>
                 ) : (
-                    <p>찜한 호텔이 없습니다.</p>
+                    <p className={styles.noHotel}>찜한 호텔이 없습니다.</p>
                 )}
             </div>
         </div>

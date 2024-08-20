@@ -17,10 +17,15 @@
   }
 
   .title {
-    font-size: 2rem;
+    font-size: 1.2rem;
     text-align: center;
     margin-bottom: 40px;
     color: #333;
+  }
+
+  .noHotel {
+    padding: 20px;
+    text-align: center;
   }
 
   .hotelList {
@@ -85,7 +90,7 @@
 
 @media (max-width: 400px) {
   .wrap {
-    width: 100%;
+    width: 87%;
     margin: 10px auto;
     padding: 10px;
     border-radius: 16px;
@@ -93,7 +98,7 @@
 
   .subWrap {
     width: 100%;
-    margin: 10px 0;
+    margin: 30px auto !important;
     padding: 10px;
     border-radius: 8px;
   }
