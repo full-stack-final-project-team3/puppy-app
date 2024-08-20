@@ -1,0 +1,68 @@
+.fixedButtonsContainer {
+    position: fixed;
+    bottom: 30px;
+    width: 100%;
+    /* 전체 너비 */
+    display: flex;
+    justify-content: center;
+    /* 중앙 정렬 */
+    align-items: flex-end;
+    z-index: 1000;
+}
+
+.scrollTopButton {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    background-color: #B3797A;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+
+    &:hover {
+        background-color: #9F5A5B;
+        transform: translateX(-50%) translateY(-1px);
+        /* 위로 이동 거리를 줄임 */
+    }
+}
+
+.writeButton {
+    position: absolute;
+    right: 14%;
+    top: 50%;
+    transform: translateY(-103%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    background-color: #B3797A;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+
+    &:hover {
+        background-color: #9F5A5B;
+        transform: translateY(-104%) translateX(-1px);
+        /* 위로 이동 거리를 줄임 */
+    }
+
+    svg {
+        margin-right: 8px;
+    }
+
+    span {
+        font-weight: bold;
+    }
+}
