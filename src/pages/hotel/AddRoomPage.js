@@ -6,7 +6,8 @@ import {
     addRoomImage, removeRoomImage, setErrorMessage, resetRoomData
 } from '../../components/store/hotel/RoomAddSlice';
 import styles from './AddRoomPage.module.scss';
-import { ROOM_URL } from "../../config/user/host-config";
+import {AUTH_URL} from '../../config/user/host-config'
+
 
 const AddRoomPage = () => {
     const { hotelId } = useParams();
@@ -20,7 +21,7 @@ const AddRoomPage = () => {
         if (!image || !image.hotelImgUri) return '';
         return image.type === 'LOCAL'
             ? image.hotelImgUri
-            : `http://localhost:8888${image.hotelImgUri.replace('/local', '/hotel/images')}`;
+            : `${AUTH_URL}${image.hotelImgUri.replace('/local', '/hotel/images')}`;
     };
 
     const handleRoomChange = (e) => {

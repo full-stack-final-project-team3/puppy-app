@@ -5,6 +5,7 @@ import { HOTEL_REVIEW_URL } from "../../../config/user/host-config";
 const initialState = {
     reviews: [],
     reviewsByReservationId: {},
+    reviewsByHotelId: {},
     reviewContent: '',
     rate: 0,
     loading: false,
@@ -194,11 +195,7 @@ const reviewSlice = createSlice({
             })
             .addCase(fetchReviewsByHotelId.fulfilled, (state, action) => {
                 state.loading = false;
-                // 기존 리뷰에 새로운 리뷰 데이터를 추가
-                state.reviews = [
-                    ...state.reviews.filter(review => review.hotelId !== action.payload.hotelId),
-                    ...action.payload.reviews
-                ];
+                state.reviewsByHotelId[action.payload.hotelId] = action.payload.reviews;
             })
             .addCase(fetchReviewsByHotelId.rejected, (state, action) => {
                 state.loading = false;

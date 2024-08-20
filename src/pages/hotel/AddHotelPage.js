@@ -8,13 +8,14 @@ import {
 } from '../../components/store/hotel/HotelAddSlice';
 import styles from './AddHotelPage.module.scss';
 import RoomModal from "./RoomModal";
+import {AUTH_URL} from '../../config/user/host-config'
 
 // 이미지 URL 생성 함수
 const createImageUrl = (image) => {
     if (!image || !image.hotelImgUri) return '';
     return image.type === 'LOCAL'
         ? image.hotelImgUri
-        : `http://localhost:8888${image.hotelImgUri.replace('/local', '/hotel/images')}`;
+        : `${AUTH_URL}${image.hotelImgUri.replace('/local', '/hotel/images')}`;
 };
 
 const AddHotelPage = () => {

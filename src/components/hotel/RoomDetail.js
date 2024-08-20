@@ -5,7 +5,6 @@ import Slider from "react-slick";
 import styles from './RoomDetail.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
-
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,6 +14,8 @@ import MapView from './MapView';
 import { deleteRoom, setRooms } from '../store/hotel/RoomAddSlice';
 import { fetchAvailableRooms } from '../store/hotel/ReservationSlice';
 import Footer from '../../layout/user/Footer';
+import {AUTH_URL} from "../../config/user/host-config"
+
 
 const RoomDetail = ({ hotel, onBook, getSliderSettings, onModifyRoom }) => {
 
@@ -64,7 +65,7 @@ const RoomDetail = ({ hotel, onBook, getSliderSettings, onModifyRoom }) => {
 
     const getImageUrl = (imageUri) => {
         if (imageUri && imageUri.startsWith('/local/')) {
-            return `http://localhost:8888${imageUri.replace('/local', '/hotel/images')}`;
+            return `${AUTH_URL}${imageUri.replace('/local', '/hotel/images')}`;
         }
         return imageUri;
     };
