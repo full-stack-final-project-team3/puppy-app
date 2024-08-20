@@ -1,0 +1,22 @@
+.codeInput {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #ccc;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  outline: none;
+
+  &:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+
+  &::placeholder {
+    color: #ccc;
+  }
+}
+
+.timer {
+  margin-top: 10px;
+}

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import styles from "./SignUpPage.module.scss";
+import styles from "./VerificationInput.module.scss";
 import { debounce } from "lodash";
 import { AUTH_URL } from "../../../../config/user/host-config";
 
