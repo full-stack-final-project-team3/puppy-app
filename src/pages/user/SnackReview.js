@@ -81,7 +81,7 @@ const SnackReview = () => {
                                 <div className={styles.details}>
                                     {order.bundles && order.bundles.length > 0 && order.bundles.map((bundle, bundleIndex) => (
                                         <div key={bundleIndex} className={styles.bundleItem}>
-                                            <h3>반려견 전용 맞춤형 푸드 패키지 For {bundle.dogName}</h3>
+                                            <h3 className={styles.h3}>반려견 전용 맞춤형 푸드 패키지 For {bundle.dogName}</h3>
                                             <ul className={styles.snack_review_ul}>
                                                 {bundle.treats?.map((treat, treatIndex) => (
                                                     <li className={styles.snack_review_li} key={treatIndex}>

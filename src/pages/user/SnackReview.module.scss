@@ -30,15 +30,17 @@
   color: #333;
 }
 
+
 .card {
   background: #F4E9D3;
   border: 1px solid #e0e0e0;
   border-radius: 16px;
   padding: 20px;
-  margin-bottom: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
+  margin: 0 auto 45px;
+  width: 74%;
 }
 
 .cardContent {
@@ -105,6 +107,11 @@
     margin: 10px auto;
     border-radius: 16px;
   }
+
+  .h3 {
+    text-align: center;
+  }
+
 
   .subWrap {
     width: 100%;
