@@ -4,6 +4,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { fetchHotelDetails, updateHotel, uploadFile } from '../../components/store/hotel/HotelAddSlice';
 import styles from "../../components/hotel/HotelList.module.scss";
 import formStyles from "./ModifyHotelPage.module.scss";
+import {AUTH_URL} from '../../config/user/host-config'
+
 
 function ModifyHotelPage() {
     const { hotelId } = useParams();
@@ -152,7 +154,7 @@ function ModifyHotelPage() {
                         {hotelData.hotelImages.map((image, index) => {
                             const imageUrl = image.type === 'LOCAL'
                                 ? image.hotelImgUri
-                                : `http://localhost:8888${image.hotelImgUri.replace('/local', '/hotel/images')}`;
+                                : `${AUTH_URL}${image.hotelImgUri.replace('/local', '/hotel/images')}`;
                             return (
                                 <div key={index} className={styles.imageContainer}>
                                     <img
