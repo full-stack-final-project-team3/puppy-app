@@ -1,9 +1,9 @@
 .header {
-  background-color: #F0E2C8;
+  background-color: #f0e2c8;
   border-bottom: 1px solid #e7e7e7;
   display: flex;
   justify-content: center;
-  color: #A69991;
+  color: #a69991;
   width: 100%;
   height: 70px;
   padding-top: 10px;
@@ -22,7 +22,8 @@
     //margin-top: 30px;
   }
 
-  .left, .right {
+  .left,
+  .right {
     flex: 1;
     display: flex;
     align-items: center;
@@ -32,7 +33,7 @@
       width: 20px;
       height: 20px;
       border-radius: 50%;
-      background: #B3797A;
+      background: #b3797a;
       position: absolute;
       right: 131px;
       top: 29px;
@@ -55,7 +56,6 @@
   .right > * {
     margin-right: 40px;
   }
-  
 
   .login {
     text-decoration: none;
@@ -67,12 +67,18 @@
     width: 25px;
     height: 25px;
     cursor: pointer;
-    color: #A69A91;
+    color: #a69a91;
   }
 
   .bell {
     width: 34px;
     height: 34px;
+  }
+
+  .basket {
+    width: 33px;
+    height: 33px;
+    padding-top: 5px;
   }
 
   .profile {
@@ -146,19 +152,22 @@
 
 @media screen and (max-width: 400px) {
   .nav {
-    width: 100%;
+    width: 400px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    //padding: 0 10px; /* 좌우 여백 추가 */
+    padding-right: 10px;
   }
 
   .img {
     padding-left: 10px;
+    order: -1; /* 이미지를 왼쪽 끝으로 이동 */
   }
 
-  .left, .center, .right {
-    flex: 1; /* 각 섹션을 동일한 크기로 만듦 */
+  .left,
+  .center,
+  .right {
+    flex: 1;
     display: flex;
     align-items: center;
   }
@@ -170,35 +179,42 @@
 
   .left {
     justify-content: flex-start;
+    order: 1; /* 왼쪽 섹션을 첫 번째로 설정 */
   }
 
   .right {
     justify-content: flex-end;
+    order: 2; /* 오른쪽 섹션을 두 번째로 설정 */
   }
 
   .right > * {
-    margin-right: 0px !important; /* 모든 아이콘 사이의 마진을 0px로 설정 */
+    margin-right: 0px !important;
   }
+
   .login {
-    //margin-right: 20px !important;
+    /* margin-right: 20px !important; */
   }
+
   .logout {
     margin-right: 10px !important;
   }
+
   .count {
-    right: 60px !important; /* .count 요소를 오른쪽으로 30px 이동 */
+    right: 60px !important;
   }
+
   .bell {
     width: 27px !important;
     height: 27px !important;
-    padding-right: 7px;
-  }
-  .basket{
-    width: 27px !important;
-    height: 27px !important;
-    padding-top: 7px;
+    margin-right: 10px !important;
   }
 
+  .basket {
+    width: 27px !important;
+    height: 27px !important;
+    margin-right: 10px !important;
+    padding-top: 7px;
+  }
 
   .welcome {
     display: none;
@@ -208,26 +224,21 @@
     display: none;
   }
 
-  .icon {
-    margin-left: 10px; /* 아이콘 간격 조절 */
-    margin-right: 20px !important; /* 아이콘 사이의 오른쪽 마진을 0px로 강제 설정 */
-  }
-
   .user {
     padding-left: 14px;
   }
 
   .hamburger {
-    margin-left: 0;
+    margin-left: 10px;
+    order: 1; /* 로그아웃 버튼을 오른쪽 섹션의 첫 번째로 설정 */
   }
-  
 
   .noticeWrap {
     position: absolute;
     right: 10px;
     top: 60px;
-    width: 95%; /* 화면의 거의 전체를 차지하도록 변경 */
-    max-width: 340px; /* 최대 너비를 설정 */
+    width: 95%;
+    max-width: 340px;
     height: 375px;
     background: #ffffff;
     border: 1px solid black;
@@ -236,5 +247,4 @@
     z-index: 9999;
     padding: 6px;
   }
-
 }
