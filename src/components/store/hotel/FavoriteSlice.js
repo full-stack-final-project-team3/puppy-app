@@ -10,7 +10,7 @@ const initialState = {
 // 즐겨찾기 목록 불러오기
 export const fetchFavorites = createAsyncThunk(
     'favorites/fetch',
-    async (_, { getState, rejectWithValue }) => {
+    async (_, {getState, rejectWithValue}) => {
         try {
             const token = JSON.parse(localStorage.getItem('userData')).token;
             const response = await fetch(`${HOTEL_URL}/favorites`, {
@@ -88,12 +88,10 @@ const favoriteSlice = createSlice({
             .addCase(addFavorite.fulfilled, (state, action) => {
                 state.favorites.push(action.payload); // 응답 구조 확인 필요
                 state.status = 'success';
-                console.log('Favorite added:', action.payload);
             })
             .addCase(removeFavorite.fulfilled, (state, action) => {
                 state.favorites = state.favorites.filter(fav => fav.hotelId !== action.payload.hotelId);
                 state.status = 'success';
-                console.log('Favorite removed:', action.payload.hotelId);
             })
             .addCase(addFavorite.rejected, (state, action) => {
                 state.status = 'failed';

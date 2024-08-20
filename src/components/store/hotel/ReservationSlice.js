@@ -1,6 +1,6 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { userEditActions } from '../user/UserEditSlice';
-import { ROOM_URL, NOTICE_URL, RESERVATION_URL, HOTEL_URL } from "../../../config/user/host-config";
+import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
+import {userEditActions} from '../user/UserEditSlice';
+import {ROOM_URL, NOTICE_URL, RESERVATION_URL, HOTEL_URL} from "../../../config/user/host-config";
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
@@ -25,7 +25,7 @@ const initialState = {
 
 export const fetchAvailableRooms = createAsyncThunk(
     'reservation/fetchAvailableRooms',
-    async ({ city, startDate, endDate }, thunkAPI) => {
+    async ({city, startDate, endDate}, thunkAPI) => {
         // 시간대를 KST로 설정하여 처리
         const formattedStartDate = dayjs(startDate).tz('Asia/Seoul').format();
         const formattedEndDate = dayjs(endDate).tz('Asia/Seoul').format();
@@ -41,7 +41,7 @@ export const fetchAvailableRooms = createAsyncThunk(
 
 export const fetchReservation = createAsyncThunk(
     'reservation/fetchReservation',
-    async ({ reservationId }, { rejectWithValue }) => {
+    async ({reservationId}, {rejectWithValue}) => {
         try {
             const token = JSON.parse(localStorage.getItem('userData')).token;
             const response = await fetch(`${RESERVATION_URL}/${reservationId}`, {
@@ -63,7 +63,7 @@ export const fetchReservation = createAsyncThunk(
 
 export const fetchUserReservations = createAsyncThunk(
     'reservation/fetchUserReservations',
-    async ({ userId }, { rejectWithValue, dispatch }) => {
+    async ({userId}, {rejectWithValue, dispatch}) => {
         try {
             const token = JSON.parse(localStorage.getItem('userData')).token;
             const response = await fetch(`${RESERVATION_URL}/user/${userId}`, {
@@ -98,7 +98,7 @@ export const fetchUserReservations = createAsyncThunk(
                 if (hotelResponse.ok && roomResponse.ok) {
                     const hotel = await hotelResponse.json();
                     const room = await roomResponse.json();
-                    return { ...reservation, hotel, room };
+                    return {...reservation, hotel, room};
                 } else {
                     throw new Error('Failed to fetch hotel or room details');
                 }
@@ -113,7 +113,19 @@ export const fetchUserReservations = createAsyncThunk(
 
 export const submitReservation = createAsyncThunk(
     'reservation/submitReservation',
-    async ({ hotelId, roomId, startDate, endDate, userId, totalPrice, user, email, token, createdAt, hotelName}, { rejectWithValue, dispatch }) => {
+    async ({
+               hotelId,
+               roomId,
+               startDate,
+               endDate,
+               userId,
+               totalPrice,
+               user,
+               email,
+               token,
+               createdAt,
+               hotelName
+           }, {rejectWithValue, dispatch}) => {
         if (!token) {
             return rejectWithValue('No token found');
         }
@@ -181,7 +193,7 @@ export const submitReservation = createAsyncThunk(
 
 export const deleteReservation = createAsyncThunk(
     'reservation/deleteReservation',
-    async (reservationId, { getState, rejectWithValue }) => {
+    async (reservationId, {getState, rejectWithValue}) => {
         const token = JSON.parse(localStorage.getItem('userData')).token;
         try {
             const response = await fetch(`${RESERVATION_URL}/${reservationId}`, {
@@ -239,7 +251,6 @@ const reservationSlice = createSlice({
             .addCase(submitReservation.fulfilled, (state, action) => {
                 state.status = 'succeeded';
                 state.reservation = action.payload;
-                console.log("예약어떻게 됐어?", state.reservation)
             })
             .addCase(submitReservation.rejected, (state, action) => {
                 state.status = 'failed';
@@ -269,7 +280,6 @@ const reservationSlice = createSlice({
             })
             .addCase(deleteReservation.fulfilled, (state, action) => {
                 state.userReservations = state.userReservations.filter(reservation => reservation.reservationId !== action.payload);
-                console.log("stateasdasd", state.userReservations.reservationId);
             })
             .addCase(deleteReservation.rejected, (state, action) => {
                 console.error("Error in deleting reservation:", action.error.message);
