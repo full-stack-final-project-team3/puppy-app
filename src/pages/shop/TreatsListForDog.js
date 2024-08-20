@@ -5,9 +5,7 @@ import styles from "./TreatsListForDog.module.scss";
 import CreateBundle from "../../components/shop/CreateBundle";
 import Modal from "./TreatsDetailModal";
 import ShopStepIndicator from "./ShopStepIndicator";
-import Footer from "../../layout/user/Footer";
 import { PulseLoader } from "react-spinners";
-import spinnerStyles from "../../layout/user/Spinner.module.scss";
 
 const TreatsListForDog = () => {
   const { dogId } = useParams();
@@ -28,6 +26,7 @@ const TreatsListForDog = () => {
   });
   const [removingTreats, setRemovingTreats] = useState({}); // 애니메이션 상태
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 });
   const [currentTreatId, setCurrentTreatId] = useState(null);
   const treatTypes = ["DRY", "WET", "GUM", "KIBBLE", "SUPPS"];
 
@@ -125,6 +124,9 @@ const TreatsListForDog = () => {
   }, [dogId, pageNo, currentStep]);
 
   const toggleTreatSelection = (treat) => {
+
+    closeModal();
+
     const currentType = treatTypes[currentStep];
 
     setSelectedTreats((prevSelected) => {
@@ -199,29 +201,41 @@ const TreatsListForDog = () => {
   console.log(selectedTreats);
 
   const openModal = (treat) => {
+    const viewportHeight = window.innerHeight; // 현재 뷰포트의 높이
+    const scrollY = window.scrollY; // 현재 스크롤 위치
+    const modalHeight = 800; // 모달의 높이 (예시로 설정)
+    const topPosition = scrollY + (viewportHeight - modalHeight) / 2; // 중앙 위치 계산
     setCurrentTreatId(treat.id);
+    setModalPosition({ x: window.innerWidth / 2, y: topPosition }); // 좌우 중앙, 세로는 계산된 위치
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
     setCurrentTreatId(null);
+    setModalPosition({ x: 0, y: 0 });
   };
+
+  if (isModalOpen) {
+    document.body.style.overflow = "hidden";
+  } else {
+    document.body.style.overflow = "auto";
+  }
 
   return (
     <>
       <ShopStepIndicator step={currentStep} onStepClick={handleStepClick} />
       {loading && (
-          <div className={styles.loadingOverlay}>
-            <div className={styles.spinnerContainer}>
-              <PulseLoader
-                className={styles.loader}
-                color="#0B593F"
-                loading={loading}
-                size={18}
-              />
-            </div>
+        <div className={styles.loadingOverlay}>
+          <div className={styles.spinnerContainer}>
+            <PulseLoader
+              className={styles.loader}
+              color="#0B593F"
+              loading={loading}
+              size={18}
+            />
           </div>
+        </div>
       )}
       <div className={`${styles.treatsList} page`}>
         <div className={styles.content}>
@@ -323,8 +337,9 @@ const TreatsListForDog = () => {
         isOpen={isModalOpen}
         onClose={closeModal}
         treatsId={currentTreatId}
+        modalPosition={modalPosition}
+        toggleTreatSelection={toggleTreatSelection}
       />
-      {/* <Footer /> */}
     </>
   );
 };
