@@ -74,6 +74,28 @@
   width: 73%;
 }
 
+.kakaoRecentLogin {
+  width: 60%;
+  text-align: center;
+  background: white;
+  //border-radius: 32px;
+  padding: 7px 0;
+  margin-bottom: 20px;
+  color: #195C4D;
+  font-size: 0.8rem;
+  position: relative;
+}
+
+.kakaoRecentLogin::before {
+  content: "";
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 10px;
+  border-style: solid;
+  border-color: transparent transparent white transparent;
+}
 .inputGroup {
   margin-bottom: 15px;
   text-align: left;
@@ -223,5 +245,18 @@
   .links {
     text-align: left;
     margin-bottom: 30px;
+  }
+
+  .kakaoRecentLogin {
+    width: 60%;
+    text-align: center;
+    background: white;
+    //border-radius: 32px;
+    padding: 7px 0;
+    color: #195C4D;
+    font-size: 0.8rem;
+    position: relative;
+    margin: 0 auto;
+    margin-top: 30px;
   }
 }

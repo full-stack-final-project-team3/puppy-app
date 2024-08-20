@@ -9,17 +9,13 @@ import { useDispatch } from "react-redux";
 import Footer from "../../../../layout/user/Footer";
 import {Cookies, useCookies} from "react-cookie";
 
-
 const APP_KEY = process.env.REACT_APP_KAKAO_APP_KEY;
 const REDIRECT_URL = process.env.REACT_APP_KAKAO_REDIRECT_URL;
 
 const KAKAO_LOGIN_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${APP_KEY}&redirect_uri=${REDIRECT_URL}&response_type=code`;
 
 const LoginForm = () => {
-
-
     const [cookies] = useCookies(['authToken']);
-
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [autoLogin, setAutoLogin] = useState(false);
@@ -27,6 +23,9 @@ const LoginForm = () => {
     const navigate = useNavigate();
     const { changeIsLogin, setUser } = useContext(UserContext);
     const dispatch = useDispatch();
+    const authToken = cookies.authToken;
+
+    const provider = localStorage.getItem('provider'); // 로컬 스토리지에서 provider 값 가져오기
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -50,6 +49,7 @@ const LoginForm = () => {
                 localStorage.setItem("userData", JSON.stringify(responseData));
                 setUser(responseData);
                 changeIsLogin(true);
+                localStorage.removeItem('provider'); // 로그인 시 provider 정보 제거
                 navigate("/");
             } else {
                 const errorText = await response.text();
@@ -60,74 +60,44 @@ const LoginForm = () => {
         }
     };
 
-    // useEffect(() => {
-    //     const authToken = cookies.authToken;
-    //     console.log(authToken);
-    //
-    //     if (authToken) {
-    //         const fetchData = async () => {
-    //             try {
-    //                 const firstResponse = await fetch(`${AUTH_URL}/auto-login`, {
-    //                     method: "POST",
-    //                     headers: {
-    //                         Authorization: `Bearer ${authToken}`,
-    //                         "Content-Type": "application/json",
-    //                     },
-    //                 });
-    //
-    //                 console.log(firstResponse)
-    //
-    //                 const contentType = firstResponse.headers.get("content-type");
-    //                 console.log(contentType)
-    //
-    //                 let data;
-    //                 if (contentType && contentType.includes("application/json")) {
-    //                     data = await firstResponse.json();
-    //                     console.log(data);
-    //
-    //                     const payload = {
-    //                         email: data.email,
-    //                         password: data.password,
-    //                         autoLogin: data.autoLogin,
-    //                     };
-    //
-    //                     const response = await fetch(`${AUTH_URL}/sign-in`, {
-    //                         method: "POST",
-    //                         headers: { "Content-Type": "application/json" },
-    //                         body: JSON.stringify(payload),
-    //                     });
-    //
-    //                     const userDetailData = await (await fetch(`${AUTH_URL}/${data.email}`)).json();
-    //                     const noticeData = await (await fetch(`${NOTICE_URL}/user/${userDetailData.id}`)).json();
-    //
-    //                     dispatch(userEditActions.saveUserNotice(noticeData));
-    //                     dispatch(userEditActions.updateUserDetail(userDetailData));
-    //
-    //                     const responseData = await response.json();
-    //                     localStorage.setItem("userData", JSON.stringify(responseData));
-    //                     setUser(responseData);
-    //                     changeIsLogin(true);
-    //                     navigate("/");
-    //                 }
-    //
-    //                 if (typeof data === 'string') {
-    //                     console.error("서버로부터 받은 오류 메시지:", data);
-    //                 }
-    //             } catch (error) {
-    //                 console.error("자동 로그인 중 오류 발생:", error);
-    //             }
-    //         };
-    //
-    //         fetchData();
-    //     }
-    // }, [cookies.authToken, changeIsLogin, setUser, navigate]);
-    //
-
     const enterHandler = (e) => {
         if (e.key === "Enter") {
             handleSubmit(e);
         }
     };
+
+    const getKakaoUserInfo = async () => {
+
+        const firstResponse = await fetch(`${AUTH_URL}/auto-login`, {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${authToken}`,
+                "Content-Type": "application/json",
+            },
+        })
+
+        if (firstResponse.ok) {
+            const data = await firstResponse.json();
+
+            const response = await fetch(`${AUTH_URL}/sign-in`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    email: data.email,
+                    password: data.password,
+                    autoLogin: data.autoLogin,
+                }),
+            });
+
+            const userDetailData = await (await fetch(`${AUTH_URL}/${data.email}`)).json();
+            const noticeData = await (await fetch(`${NOTICE_URL}/user/${data.id}`)).json();
+
+            localStorage.setItem("userData", JSON.stringify(response));
+            dispatch(userEditActions.saveUserNotice(noticeData));
+            dispatch(userEditActions.updateUserDetail(userDetailData));
+            localStorage.setItem('provider', 'kakao');
+        }
+    }
 
     return (
         <>
@@ -143,10 +113,15 @@ const LoginForm = () => {
                                 </Link>
                             </div>
                             <div className={styles.kakao}>
-                                <a href={KAKAO_LOGIN_URL} className={styles.kakaoBtn}>
+                                <a href={KAKAO_LOGIN_URL} className={styles.kakaoBtn} onClick={getKakaoUserInfo}>
                                     <RiKakaoTalkFill />
                                 </a>
                             </div>
+                            {provider === 'kakao' && (
+                                <div className={styles.kakaoRecentLogin}>
+                                    최근 사용한 서비스
+                                </div>
+                            )}
                         </div>
                     </div>
                     <div>
