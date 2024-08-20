@@ -231,3 +231,13 @@
     }
   }
 }
+
+
+@media screen and (max-width: 400px) {
+  .dogProfileUrl {
+    width: 60px !important;
+    height: 60px !important;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+}
