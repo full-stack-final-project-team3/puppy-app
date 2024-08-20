@@ -3,7 +3,7 @@ import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateRoom, uploadFile } from '../../components/store/hotel/RoomAddSlice';
 import { fetchRooms } from '../../components/store/hotel/RoomAddSlice';
-import { ROOM_URL } from '../../config/user/host-config';
+import { AUTH_URL } from '../../config/user/host-config';
 import styles from './ModifyRoomPage.module.scss';
 
 const ModifyRoomPage = () => {
@@ -161,7 +161,7 @@ const ModifyRoomPage = () => {
                     <div className={styles.imageGallery}>
                         {roomData.roomImages.map((image, index) => {
                             const imageUrl = (typeof image.hotelImgUri === 'string' && image.hotelImgUri.startsWith('/local')) || image.type === 'LOCAL'
-                                ? `http://localhost:8888${image.hotelImgUri.replace('/local', '/hotel/images')}`
+                                ? `${AUTH_URL}${image.hotelImgUri.replace('/local', '/hotel/images')}`
                                 : image.hotelImgUri;
 
                             return (
