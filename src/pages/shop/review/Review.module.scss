@@ -346,6 +346,15 @@ p {
   background-color: #0056b3;
 }
 
+.review_array_box{
+  width: 100%;
+  padding: 10px 0;
+  background-color: #14332C;
+}
+
+.review_array{
+  padding-left: 15px;
+}
 .review_array,
 .review_array a:first-child{
   display: flex;
@@ -353,6 +362,7 @@ p {
 }
 .review_array a{
   cursor: pointer;
+  color: #fff;
 }
 .review_array a:last-child::after{
   display: none;
@@ -363,8 +373,6 @@ p {
   display: inline-block;
   padding: 0 10px;
 }
-
-
 
 
 

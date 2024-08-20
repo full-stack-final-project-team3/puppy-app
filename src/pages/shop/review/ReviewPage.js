@@ -78,19 +78,21 @@ const ReviewPage = ({ treatsId }) => {
   return (
     <div className={styles.review_wraps_b}>
       <div className={`${styles.review_common_box} ${styles.review_page_box}`}>
-        <div className={styles.review_array}>
-          <a
-            onClick={() => handleSortChange('rating')}
-            className={sortCriteria === 'rating' ? styles.active : ''}
-          >
-            별점순
-          </a>
-          <a
-            onClick={() => handleSortChange('latest')}
-            className={sortCriteria === 'latest' ? styles.active : ''}
-          >
-            최신순
-          </a>
+        <div className={styles.review_array_box}>
+          <div className={styles.review_array}>
+            <a
+              onClick={() => handleSortChange('rating')}
+              className={sortCriteria === 'rating' ? styles.active : ''}
+            >
+              별점순
+            </a>
+            <a
+              onClick={() => handleSortChange('latest')}
+              className={sortCriteria === 'latest' ? styles.active : ''}
+            >
+              최신순
+            </a>
+          </div>
         </div>
         <ul className={styles.review_list_box}>
           {sortedReviews.map((review) => (
