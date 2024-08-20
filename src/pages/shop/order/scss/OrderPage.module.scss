@@ -16,7 +16,7 @@
   }
 
   .section {
-    margin-bottom: 20px;
+    margin-bottom: 70px;
   }
 
   .section-title {
@@ -256,8 +256,18 @@
 }
 
 
-
-
+//20240820 
+.Product_title{
+  display:flex;
+  justify-content: space-between;
+  padding: 15px 0;
+}
+.Product_title h3{
+  margin: 0;
+}
+.Product_title p span{
+  font-weight: bold;
+}
 
 
 

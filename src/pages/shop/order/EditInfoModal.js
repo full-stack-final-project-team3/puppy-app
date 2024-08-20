@@ -57,7 +57,13 @@ const EditInfoModal = ({
           <input
             type="text"
             value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            onChange={(e) => {
+              const input = e.target.value;
+              const regex = /^[0-9\b]+$/; // 숫자와 백스페이스만 허용
+              if (input === '' || regex.test(input)) {
+                setPhone(input);
+              }
+            }}
           />
         </div>
         <div>
