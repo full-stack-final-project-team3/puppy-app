@@ -188,6 +188,7 @@ const SnackReview = () => {
             treatId={selectedTreat.treatId}
             dogId={selectedTreat.dogId}
             treatTitle={selectedTreat.treatTitle}
+            onClose={closeModal} // 20240821: closeModal 함수를 onClose로 전달
           />
         </Modal>
 
@@ -203,6 +204,7 @@ const SnackReview = () => {
             orderId={selectedTreat.orderId}
             treatId={selectedTreat.treatId}
             treatTitle={selectedTreat.treatTitle}
+            onClose={closeModal} // 20240821: closeModal 함수를 onClose로 전달
           />
         </Modal>
 
