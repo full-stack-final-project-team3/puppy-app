@@ -22,8 +22,8 @@ const ReportStatus = () => {
         <div>
             <nav className={styles.nav}>
                 <ul className={styles.ul}>
-                    <li className={styles.menu} onClick={boardHandler}>게시글 신고</li>
-                    <li className={styles.menu} onClick={replyHandler}>댓글 신고</li>
+                    <li className={`${styles.menu} ${showBoard && styles.active}`} onClick={boardHandler}>게시글 신고</li>
+                    <li className={`${styles.menu} ${showReply && styles.active}`} onClick={replyHandler}>댓글 신고</li>
                 </ul>
             </nav>
             {showBoard && <ReportBoard/>}
