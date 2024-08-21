@@ -11,12 +11,11 @@
 }
 
 .loadingOverlay {
-  position: absolute; // 절대 위치로 페이지 전체 덮기
+  position: fixed; // 고정 위치로 변경
   top: 0;
   left: 0;
   width: 100%;
-  min-height: 100vh; // 최소 높이를 뷰포트 전체로 설정
-  height: 100%; // 콘텐츠 길이만큼 높이 덮기
+  height: 100%; // 전체 높이를 화면에 맞게 설정
   background-color: rgba(0, 0, 0, 0.5); // 반투명 배경
   display: flex;
   justify-content: center;
@@ -24,6 +23,7 @@
   z-index: 9999; // 모든 요소 위에 표시되도록 높은 z-index 설정
 }
 
+// 스피너 컨테이너는 그대로 유지
 .spinnerContainer {
   display: flex;
   flex-direction: column;

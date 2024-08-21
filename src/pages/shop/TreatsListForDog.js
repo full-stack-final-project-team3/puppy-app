@@ -124,7 +124,6 @@ const TreatsListForDog = () => {
   }, [dogId, pageNo, currentStep]);
 
   const toggleTreatSelection = (treat) => {
-
     closeModal();
 
     const currentType = treatTypes[currentStep];
@@ -227,7 +226,14 @@ const TreatsListForDog = () => {
       <ShopStepIndicator step={currentStep} onStepClick={handleStepClick} />
       {loading && (
         <div className={styles.loadingOverlay}>
-          <div className={styles.spinnerContainer}>
+          <div
+            className={styles.spinnerContainer}
+            style={{
+              top: modalPosition.y,
+              left: modalPosition.x,
+              transform: "translate(-50%, -50%)",
+            }} // 중앙 정렬
+          >
             <PulseLoader
               className={styles.loader}
               color="#0B593F"
