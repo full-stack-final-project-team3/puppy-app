@@ -15,7 +15,6 @@ const MainNavigation = ({ drawerOpen, onToggleDrawer }) => {
   const navi = useNavigate();
   const [openNotice, setOpenNotice] = useState(false);
   const noticeRef = useRef(null);
-  const bellRef = useRef(null);
 
   const { changeIsLogin, user, setUser } = useContext(UserContext);
   const userData = useRouteLoaderData("user-data");
@@ -152,7 +151,7 @@ const MainNavigation = ({ drawerOpen, onToggleDrawer }) => {
                   <Link to={"/cart"}>
                     <BiBasket className={`${styles.icon} ${styles.basket}`} />
                   </Link>
-                  <BsBell className={styles.bell} onClick={toggleNotice} ref={bellRef}></BsBell>
+                  <BsBell className={styles.bell} onClick={toggleNotice}></BsBell>
                   {Array.isArray(noticeList) && userDetail.noticeCount !== 0 && (
                       <span className={styles.count}>{userDetail.noticeCount}</span>
                   )}
@@ -190,43 +189,3 @@ const MainNavigation = ({ drawerOpen, onToggleDrawer }) => {
 };
 
 export default MainNavigation;
-
-//            알림창 누르면 이동하는 버전 (Link태그 사용) - 0811
-// {Array.isArray(noticeList) &&
-// noticeList.length > 0 &&
-// noticeList
-//     .slice()
-//     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // 시간 순서대로 정렬
-//     .map((notice) => (
-//         <React.Fragment key={notice.id}>
-//           {notice.message.includes('예약') ? (
-//               <NavLink
-//                   to="/hotel-record"
-//                   className={`${styles.message} ${
-//                       notice.clicked ? styles.clickedMessage : ""
-//                   }`}
-//                   onClick={
-//                     !notice.clicked ? () => checkNotice(notice.id) : undefined
-//                   }
-//               >
-//                 {notice.message}
-//               </NavLink>
-//           ) : (
-//               <div
-//                   className={`${styles.message} ${
-//                       notice.clicked ? styles.clickedMessage : ""
-//                   }`}
-//                   onClick={
-//                     !notice.clicked ? () => checkNotice(notice.id) : undefined
-//                   }
-//               >
-//                 {notice.message}
-//               </div>
-//           )}
-//           <div className={styles.time}>
-//             {new Date(
-//                 (notice.createdAt || "").replace(" ", "T")
-//             ).toLocaleString()}
-//           </div>
-//         </React.Fragment>
-//     ))}

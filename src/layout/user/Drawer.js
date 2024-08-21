@@ -1,5 +1,5 @@
 // src/components/Drawer.js
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import styles from './Drawer.module.scss';
 import { useNavigate } from 'react-router-dom'; 
@@ -220,6 +220,7 @@ const Drawer = ({ open, onClose }) => {
 
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate
+  const drawerRef = useRef(null);
 
   const handleNavClick = async (path) => {
     setLoading(true); // 로딩 시작
@@ -234,6 +235,26 @@ const Drawer = ({ open, onClose }) => {
       setLoading(false); // 로딩 종료
     }
   };
+   // 바탕화면 클릭 useRef, effect 사용하면 될듯?
+  
+   useEffect(() => {
+    const handleClickOutside = (e) => {
+        if (drawerRef.current && !drawerRef.current.contains(e.target)) {
+            onClose();
+        }
+    };
+
+    if (open) {
+        document.addEventListener('mousedown', handleClickOutside);
+    } else {
+        document.removeEventListener('mousedown', handleClickOutside);
+    }
+
+    // useEffect 가 실행 될때마다 이전값을 지우기 위해서 리턴문 사용했음 ㅇㅇ
+    return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+    };
+}, [open, onClose]);
 
   return (
     <>
@@ -259,7 +280,9 @@ const Drawer = ({ open, onClose }) => {
           mass: 1,         // 질량
           restDelta: 0.001,  // 애니메이션 종료 조건
         }}
-        open={open}>
+        open={open}
+        ref={drawerRef}
+        >
       <CloseButton
           className={CloseButton}
           open={open}

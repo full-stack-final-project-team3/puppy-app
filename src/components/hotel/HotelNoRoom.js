@@ -1,13 +1,14 @@
 import React from 'react';
-import styles from './HotelNoRoom.module.scss'; // Create this CSS module file for styling
+import styles from './HotelNoRoom.module.scss';
 
-const HotelNoRoom = () => {
-  return (
-    <div className={styles.noRoomContainer}>
-      <img src="/pawpaw.png" alt="No results found" className={styles.noRoomImage} />
-      <p>조회된 호텔이 없습니다. 🥲</p>
-    </div>
-  );
+const HotelNoRoom = ({message}) => {
+    return (
+        <div className={styles.noRoomContainer}>
+            <img src="/pawpaw.png" alt="No results found" className={styles.noRoomImage}/>
+            <p>{message}</p>
+        </div>
+    );
 };
+
 
 export default HotelNoRoom;

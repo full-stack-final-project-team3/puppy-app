@@ -88,52 +88,55 @@ const HotelList = ({onShowProperty, getSliderSettings}) => {
     };
 
     if (!hotels.length) {
-        return <HotelNoRoom/>;
+        return <HotelNoRoom message="조회된 호텔이 없습니다."/>;
     }
 
     return (
         <>
-        <div className={styles.hotelList}>
-            {hotels.map((hotel) => (
-                <div key={hotel.id} className={styles.hotel}>
-                    <button
-                        onClick={() => isFavorite(hotel.id) ? handleRemoveFavorite(hotel.id) : handleAddFavorite(hotel.id)}
-                        className={styles.favoriteButton}
-                    >
-                        <FontAwesomeIcon icon={isFavorite(hotel.id) ? filledBookmark : emptyBookmark}/>
-                    </button>
-                    {isAdmin && (<button onClick={() => handleDeleteHotel(hotel.id)} className={styles.deleteButton}>
-                        <FontAwesomeIcon icon={faTimes}/>
-                    </button>)}
-                    <div className={styles.imageBox}>
-                        {/* Slider 적용 */}
-                        <Slider {...getSliderSettings(hotel["hotel-images"].length)} className={styles.imageGallery}>
-                            {hotel["hotel-images"] && hotel["hotel-images"].map(image => {
-                                const imageUrl = `${AUTH_URL}${image.hotelImgUri.replace('/local', '/hotel/images')}`;
-                                return (
-                                    <img
-                                        key={image.imageId}
-                                        src={imageUrl}
-                                        alt={`${hotel.name} 이미지`}
-                                        className={styles.image}
-                                    />
-                                );
-                            })}
-                        </Slider>
-                    </div>
-                    <br></br>
-                    <h2>{hotel.name}</h2><br></br>
-                    <p>{hotel.description}</p><br></br>
-                    <p>{hotel.location}</p>
+            <div className={styles.hotelList}>
+                {hotels.map((hotel) => (
+                    <div key={hotel.id} className={styles.hotel}>
+                        <button
+                            onClick={() => isFavorite(hotel.id) ? handleRemoveFavorite(hotel.id) : handleAddFavorite(hotel.id)}
+                            className={styles.favoriteButton}
+                        >
+                            <FontAwesomeIcon icon={isFavorite(hotel.id) ? filledBookmark : emptyBookmark}/>
+                        </button>
+                        {isAdmin && (
+                            <button onClick={() => handleDeleteHotel(hotel.id)} className={styles.deleteButton}>
+                                <FontAwesomeIcon icon={faTimes}/>
+                            </button>)}
+                        <div className={styles.imageBox}>
+                            {/* Slider 적용 */}
+                            <Slider {...getSliderSettings(hotel["hotel-images"].length)}
+                                    className={styles.imageGallery}>
+                                {hotel["hotel-images"] && hotel["hotel-images"].map(image => {
+                                    const imageUrl = `${AUTH_URL}${image.hotelImgUri.replace('/local', '/hotel/images')}`;
+                                    return (
+                                        <img
+                                            key={image.imageId}
+                                            src={imageUrl}
+                                            alt={`${hotel.name} 이미지`}
+                                            className={styles.image}
+                                        />
+                                    );
+                                })}
+                            </Slider>
+                        </div>
+                        <br></br>
+                        <h2>{hotel.name}</h2><br></br>
+                        <p>{hotel.description}</p><br></br>
+                        <p>{hotel.location}</p>
 
-                    {/*<button className={styles.ListButton} onClick={() => handleAddReview(hotel.id)}>리뷰 작성</button>*/}
-                    {isAdmin &&
-                        (<button className={styles.ListButton} onClick={() => handleAddRoom(hotel.id)}>방 추가</button>)}
-                    <button className={styles.ListButton} onClick={() => onShowProperty(hotel.id)}>선택</button>
-                </div>
-            ))}
-        </div>
-        <Footer />
+                        {/*<button className={styles.ListButton} onClick={() => handleAddReview(hotel.id)}>리뷰 작성</button>*/}
+                        {isAdmin &&
+                            (<button className={styles.ListButton} onClick={() => handleAddRoom(hotel.id)}>방
+                                추가</button>)}
+                        <button className={styles.ListButton} onClick={() => onShowProperty(hotel.id)}>선택</button>
+                    </div>
+                ))}
+            </div>
+            <Footer/>
         </>
     );
 };

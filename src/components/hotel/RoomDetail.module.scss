@@ -10,6 +10,21 @@
   margin: 0 auto; /* Center the list */
   justify-content: center; /* Center items */
 
+  .noRoomsMessage {
+    text-align: center;
+    padding: 50px;
+    font-size: 1.5em;
+    color: #B37A7A;
+    background-color: #F4E8D3;
+    border-radius: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .noRoomImage {
+    max-width: 300px;
+  }
+
+
   .room {
     color: #333333;
     padding: 20px;
@@ -18,60 +33,62 @@
     flex: 1 1 calc(50% - 40px); /* Adjusted to fit 2 items in a row */
     max-width: calc(50% - 100px); /* Ensure it doesn't grow larger */
     box-sizing: border-box;
+
     h2 {
       margin: 0 0 10px;
       font-size: 1.5em;
-      
+
     }
-    
+
 
     p {
       margin: 5px 0;
-      
+
     }
 
     .booknow {
       margin-top: 10px;
-    padding: 10px 20px;
-    font-size: 16px;
-    margin-right: 10px;
-    right: 10px;
-    color: #fff;
-    background-color: #B37A7A;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    &:hover {
-      background-color: #680808;
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-right: 10px;
+      right: 10px;
+      color: #fff;
+      background-color: #B37A7A;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #680808;
+      }
+
     }
-    
+
+    .deleteButton {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-weight: normal;
+      font-size: 2.5rem;
+      color: #868686; /* Change color as needed */
     }
-      
-  .deleteButton {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-weight: normal;
-    font-size: 2.5rem;
-    color: #868686; /* Change color as needed */
-  }
-  
-    
+
 
     .slider {
       margin-top: 10px;
-      
+
       .slide {
         position: relative;
         overflow: hidden;
-        
+
         img {
           width: 100%;
           height: 400px; // 고정 높이 설정 (필요에 따라 조정)
           object-fit: fill; // 이미지가 컨테이너를 채우도록
         }
       }
+
       &:hover {
         .slick-prev,
         .slick-next {
@@ -104,16 +121,17 @@
     .slick-next {
       right: 10px;
     }
+
     // .slick-track {
     //   display: flex !important;
     //   gap: 20px !important; /* Gap between slides */
     // }
-  
+
     // .slick-slide {
     //   padding: 0 10px !important; /* spacing between slides */
     //   box-sizing: border-box;
     // }
-  } 
+  }
 }
 
 .titleReview {
@@ -161,6 +179,7 @@
   margin-bottom: 100px;
   margin-top: 100px;
 }
+
 .location {
   background: #A18C80;
   display: flex;
@@ -170,20 +189,20 @@
 .contact {
   display: flex;
   flex-direction: column;
-  justify-content:space-between;
+  justify-content: space-between;
   font-size: 18px;
   color: #E5E5E5;
   font-family: "GmarketSans";
   padding-bottom: 100px;
   margin-left: -22%;
   padding-top: 50px;
-  
+
   .contactTitle {
     text-align: left;
     font-size: 50px;
     font-family: "Red Hat Display", sans-serif;
   }
-  
+
 }
 
 
@@ -200,6 +219,7 @@
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+
   &:hover {
     background-color: #680808;
   }
@@ -218,7 +238,7 @@
     margin: 0 auto;
     justify-content: center;
     padding: 0px;
-    
+
     .room {
       color: #5C4033;
       padding: 0px;
@@ -227,18 +247,19 @@
       flex: 1 1 90% !important;
       max-width: 90% !important;
       box-sizing: border-box;
+
       .slider {
-      .slide {
-        img {
-          width: 100%;
-          height: 250px !important; // 고정 높이 설정 (필요에 따라 조정)
-          object-fit: fill; // 이미지가 컨테이너를 채우도록
+        .slide {
+          img {
+            width: 100%;
+            height: 250px !important; // 고정 높이 설정 (필요에 따라 조정)
+            object-fit: fill; // 이미지가 컨테이너를 채우도록
           }
-        } 
+        }
       }
     }
   }
-  
+
 
   .line {
     max-width: 350px;
@@ -258,7 +279,7 @@
       color: #333333;
       font-weight: bold;
     }
-  
+
     .description {
       color: #333333;
       font-family: 'NotoSansKR';
@@ -277,17 +298,18 @@
     background: #A18C80;
     display: flex;
     flex-direction: column;
-    
+
   }
   .contact {
     height: 100px;
     padding-top: 0px;
     margin-left: 5%;
+
     .contactTitle {
       font-size: 32px;
     }
   }
-    
+
 }
 
 .mapContainer {
@@ -315,6 +337,6 @@
       width: 1400px; // 1920px 이상에서는 1400px로 고정
       // margin: 0 auto;
     }
-    
+
   }
 }

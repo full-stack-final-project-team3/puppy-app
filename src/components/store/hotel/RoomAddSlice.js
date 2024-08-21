@@ -1,6 +1,5 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { ROOM_URL, UPLOAD_URL, HOTEL_URL } from '../../../config/user/host-config';
-import {updateHotel} from "./HotelAddSlice";
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {ROOM_URL, UPLOAD_URL, HOTEL_URL} from '../../../config/user/host-config';
 
 const initialRoomAddState = {
     rooms: [],
@@ -8,7 +7,7 @@ const initialRoomAddState = {
     content: '',
     type: '',
     price: '',
-    roomImages: [{ hotelImgUri: '', type: 'ROOM' }],
+    roomImages: [{hotelImgUri: '', type: 'ROOM'}],
     errorMessage: '',
     isUploading: false,
 
@@ -16,7 +15,7 @@ const initialRoomAddState = {
 
 export const uploadFile = createAsyncThunk(
     'roomAdd/uploadFile',
-    async ({ file, index }, thunkAPI) => {
+    async ({file, index}, thunkAPI) => {
         const formData = new FormData();
         formData.append('file', file);
 
@@ -31,7 +30,7 @@ export const uploadFile = createAsyncThunk(
             });
 
             const responseText = await response.text();
-            return { data: responseText, index };
+            return {data: responseText, index};
         } catch (e) {
             return thunkAPI.rejectWithValue('Error uploading file: ' + e.message);
         }
@@ -58,7 +57,7 @@ export const fetchRooms = createAsyncThunk(
 
 export const submitRoom = createAsyncThunk(
     'roomAdd/submitRoom',
-    async ({ roomData, token, hotelId }, thunkAPI) => {
+    async ({roomData, token, hotelId}, thunkAPI) => {
         try {
             const response = await fetch(`${ROOM_URL}`, {
                 method: 'POST',
@@ -98,12 +97,9 @@ export const submitRoom = createAsyncThunk(
 
 export const updateRoom = createAsyncThunk(
     'roomAdd/updateRoom',
-    async ({ roomData, roomId }, { getState, rejectWithValue }) => {
+    async ({roomData, roomId}, {getState, rejectWithValue}) => {
         const token = JSON.parse(localStorage.getItem('userData')).token;
-        console.log(`Token: ${token}`);
         try {
-            console.log(`Request URL: ${ROOM_URL}/${roomId}`);
-
             const response = await fetch(`${ROOM_URL}/${roomId}`, {
                 method: 'PATCH',
                 headers: {
@@ -140,8 +136,6 @@ export const updateRoom = createAsyncThunk(
 );
 
 
-
-
 export const deleteRoom = createAsyncThunk(
     'roomAdd/deleteRoom',
     async (roomId, thunkAPI) => {
@@ -174,7 +168,7 @@ const roomAddSlice = createSlice({
             });
         },
         addRoomImage: (state) => {
-            state.roomImages.push({ hotelImgUri: '', type: 'ROOM' });
+            state.roomImages.push({hotelImgUri: '', type: 'ROOM'});
         },
         removeRoomImage: (state, action) => {
             state.roomImages = state.roomImages.filter((_, i) => i !== action.payload);
@@ -193,11 +187,11 @@ const roomAddSlice = createSlice({
                 state.isUploading = true;
             })
             .addCase(uploadFile.fulfilled, (state, action) => {
-                const { data, index } = action.payload;
+                const {data, index} = action.payload;
                 if (index !== undefined) {
                     state.roomImages[index].hotelImgUri = data;
                 } else {
-                    state.roomImages.push({ hotelImgUri: data, type: 'ROOM' });
+                    state.roomImages.push({hotelImgUri: data, type: 'ROOM'});
                 }
                 state.isUploading = false;
             })
@@ -244,5 +238,12 @@ const roomAddSlice = createSlice({
     }
 });
 
-export const { updateRoomData, addRoomImage, removeRoomImage, setErrorMessage, resetRoomData, setRooms } = roomAddSlice.actions;
+export const {
+    updateRoomData,
+    addRoomImage,
+    removeRoomImage,
+    setErrorMessage,
+    resetRoomData,
+    setRooms
+} = roomAddSlice.actions;
 export default roomAddSlice.reducer;

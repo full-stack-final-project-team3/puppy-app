@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import { motion } from 'framer-motion';
+import {motion} from 'framer-motion';
 import Slider from "react-slick";
 import styles from './RoomDetail.module.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faTimes} from '@fortawesome/free-solid-svg-icons';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import ReviewList from './ReviewList';
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import MapView from './MapView';
-import { deleteRoom, setRooms } from '../store/hotel/RoomAddSlice';
-import { fetchAvailableRooms } from '../store/hotel/ReservationSlice';
+import {deleteRoom, setRooms} from '../store/hotel/RoomAddSlice';
+import {fetchAvailableRooms} from '../store/hotel/ReservationSlice';
 import Footer from '../../layout/user/Footer';
 import {AUTH_URL} from "../../config/user/host-config"
 
 
-const RoomDetail = ({ hotel, onBook, getSliderSettings, onModifyRoom }) => {
+const RoomDetail = ({hotel, onBook, getSliderSettings, onModifyRoom}) => {
 
     const roomTypeMapping = {
         SMALL_DOG: "소형견",
@@ -44,7 +44,7 @@ const RoomDetail = ({ hotel, onBook, getSliderSettings, onModifyRoom }) => {
 
     useEffect(() => {
         if (hotelId && startDate && endDate) {
-            dispatch(fetchAvailableRooms({ city: hotelId, startDate, endDate }))
+            dispatch(fetchAvailableRooms({city: hotelId, startDate, endDate}))
                 .unwrap()
                 .then(rooms => {
                     setAvailableRooms(rooms);
@@ -95,10 +95,10 @@ const RoomDetail = ({ hotel, onBook, getSliderSettings, onModifyRoom }) => {
     };
 
     const animateProps = {
-        initial: { opacity: 0, y: 50 },
-        whileInView: { opacity: 1, y: 0 },
-        viewport: { once: false },
-        transition: { ease: "easeInOut", duration: 1, y: { duration: 0.5 } }
+        initial: {opacity: 0, y: 50},
+        whileInView: {opacity: 1, y: 0},
+        viewport: {once: false},
+        transition: {ease: "easeInOut", duration: 1, y: {duration: 0.5}}
     };
 
     return (
@@ -107,59 +107,70 @@ const RoomDetail = ({ hotel, onBook, getSliderSettings, onModifyRoom }) => {
                 Modify Hotel
             </button>)}
             <div className={styles.roomDetail}>
-                {availableRooms.map((room, roomIndex) => (
-                    <div key={room['room-id']} className={styles.room}>
-                        {isAdmin && (<button className={styles.deleteButton} onClick={() => handleDeleteRoom(room['room-id'])}>
-                            <FontAwesomeIcon icon={faTimes}/>
-                        </button>)}
-
-                        <Slider className={styles.slider} {...getSliderSettings(room["room-images"].length)}>
-                            {room["room-images"] && room["room-images"].map((image, imageIndex) => {
-                                const imageUrl = getImageUrl(image['hotelImgUri']);
-                                if (!imageUrl) {
-                                    console.error('Invalid image URI for image', image);
-                                    return null;
-                                }
-                                return (
-                                    <div key={image['image-id'] || `${roomIndex}-${imageIndex}`} className={styles.slide}>
-                                        <img src={imageUrl} alt={`${room.name} - ${image['hotelImgUri']}`} />
-                                    </div>
-                                );
-                            })}
-                        </Slider>
-                        <h2>{room['room_name']}</h2>
-                        <p>{room['room-content']}</p>
-                        <p>Type: {roomTypeMapping[room['room-type']]}</p>
-                        <p>Price: ₩{room['room-price']}</p>
-                        <button className={styles.booknow}onClick={() => onBook(hotel, room)}>Book now</button>
+                {availableRooms.length === 0 ? (
+                    <div className={styles.noRoomsMessage}>
+                        <p>예약 가능한 객실이 없습니다!</p>
+                        <img src="/pawpaw.png" alt="No results found" className={styles.noRoomImage}/>
                     </div>
-                ))}
+                ) : (
+                    availableRooms.map((room, roomIndex) => (
+                        <div key={room['room-id']} className={styles.room}>
+                            {isAdmin && (
+                                <button className={styles.deleteButton}
+                                        onClick={() => handleDeleteRoom(room['room-id'])}>
+                                    <FontAwesomeIcon icon={faTimes}/>
+                                </button>
+                            )}
+
+                            <Slider className={styles.slider} {...getSliderSettings(room["room-images"].length)}>
+                                {room["room-images"] && room["room-images"].map((image, imageIndex) => {
+                                    const imageUrl = getImageUrl(image['hotelImgUri']);
+                                    if (!imageUrl) {
+                                        console.error('Invalid image URI for image', image);
+                                        return null;
+                                    }
+                                    return (
+                                        <div key={image['image-id'] || `${roomIndex}-${imageIndex}`}
+                                             className={styles.slide}>
+                                            <img src={imageUrl} alt={`${room.name} - ${image['hotelImgUri']}`}/>
+                                        </div>
+                                    );
+                                })}
+                            </Slider>
+                            <h2>{room['room_name']}</h2>
+                            <p>{room['room-content']}</p>
+                            <p>Type: {roomTypeMapping[room['room-type']]}</p>
+                            <p>Price: ₩{room['room-price']}</p>
+                            <button className={styles.booknow} onClick={() => onBook(hotel, room)}>Book now</button>
+                        </div>
+                    ))
+                )}
             </div>
             <div className={styles.titleReview}>Review</div>
             <motion.div {...animateProps} className={styles.review}>
-                <ReviewList hotelId={hotelId} />
+                <ReviewList hotelId={hotelId}/>
             </motion.div>
             <motion.div {...animateProps} className={styles.line}></motion.div>
             <motion.div {...animateProps}>
-            <div className={styles.instruction}>
-                <div className={styles.hotelTitle}>
-                    {hotel['hotel-name']}
+                <div className={styles.instruction}>
+                    <div className={styles.hotelTitle}>
+                        {hotel['hotel-name']}
+                    </div>
+                    <div className={styles.description}>
+                        {hotel['description']}
+                    </div>
                 </div>
-                <div className={styles.description}>
-                    {hotel['description']}
-                </div>
-            </div>
             </motion.div>
             <motion.div {...animateProps} className={styles.line}></motion.div>
             <motion.div {...animateProps} className={styles.location}>
-                <MapView location={hotel['location']} title={hotel['hotel-name']} />
+                <MapView location={hotel['location']} title={hotel['hotel-name']}/>
                 <motion.div {...animateProps} className={styles.contact}>
                     <h1 className={styles.contactTitle}>Location</h1>
                     {hotel['location']}<br></br><br></br>
                     Contact : {hotel['phone-number']}&nbsp;&nbsp;&nbsp;&nbsp;
                 </motion.div>
             </motion.div>
-            <Footer />
+            <Footer/>
         </>
     );
 };
