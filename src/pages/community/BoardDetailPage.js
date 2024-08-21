@@ -60,6 +60,14 @@ const BoardDetailPage = () => {
   const [sortOrder, setSortOrder] = useState("latest"); // 'latest' 또는 'oldest'
   const [showSortOptions, setShowSortOptions] = useState(false);
 
+  //공유하기 (modal)
+  const [showShareModal, setShowShareModal] = useState(false);
+  //삭제하기 (modal)
+  // 게시글 삭제
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  // 삭제 대상
+  const [deleteTarget, setDeleteTarget] = useState(null);
+
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -233,7 +241,9 @@ const BoardDetailPage = () => {
     }
   };
 
+  //공유하기
   const handleShare = () => {
+    setShowShareModal(true);
     if (navigator.share) {
       navigator
         .share({
@@ -248,37 +258,65 @@ const BoardDetailPage = () => {
       navigator.clipboard
         .writeText(url)
         .then(() => {
-          alert("URL이 클립보드에 복사되었습니다.");
+          // alert("URL이 클립보드에 복사되었습니다.");
         })
         .catch((error) => {
           console.error("클립보드 복사 오류:", error);
-          alert("URL 복사에 실패했습니다. URL을 직접 복사하여 공유하세요.");
+          // alert("URL 복사에 실패했습니다. URL을 직접 복사하여 공유하세요.");
         });
     }
   };
+  // 공유하기 닫기
+  const closeShareModal = () => {
+    setShowShareModal(false);
+  };
 
-  const handleDelete = async () => {
-    if (window.confirm("정말로 이 게시물을 삭제하시겠습니까?")) {
-      try {
-        const userData = JSON.parse(localStorage.getItem("userData"));
-        const response = await fetch(`${BOARD_URL}/${id}`, {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${userData.token}`,
-            "Content-Type": "application/json",
-          },
-        });
+  //삭제 모달 함수
+  const DeleteModal = ({ isOpen, onClose, onDelete }) => {
+  // console.log("실행된다.");
+  return (
+    <div
+      className={`${styles.modalOverlay} ${isOpen ? styles.active : ""}`}
+      onClick={onClose}
+    >
+      <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+        <h3>삭제</h3>
+        <p>정말로 삭제하시겠습니까?</p>
+        <button onClick={onDelete}>삭제</button>
+        <button onClick={onClose}>취소</button>
+      </div>
+    </div>
+  );
+};
 
-        if (response.ok) {
-          alert("게시물이 성공적으로 삭제되었습니다.");
-          navigate("/board");
-        } else {
-          throw new Error("게시물 삭제에 실패했습니다.");
-        }
-      } catch (error) {
-        console.error("게시물 삭제 중 오류 발생:", error);
-        alert("게시물 삭제에 실패했습니다. 다시 시도해 주세요.");
+  // 게시글 삭제 함수
+  const handleDelete = () => {
+    console.log('게시글 삭제됩니다.');
+      //  setDeleteTarget({ type: "post", id: post.id });
+    setShowDeleteModal(true);
+  };
+
+  // 게시글 삭제 확인 함수
+  const handleDeleteConfirm = async () => {
+    try {
+      const userData = JSON.parse(localStorage.getItem("userData"));
+      const response = await fetch(`${BOARD_URL}/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        setShowDeleteModal(false);
+        navigate("/board");
+      } else {
+        throw new Error("게시물 삭제에 실패했습니다.");
       }
+    } catch (error) {
+      console.error("게시물 삭제 중 오류 발생:", error);
+      alert("게시물 삭제에 실패했습니다. 다시 시도해 주세요.");
     }
   };
 
@@ -291,11 +329,13 @@ const BoardDetailPage = () => {
   };
 
   const handleOptionClick = (action) => {
+    console.log("여기는 삭제 옵션 클릭");
     setShowOptions(false);
     if (action === "edit") {
       handleEdit();
     } else if (action === "delete") {
-      handleDelete();
+       setDeleteTarget({ type: "post", id: post.id });
+       setShowDeleteModal(true);
     }
   };
 
@@ -350,29 +390,38 @@ const BoardDetailPage = () => {
     }
   };
 
+  //댓글 삭제
   const handleCommentDelete = async (commentId) => {
-    if (window.confirm("정말로 이 댓글을 삭제하시겠습니까?")) {
-      try {
-        const userData = JSON.parse(localStorage.getItem("userData"));
-        const response = await fetch(
-          `${BOARD_URL}/${id}/comments/${commentId}?userId=${user.id}`,
-          {
-            method: "DELETE",
-            headers: {
-              Authorization: `Bearer ${userData.token}`,
-            },
-          }
-        );
+    setShowDeleteModal(true);
+    setDeleteTarget({ type: "comment", id: commentId });
+  };
 
-        if (response.ok) {
-          setComments(comments.filter((comment) => comment.id !== commentId));
-        } else {
-          throw new Error("댓글 삭제에 실패했습니다.");
-        }
-      } catch (error) {
-        console.error("댓글 삭제 중 오류 발생:", error);
-        alert("댓글 삭제에 실패했습니다. 다시 시도해 주세요.");
-      }
+  const handleDeleteCommentConfirm = async () => {
+    try {
+          const userData = JSON.parse(localStorage.getItem("userData"));
+          const response = await fetch(
+            `${BOARD_URL}/${id}/comments/${deleteTarget.id}?userId=${user.id}`,
+            {
+              method: "DELETE",
+              headers: {
+                Authorization: `Bearer ${userData.token}`,
+              },
+            }
+          );
+
+          if (response.ok) {
+            setComments(
+              comments.filter((comment) => comment.id !== deleteTarget.id)
+            );
+          } else {
+            throw new Error("댓글 삭제에 실패했습니다.");
+          }
+
+      setShowDeleteModal(false);
+      setDeleteTarget(null);
+    } catch (error) {
+      console.error("댓글 삭제 중 오류 발생:", error);
+      alert("댓글 삭제에 실패했습니다. 다시 시도해 주세요.");
     }
   };
 
@@ -519,43 +568,49 @@ const BoardDetailPage = () => {
       alert("대댓글 수정에 실패했습니다. 다시 시도해 주세요.");
     }
   };
-
+  //대댓글 삭제
   const handleSubReplyDelete = async (commentId, subReplyId) => {
-    if (window.confirm("정말로 이 대댓글을 삭제하시겠습니까?")) {
-      try {
-        const userData = JSON.parse(localStorage.getItem("userData"));
-        const response = await fetch(
-          `${BOARD_URL}/${id}/comments/${commentId}/subReplies/${subReplyId}?userId=${user.id}`,
-          {
-            method: "DELETE",
-            headers: {
-              Authorization: `Bearer ${userData.token}`,
-            },
-          }
-        );
-
-        if (response.ok) {
-          setComments((prevComments) =>
-            prevComments.map((comment) =>
-              comment.id === commentId
-                ? {
-                    ...comment,
-                    subReplies: comment.subReplies.filter(
-                      (subReply) => subReply.id !== subReplyId
-                    ),
-                  }
-                : comment
-            )
-          );
-        } else {
-          throw new Error("대댓글 삭제에 실패했습니다.");
-        }
-      } catch (error) {
-        console.error("대댓글 삭제 중 오류 발생:", error);
-        alert("대댓글 삭제에 실패했습니다. 다시 시도해 주세요.");
-      }
-    }
+setShowDeleteModal(true);
+setDeleteTarget({ type: "subReply", id: subReplyId, commentId: commentId });
   };
+
+ const handleDeleteSubReplyConfirm = async () => {
+   try {
+         const userData = JSON.parse(localStorage.getItem("userData"));
+         const response = await fetch(
+           `${BOARD_URL}/${id}/comments/${deleteTarget.commentId}/subReplies/${deleteTarget.id}?userId=${user.id}`,
+           {
+             method: "DELETE",
+             headers: {
+               Authorization: `Bearer ${userData.token}`,
+             },
+           }
+         );
+
+         if (response.ok) {
+           setComments((prevComments) =>
+             prevComments.map((comment) =>
+               comment.id === deleteTarget.commentId
+                 ? {
+                     ...comment,
+                     subReplies: comment.subReplies.filter(
+                       (subReply) => subReply.id !== deleteTarget.id
+                     ),
+                   }
+                 : comment
+             )
+           );
+         } else {
+           throw new Error("대댓글 삭제에 실패했습니다.");
+         }
+
+     setShowDeleteModal(false);
+     setDeleteTarget(null);
+   } catch (error) {
+     console.error("대댓글 삭제 중 오류 발생:", error);
+     alert("대댓글 삭제에 실패했습니다. 다시 시도해 주세요.");
+   }
+ };
 
   //시간 관련 처리
   const formatTimeAgo = (date) => {
@@ -647,12 +702,12 @@ const BoardDetailPage = () => {
   // 정렬된 댓글
   const sortedComments = sortComments(comments);
 
-  //---------
-  // 렌더링
-  //---------
   if (isLoading) return <div className={styles.loading}>로딩 중...</div>;
   if (error) return <div className={styles.error}>{error}</div>;
   if (!post) return null;
+  //---------
+  // 렌더링
+  //---------
   return (
     <div className={styles.postDetailPage}>
       <div className={styles.headerNav}>
@@ -736,6 +791,18 @@ const BoardDetailPage = () => {
         <button className={styles.shareButton} onClick={handleShare}>
           <AiOutlineExport /> 공유하기
         </button>
+        {showShareModal && (
+          <div className={styles.modalOverlay} onClick={closeShareModal}>
+            <div
+              className={styles.modalContent}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h3>공유하기</h3>
+              <p>이 게시물의 URL이 클립보드에 복사되었습니다.</p>
+              <button onClick={closeShareModal}>닫기</button>
+            </div>
+          </div>
+        )}
       </div>
       <div className={styles.commentsSection}>
         <div className={styles.commentHeader}>
@@ -1070,7 +1137,20 @@ const BoardDetailPage = () => {
           </div>
         </>
       )}
-    </div>
+      {showDeleteModal && (
+        <DeleteModal
+          isOpen={showDeleteModal}
+          onClose={() => setShowDeleteModal(false)}
+          onDelete={
+            deleteTarget?.type === "comment"
+              ? handleDeleteCommentConfirm
+              : deleteTarget?.type === "subReply"
+              ? handleDeleteSubReplyConfirm
+              : handleDeleteConfirm
+          }
+        />
+      )}
+    </div> // postDetailPage end
   );
 };
 
