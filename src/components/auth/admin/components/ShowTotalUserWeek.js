@@ -1,29 +1,38 @@
 import React, { useEffect, useState } from 'react';
+import { ADMIN_URL } from "../../../../config/user/host-config";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import {ADMIN_URL} from "../../../../config/user/host-config";
+import styles from './ShowUserChart.module.scss';
+import moment from 'moment';
 
-const ShowTotalUserWeek = () => {
-    const [data, setData] = useState([]);
+const ShowUserWeek = () => {
+    const [weekUserCount, setWeekUserCount] = useState([]);
 
     useEffect(() => {
-        const fetchData = async () => {
+        const getWeekUserCounts = async () => {
             try {
-                const response = await fetch(`${ADMIN_URL}/users/cumulative/weekly`);
+                const response = await fetch(`${ADMIN_URL}/users/cumulative/week`);
                 const result = await response.json();
-                setData(result);
+
+                // 최신 데이터가 오른쪽에 위치하도록 배열을 처리하지 않고 원래 순서대로 유지
+                const formattedData = result.map((count, index) => {
+                    const weekStart = moment().subtract(index, 'weeks').startOf('week').format('YYYY [Week] WW');
+                    return { week: weekStart, count };
+                });
+
+                setWeekUserCount(formattedData.reverse());
             } catch (error) {
-                console.error("Failed to fetch weekly user data:", error);
+                console.error("Failed to fetch user counts:", error);
             }
         };
 
-        fetchData();
+        getWeekUserCounts();
     }, []);
 
     return (
-        <div>
+        <div className={styles.chartWrapper}>
             <ResponsiveContainer width="100%" height={400}>
                 <BarChart
-                    data={data}
+                    data={weekUserCount}
                     margin={{
                         top: 10,
                         right: 30,
@@ -43,4 +52,4 @@ const ShowTotalUserWeek = () => {
     );
 };
 
-export default ShowTotalUserWeek;
+export default ShowUserWeek;
