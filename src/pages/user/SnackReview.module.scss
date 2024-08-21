@@ -134,7 +134,7 @@
 }
 
 .review_button {
-  background-color: #1a463c;
+  background-color: #B3797A;
   color: #ffffff;
   border: none;
   padding: 7px 15px;
@@ -146,7 +146,10 @@
   margin-bottom: 0;
   margin-left: auto;
 }
-
+.review_button:hover {
+  background-color: #B3797A;
+  color: white;
+}
 
 
 .modal {
@@ -172,7 +175,7 @@
 
 
 .more_button{
-  background-color: #14332C;
+  background-color: #B3797A;
   color: #ffffff;
   border: none;
   padding: 20px 50px;
@@ -194,7 +197,7 @@
 
 //20240820
 .review_button_red{
-  background-color: #577590;
+  background-color: #9F5A5B;
   // #8ecae6
 }
 
@@ -302,17 +305,5 @@
   .snack_review_ul{
     margin: 35px 0 0 0;
   }
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

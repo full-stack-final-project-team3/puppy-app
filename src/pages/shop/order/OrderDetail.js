@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import OrderModal from "./OrderModal"; // 모달 창 컴포넌트 임포트
 import styles from "./scss/OrderDetail.module.scss";
 import { SHOP_URL } from "../../../config/user/host-config";
+import Footer from '../../../layout/user/Footer';
 
 const subscriptionPeriodLabels = {
   ONE: "1개월",
@@ -113,6 +114,7 @@ const OrderDetail = () => {
   }
 
   return (
+    <>
     <div className={styles.wrap}>
       <h1 className={styles.title}>주문 상세 내역</h1>
       <div className={`${styles.order_status}`}>
@@ -253,6 +255,8 @@ const OrderDetail = () => {
         />
       )}
     </div>
+    <Footer/>
+    </>
   );
 };
 
