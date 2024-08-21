@@ -27,6 +27,11 @@ const SnackReview = () => {
   const [visibleCount, setVisibleCount] = useState(1); // 보여지는 .card의 수를 관리하는 상태
   const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 });
 
+  // 페이지가 로드될 때 스크롤을 맨 위로 이동
+  useEffect(() => {
+    window.scrollTo(0, 0); // 20240821: 페이지가 로드될 때 스크롤을 맨 위로 이동
+  }, []);
+
   useEffect(() => {
     const fetchOrderHistory = async () => {
       try {
