@@ -286,9 +286,9 @@ const DogEdit = () => {
                     </div>
                 </div>
                 <div className={styles.right} onClick={handleImageClick}>
-                    <div className={styles.imgWrap}>
+                    <div className={`${styles.imgWrap}  ${dog.dogProfileUrl !== null && styles.circle}`}>
                         <img className={styles.dogProfileUrl} src={dog.dogProfileUrl || "header-logo.png"}
-                              alt="Dog Profile"/>
+                             alt="Dog Profile"/>
                     </div>
                     <div className={styles.hoverText}>강아지 사진 변경</div>
                     <input
