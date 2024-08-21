@@ -13,7 +13,7 @@ const ReviewPage = ({ treatsId }) => {
   const [sortCriteria, setSortCriteria] = useState('latest'); // 정렬 기준 상태
   const navigate = useNavigate();
   const user = useSelector((state) => state.userEdit.userDetail);
-
+  
   useEffect(() => {
     const fetchReviews = async () => {
       try {
