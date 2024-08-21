@@ -11,7 +11,7 @@
 .marqueeContent {
   display: flex;
   white-space: nowrap;
-  animation: marquee 155s linear infinite; /* 애니메이션 지속 시간 조정 */
+  animation: marquee 255s linear infinite; /* 애니메이션 지속 시간 조정 */
 }
 
 .marqueeText {
@@ -28,5 +28,11 @@
   }
   100% {
     transform: translateX(-100%);
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .marqueeContent {
+    animation: marquee 400s linear infinite; /* 애니메이션 지속 시간 조정 */
   }
 }

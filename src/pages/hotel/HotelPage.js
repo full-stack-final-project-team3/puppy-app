@@ -185,7 +185,7 @@ const HotelPage = () => {
                                     {`${formatDate(startDate)} - ${formatDate(endDate)}`}
                                 </button>
                                 {loading ? (
-                                    <p>Loading…</p>
+                                    <p></p>
                                 ) : error ? (
                                     <p>Error: {error}</p>
                                 ) : (
@@ -196,7 +196,6 @@ const HotelPage = () => {
                                         />
                                         
                                 )}
-                                <button className={styles.back} onClick={handlePreviousStep}>&laquo;</button>
                             </div>
                         ) : step === 3 ? (
                             <div className={styles.hotelDetailContainer}>
@@ -214,9 +213,8 @@ const HotelPage = () => {
                                         getSliderSettings={getSliderSettings}
                                     />
                                 ) : (
-                                    <p>Loading...</p>
+                                    <p></p>
                                 )}
-                                <button className={styles.back} onClick={handlePreviousStep}>&laquo;</button>
                             </div>
                         ) : step === 4 ? (
                             <div className={styles.hotelDetailContainer}>
@@ -236,9 +234,9 @@ const HotelPage = () => {
                                     onPay={handlePayment}
                                 />
                                 ) : (
-                                    <p>Loading...</p>
+                                    <p></p>
                                 )}
-                                <button className={styles.back} onClick={handlePreviousStep}>&laquo;</button>
+                                
                             </div>
                             
                         ) : step === 5 ? (
@@ -254,6 +252,7 @@ const HotelPage = () => {
                     </div>
                 </CSSTransition>
             </TransitionGroup>
+            <button className={styles.back} onClick={handlePreviousStep}>&laquo;</button>
         </div>
         </>
     );

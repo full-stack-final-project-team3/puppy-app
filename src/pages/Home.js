@@ -18,6 +18,10 @@ const Home = () => {
   const videoRef2 = useRef(null);
   const videoRef3 = useRef(null);
 
+  const [adImage1, setAdImage1] = useState("/main_ad/메인2.png");
+  const [adImage2, setAdImage2] = useState("/main_ad/메인1.png");
+  const [adImage3, setAdImage3] = useState("/main_ad/메인3.png");
+
   // 스피너 상태 관리
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate
@@ -68,6 +72,32 @@ const Home = () => {
     return () => {
       window.removeEventListener("resize", handleResize);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
+
+  // 화면 크기에 따라 이미지 변경
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 420) {
+        setAdImage1("/main_ad/메인반응1.png");
+        setAdImage2("/main_ad/메인반응2.png");
+        setAdImage3("/main_ad/메인반응3.png");
+      } else {
+        setAdImage1("/main_ad/메인2.png");
+        setAdImage2("/main_ad/메인1.png");
+        setAdImage3("/main_ad/메인3.png");
+      }
+    };
+
+    // 초기 로드 시 이미지 설정
+    handleResize();
+
+    // 윈도우 리사이즈 시 이미지 변경
+    window.addEventListener("resize", handleResize);
+
+    // 컴포넌트 언마운트 시 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
@@ -180,19 +210,19 @@ const Home = () => {
       <div className={styles.adContainer}>
         <img
           className={styles.ad}
-          src="/main_ad/메인2.png"
+          src={adImage1}
           onClick={() => handleNavigate("/hotel")}
           alt="메인2"
         />
         <img
           className={styles.ad}
-          src="/main_ad/메인1.png"
+          src={adImage2}
           onClick={() => handleNavigate("/board")}
           alt="메인1"
         />
         <img
           className={styles.ad}
-          src="/main_ad/메인3.png"
+          src={adImage3}
           onClick={() => handleNavigate("/treats")}
           alt="메인3"
         />
