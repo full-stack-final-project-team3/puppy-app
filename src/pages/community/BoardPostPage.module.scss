@@ -62,6 +62,11 @@
     font-size: 15px; // 폰트 크기 약간 축소
     transition: border-color 0.3s;
     box-sizing: border-box;
+
+    border: 3px solid #cfbbbb;
+        background: none;
+        padding: 1rem;
+        font-size: 1rem;
 }
 
 .textarea {
@@ -121,6 +126,12 @@
     .textarea,
     .submitButton {
         font-size: 14px;
+
+            border: 3px solid #cfbbbb;
+                background: none;
+                padding: 1rem;
+                font-size: 1rem;
+               
     }
 }
 

@@ -99,7 +99,7 @@ const handleImageChange = (e) => {
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          placeholder="제목"
+          placeholder="제목을 입력하세요"
           className={styles.input}
           required
         />
