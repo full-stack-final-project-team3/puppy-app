@@ -42,8 +42,14 @@ const ShowUserMonth = () => {
                     }}
                 >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="month" />
-                    <YAxis />
+                    <XAxis
+                        dataKey="month"
+                        tickFormatter={(value = "") => value}
+                    />
+                    <YAxis
+                        tickFormatter={(value = 0) => value.toLocaleString()}
+                        interval="preserveEnd"
+                    />
                     <Tooltip />
                     <Legend />
                     <Bar dataKey="count" fill="#8884d8" />

@@ -41,10 +41,13 @@ const ShowWeekTotalPoint = () => {
                     }}
                 >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="week" />
+                    <XAxis
+                        dataKey="week"
+                        tickFormatter={(value = "") => value}
+                    />
                     <YAxis
-                        tickFormatter={(value) => `${value.toLocaleString()}`} // 숫자 포맷
-                        interval="preserveEnd" // 레이블 간격 조정
+                        tickFormatter={(value = 0) => value.toLocaleString()}
+                        interval="preserveEnd"
                     />
                     <Tooltip />
                     <Legend />
