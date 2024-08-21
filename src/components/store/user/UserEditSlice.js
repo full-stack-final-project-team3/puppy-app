@@ -33,12 +33,12 @@ const userEditSlice = createSlice({
         addUserNotice(state, action) {
             state.userNotice.push(action.payload);
         },
-        updateUserNotice(state, action) {
-            const updatedNotice = state.userNotice.map(notice =>
-                notice.id === action.payload.noticeId ? { ...notice, isClicked: true } : notice
-            );
-            state.userNotice = updatedNotice;
-        }
+        // updateUserNotice(state, action) {
+        //     const updatedNotice = state.userNotice.map(notice =>
+        //         notice.id === action.payload.noticeId ? { ...notice, isClicked: true } : notice
+        //     );
+        //     state.userNotice = updatedNotice;
+        // }
     }
 });
 

@@ -147,11 +147,22 @@
       align-items: center;
 
 
+      .imgWrap {
+
+        width: 110px;
+        height: 110px;
+        border-radius: 50%;
+        object-fit: fill;
+
       .dogProfileUrl {
         width: 100px;
         height: 100px;
-        object-fit: cover;
       }
+
+      }
+
+
+
 
       .hoverText {
         display: none;

@@ -42,8 +42,14 @@ const ShowUserDay = () => {
                     }}
                 >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="day" />
-                    <YAxis />
+                    <XAxis
+                        dataKey="day"
+                        tickFormatter={(value = "") => value}
+                    />
+                    <YAxis
+                        tickFormatter={(value = 0) => value.toLocaleString()}
+                        interval="preserveEnd"
+                    />
                     <Tooltip />
                     <Legend />
                     <Bar dataKey="count" fill="#8884d8" />
