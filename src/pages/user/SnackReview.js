@@ -6,6 +6,7 @@ import { SHOP_URL, RESOURCES_URL } from "../../config/user/host-config";
 import WriteReviewPage from "../../pages/shop/review/WriteReviewPage";
 import EditReviewPage from "../../pages/shop/review/EditReviewPage";
 import TreatsDetailModal from "../../pages/shop/TreatsDetailModal";
+import Footer from '../../layout/user/Footer';
 
 // Modal 스타일 설정
 Modal.setAppElement("#root");
@@ -86,127 +87,130 @@ const SnackReview = () => {
   };
 
   return (
-    <div className={styles.wrap}>
-      <h2 className={styles.h2}>Shop Reviews</h2>
-      {orderHistory && orderHistory.length > 0 ? (
-        orderHistory
-          .filter((order) => order.orderStatus !== "CANCELLED")
-          .slice(0, visibleCount) // visibleCount에 따라 보여줄 카드 수 제한
-          .map((order, index) => (
-            <div key={index} className={styles.card}>
-              <div className={styles.cardContent}>
-                <div className={styles.details}>
-                  {order.bundles &&
-                    order.bundles.length > 0 &&
-                    order.bundles.map((bundle, bundleIndex) => (
-                      <div key={bundleIndex} className={styles.bundleItem}>
-                        <h3 className={styles.review_dog_name}>
-                          반려견 전용 맞춤형 푸드 패키지 For{" "}
-                          <span>{bundle.dogName}</span>
-                        </h3>
-                        <ul className={styles.snack_review_ul}>
-                          {bundle.treats?.map((treat, treatIndex) => (
-                            <li
-                              className={styles.snack_review_li}
-                              key={treatIndex}
-                            >
-                              <div className={styles.snack_review_box}>
-                                <img
-                                  className={styles.snack_review_img_sm}
-                                  src={`${RESOURCES_URL}${treat.treatUrl}`}
-                                  alt="간식 이미지"
-                                />
-                              </div>
-                              <a
-                                onClick={() => openProductModal(treat.treatId)}
+    <>
+      <div className={styles.wrap}>
+        <h2 className={styles.h2}>Shop Reviews</h2>
+        {orderHistory && orderHistory.length > 0 ? (
+          orderHistory
+            .filter((order) => order.orderStatus !== "CANCELLED")
+            .slice(0, visibleCount) // visibleCount에 따라 보여줄 카드 수 제한
+            .map((order, index) => (
+              <div key={index} className={styles.card}>
+                <div className={styles.cardContent}>
+                  <div className={styles.details}>
+                    {order.bundles &&
+                      order.bundles.length > 0 &&
+                      order.bundles.map((bundle, bundleIndex) => (
+                        <div key={bundleIndex} className={styles.bundleItem}>
+                          <h3 className={styles.review_dog_name}>
+                            반려견 전용 맞춤형 푸드 패키지 For{" "}
+                            <span>{bundle.dogName}</span>
+                          </h3>
+                          <ul className={styles.snack_review_ul}>
+                            {bundle.treats?.map((treat, treatIndex) => (
+                              <li
+                                className={styles.snack_review_li}
+                                key={treatIndex}
                               >
-                                <p style={{ cursor: "pointer" }}>
-                                  {treat.treatTitle}
-                                </p>
-                              </a>
-                              <button
-                                hidden={!!treat.reviewId}
-                                className={styles.review_button}
-                                onClick={() =>
-                                  openReviewModal(
-                                    order.orderId,
-                                    treat.treatId,
-                                    bundle.dogId,
-                                    treat.treatTitle
-                                  )
-                                }
-                              >
-                                리뷰 작성
-                              </button>
-                              <button
-                                hidden={!treat.reviewId}
-                                className={`${styles.review_button} ${styles.review_button_red}`}
-                                onClick={() =>
-                                  openEditModal(
-                                    treat.reviewId,
-                                    order.orderId,
-                                    treat.treatId,
-                                    treat.treatTitle
-                                  )
-                                }
-                              >
-                                리뷰 수정
-                              </button>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
+                                <div className={styles.snack_review_box}>
+                                  <img
+                                    className={styles.snack_review_img_sm}
+                                    src={`${RESOURCES_URL}${treat.treatUrl}`}
+                                    alt="간식 이미지"
+                                  />
+                                </div>
+                                <a
+                                  onClick={() => openProductModal(treat.treatId)}
+                                >
+                                  <p style={{ cursor: "pointer" }}>
+                                    {treat.treatTitle}
+                                  </p>
+                                </a>
+                                <button
+                                  hidden={!!treat.reviewId}
+                                  className={styles.review_button}
+                                  onClick={() =>
+                                    openReviewModal(
+                                      order.orderId,
+                                      treat.treatId,
+                                      bundle.dogId,
+                                      treat.treatTitle
+                                    )
+                                  }
+                                >
+                                  리뷰 작성
+                                </button>
+                                <button
+                                  hidden={!treat.reviewId}
+                                  className={`${styles.review_button} ${styles.review_button_red}`}
+                                  onClick={() =>
+                                    openEditModal(
+                                      treat.reviewId,
+                                      order.orderId,
+                                      treat.treatId,
+                                      treat.treatTitle
+                                    )
+                                  }
+                                >
+                                  리뷰 수정
+                                </button>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))
-      ) : (
-        <p className={styles.noReview}>작성하신 리뷰가 없습니다.</p>
-      )}
-      {orderHistory.length > visibleCount && ( // 더보기 버튼 표시 조건
-        <button onClick={showMoreCards} className={styles.more_button}>
-          더보기
-        </button>
-      )}
-      <Modal
-        isOpen={isReviewModalOpen}
-        onRequestClose={closeModal}
-        contentLabel="리뷰 작성하기"
-        className={styles.modal}
-        overlayClassName={styles.overlay}
-      >
-        <WriteReviewPage
-          orderId={selectedTreat.orderId}
-          treatId={selectedTreat.treatId}
-          dogId={selectedTreat.dogId}
-          treatTitle={selectedTreat.treatTitle}
-        />
-      </Modal>
+            ))
+        ) : (
+          <p className={styles.noReview}>작성하신 리뷰가 없습니다.</p>
+        )}
+        {orderHistory.length > visibleCount && ( // 더보기 버튼 표시 조건
+          <button onClick={showMoreCards} className={styles.more_button}>
+            더보기
+          </button>
+        )}
+        <Modal
+          isOpen={isReviewModalOpen}
+          onRequestClose={closeModal}
+          contentLabel="리뷰 작성하기"
+          className={styles.modal}
+          overlayClassName={styles.overlay}
+        >
+          <WriteReviewPage
+            orderId={selectedTreat.orderId}
+            treatId={selectedTreat.treatId}
+            dogId={selectedTreat.dogId}
+            treatTitle={selectedTreat.treatTitle}
+          />
+        </Modal>
 
-      <Modal
-        isOpen={isEditModalOpen}
-        onRequestClose={closeModal}
-        contentLabel="리뷰 수정하기"
-        className={styles.modal}
-        overlayClassName={styles.overlay}
-      >
-        <EditReviewPage
-          reviewId={selectedTreat.reviewId}
-          orderId={selectedTreat.orderId}
-          treatId={selectedTreat.treatId}
-          treatTitle={selectedTreat.treatTitle}
-        />
-      </Modal>
+        <Modal
+          isOpen={isEditModalOpen}
+          onRequestClose={closeModal}
+          contentLabel="리뷰 수정하기"
+          className={styles.modal}
+          overlayClassName={styles.overlay}
+        >
+          <EditReviewPage
+            reviewId={selectedTreat.reviewId}
+            orderId={selectedTreat.orderId}
+            treatId={selectedTreat.treatId}
+            treatTitle={selectedTreat.treatTitle}
+          />
+        </Modal>
 
-      <TreatsDetailModal
-        isOpen={isProductModalOpen}
-        onClose={closeModal}
-        treatsId={selectedTreat.treatId}
-        modalPosition={modalPosition}
-        toggleTreatSelection={toggleTreatSelection}
-      />
-    </div>
+        <TreatsDetailModal
+          isOpen={isProductModalOpen}
+          onClose={closeModal}
+          treatsId={selectedTreat.treatId}
+          modalPosition={modalPosition}
+          toggleTreatSelection={toggleTreatSelection}
+        />
+      </div>
+      <Footer />
+    </>
   );
 };
 

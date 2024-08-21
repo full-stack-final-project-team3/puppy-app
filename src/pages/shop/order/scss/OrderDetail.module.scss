@@ -89,21 +89,12 @@
   background-color: #0f2b23;
 }
 
-.cancelledText {
+.order_status span.cancelledText {
   color: red;
   text-align: center;
   font-size: 20px;
   margin-top: 20px;
 }
-
-
-
-
-
-.cancelledText {
-  color: red;
-}
-
 
 
 
@@ -163,7 +154,7 @@
 
 .order_status{
   width: 86%;
-  margin: 0 auto 15px;
+  margin: 70px auto 15px;
 }
 .order_status span{
   margin-left: 20px;
@@ -193,4 +184,61 @@
 }
 
 
+//주문 상세에 주문 취소하면 나타나는 모달창 css
+.modalOverlay {
+  position: fixed; // 20240821: 화면 고정
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5); // 20240821: 반투명한 검은색 배경
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; // 20240821: 최상위 z-index
+}
+
+.modalContent {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 300px;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1001; // 20240821: 오버레이보다 앞에 위치
+}
+
+.buttonContainer {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.confirmButton {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.confirmButton:hover {
+  background-color: #0056b3;
+}
+
+.closeButton {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.closeButton:hover {
+  background-color: #5a6268;
+}
 

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+import ReactDOM from "react-dom";
 import { userEditActions } from "../../../components/store/user/UserEditSlice";
 import styles from "./scss/OrderPage.module.scss";
-import OrderModal from "./OrderModal";
 import OrderInfo from "./OrderInfo";
 import ProductInfo from "./ProductInfo";
 import PaymentInfo from "./PaymentInfo";
@@ -240,6 +240,26 @@ const OrderPage = () => {
     }
   };
 
+  const Modal = ({ title, message, onConfirm, onClose }) => {
+    return ReactDOM.createPortal(
+      <div className={styles.modalOverlay}>
+        <div className={styles.modalContent}>
+          <h2>{title}</h2>
+          <p>{message}</p>
+          <div className={styles.buttonContainer}>
+            <button className={styles.confirmButton} onClick={onConfirm}>
+              예
+            </button>
+            <button className={styles.closeButton} onClick={onClose}>
+              아니오
+            </button>
+          </div>
+        </div>
+      </div>,
+      document.getElementById("root") // 20240821: 모달을 #root에 포털로 렌더링
+    );
+  };
+
   return (
     <div className={styles["order-page-container"]}>
       <h1>주문 / 결제</h1>
@@ -277,14 +297,11 @@ const OrderPage = () => {
         </button>
       </div>
       {showModal && (
-        <OrderModal
+        <Modal
           title={isConfirmStep ? "결제 확인" : "알림"}
           message={modalMessage}
           onConfirm={isConfirmStep ? handleReservation : handleCloseModal}
           onClose={handleCloseModal}
-          confirmButtonText={isConfirmStep ? "예" : "확인"}
-          cancelButtonText={isConfirmStep ? "아니오" : "취소"}
-          showCloseButton={isConfirmStep}
         />
       )}
     </div>

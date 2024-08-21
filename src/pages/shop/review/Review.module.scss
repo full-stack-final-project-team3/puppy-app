@@ -3,10 +3,11 @@
   background-color: #f9f9f9;
 }
 
-.review_page_box {
+.review_common_box.review_page_box {
   max-width: 800px;
   margin: 0 auto;
   padding-bottom: 50px;
+  background-color: transparent;
 }
 
 .review_list_box {
@@ -234,12 +235,13 @@ p {
 .review_common_box {
   padding: 30px;
   border-radius: 10px;
-  max-width:70%;
+  max-width:100%;
   margin: 0 auto;
   font-family: 'Arial', sans-serif;
+  background-color: #F1E1C8;
 }
 
-.review_writer_box h1 {
+.review_common_box h1 {
   font-size: 24px;
   margin-bottom: 20px;
   color: #333;
@@ -315,7 +317,7 @@ p {
   color: #333;
 }
 
-.review_writer_box button[type="submit"] {
+.review_common_box button[type="submit"] {
   width: 100%;
   padding: 15px;
   background-color: #B3797A;
@@ -328,11 +330,11 @@ p {
   transition: background-color 0.3s ease;
 }
 
-.review_writer_box button[type="submit"]:hover {
+.review_common_box button[type="submit"]:hover {
   background-color: #9F5A5B;
 }
 
-.review_writer_box button[type="button"] {
+.review_common_box button[type="button"] {
   margin-top: 10px;
   padding: 10px 15px;
   background-color: #8EBC8F;
@@ -344,7 +346,7 @@ p {
   transition: background-color 0.3s ease;
 }
 
-.review_writer_box button[type="button"]:hover {
+.review_common_box button[type="button"]:hover {
   background-color: #218838;
 }
 
@@ -387,7 +389,14 @@ p {
     max-width: 100%;
   }
 }
-
+.riview_close{
+  position: absolute;
+  font-size: 50px;
+  right: -65px;
+  top: -80px;
+  color: #fff;
+  cursor: pointer;
+}
 
 
 

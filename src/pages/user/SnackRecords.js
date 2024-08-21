@@ -6,6 +6,7 @@ import OrderModal from '../../pages/shop/order/OrderModal';
 import styles from './SnackRecords.module.scss';
 import { SHOP_URL } from '../../config/user/host-config';
 import packageImg from '../../assets/shop/packageImg.jpg';
+import Footer from '../../layout/user/Footer';
 
 const subscriptionPeriodLabels = {
     ONE: "1개월",
@@ -117,6 +118,7 @@ const SnackRecords = () => {
     };
 
     return (
+        <>
         <div className={styles.wrap}>
             <MyPageHeader />
             <div className={styles.subWrap}>
@@ -166,8 +168,8 @@ const SnackRecords = () => {
                                         상세보기
                                     </button>
                                     {order.orderStatus !== 'CANCELLED' && (
-                                        <button 
-                                        className={styles.cancelButton}
+                                    <button 
+                                    className={`${styles.cancelButton} ${styles.cancelButton_gray}`}
                                         onClick={() => {
                                             console.log('버튼 클릭 시 전달된 주문 ID:', order.orderId); 
                                             confirmCancelOrder(order.orderId);
@@ -207,6 +209,9 @@ const SnackRecords = () => {
                 />
             )}
         </div>
+       
+      <Footer /> 
+      </>
     );
 };
 
