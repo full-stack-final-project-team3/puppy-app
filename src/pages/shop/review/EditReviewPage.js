@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Rating from '@mui/material/Rating';
 import styles from './Review.module.scss';
 import { REVIEW_URL } from "../../../config/user/host-config";
 
-const EditReviewPage = ({ reviewId }) => {
-  //const { reviewId } = useParams();
+const EditReviewPage = ({ reviewId, onClose }) => { //20240821: onClose prop 추가
   const [reviewContent, setReviewContent] = useState('');
   const [rate, setRate] = useState(5);
   const [reviewPics, setReviewPics] = useState([]);
@@ -76,11 +75,8 @@ const EditReviewPage = ({ reviewId }) => {
 
   return (
     <>
-      {/* <h2 className={styles.riview_close}>×</h2> */}
       <div className={`${styles.review_common_box} ${styles.review_editor_box}`}>
         <h1>리뷰 수정하기</h1>
-        {/* <p>닉네임: {user.nickname}</p>
-        <p>이메일: {user.email}</p> */}
         <form onSubmit={handleUpdate}>
           <div>
             <textarea
@@ -91,7 +87,6 @@ const EditReviewPage = ({ reviewId }) => {
             ></textarea>
           </div>
           <div className={styles.rating_input_wrapper}>
-            {/* <label htmlFor="rate">별점</label> */}
             <Rating
               name="editable-rate"
               value={rate}
@@ -120,7 +115,10 @@ const EditReviewPage = ({ reviewId }) => {
             ))}
           </div>
           
-          <button type="submit">수정하기</button>
+          <div className={styles.button_container}> {/* 20240821: 버튼을 감싸는 div 추가 */}
+            <button type="submit" className={styles.submit_button}>수정하기</button>
+            <button type="button" className={styles.close_button} onClick={onClose}>×</button> {/* 20240821: 닫기 버튼 추가 */}
+          </div>
         </form>
       </div>
     </>

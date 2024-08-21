@@ -7,7 +7,7 @@ import { userEditActions } from "../../../components/store/user/UserEditSlice";
 import { NOTICE_URL, REVIEW_URL } from "../../../config/user/host-config";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const WriteReviewPage = ({ orderId, treatId, dogId, treatTitle }) => {
+const WriteReviewPage = ({ orderId, treatId, dogId, treatTitle, onClose }) => { // 20240821: onClose prop 추가
   const [reviewContent, setReviewContent] = useState('');
   const [rate, setRate] = useState(5);
   const [reviewPics, setReviewPics] = useState([{ id: Date.now(), files: [], fileNames: [] }]);
@@ -115,12 +115,10 @@ const WriteReviewPage = ({ orderId, treatId, dogId, treatTitle }) => {
 
   return (
     <>
-      {/* <h2 className={styles.riview_close}>×</h2> */}
       <div className={`${styles.review_common_box} ${styles.review_writer_box}`}>
         <h1>리뷰 작성하기</h1>
         <form onSubmit={handleSubmit}>
           <div>
-            {/* <p htmlFor="review">리뷰</p> */}
             <textarea
               id="review"
               className={styles.review_text}
@@ -130,11 +128,9 @@ const WriteReviewPage = ({ orderId, treatId, dogId, treatTitle }) => {
             ></textarea>
           </div>
           <div className={styles.rating_input_wrapper}>
-            {/* <p htmlFor="rate">별점</p> */}
             <RatingInput value={rate} onChange={setRate} precision={1} />
           </div>
           <div>
-            {/* <p>이미지</p> */}
             {reviewPics.map((pic, index) => (
               <div key={pic.id} className={styles.file_input_wrapper}>
                 <label htmlFor={`file-upload-${index}`}>이미지 선택</label>
@@ -157,7 +153,10 @@ const WriteReviewPage = ({ orderId, treatId, dogId, treatTitle }) => {
             ))}
             <button type="button" onClick={handleAddPic}>이미지 추가</button>
           </div>
-          <button type="submit">작성하기</button>
+          <div className={styles.button_container}> {/* 20240821: 버튼을 감싸는 div 추가 */}
+            <button type="submit">작성하기</button>
+            <button type="button" className={styles.close_button} onClick={onClose}>×</button> {/* 20240821: 닫기 버튼 추가 */}
+          </div>
         </form>
       </div>
     </>
