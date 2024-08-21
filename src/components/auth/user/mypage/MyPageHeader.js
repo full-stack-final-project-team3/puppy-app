@@ -31,7 +31,7 @@ const MyPageHeader = () => {
         if (isEditMode) dispatch(userEditActions.clearMode())
         if (isUserEditMode) dispatch(userEditActions.clearUserEditMode())
         if (isDogEditMode) dispatch(dogEditActions.clearEdit())
-        console.log("취소!")
+
     }
 
 

@@ -54,4 +54,35 @@
       margin-left: 5px;
     }
   }
+  .mobileBtn {
+    display: none;
+  }
+
+  .active {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 400px) {
+
+  .wrap {
+    margin-top: 40px;
+  .mobileBtn {
+    display: block;
+    margin-top: 30px;
+    padding: 10px 35px;
+    background: #B4787A;
+    border-radius: 20px;
+    color: #bdbcbc;
+  }
+
+  .active {
+    color: white;
+    cursor: pointer;
+  }
+  .error {
+    color: #B4787A;
+    margin-top: 20px;
+  }
+  }
 }

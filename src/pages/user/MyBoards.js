@@ -11,7 +11,7 @@ const MyBoards = () => {
     const userDetail = useSelector(state => state.userEdit.userDetail);
     const [data, setData] = useState([]);
 
-    console.log(userDetail)
+
 
     useEffect(() => {
         const fetchList = async () => {
@@ -26,7 +26,7 @@ const MyBoards = () => {
 
         fetchList();
     }, [userDetail.id]);
-    console.log(data)
+
 
     return (
         <div className={styles.wrap}>

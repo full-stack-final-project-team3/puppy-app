@@ -49,7 +49,6 @@ const SnackRecords = () => {
                 }
     
                 const data = await response.json();
-                console.log('주문 내역 데이터:', data); 
                 setOrderHistory(data);
             } catch (error) {
                 console.error('주문 내역을 가져오지 못했다:', error);
@@ -112,7 +111,6 @@ const SnackRecords = () => {
     };
 
     const handleViewDetails = (order) => {
-        console.log('상세 보기 주문:', order); // 추가된 로그
         navigate('/order-detail', { state: { order } });
     };
 
