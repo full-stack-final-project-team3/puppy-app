@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import ReactDOM from "react-dom";
 import { useParams, useLocation } from "react-router-dom";
 import { TREATS_URL, AUTH_URL } from "../../config/user/host-config";
 import styles from "./TreatsListForDog.module.scss";
@@ -215,6 +216,31 @@ const TreatsListForDog = () => {
     setModalPosition({ x: 0, y: 0 });
   };
 
+  const renderSpinner = () => {
+    if (!loading) return null;
+
+    return ReactDOM.createPortal(
+      <div className={styles.loadingOverlay}>
+        <div
+          className={styles.spinnerContainer}
+          style={{
+            top: modalPosition.y,
+            left: modalPosition.x,
+            transform: "translate(-50%, -50%)",
+          }}
+        >
+          <PulseLoader
+            className={styles.loader}
+            color="#0B593F"
+            loading={loading}
+            size={18}
+          />
+        </div>
+      </div>,
+      document.body // 'body' 아래에 렌더링
+    );
+  };
+
   if (isModalOpen) {
     document.body.style.overflow = "hidden";
   } else {
@@ -224,25 +250,7 @@ const TreatsListForDog = () => {
   return (
     <>
       <ShopStepIndicator step={currentStep} onStepClick={handleStepClick} />
-      {loading && (
-        <div className={styles.loadingOverlay}>
-          <div
-            className={styles.spinnerContainer}
-            style={{
-              top: modalPosition.y,
-              left: modalPosition.x,
-              transform: "translate(-50%, -50%)",
-            }} // 중앙 정렬
-          >
-            <PulseLoader
-              className={styles.loader}
-              color="#0B593F"
-              loading={loading}
-              size={18}
-            />
-          </div>
-        </div>
-      )}
+      {renderSpinner()}
       <div className={`${styles.treatsList} page`}>
         <div className={styles.content}>
           <h1>
