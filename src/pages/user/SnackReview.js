@@ -67,24 +67,23 @@ const SnackReview = () => {
   };
 
   const openProductModal = (treatId) => {
-    const viewportHeight = window.innerHeight; // 현재 뷰포트의 높이
-    const scrollY = window.scrollY; // 현재 스크롤 위치
-    const modalHeight = 800; // 모달의 높이
-    const topPosition = scrollY + (viewportHeight - modalHeight) / 2; // 중앙 위치 계산
-    setModalPosition({ x: window.innerWidth / 2, y: topPosition }); // 좌우 중앙, 세로는 계산된 위치
     setSelectedTreat({ treatId });
     setIsProductModalOpen(true);
+
+    setModalPosition({
+      x: window.innerWidth / 2,
+      y: window.innerHeight * 0.09,
+    }); 
   };
 
   const toggleTreatSelection = () => {
     return;
-  }
+  };
 
   const closeModal = () => {
     setIsReviewModalOpen(false);
     setIsEditModalOpen(false);
     setIsProductModalOpen(false);
-    setModalPosition({ x: 0, y: 0 });
   };
 
   const showMoreCards = () => {
