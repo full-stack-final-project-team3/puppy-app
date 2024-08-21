@@ -28,16 +28,11 @@ const OrderPage = () => {
     receiverPhone: user.phoneNumber,
     receiverAddress: user.address,
     receiverDetailAddress: user.detailAddress, // 추가: 상세 주소
-    deliveryRequest: "", // 여기서 초기 상태가 빈 문자열로 설정되어 있는지 확인
+    deliveryRequest: "", // 초기 상태는 빈 문자열로 설정
     customRequest: "",
   });
 
-  const [validationErrors, setValidationErrors] = useState({}); // 추가: 검증 오류 상태
-
-  // 배송 요청 사항 업데이트 함수 추가
-  const handleDeliveryMemoChange = (event) => {
-    setOrderInfo({ ...orderInfo, deliveryMemo: event.target.value });
-  };
+  const [validationErrors, setValidationErrors] = useState({}); // 검증 오류 상태
 
   const [remainingPoints, setRemainingPoints] = useState(user.point);
   const [canPurchase, setCanPurchase] = useState(false);
@@ -103,10 +98,6 @@ const OrderPage = () => {
 
   const handleDeliveryRequestChange = (event) => {
     setOrderInfo({ ...orderInfo, deliveryRequest: event.target.value });
-
-    // if (event.target.value !== '기타사항') {
-    //   setOrderInfo({ ...orderInfo, customRequest: '' }); // "기타사항"이 아닌 다른 옵션을 선택할 경우, 기존의 "기타사항" 내용을 초기화
-    // }
   };
 
   const handleCustomRequestChange = (event) => {
@@ -134,7 +125,7 @@ const OrderPage = () => {
   };
 
   const handleSubmit = () => {
-    // 결제 버튼 클릭 시 검증 로직 추가햠
+    // 결제 버튼 클릭 시 검증 로직 추가
     const isValid = validateFields();
     if (!isValid) {
       setModalMessage("받는 사람 정보에 입력이 되지 않았씁니다.");
@@ -150,7 +141,7 @@ const OrderPage = () => {
   };
 
   const validateFields = () => {
-    // 추가: 필드 검증 함수
+    // 필드 검증 함수
     const errors = {};
     if (!orderInfo.receiverName) {
       errors.receiverName = "이름을 입력해 주세요.";
@@ -240,6 +231,7 @@ const OrderPage = () => {
       console.error("Error creating order:", error);
       setModalMessage("결제에 실패했습니다.");
       setIsConfirmStep(false);
+      setShowModal(true); // 결제 실패 시 모달창 보여줌
     }
   };
 
@@ -252,7 +244,7 @@ const OrderPage = () => {
 
   return (
     <div className={styles["order-page-container"]}>
-      <h1>결제 확인</h1>
+      <h1>주문 / 결제</h1>
       <OrderInfo
         user={user}
         orderInfo={orderInfo}
@@ -293,6 +285,7 @@ const OrderPage = () => {
           onConfirm={isConfirmStep ? handleReservation : handleCloseModal}
           onClose={handleCloseModal}
           confirmButtonText={isConfirmStep ? "예" : "확인"}
+          cancelButtonText={isConfirmStep ? "아니오" : "취소"}
           showCloseButton={isConfirmStep}
         />
       )}

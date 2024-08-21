@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import TreatsDetailContent from "./TreatsDetailContent";
 import { TREATS_URL } from "../../config/user/host-config";
 
-const TreatDetail = ({ treatsId }) => {
+const TreatDetail = ({ treatsId, toggleTreatSelection }) => {
   // const { id: treatsId } = useParams(); // URL 파라미터에서 ID 추출
   const [treats, setTreats] = useState(null); // 간식 정보를 저장할 상태
   const [loading, setLoading] = useState(true); // 로딩 상태
@@ -38,7 +38,13 @@ const TreatDetail = ({ treatsId }) => {
 
   console.log(treats["treats-pics"]);
 
-  return <TreatsDetailContent key={treats.id} treat={treats} />;
+  return (
+    <TreatsDetailContent
+      key={treats.id}
+      treat={treats}
+      toggleTreatSelection={toggleTreatSelection}
+    />
+  );
 };
 
 export default TreatDetail;

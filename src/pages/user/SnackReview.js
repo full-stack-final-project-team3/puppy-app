@@ -70,7 +70,7 @@ const SnackReview = () => {
 
     return (
         <div className={styles.wrap}>
-            <h2 className={styles.h2}>Snack Reviews</h2>
+            <h2 className={styles.h2}>Shop Reviews</h2>
             {orderHistory && orderHistory.length > 0 ? (
                 orderHistory
                     .filter(order => order.orderStatus !== 'CANCELLED')
@@ -81,7 +81,7 @@ const SnackReview = () => {
                                 <div className={styles.details}>
                                     {order.bundles && order.bundles.length > 0 && order.bundles.map((bundle, bundleIndex) => (
                                         <div key={bundleIndex} className={styles.bundleItem}>
-                                            <h3>반려견 전용 맞춤형 푸드 패키지 For {bundle.dogName}</h3>
+                                            <h3 className={styles.review_dog_name}>반려견 전용 맞춤형 푸드 패키지 For <span>{bundle.dogName}</span></h3>
                                             <ul className={styles.snack_review_ul}>
                                                 {bundle.treats?.map((treat, treatIndex) => (
                                                     <li className={styles.snack_review_li} key={treatIndex}>
@@ -100,14 +100,14 @@ const SnackReview = () => {
                                                             className={styles.review_button}
                                                             onClick={() => openReviewModal(order.orderId, treat.treatId, bundle.dogId, treat.treatTitle)}
                                                         >
-                                                            리뷰 작성하기
+                                                            리뷰 작성
                                                         </button>
                                                         <button
                                                             hidden={!treat.reviewId}
-                                                            className={styles.review_button}
+                                                            className={`${styles.review_button} ${styles.review_button_red}`}
                                                             onClick={() => openEditModal(treat.reviewId, order.orderId, treat.treatId, treat.treatTitle)}
                                                         >
-                                                            리뷰 수정하기
+                                                            리뷰 수정
                                                         </button>
                                                     </li>
                                                 ))}
@@ -119,7 +119,7 @@ const SnackReview = () => {
                         </div>
                     ))
             ) : (
-                <p className={styles.noReview}>작성하신 리뷰가 없습니다!</p>
+                <p className={styles.noReview}>작성하신 리뷰가 없습니다.</p>
             )}
             {orderHistory.length > visibleCount && ( // 더보기 버튼 표시 조건
                 <button onClick={showMoreCards} className={styles.more_button}>

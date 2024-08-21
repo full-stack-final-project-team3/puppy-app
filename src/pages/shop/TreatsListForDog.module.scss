@@ -7,6 +7,7 @@
 :root {
   --btn-width: 40%; // 큰 화면에서 버튼 너비
   --btn-fz: 16px;
+  --img-width: 300px;
 }
 
 .loadingOverlay {
@@ -82,8 +83,9 @@
       border-top-left-radius: 10px; // 모서리 둥글게
       border-top-right-radius: 10px; // 모서리 둥글게
       width: 100%; // 카드 너비에 맞게 조정
-      height: auto; // 비율 유지
-      max-height: 320px; // 최대 높이 설정 (예: 150px)
+      height: var(--img-width); // 고정 높이 설정
+      min-height: var(--img-width); // 최소 높이 설정
+      object-fit: cover; // 이미지 비율 유지하면서 늘리기
       cursor: pointer; // 클릭 모양으로 변경
     }
 
@@ -176,8 +178,8 @@
   bottom: 20px; // 화면 아래로부터의 거리
   left: 50%; // 수평 중앙 정렬
   transform: translateX(-50%); // 중앙 정렬을 위한 변환
-  width: 90%; // 너비 조정
-  max-width: 40vw; // 최대 너비 설정
+  width: 80%; // 너비 조정
+  max-width: 30vw; // 최대 너비 설정
   opacity: 0.9;
   margin: 0 auto; // 중앙 정렬
   padding: 0px;
@@ -278,50 +280,33 @@
   transition: opacity 500ms;
 }
 
-// 반응형 스타일 추가
-@media (max-width: 850px) {
-  .treatsList {
-    display: flex; // Flexbox 적용
-    flex-direction: column; // 세로 방향으로 정렬
-    align-items: center; // 수평 중앙 정렬
-
-    .card {
-      width: calc((100% - 30px) / 2); // 2개의 카드로 변경
-    }
-
-    .content {
-      width: 80%; // 콘텐츠 너비 조정
-    }
-  }
-
-  .selectedTreats {
-    max-width: 90vw; // 최대 너비 조정
-    display: flex; // Flexbox로 설정
-    flex-direction: row; // 가로 방향으로 배치
-    justify-content: center; // 수평 중앙 정렬
-    align-items: center; // 세로 중앙 정렬
-    margin-left: 200px;
-
-    .imageBox {
-      width: 40px; // 이미지 박스 너비 조정
-      height: 40px; // 이미지 박스 높이 조정
-    }
-  }
-}
-
 @media (max-width: 400px) {
+  :root {
+    --btn-width: 90%; // 작은 화면에서 버튼 너비
+    --btn-fz: 12px;
+  }
+
   .treatsList {
     display: flex; // Flexbox 적용
     flex-direction: column; // 세로 방향으로 정렬
     align-items: center; // 수평 중앙 정렬
+    margin: 0 auto;
 
     .card {
-      width: calc((100% - 30px) / 2); // 2개의 카드로 변경
+      width: calc((100%)); // 2개의 카드로 변경
     }
 
     .content {
-      width: 80%; // 콘텐츠 너비 조정
+      h1 {
+        font-size: 24px;
+      }
+      width: 90%; // 콘텐츠 너비 조정
     }
+  }
+
+  .addBtn {
+    width: var(--btn-width); // 버튼 너비 변수 사용
+    font-size: var(--btn-fz);
   }
 
   .selectedTreats {
@@ -339,31 +324,3 @@
   }
 }
 
-@media (max-width: 850px) {
-  :root {
-    --btn-width: 90%; // 작은 화면에서 버튼 너비
-    --btn-fz: 12px;
-  }
-
-  .addBtnContainer {
-    flex-direction: row; // 가로로 배치
-    justify-content: space-around; // 버튼 간격 조정
-  }
-
-  .addBtn {
-    width: var(--btn-width); // 버튼 너비 변수 사용
-    font-size: var(--btn-fz);
-  }
-}
-
-@media (max-width: 400px) {
-  :root {
-    --btn-width: 90%; // 작은 화면에서 버튼 너비
-    --btn-fz: 12px;
-  }
-
-  .addBtn {
-    width: var(--btn-width); // 버튼 너비 변수 사용
-    font-size: var(--btn-fz);
-  }
-}

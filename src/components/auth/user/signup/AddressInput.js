@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from 'react-redux';
 import { updateHotelData } from "../../../store/hotel/HotelAddSlice";
-import styles from "./SignUpPage.module.scss";
+import styles from "./AddressInput.module.scss";
 
 const AddressInput = ({ onSuccess }) => {
   const inputRef = useRef();
@@ -53,7 +53,7 @@ const AddressInput = ({ onSuccess }) => {
                 type="text"
                 value={localAddress}
                 onChange={localInputHandler}
-                className={styles.input}
+                className={styles.localInput}
                 placeholder="지역주소"
             />
             <button type="button" className={styles.addressBtn} onClick={openKakaoAddress}>주소 찾기</button>
@@ -63,7 +63,7 @@ const AddressInput = ({ onSuccess }) => {
               type="text"
               value={detailAddress}
               onChange={detailInputHandler}
-              className={styles.input}
+              className={styles.detailInput}
               placeholder="상세주소"
           />
         </div>

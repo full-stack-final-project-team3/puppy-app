@@ -118,3 +118,37 @@
         font-size: 14px;
     }
 }
+
+//
+.headerNav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 700px; // 폼의 최대 너비와 일치
+    margin-bottom: 20px;
+    padding: 0; // 패딩 제거
+}
+
+.backButton,
+.homeButton {
+    font-size: 24px; // 버튼 크기 약간 축소
+    color: #333;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px; // 패딩 축소
+    transition: transform 0.3s ease;
+
+    &:hover {
+        transform: scale(1.1);
+    }
+}
+
+.postTitle {
+    font-size: 28px; // 제목 크기 약간 축소
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}

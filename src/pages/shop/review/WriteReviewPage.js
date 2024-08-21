@@ -117,7 +117,7 @@ const WriteReviewPage = ({ orderId, treatId, dogId, treatTitle }) => {
       <h1>리뷰 작성하기</h1>
       <form onSubmit={handleSubmit}>
         <div>
-          <p htmlFor="review">리뷰</p>
+          {/* <p htmlFor="review">리뷰</p> */}
           <textarea
             id="review"
             className={styles.review_text}
@@ -127,11 +127,11 @@ const WriteReviewPage = ({ orderId, treatId, dogId, treatTitle }) => {
           ></textarea>
         </div>
         <div className={styles.rating_input_wrapper}>
-          <p htmlFor="rate">별점</p>
+          {/* <p htmlFor="rate">별점</p> */}
           <RatingInput value={rate} onChange={setRate} />
         </div>
         <div>
-          <p>대표 사진</p>
+          {/* <p>이미지</p> */}
           {reviewPics.map((pic, index) => (
             <div key={pic.id} className={styles.file_input_wrapper}>
               <label htmlFor={`file-upload-${index}`}>파일 선택</label>
@@ -152,7 +152,7 @@ const WriteReviewPage = ({ orderId, treatId, dogId, treatTitle }) => {
               )}
             </div>
           ))}
-          <button type="button" onClick={handleAddPic}>대표 사진 추가</button>
+          <button type="button" onClick={handleAddPic}>이미지 추가</button>
         </div>
         <button type="submit">작성하기</button>
       </form>

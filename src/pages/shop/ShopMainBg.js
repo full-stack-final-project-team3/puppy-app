@@ -11,8 +11,16 @@ const Slider = () => {
     { className: "slide5", text: "NO ARTIFICIAL FLAVORS" },
   ];
 
-  const slideCount = slides.length; // 슬라이드 개수
-  const duplicatedSlides = [...slides, ...slides]; // 슬라이드 복제
+  const slideCount = slides.length; 
+  const duplicatedSlides = [
+    ...slides,
+    ...slides,
+    ...slides,
+    ...slides,
+    ...slides,
+    ...slides,
+    ...slides,
+  ]; 
 
   return (
     <div className={styles.sliderContainer}>
@@ -107,7 +115,7 @@ const ShopMainBg = ({ content, manageShopBtn }) => {
           </div>
           <div className={styles.imgSection3}> </div>
         </div>
-        <Footer/>
+        <Footer />
       </div>
     </>
   );

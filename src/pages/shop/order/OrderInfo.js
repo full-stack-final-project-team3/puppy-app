@@ -46,7 +46,7 @@ const OrderInfo = ({
   return (
     <div>
       <div className={styles.section}>
-        <div className={styles['section-title']}>
+        <div className={`${styles['section-title']} ${styles.ouser_order_info_modify}`}>
           받는 사람 정보
           <button className={styles.order_info_btn} onClick={() => { setShowModal(true); setEditingType('receiver'); }}>
             <span className={styles.transition} ></span>
@@ -54,10 +54,10 @@ const OrderInfo = ({
             <span className={styles.labels} >입력</span>
           </button>
         </div>
-        <div className={styles['section-content']}>
-          <p>이름: {orderInfo.receiverName || '정보 없음'}</p>
-          <p>연락처: {orderInfo.receiverPhone || '정보 없음'}</p>
-          <p>주소: {orderInfo.receiverAddress || '정보 없음'} {orderInfo.receiverDetailAddress || user.detailAddress}</p>
+        <div className={`${styles['section-content']} ${styles.ouser_order_info}`}>
+          <p><span>이름:  </span>{orderInfo.receiverName || '정보 없음'}</p>
+          <p><span>연락처: </span>{orderInfo.receiverPhone || '정보 없음'}</p>
+          <p><span>주소: </span>{orderInfo.receiverAddress || '정보 없음'} {orderInfo.receiverDetailAddress || user.detailAddress}</p>
           <select
             className={styles.custom_select}
             value={orderInfo.deliveryRequest}

@@ -10,12 +10,11 @@ const ReviewPage = ({ treatsId }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedImages, setSelectedImages] = useState([]);
+  const [sortCriteria, setSortCriteria] = useState('latest'); // 정렬 기준 상태
   const navigate = useNavigate();
   const user = useSelector((state) => state.userEdit.userDetail);
 
   useEffect(() => {
-
-    console.info("ReviewPage treatId: "+ treatsId);
     const fetchReviews = async () => {
       try {
         const response = await fetch(`${REVIEW_URL}/treats/${treatsId}`);
@@ -24,18 +23,30 @@ const ReviewPage = ({ treatsId }) => {
         }
         const data = await response.json();
         setReviews(data);
-        console.log(data);
       } catch (error) {
         console.error('리뷰 조회 오류:', error);
       }
     };
 
     fetchReviews();
-  }, []);
+  }, [treatsId]); // treatsId가 변경될 때마다 리뷰를 다시 불러옴
 
-  const handleReviewClick = (reviewId) => {
-    navigate(`/review-page/review-detail/${reviewId}`);
+  const handleSortChange = (criteria) => {
+    setSortCriteria(criteria);
   };
+
+  const sortedReviews = reviews.sort((a, b) => {
+    if (sortCriteria === 'rating') {
+      return b.rate - a.rate; // 별점 높은 순으로 정렬
+    } else if (sortCriteria === 'latest') {
+      return new Date(b.createdAt) - new Date(a.createdAt); // 최신순으로 정렬
+    }
+    return 0;
+  });
+
+  // const handleReviewClick = (reviewId) => {
+  //   navigate(`/review-page/review-detail/${reviewId}`);
+  // };
 
   const handleButtonClick = () => {
     navigate('/review-page/write-review');
@@ -67,13 +78,33 @@ const ReviewPage = ({ treatsId }) => {
   return (
     <div className={styles.review_wraps_b}>
       <div className={`${styles.review_common_box} ${styles.review_page_box}`}>
-        {/* <button onClick={handleButtonClick}>리뷰 작성하기</button> */}
-        <div>
-          {/* <h1>리뷰 목록 조회</h1> */}
+        <div className={styles.review_array_box}>
+          <div className={styles.review_array}>
+            <a
+              onClick={() => handleSortChange('rating')}
+              className={sortCriteria === 'rating' ? styles.active : styles.inactive}
+            >
+              별점순
+            </a>
+            <span>｜</span>
+            <a
+              onClick={() => handleSortChange('latest')}
+              className={sortCriteria === 'latest' ? styles.active : styles.inactive}
+            >
+              최신순
+            </a>
+          </div>
+        </div>
+        {reviews.length === 0 ? (
+          <div className={styles.no_reviews_message}>
+            작성된 리뷰가 없습니다.
+          </div>
+        ) : (
           <ul className={styles.review_list_box}>
-            {reviews.map((review) => (
+            {sortedReviews.map((review) => (
               <li key={review.id} className={styles.review_item}>
-                <div className={styles.review_profile_box} onClick={() => handleReviewClick(review.id)}>
+                {/* <div className={styles.review_profile_box} onClick={() => handleReviewClick(review.id)}> */}
+                <div className={styles.review_profile_box}>
                   <div className={styles.review_left}>
                     <img className={styles.image} src={review.user.profileUrl} alt="Profile" />
                   </div>
@@ -84,7 +115,6 @@ const ReviewPage = ({ treatsId }) => {
                   </div>
                 </div>
                 <div className={styles.review_body}>
-                  {/* <p>내가 구매한 상품명 이름</p> */}
                   <div className={styles.review_images}>
                     {review.reviewPics && review.reviewPics.map((pic, index) => (
                       <img
@@ -101,7 +131,7 @@ const ReviewPage = ({ treatsId }) => {
               </li>
             ))}
           </ul>
-        </div>
+        )}
         {modalOpen && (
           <Modal
             images={selectedImages}
@@ -164,7 +194,7 @@ const Modal = ({ images, currentIndex, onClose, onPrev, onNext }) => {
         <div className={styles.modal_image_container}>
           <button className={styles.prev_button} onClick={onPrev}>‹</button>
           <img
-            src={`http://localhost:8888/shop/reviews/review-img/${images[currentIndex].reviewPic}`}
+            src={`${REVIEW_URL}/review-img/${images[currentIndex].reviewPic}`}
             alt={`Review Pic ${currentIndex + 1}`}
             className={styles.modal_image}
           />
@@ -174,7 +204,5 @@ const Modal = ({ images, currentIndex, onClose, onPrev, onNext }) => {
     </div>
   );
 };
-
-
 
 export default ReviewPage;

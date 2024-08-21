@@ -6,6 +6,8 @@ import { useSelector } from "react-redux";
 import { BsChat, BsEye, BsPerson, BsImages, BsSearch } from "react-icons/bs";
 import { HiOutlineHeart } from "react-icons/hi2";
 
+import FixedButtons from "../../components/community/FixedButtons";
+
 const BoardPage = () => {
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
@@ -17,6 +19,8 @@ const BoardPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const [filteredPosts, setFilteredPosts] = useState([]);
+
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   const user = useSelector((state) => state.userEdit.userDetail);
 
@@ -88,11 +92,19 @@ const BoardPage = () => {
           fetchPosts(searchTerm);
         }
       }
+      setShowScrollTop(window.pageYOffset > 300);
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [loading, isAllLoaded, fetchPosts, searchTerm]);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
   const handleWritePost = () => {
     if (user) {
@@ -237,23 +249,12 @@ const BoardPage = () => {
         {isAllLoaded && displayPosts.length > 0 && (
           <div className={styles.endMessage}>모든 게시글을 불러왔습니다.</div>
         )}
-        <button className={styles.writeButton} onClick={handleWritePost}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M12 20h9"></path>
-            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
-          </svg>
-          <span>글쓰기</span>
-        </button>
+
+        <FixedButtons
+          onScrollTop={scrollToTop}
+          onWrite={handleWritePost}
+          showScrollTop={showScrollTop}
+        />
       </div>
     </div>
   );

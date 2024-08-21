@@ -6,10 +6,37 @@
     background-color: #F1E1C8;
     padding: 20px;
     font-family: 'Arial', sans-serif;
+    max-width: 1000px; // 최대 너비를 1000px로 조정
+    margin: 0 auto;
 }
 
-.title {
-    font-size: 24px;
+.headerNav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 700px; // 폼의 최대 너비와 일치
+    margin-bottom: 20px;
+    padding: 0; // 패딩 제거
+}
+
+.backButton,
+.homeButton {
+    font-size: 24px; // 버튼 크기 약간 축소
+    color: #333;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px; // 패딩 축소
+    transition: transform 0.3s ease;
+
+    &:hover {
+        transform: scale(1.1);
+    }
+}
+
+.postTitle {
+    font-size: 28px; // 제목 크기 약간 축소
     font-weight: bold;
     margin-bottom: 20px;
     color: #333;
@@ -17,84 +44,77 @@
 }
 
 .form {
-    width: 90%;
-    /* 너비를 90%로 조정 */
-    max-width: 400px;
-    /* 최대 너비를 설정 */
+    width: 100%;
+    max-width: 700px; // 폼의 최대 너비 축소
     background-color: #fff;
-    padding: 20px;
+    padding: 25px; // 내부 패딩 약간 축소
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    margin: 0 auto;
-    /* 중앙 정렬 */
 }
 
 .input,
 .textarea {
-    width: 94%;
-    padding: 10px;
+    width: 100%;
+    padding: 12px; // 입력 필드 패딩 약간 축소
     margin-bottom: 15px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    font-size: 14px;
+    font-size: 15px; // 폰트 크기 약간 축소
     transition: border-color 0.3s;
+    box-sizing: border-box;
 }
 
 .textarea {
-    min-height: 150px;
-    resize: vertical;
-}
-
-.imageUpload {
-    margin-bottom: 15px;
+    min-height: 180px; // 텍스트 영역 높이 약간 축소
 }
 
 .imageLabel {
     display: inline-block;
-    padding: 8px 12px;
+    padding: 10px 18px; // 패딩 약간 축소
     background-color: #f0f0f0;
     color: #333;
     border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s;
-    font-size: 14px;
-}
+    font-size: 15px; // 폰트 크기 약간 축소
 
-.imageLabel:hover {
-    background-color: #e0e0e0;
-}
-
-.imageInput {
-    display: none;
-}
-
-.fileName {
-    margin-top: 5px;
-    font-size: 12px;
-    color: #666;
+    &:hover {
+        background-color: #e0e0e0;
+    }
 }
 
 .submitButton {
     width: 100%;
-    padding: 10px;
+    padding: 12px; // 패딩 약간 축소
     background-color: #B3797A;
     color: white;
     border: none;
     border-radius: 8px;
-    font-size: 16px;
+    font-size: 16px; // 폰트 크기 약간 축소
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s;
+
+    &:hover {
+        background-color: #9F5A5B;
+    }
 }
 
-.submitButton:hover {
-    background-color: #9F5A5B;
-}
+@media (max-width: 768px) {
+    .createPostPage {
+        padding: 10px;
+    }
 
-@media (max-width: 400px) {
-    .title {
-        font-size: 20px;
-        margin-bottom: 15px;
+    .headerNav {
+        max-width: 100%;
+    }
+
+    .postTitle {
+        font-size: 22px;
+    }
+
+    .form {
+        padding: 15px;
     }
 
     .input,

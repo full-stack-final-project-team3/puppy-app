@@ -1,49 +1,40 @@
-import React, {useContext, useState, useEffect, useRef} from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import styles from "./LoginForm.module.scss";
-import {Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import UserContext from "../../../context/user-context";
-import {AUTH_URL, NOTICE_URL} from "../../../../config/user/host-config";
-import {RiKakaoTalkFill} from "react-icons/ri";
-import {userEditActions} from "../../../store/user/UserEditSlice";
-import {useDispatch} from "react-redux";
+import { AUTH_URL, NOTICE_URL } from "../../../../config/user/host-config";
+import { RiKakaoTalkFill } from "react-icons/ri";
+import { userEditActions } from "../../../store/user/UserEditSlice";
+import { useDispatch } from "react-redux";
 import Footer from "../../../../layout/user/Footer";
+import {Cookies, useCookies} from "react-cookie";
 
 const APP_KEY = process.env.REACT_APP_KAKAO_APP_KEY;
 const REDIRECT_URL = process.env.REACT_APP_KAKAO_REDIRECT_URL;
 
-
 const KAKAO_LOGIN_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${APP_KEY}&redirect_uri=${REDIRECT_URL}&response_type=code`;
 
 const LoginForm = () => {
+    const [cookies] = useCookies(['authToken']);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [autoLogin, setAutoLogin] = useState(false);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
-    const {changeIsLogin, setUser} = useContext(UserContext);
+    const { changeIsLogin, setUser } = useContext(UserContext);
     const dispatch = useDispatch();
+    const authToken = cookies.authToken;
 
-    const enterHandler = (e) => {
-        if (e.key === "Enter") {
-            handleSubmit(e);
-        }
-    };
+    const provider = localStorage.getItem('provider'); // 로컬 스토리지에서 provider 값 가져오기
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        const payload = {
-            email,
-            password,
-            autoLogin,
-        };
+        const payload = { email, password, autoLogin };
 
         try {
             const response = await fetch(`${AUTH_URL}/sign-in`, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload),
             });
 
@@ -58,8 +49,8 @@ const LoginForm = () => {
                 localStorage.setItem("userData", JSON.stringify(responseData));
                 setUser(responseData);
                 changeIsLogin(true);
+                localStorage.removeItem('provider'); // 로그인 시 provider 정보 제거
                 navigate("/");
-
             } else {
                 const errorText = await response.text();
                 setError(errorText || "로그인에 실패했습니다.");
@@ -68,41 +59,47 @@ const LoginForm = () => {
             console.log("Unexpected error:", err);
         }
     };
-    // 서버에서 provider 정보 보내줌.
 
-    // 카카오 로그인 처리
-    const handleKakaoLogin = async () => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const code = urlParams.get("code");
-
-        if (code) {
-            try {
-                const response = await fetch(`${AUTH_URL}/oauth/kakao?code=${code}`, {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                });
-
-                if (response.ok) {
-                    const responseData = await response.json();
-                    localStorage.setItem("userData", JSON.stringify(responseData));
-                    setUser(responseData);
-                    changeIsLogin(true); // 상태 업데이트
-                    navigate("/"); // 로그인 후 리디렉트할 경로
-                } else {
-                    setError("카카오 로그인에 실패했습니다.");
-                }
-            } catch (err) {
-                setError("서버와의 통신 중 오류가 발생했습니다.");
-            }
+    const enterHandler = (e) => {
+        if (e.key === "Enter") {
+            handleSubmit(e);
         }
     };
 
-    // useEffect 훅을 사용하여 URL에 코드가 있는지 확인
-    useEffect(() => {
-        handleKakaoLogin();
-    }, []);
+    const getKakaoUserInfo = async () => {
+
+            localStorage.setItem('provider', 'kakao');
+        if (authToken) {
+            const firstResponse = await fetch(`${AUTH_URL}/auto-login`, {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${authToken}`,
+                    "Content-Type": "application/json",
+                },
+            })
+
+            if (firstResponse.ok) {
+                const data = await firstResponse.json();
+
+                const response = await fetch(`${AUTH_URL}/sign-in`, {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({
+                        email: data.email,
+                        password: data.password,
+                        autoLogin: data.autoLogin,
+                    }),
+                });
+
+                const userDetailData = await (await fetch(`${AUTH_URL}/${data.email}`)).json();
+                const noticeData = await (await fetch(`${NOTICE_URL}/user/${data.id}`)).json();
+
+                localStorage.setItem("userData", JSON.stringify(response));
+                dispatch(userEditActions.saveUserNotice(noticeData));
+                dispatch(userEditActions.updateUserDetail(userDetailData));
+            }
+        }
+    }
 
     return (
         <>
@@ -110,7 +107,7 @@ const LoginForm = () => {
                 <div className={styles.authContainer}>
                     <div>
                         <div className={styles.wrap}>
-                            <img className={styles.img} src="/header-logo.png" alt="logo"/>
+                            <img className={styles.img} src="/header-logo.png" alt="logo" />
                             <h2 className={styles.h2}>Login</h2>
                             <div className={styles.signup}>
                                 <Link to="/signup" className={styles.signupBtn}>
@@ -118,10 +115,15 @@ const LoginForm = () => {
                                 </Link>
                             </div>
                             <div className={styles.kakao}>
-                                <a href={KAKAO_LOGIN_URL} className={styles.kakaoBtn}>
-                                    <RiKakaoTalkFill/>
+                                <a href={KAKAO_LOGIN_URL} className={styles.kakaoBtn} onClick={getKakaoUserInfo}>
+                                    <RiKakaoTalkFill />
                                 </a>
                             </div>
+                            {provider === 'kakao' && (
+                                <div className={styles.kakaoRecentLogin}>
+                                    최근 사용한 서비스
+                                </div>
+                            )}
                         </div>
                     </div>
                     <div>
@@ -129,7 +131,9 @@ const LoginForm = () => {
                             <div className={styles.loginBox}>
                                 <form onSubmit={handleSubmit}>
                                     <div className={styles.inputGroup}>
-                                        <label className={styles.label} htmlFor="email">Email</label>
+                                        <label className={styles.label} htmlFor="email">
+                                            Email
+                                        </label>
                                         <input
                                             type="email"
                                             id="email"
@@ -142,7 +146,9 @@ const LoginForm = () => {
                                         />
                                     </div>
                                     <div className={styles.inputGroup}>
-                                        <label htmlFor="password" className={styles.label}>Password</label>
+                                        <label htmlFor="password" className={styles.label}>
+                                            Password
+                                        </label>
                                         <input
                                             type="password"
                                             id="password"
@@ -163,9 +169,13 @@ const LoginForm = () => {
                                             checked={autoLogin}
                                             onChange={(e) => setAutoLogin(e.target.checked)}
                                         />
-                                        <label htmlFor="autoLogin" className={styles.label}>자동 로그인</label>
+                                        <label htmlFor="autoLogin" className={styles.label}>
+                                            자동 로그인
+                                        </label>
                                     </div>
-                                    {error && <div className={styles.errorMessage}>{error}</div>}
+                                    {error && (
+                                        <div className={styles.errorMessage}>{error}</div>
+                                    )}
                                     <div className={styles.bottomGroup}>
                                         <div className={styles.links}>
                                             <Link to={"/forgot-info"}>아이디 / 비밀번호 찾기</Link>
@@ -180,7 +190,7 @@ const LoginForm = () => {
                     </div>
                 </div>
             </div>
-            <Footer/>
+            <Footer />
         </>
     );
 };

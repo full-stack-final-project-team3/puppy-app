@@ -7,8 +7,15 @@ const ProductInfo = ({ bundles, subscriptionPeriodLabels, subscriptionPeriods })
     <div className={styles['section-content']}>
       {bundles.map((bundle) => (
         <div key={bundle.id}>
-          <h3>상품명: 반려견 전용 맞춤형 푸드 패키지 For {bundle.dogName}</h3>
-          <p>상품 구독 기간 : {subscriptionPeriodLabels[subscriptionPeriods[bundle.id]]}</p>
+          <div className={styles.Product_title}>
+            <h3>
+              반려견 전용 맞춤형 푸드 패키지 For <span>{bundle.dogName}</span>
+            </h3>
+            <p>
+              상품 구독 기간 : 
+              <span>{subscriptionPeriodLabels[subscriptionPeriods[bundle.id]]}</span>
+            </p>
+          </div>
           <div>
             {/* <p>패키지 리스트</p> */}
             {bundle.treats.map((treat) => (
