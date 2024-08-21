@@ -5,6 +5,7 @@ import RatingInput from './RatingInput';
 import styles from './Review.module.scss';
 import { userEditActions } from "../../../components/store/user/UserEditSlice";
 import { NOTICE_URL, REVIEW_URL } from "../../../config/user/host-config";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const WriteReviewPage = ({ orderId, treatId, dogId, treatTitle }) => {
   const [reviewContent, setReviewContent] = useState('');
@@ -113,50 +114,53 @@ const WriteReviewPage = ({ orderId, treatId, dogId, treatTitle }) => {
   };
 
   return (
-    <div className={`${styles.review_common_box} ${styles.review_writer_box}`}>
-      <h1>리뷰 작성하기</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          {/* <p htmlFor="review">리뷰</p> */}
-          <textarea
-            id="review"
-            className={styles.review_text}
-            value={reviewContent}
-            onChange={(e) => setReviewContent(e.target.value)}
-            placeholder="리뷰를 작성해 주세요."
-          ></textarea>
-        </div>
-        <div className={styles.rating_input_wrapper}>
-          {/* <p htmlFor="rate">별점</p> */}
-          <RatingInput value={rate} onChange={setRate} />
-        </div>
-        <div>
-          {/* <p>이미지</p> */}
-          {reviewPics.map((pic, index) => (
-            <div key={pic.id} className={styles.file_input_wrapper}>
-              <label htmlFor={`file-upload-${index}`}>파일 선택</label>
-              <input
-                id={`file-upload-${index}`}
-                type="file"
-                multiple
-                accept="image/*"
-                onChange={(e) => handleFileChange(index, e)}
-              />
-              {pic.fileNames.length > 0 && (
-                <p className={styles.file_name_list}>
-                  {pic.fileNames.join(', ')}
-                </p>
-              )}
-              {index > 0 && (
-                <button type="button" onClick={() => handleRemovePic(index)}>제거</button>
-              )}
-            </div>
-          ))}
-          <button type="button" onClick={handleAddPic}>이미지 추가</button>
-        </div>
-        <button type="submit">작성하기</button>
-      </form>
-    </div>
+    <>
+      {/* <h2 className={styles.riview_close}>×</h2> */}
+      <div className={`${styles.review_common_box} ${styles.review_writer_box}`}>
+        <h1>리뷰 작성하기</h1>
+        <form onSubmit={handleSubmit}>
+          <div>
+            {/* <p htmlFor="review">리뷰</p> */}
+            <textarea
+              id="review"
+              className={styles.review_text}
+              value={reviewContent}
+              onChange={(e) => setReviewContent(e.target.value)}
+              placeholder="리뷰를 작성해 주세요."
+            ></textarea>
+          </div>
+          <div className={styles.rating_input_wrapper}>
+            {/* <p htmlFor="rate">별점</p> */}
+            <RatingInput value={rate} onChange={setRate} precision={1} />
+          </div>
+          <div>
+            {/* <p>이미지</p> */}
+            {reviewPics.map((pic, index) => (
+              <div key={pic.id} className={styles.file_input_wrapper}>
+                <label htmlFor={`file-upload-${index}`}>이미지 선택</label>
+                <input
+                  id={`file-upload-${index}`}
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  onChange={(e) => handleFileChange(index, e)}
+                />
+                {pic.fileNames.length > 0 && (
+                  <p className={styles.file_name_list}>
+                    {pic.fileNames.join(', ')}
+                  </p>
+                )}
+                {index > 0 && (
+                  <button type="button" onClick={() => handleRemovePic(index)}>제거</button>
+                )}
+              </div>
+            ))}
+            <button type="button" onClick={handleAddPic}>이미지 추가</button>
+          </div>
+          <button type="submit">작성하기</button>
+        </form>
+      </div>
+    </>
   );
 };
 

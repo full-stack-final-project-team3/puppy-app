@@ -166,8 +166,8 @@ const SnackRecords = () => {
                                         상세보기
                                     </button>
                                     {order.orderStatus !== 'CANCELLED' && (
-                                        <button 
-                                        className={styles.cancelButton}
+                                    <button 
+                                    className={`${styles.cancelButton} ${styles.cancelButton_gray}`}
                                         onClick={() => {
                                             console.log('버튼 클릭 시 전달된 주문 ID:', order.orderId); 
                                             confirmCancelOrder(order.orderId);

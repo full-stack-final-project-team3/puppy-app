@@ -201,3 +201,9 @@
   background: rgba(0, 0, 0, 0.5);
   z-index: 999;
 }
+.cancelButton.cancelButton_gray{
+  background-color: #999;
+}
+.cancelButton.cancelButton_gray:hover{
+  background-color: #777;
+}

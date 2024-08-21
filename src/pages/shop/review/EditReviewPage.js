@@ -75,52 +75,55 @@ const EditReviewPage = ({ reviewId }) => {
   };
 
   return (
-    <div className={`${styles.review_common_box} ${styles.review_editor_box}`}>
-      <h1>리뷰 수정하기</h1>
-      <p>닉네임: {user.nickname}</p>
-      <p>이메일: {user.email}</p>
-      <form onSubmit={handleUpdate}>
-        <div>
-          <label htmlFor="review">리뷰</label>
-          <textarea
-            id="review"
-            className={styles.review_text}
-            value={reviewContent}
-            onChange={(e) => setReviewContent(e.target.value)}
-          ></textarea>
-        </div>
-        <div>
-          <label htmlFor="rate">별점</label>
-          <Rating
-            name="editable-rate"
-            value={rate}
-            onChange={(e, newValue) => setRate(newValue)}
-            precision={0.5}
-          />
-        </div>
-        <div>
-          <label htmlFor="reviewPics">이미지 업로드</label>
-          <input
-            type="file"
-            id="reviewPics"
-            multiple
-            accept="image/*"
-            onChange={handleFileChange}
-          />
-        </div>
-        <div>
-          {reviewPics.map((pic, index) => (
-            <img
-              key={index}
-              src={`${REVIEW_URL}/review-img/${pic.reviewPic}`}
-              alt={`Review Pic ${index + 1}`}
-              className={styles.review_image}
+    <>
+      {/* <h2 className={styles.riview_close}>×</h2> */}
+      <div className={`${styles.review_common_box} ${styles.review_editor_box}`}>
+        <h1>리뷰 수정하기</h1>
+        {/* <p>닉네임: {user.nickname}</p>
+        <p>이메일: {user.email}</p> */}
+        <form onSubmit={handleUpdate}>
+          <div>
+            <textarea
+              id="review"
+              className={styles.review_text}
+              value={reviewContent}
+              onChange={(e) => setReviewContent(e.target.value)}
+            ></textarea>
+          </div>
+          <div className={styles.rating_input_wrapper}>
+            {/* <label htmlFor="rate">별점</label> */}
+            <Rating
+              name="editable-rate"
+              value={rate}
+              onChange={(e, newValue) => setRate(newValue)}
+              precision={1}
             />
-          ))}
-        </div>
-        <button type="submit">수정하기</button>
-      </form>
-    </div>
+          </div>
+          <div className={styles.file_input_wrapper}>
+            <label htmlFor="reviewPics">이미지 선택</label>
+            <input
+              type="file"
+              id="reviewPics"
+              multiple
+              accept="image/*"
+              onChange={handleFileChange}
+            />
+          </div>
+          <div>
+            {reviewPics.map((pic, index) => (
+              <img
+                key={index}
+                src={`${REVIEW_URL}/review-img/${pic.reviewPic}`}
+                alt={`Review Pic ${index + 1}`}
+                className={styles.review_image}
+              />
+            ))}
+          </div>
+          
+          <button type="submit">수정하기</button>
+        </form>
+      </div>
+    </>
   );
 };
 
