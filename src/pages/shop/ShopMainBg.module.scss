@@ -1,5 +1,5 @@
 :root {
-  --padding-top: 50px;
+  --padding-top: 100px;
   --padding-left: 120px;
   --img-section-display: flex; 
 }
@@ -12,7 +12,7 @@
       background-image: url(../../../public/shop_img/1.png); // 배경 이미지 경로
       background-size: cover;
       background-position: center;
-      height: 85%; /* 높이를 원하는 값으로 설정 */
+      height: 710px; /* 높이를 원하는 값으로 설정 */
       width: 100%; /* 너비를 원하는 값으로 설정 */
       position: relative; /* 부모 요소에 relative 설정 */
 
@@ -107,7 +107,7 @@
       background-image: url(../../../public/shop_img/2.png); // 배경 이미지 경로
       background-size: cover;
       background-position: center;
-      height: 85%; /* 높이를 원하는 값으로 설정 */
+      height: 710px; /* 높이를 원하는 값으로 설정 */
       width: 100%; /* 너비를 원하는 값으로 설정 */
     }
 
@@ -120,7 +120,7 @@
       background-image: url("../../../public/shop_img/3840x0.png"); // 배경 이미지 경로
       background-size: cover; // 배경 이미지가 전체 영역을 덮도록 설정
       background-position: center; // 배경 이미지를 중앙에 배치
-      height: 600px; // 원하는 높이 설정
+      height: 710px; // 원하는 높이 설정
       width: 50%; // 너비를 절반으로 설정
       left: 0;
       display: var(--img-section-display); 
