@@ -32,9 +32,9 @@ const UserPointStatus = () => {
             <div>
                 <nav className={styles.nav}>
                     <ul className={styles.ul}>
-                        <li className={styles.menu} onClick={totalHandler}>전체 지출</li>
-                        <li className={styles.menu} onClick={hotelHandler}>호텔</li>
-                        <li className={styles.menu} onClick={shopHandler}>쇼핑몰</li>
+                        <li className={`${styles.menu} ${showTotal && styles.active}`}  onClick={totalHandler}>전체 지출</li>
+                        <li className={`${styles.menu} ${showHotel && styles.active}`}  onClick={hotelHandler}>호텔</li>
+                        <li className={`${styles.menu} ${showShop && styles.active}`}  onClick={shopHandler}>쇼핑몰</li>
                     </ul>
                 </nav>
             </div>

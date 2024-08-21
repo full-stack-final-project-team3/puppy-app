@@ -11,7 +11,6 @@ const ForgotSection = () => {
 
 
     const isClear = (flag) => {
-        console.log(flag)
         setClearValid(flag)
     }
 

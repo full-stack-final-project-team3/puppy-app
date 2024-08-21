@@ -82,8 +82,7 @@ const DogEdit = () => {
                 dispatch(userEditActions.updateUserDetail({...userDetail, dogList: updatedDogList}));
                 dispatch(dogEditActions.updateDogInfo({...dog, allergies: newAllergyList}));
                 setModalText("알러지가 추가되었습니다!");
-                setPendingFunction(() => {
-                });
+                setPendingFunction(() => {});
                 setShowModal(true);
             } else {
                 console.error('알러지 추가 실패:', response.statusText);
@@ -118,13 +117,11 @@ const DogEdit = () => {
             dispatch(userEditActions.clearMode());
             dispatch(dogEditActions.clearEdit());
             setModalText("성공적으로 수정이 완료되었습니다.");
-            setPendingFunction(() => {
-            });
+            setPendingFunction(() => {});
             setShowModal(true);
         } else {
             setModalText("수정에 실패했습니다.");
-            setPendingFunction(() => {
-            });
+            setPendingFunction(() => {});
             setShowModal(true);
         }
     };
@@ -173,8 +170,7 @@ const DogEdit = () => {
                 dispatch(userEditActions.updateUserDetail({...userDetail, dogList: updatedDogList}));
                 dispatch(dogEditActions.updateDogInfo({...dog, allergies: updatedAllergies}));
                 setModalText("알러지가 삭제되었습니다!");
-                setPendingFunction(() => {
-                });
+                setPendingFunction(() => {});
                 setShowModal(true);
             } else {
                 console.error('알러지 삭제 실패:', response.statusText);
@@ -242,7 +238,12 @@ const DogEdit = () => {
                     </div>
                     <div className={styles.row}>
                         <div className={styles.item}>체중</div>
-                        <input className={styles.input} placeholder={dog.weight} type="number" ref={weightRef}/>
+                        <input
+                            className={styles.input}
+                            type="number"
+                            defaultValue={dog.weight}
+                            ref={weightRef}
+                        />
                         <span className={styles.sub}>{decideSize(dog.dogSize)}</span>
                     </div>
                     <div className={styles.row}>
@@ -286,9 +287,9 @@ const DogEdit = () => {
                     </div>
                 </div>
                 <div className={styles.right} onClick={handleImageClick}>
-                    <div className={styles.imgWrap}>
+                    <div className={`${styles.imgWrap}  ${dog.dogProfileUrl !== null && styles.circle}`}>
                         <img className={styles.dogProfileUrl} src={dog.dogProfileUrl || "header-logo.png"}
-                              alt="Dog Profile"/>
+                             alt="Dog Profile"/>
                     </div>
                     <div className={styles.hoverText}>강아지 사진 변경</div>
                     <input

@@ -3,7 +3,7 @@ import React from 'react';
 const ShopStatus = () => {
     return (
         <div>
-            ShopStatus
+            추후 업데이트 예정입니다.
         </div>
     );
 };

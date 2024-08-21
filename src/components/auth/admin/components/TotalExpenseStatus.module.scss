@@ -14,6 +14,11 @@
       cursor: pointer;
       list-style: none;
     }
+    .active {
+      font-weight: bold;
+      text-decoration: underline;
+      font-size: 1.2rem;
+    }
 
     .menu:hover {
       font-weight: bold;

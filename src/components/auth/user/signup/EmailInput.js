@@ -12,7 +12,6 @@ const EmailInput = ({ onSuccess }) => {
 
   // 이메일 패턴 검증
   const validateEmail = (email) => {
-    console.log(email.slice(-3))
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // 이메일 패턴 검사
     return emailPattern.test(email) && email.slice(-3) === 'com';
   };

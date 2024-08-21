@@ -117,7 +117,7 @@ const MainNavigation = ({ drawerOpen, onToggleDrawer }) => {
               noticeCount: userDetail.noticeCount - 1,
             })
         );
-        console.log("Notice clicked successfully.");
+
       } else {
         console.error("Failed to click notice.");
       }

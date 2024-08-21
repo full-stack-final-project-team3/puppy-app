@@ -6,6 +6,10 @@
   width: 100%;
   height: 40vh;
   margin: auto 0;
+
+  .mobileBtn {
+    display: none;
+  }
 }
 
 .h3 {
@@ -32,6 +36,7 @@
   justify-content: center;
   border: 1px solid black;
   text-align: center;
+  outline: none;
 
   .input:focus {
     outline: none;
@@ -41,7 +46,21 @@
 
   .wrap {
     height: 33vh;
+    margin-top: 40px;
 
+    .mobileBtn {
+      display: block;
+      margin-top: 30px;
+      padding: 10px 35px;
+      background: #B4787A;
+      border-radius: 20px;
+      color: #bdbcbc;
+    }
+
+    .active {
+      color: white;
+      cursor: pointer;
+    }
   .input {
     width: 40%;
   }

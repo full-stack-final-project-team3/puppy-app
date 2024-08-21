@@ -32,9 +32,9 @@ const UserCount = () => {
             <div>
                 <nav className={styles.nav}>
                     <ul className={styles.ul}>
-                        <li className={styles.menu} onClick={dayHandler}>일별</li>
-                        <li className={styles.menu} onClick={weekHandler}>주별</li>
-                        <li className={styles.menu} onClick={monthHandler}>월별</li>
+                        <li className={`${styles.menu} ${showDay && styles.active}`} onClick={dayHandler}>일별</li>
+                        <li className={`${styles.menu} ${showWeek && styles.active}`}onClick={weekHandler}>주별</li>
+                        <li className={`${styles.menu} ${showMonth && styles.active}`} onClick={monthHandler}>월별</li>
                     </ul>
                 </nav>
             </div>
