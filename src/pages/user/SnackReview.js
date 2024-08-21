@@ -88,7 +88,7 @@ const SnackReview = () => {
   };
 
   const showMoreCards = () => {
-    setVisibleCount((prevCount) => prevCount + 1); // 한 번에 한 개의 카드를 더 보여줍니다.
+    setVisibleCount((prevCount) => prevCount + 5); // 한 번에 한 개의 카드를 더 보여줍니다.
   };
 
   return (
