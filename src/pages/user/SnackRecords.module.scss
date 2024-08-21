@@ -239,3 +239,10 @@
   color: red; /* 주문 취소된 항목에 빨간색 적용 */
   font-weight: bold;
 }
+
+.cancelButton_gray{
+  background-color: #999;
+}
+.cancelButton_gray:hover{
+  background-color:#777;
+}
