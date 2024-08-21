@@ -181,9 +181,15 @@
     width: 90%;
     padding: 20px 10px;
   }
+  .wrap .order_detail_common_box p{
+    font-size: 14px;
+  }
+  .bundleItem ul, .bundleItem li{
+    font-size: 14px;
+  }
 }
 
-
+   
 //주문 상세에 주문 취소하면 나타나는 모달창 css
 .modalOverlay {
   position: fixed; // 20240821: 화면 고정
