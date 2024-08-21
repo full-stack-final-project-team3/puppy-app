@@ -45,9 +45,18 @@ const PaymentInfo = ({
         
         <div className={styles['section-content']}>
           <div className={styles['section-title']}>결제 정보</div>
-          <p className={styles.price_p}>총 상품 가격  <span> {totalPrice.toLocaleString()}원</span></p>
-          <p className={styles.price_p}>포인트 결제 차감   <span>-{pointUsage.toLocaleString()}원</span></p>
-          <p className={styles.price_p}>최종 결제 금액:  <span>{finalPrice.toLocaleString()}원</span></p>
+          <p className={styles.price_p}>
+            총 상품 가격  
+            <span>{totalPrice.toLocaleString()}원</span>
+          </p>
+          <p className={styles.price_p}>
+            포인트 결제 차감   
+            <span className={styles.point_text_red}>-{pointUsage.toLocaleString()}원</span>
+          </p>
+          <p className={styles.price_p}>
+            최종 결제 금액:  
+            <span>{finalPrice.toLocaleString()}원</span>
+          </p>
         </div>
       </div>
 

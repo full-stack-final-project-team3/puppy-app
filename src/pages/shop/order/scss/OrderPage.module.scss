@@ -39,14 +39,14 @@
     button {
       width: 100%;
       padding: 10px;
-      background-color: #f5eadf;
+      background-color: #B3797A;
       border: 1px solid #ccc;
       border-radius: 5px;
       font-size: 16px;
       cursor: pointer;
 
       &:hover {
-        background-color: #e4d5bf;
+        background-color: #9F5A5B;
       }
     }
   }
@@ -54,13 +54,13 @@
 
   .confirm-button {
     margin-top: 20px;
-    background-color: #333;
+    background-color: #8EBC8F;
     color: #fff;
     font-weight: bold;
     text-align: center;
 
     &:hover {
-      background-color: #555;
+      background-color: #218838;
     }
   }
 }
@@ -300,4 +300,7 @@
     align-items: center;
     justify-content: space-between;
   }
+}
+.point_text_red{
+  color: red;
 }

@@ -27,13 +27,12 @@ const OrderPage = () => {
     receiverName: user.realName,
     receiverPhone: user.phoneNumber,
     receiverAddress: user.address,
-    receiverDetailAddress: user.detailAddress, // 추가: 상세 주소
-    deliveryRequest: "", // 초기 상태는 빈 문자열로 설정
+    receiverDetailAddress: user.detailAddress,
+    deliveryRequest: "",
     customRequest: "",
   });
 
-  const [validationErrors, setValidationErrors] = useState({}); // 검증 오류 상태
-
+  const [validationErrors, setValidationErrors] = useState({});
   const [remainingPoints, setRemainingPoints] = useState(user.point);
   const [canPurchase, setCanPurchase] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -41,11 +40,12 @@ const OrderPage = () => {
   const [isConfirmStep, setIsConfirmStep] = useState(true);
   const [showPointPayment, setShowPointPayment] = useState(false);
   const [pointUsage, setPointUsage] = useState(0);
-  const [finalPrice, setFinalPrice] = useState(totalPrice);
+  const [finalPrice, setFinalPrice] = useState(totalPrice); // 20240821: finalPrice를 totalPrice로 초기 설정
 
   useEffect(() => {
     const remaining = user.point - totalPrice;
     setRemainingPoints(remaining);
+    setFinalPrice(totalPrice); // 20240821: finalPrice를 totalPrice로 초기화
     setCanPurchase(false);
 
     console.log("user: " + user);
@@ -125,10 +125,9 @@ const OrderPage = () => {
   };
 
   const handleSubmit = () => {
-    // 결제 버튼 클릭 시 검증 로직 추가
     const isValid = validateFields();
     if (!isValid) {
-      setModalMessage("받는 사람 정보에 입력이 되지 않았씁니다.");
+      setModalMessage("받는 사람 정보에 입력이 되지 않았습니다.");
       setIsConfirmStep(null);
       setShowModal(true);
       return;
@@ -141,7 +140,6 @@ const OrderPage = () => {
   };
 
   const validateFields = () => {
-    // 필드 검증 함수
     const errors = {};
     if (!orderInfo.receiverName) {
       errors.receiverName = "이름을 입력해 주세요.";
@@ -171,14 +169,14 @@ const OrderPage = () => {
     points = Math.min(points, user.point);
     points = Math.min(points, totalPrice);
     setPointUsage(points);
-    setFinalPrice(totalPrice - points);
+    // setFinalPrice(totalPrice - points); // 20240821: 주석 처리하여 최종 결제 금액이 총 금액으로 유지되도록 함
     setCanPurchase(points >= totalPrice);
   };
 
   const handleUseAllPoints = () => {
     const pointsToUse = Math.min(user.point, totalPrice);
     setPointUsage(pointsToUse);
-    setFinalPrice(totalPrice - pointsToUse);
+    // setFinalPrice(totalPrice - pointsToUse); // 20240821: 주석 처리하여 최종 결제 금액이 총 금액으로 유지되도록 함
     setCanPurchase(pointsToUse >= totalPrice);
   };
 
@@ -191,8 +189,8 @@ const OrderPage = () => {
       receiverPhone: orderInfo.receiverPhone,
       address: orderInfo.receiverAddress,
       addressDetail: orderInfo.receiverDetailAddress,
-      deliveryRequest: orderInfo.deliveryRequest, // 배송 요청 사항 전달
-      customRequest: orderInfo.customRequest, // 기타 요청 사항 전달
+      deliveryRequest: orderInfo.deliveryRequest,
+      customRequest: orderInfo.customRequest,
       pointUsage,
       bundles,
       subscriptionPeriods,
@@ -200,7 +198,7 @@ const OrderPage = () => {
       orderDate: new Date().toLocaleString(),
     };
 
-    console.log("Order Data:", orderData); // 로그를 통해 확인
+    console.log("Order Data:", orderData);
 
     try {
       const response = await fetch(`${SHOP_URL}/orders`, {
@@ -223,7 +221,7 @@ const OrderPage = () => {
 
       navigate("/order-detail", {
         state: {
-          order: createdOrder, // 이 객체에 deliveryRequest가 제대로 포함되어 있는지 확인
+          order: createdOrder,
           orderInfo: orderInfo,
         },
       });
@@ -231,7 +229,7 @@ const OrderPage = () => {
       console.error("Error creating order:", error);
       setModalMessage("결제에 실패했습니다.");
       setIsConfirmStep(false);
-      setShowModal(true); // 결제 실패 시 모달창 보여줌
+      setShowModal(true);
     }
   };
 

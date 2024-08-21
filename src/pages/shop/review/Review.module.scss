@@ -272,13 +272,15 @@ p {
 .file_input_wrapper label {
   display: inline-block;
   padding: 10px 15px;
-  background-color: #007bff;
+  background-color: #8EBC8F;
   color: white;
   border-radius: 5px;
   cursor: pointer;
   font-size: 14px;
 }
-
+.file_input_wrapper label:hover{
+  background-color: #218838;
+}
 .file_input_wrapper input[type="file"] {
   display: none;
 }
@@ -290,7 +292,7 @@ p {
 }
 
 .file_input_wrapper button {
-  background-color: #dc3545;
+  background-color: #8EBC8F;
   color: white;
   border: none;
   padding: 5px 10px;
@@ -300,7 +302,7 @@ p {
 }
 
 .file_input_wrapper button:hover {
-  background-color: #c82333;
+  background-color: #218838;
 }
 
 .rating_input_wrapper {
@@ -316,7 +318,7 @@ p {
 .review_writer_box button[type="submit"] {
   width: 100%;
   padding: 15px;
-  background-color: #28a745;
+  background-color: #B3797A;
   color: white;
   border: none;
   border-radius: 5px;
@@ -327,13 +329,13 @@ p {
 }
 
 .review_writer_box button[type="submit"]:hover {
-  background-color: #218838;
+  background-color: #9F5A5B;
 }
 
 .review_writer_box button[type="button"] {
   margin-top: 10px;
   padding: 10px 15px;
-  background-color: #007bff;
+  background-color: #8EBC8F;
   color: white;
   border: none;
   border-radius: 5px;
@@ -343,15 +345,14 @@ p {
 }
 
 .review_writer_box button[type="button"]:hover {
-  background-color: #0056b3;
+  background-color: #218838;
 }
 
 .review_array_box{
   width: 100%;
   padding: 10px 0;
-  background-color: #14332C;
+  background-color: #1a463c;
 }
-
 .review_array{
   padding-left: 15px;
 }
