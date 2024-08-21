@@ -44,6 +44,11 @@ const OrderDetail = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const navigate = useNavigate();
 
+  // 페이지가 로드될 때 스크롤을 맨 위로 이동
+  useEffect(() => {
+    window.scrollTo(0, 0); // 20240821: 페이지가 로드될 때 스크롤을 맨 위로 이동
+  }, []);
+
   useEffect(() => {
     const fetchOrderDetail = async () => {
       try {
