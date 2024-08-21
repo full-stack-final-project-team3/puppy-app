@@ -5,7 +5,7 @@ import MyPageHeader from "../../components/auth/user/mypage/MyPageHeader";
 import OrderModal from '../../pages/shop/order/OrderModal';
 import styles from './SnackRecords.module.scss';
 import { SHOP_URL } from '../../config/user/host-config';
-import packageImg from '../../assets/shop/packageImg.jpg'
+import packageImg from '../../assets/shop/packageImg.jpg';
 
 const subscriptionPeriodLabels = {
     ONE: "1개월",
