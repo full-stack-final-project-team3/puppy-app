@@ -212,27 +212,32 @@
 }
 
 @media (max-width: 400px) {
-  .cartContainer {
-    .bundleContainer {
-      padding: 10px; // 패딩 조정
 
-      h4 {
-        font-size: 17px;
-      }
+  .bundleContainer {
+    margin: 0 auto;
+    width: 80% !important; // 전체 너비로 설정
+    padding: 10px; // 패딩 감소
+    .bundleHeader{
+      font-size: 16px;
     }
+    .subscriptionSelect{
+      margin-left: 10px;
+      margin-right: 0px;
+    }
+  }
 
-    .clearCartButton {
-      font-size: 10px; // 폰트 크기 조정
-    }
+  .treatItem {
+    padding: 5px 20px; // 패딩 감소
+  }
 
-    .shopButton {
-      padding: 8px 16px; // 버튼 패딩 조정
-      font-size: 14px; // 폰트 크기 조정
-    }
+  .emptyCartContainer {
+    width: 80% !important; // 너비를 100%로 설정하여 반응형 유지
+    padding: 20px; // 패딩 감소
+  }
 
-    .paymentButton {
-      padding: 8px 16px; // 버튼 패딩 조정
-      font-size: 14px; // 폰트 크기 조정
-    }
+  .shopButton, .paymentButton {
+    width: 50% !important; // 버튼 너비를 100%로 설정
+    padding: 10px; // 패딩 동일하게 유지
+    font-size: 12px; // 폰트 크기 조정
   }
 }
