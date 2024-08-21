@@ -31,7 +31,6 @@ const TotalExpenseStatus = () => {
 
     return (
         <>
-            전체
             <div>
                 <nav className={styles.nav}>
                     <ul className={styles.ul}>
@@ -41,6 +40,7 @@ const TotalExpenseStatus = () => {
                     </ul>
                 </nav>
             </div>
+            전체
             <div className={styles.chartContainer}>
                 {showDay && <ShowDayTotalPoint/>}
                 {showWeek && <ShowWeekTotalPoint/>}

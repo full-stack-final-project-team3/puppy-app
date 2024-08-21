@@ -31,7 +31,6 @@ const TotalExpenseStatus = () => {
 
     return (
         <>
-            샵
             <div>
                 <nav className={styles.nav}>
                     <ul className={styles.ul}>
@@ -46,6 +45,7 @@ const TotalExpenseStatus = () => {
                 {showWeek && <ShowWeekShopTotalPoint/>}
                 {showMonth && <ShowMonthShopTotalPoint/>}
             </div>
+            샵
         </>
     );
 };
