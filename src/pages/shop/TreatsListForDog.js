@@ -203,7 +203,7 @@ const TreatsListForDog = () => {
   const openModal = (treat) => {
     const viewportHeight = window.innerHeight; // 현재 뷰포트의 높이
     const scrollY = window.scrollY; // 현재 스크롤 위치
-    const modalHeight = 800; // 모달의 높이 (예시로 설정)
+    const modalHeight = 800; // 모달의 높이
     const topPosition = scrollY + (viewportHeight - modalHeight) / 2; // 중앙 위치 계산
     setCurrentTreatId(treat.id);
     setModalPosition({ x: window.innerWidth / 2, y: topPosition }); // 좌우 중앙, 세로는 계산된 위치

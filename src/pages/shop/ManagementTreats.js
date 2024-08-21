@@ -15,6 +15,7 @@ const ManagementTreats = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 열림 상태
   const [selectedTreatId, setSelectedTreatId] = useState(null); // 선택된 간식 ID
+  const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 });
   const token = getUserToken();
 
   useEffect(() => {
@@ -77,6 +78,11 @@ const ManagementTreats = () => {
   };
 
   const openModal = (id) => {
+    const viewportHeight = window.innerHeight; // 현재 뷰포트의 높이
+    const scrollY = window.scrollY; // 현재 스크롤 위치
+    const modalHeight = 800; // 모달의 높이
+    const topPosition = scrollY + (viewportHeight - modalHeight) / 2; // 중앙 위치 계산
+    setModalPosition({ x: window.innerWidth / 2, y: topPosition }); // 좌우 중앙, 세로는 계산된 위치
     setSelectedTreatId(id);
     setIsModalOpen(true);
   };
@@ -84,7 +90,12 @@ const ManagementTreats = () => {
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedTreatId(null);
+    setModalPosition({ x: 0, y: 0 });
   };
+
+  const toggleTreatSelection = () => {
+    return;
+  }
 
   if (loading) return <div>로딩 중...</div>;
   if (error) return <div>오류 발생: {error.message}</div>;
@@ -124,7 +135,10 @@ const ManagementTreats = () => {
                       alt={treat.title}
                       onClick={() => openModal(treat.id)} // 간식 이름 클릭 시 모달 열기
                     />
-                    <h4 className={styles.cardTitle} onClick={() => openModal(treat.id)}>
+                    <h4
+                      className={styles.cardTitle}
+                      onClick={() => openModal(treat.id)}
+                    >
                       {treat.title}
                     </h4>
                     <ManagementBtn
@@ -138,7 +152,13 @@ const ManagementTreats = () => {
           )}
         </div>
       </div>
-      <Modal isOpen={isModalOpen} onClose={closeModal} treatsId={selectedTreatId} />
+      <Modal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        treatsId={selectedTreatId}
+        modalPosition={modalPosition}
+        toggleTreatSelection={toggleTreatSelection}
+      />
     </div>
   );
 };
