@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import ReactDOM from 'react-dom';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import MyPageHeader from "../../components/auth/user/mypage/MyPageHeader";
-import OrderModal from '../../pages/shop/order/OrderModal';
 import styles from './SnackRecords.module.scss';
 import { SHOP_URL } from '../../config/user/host-config';
 import packageImg from '../../assets/shop/packageImg.jpg';
@@ -25,6 +25,29 @@ const formatDate = (date) => {
 
     // Date 객체로 변환 후 원하는 형식으로 변환
     return new Date(date).toLocaleString('ko-KR', options);
+};
+
+// Portal을 사용한 Modal 컴포넌트
+const Modal = ({ title, message, onConfirm, onClose, confirmButtonText, showCloseButton }) => {
+    return ReactDOM.createPortal(
+        <div className={styles.modalOverlay}>
+            <div className={styles.modalContent}>
+                <h2>{title}</h2>
+                <p>{message}</p>
+                <div className={styles.buttonContainer}>
+                    <button className={styles.confirmButton} onClick={onConfirm}>
+                        {confirmButtonText}
+                    </button>
+                    {showCloseButton && (
+                        <button className={styles.closeButton} onClick={onClose}>
+                            아니오
+                        </button>
+                    )}
+                </div>
+            </div>
+        </div>,
+        document.getElementById('root') // Portal이 렌더링될 DOM 노드
+    );
 };
 
 const SnackRecords = () => {
@@ -187,7 +210,7 @@ const SnackRecords = () => {
                 )}
             </div>
             {showConfirmModal && (
-                <OrderModal
+                <Modal
                     title="결제 확인"
                     message="정말로 주문을 취소하시겠습니까?"
                     onConfirm={() => {
@@ -200,7 +223,7 @@ const SnackRecords = () => {
                 />
             )}
             {showSuccessModal && (
-                <OrderModal
+                <Modal
                     title="알림"
                     message="주문이 취소되었습니다."
                     onConfirm={closeModal}
@@ -216,4 +239,3 @@ const SnackRecords = () => {
 };
 
 export default SnackRecords;
-//원본
