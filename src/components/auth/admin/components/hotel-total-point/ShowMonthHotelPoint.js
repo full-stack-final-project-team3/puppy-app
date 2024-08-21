@@ -43,7 +43,7 @@ const ShowMonthHotelPoint = () => {
                     <YAxis tickFormatter={(value) => `${value.toLocaleString()}`} />
                     <Tooltip />
                     <Legend />
-                    <Bar dataKey="count" fill="#82ca9d" />
+                    <Bar dataKey="count" fill="#8884D8" />
                 </BarChart>
             </ResponsiveContainer>
         </div>
