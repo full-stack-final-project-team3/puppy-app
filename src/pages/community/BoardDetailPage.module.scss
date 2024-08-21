@@ -431,7 +431,11 @@
 .deleteCommentButton,
 .replyButton,
 .editSubReplyButton,
-.deleteSubReplyButton {
+.deleteSubReplyButton,
+.updateSubReplyButton,
+.cancelEditButton,
+.updateCommentButton
+ {
     background-color: #f0f0f0;
     border: none;
     border-radius: 15px;
@@ -448,7 +452,11 @@
 .deleteCommentButton:hover,
 .replyButton:hover,
 .editSubReplyButton:hover,
-.deleteSubReplyButton:hover {
+.deleteSubReplyButton:hover,
+.updateSubReplyButton:hover,
+.cancelEditButton:hover,
+.updateCommentButton:hover
+{
     background-color: #e0e0e0;
 }
 
@@ -790,3 +798,24 @@ display: flex;
         }
     }
 }
+
+.editCommentTextarea,
+.editSubReplyTextarea{
+    border: 3px solid #cfbbbb;
+        background: none;
+        padding: 1rem;
+        font-size: 1rem;
+        
+}
+
+// 400px 이하 반응형 스타일
+@media (max-width: 400px) {
+
+    .editCommentTextarea{
+width: 250px;
+    }
+    .editSubReplyTextarea {
+            width: 239px;
+    }
+}
+
