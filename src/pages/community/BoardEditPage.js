@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { BOARD_URL } from "../../config/user/host-config";
+import { BOARD_URL, BASE_URL } from "../../config/user/host-config"; // BASE_URL 추가
 import styles from "./BoardEditPage.module.scss";
 import { IoChevronBack } from "react-icons/io5";
 import { GiDogHouse } from "react-icons/gi";
+import { MdDelete } from "react-icons/md";
 
 const BoardEditPage = () => {
-  const [post, setPost] = useState({ boardTitle: "", boardContent: "" });
-  const [newFiles, setNewFiles] = useState([]);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
   const [currentImages, setCurrentImages] = useState([]);
+  const [newFiles, setNewFiles] = useState([]);
   const [imagesToDelete, setImagesToDelete] = useState([]);
   const { id } = useParams();
   const navigate = useNavigate();
@@ -27,14 +29,11 @@ const BoardEditPage = () => {
         });
         if (!response.ok) throw new Error("Failed to fetch post");
         const data = await response.json();
-        setPost({
-          boardTitle: data.boardTitle,
-          boardContent: data.boardContent,
-        });
+        setTitle(data.boardTitle);
+        setContent(data.boardContent);
         setCurrentImages(data.images || []);
       } catch (error) {
         console.error("Error fetching post:", error);
-        // Handle error (e.g., show error message to user)
       }
     };
 
@@ -43,19 +42,22 @@ const BoardEditPage = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setPost((prev) => ({ ...prev, [name]: value }));
+    if (name === "title") {
+      setTitle(value);
+    } else if (name === "content") {
+      setContent(value);
+    }
   };
 
   const handleFileChange = (e) => {
-    setNewFiles(Array.from(e.target.files));
+    if (e.target.files) {
+      setNewFiles((prevFiles) => [...prevFiles, ...Array.from(e.target.files)]);
+    }
   };
 
   const handleImageDelete = (imageUrl) => {
-    // 현재 이미지 배열에서 삭제할 이미지를 제거합니다.
     const updatedImages = currentImages.filter((img) => img !== imageUrl);
     setCurrentImages(updatedImages);
-
-    // 삭제할 이미지를 별도의 배열에 추가합니다.
     setImagesToDelete((prev) => [...prev, imageUrl]);
   };
 
@@ -64,8 +66,8 @@ const BoardEditPage = () => {
     const formData = new FormData();
 
     const dto = {
-      boardTitle: post.boardTitle,
-      boardContent: post.boardContent,
+      boardTitle: title,
+      boardContent: content,
       user: { id: user.id },
       imagesToDelete: imagesToDelete,
     };
@@ -74,10 +76,10 @@ const BoardEditPage = () => {
       "dto",
       new Blob([JSON.stringify(dto)], { type: "application/json" })
     );
-    newFiles.forEach((file) => formData.append("newFiles", file));
 
-    // 디버깅을 위해 formData 출력
-    console.log([...formData]);
+    newFiles.forEach((file) => {
+      formData.append("newFiles", file);
+    });
 
     try {
       const userData = JSON.parse(localStorage.getItem("userData"));
@@ -91,11 +93,9 @@ const BoardEditPage = () => {
 
       if (!response.ok) throw new Error("Failed to update post");
 
-      // Redirect to the updated post
       navigate(`/board/${id}`);
     } catch (error) {
       console.error("Error updating post:", error);
-      // Handle error (e.g., show error message to user)
     }
   };
 
@@ -119,27 +119,27 @@ const BoardEditPage = () => {
       <form onSubmit={handleSubmit} className={styles.form}>
         <input
           type="text"
-          name="boardTitle"
-          value={post.boardTitle}
+          name="title"
+          value={title}
           onChange={handleInputChange}
           placeholder="제목"
           className={styles.input}
           required
         />
         <textarea
-          name="boardContent"
-          value={post.boardContent}
+          name="content"
+          value={content}
           onChange={handleInputChange}
           placeholder="내용을 입력해주세요"
           className={styles.textarea}
           required
         />
+        <p>현재 이미지:</p>
         <div className={styles.currentImages}>
-          <p>현재 이미지:</p>
           {currentImages.map((img, index) => (
             <div key={index} className={styles.imageWrapper}>
               <img
-                src={img}
+                src={`${BASE_URL}${img}`} // BASE_URL과 결합
                 alt={`Current ${index}`}
                 className={styles.thumbnails}
               />
@@ -148,7 +148,7 @@ const BoardEditPage = () => {
                 onClick={() => handleImageDelete(img)}
                 className={styles.deleteImageButton}
               >
-                삭제
+                <MdDelete />
               </button>
             </div>
           ))}
@@ -166,9 +166,27 @@ const BoardEditPage = () => {
             className={styles.imageInput}
           />
           {newFiles.length > 0 && (
-            <p className={styles.fileName}>
-              {newFiles.length} 개의 새 이미지 선택됨
-            </p>
+            <div className={styles.imagePreview}>
+              {newFiles.map((file, index) => (
+                <div key={index} className={styles.imageItem}>
+                  <img
+                    src={URL.createObjectURL(file)}
+                    alt={`New Image ${index}`}
+                    className={styles.image}
+                    style={{ width: "50px", height: "50px" }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setNewFiles((prev) => prev.filter((_, i) => i !== index));
+                    }}
+                    className={styles.deleteButton}
+                  >
+                    <MdDelete />
+                  </button>
+                </div>
+              ))}
+            </div>
           )}
         </div>
         <button type="submit" className={styles.submitButton}>
