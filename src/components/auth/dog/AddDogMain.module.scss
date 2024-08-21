@@ -43,7 +43,6 @@
 
     .stepText {
       position: absolute;
-      width: 100px;
       text-align: center;
       font-size: 12px;
       color: black;
@@ -80,7 +79,10 @@
     background-color: #efe1c6;
     border-radius: 32px;
     overflow: scroll;
+  }
 
+  .stepText {
+    width: 50px;
   }
   .stepLine {
     display: none !important;

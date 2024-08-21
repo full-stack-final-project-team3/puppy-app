@@ -68,33 +68,36 @@ const LoginForm = () => {
 
     const getKakaoUserInfo = async () => {
 
-        const firstResponse = await fetch(`${AUTH_URL}/auto-login`, {
-            method: "POST",
-            headers: {
-                Authorization: `Bearer ${authToken}`,
-                "Content-Type": "application/json",
-            },
-        })
-
-        if (firstResponse.ok) {
-            const data = await firstResponse.json();
-
-            const response = await fetch(`${AUTH_URL}/sign-in`, {
+            localStorage.setItem('provider', 'kakao');
+        if (authToken) {
+            const firstResponse = await fetch(`${AUTH_URL}/auto-login`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    email: data.email,
-                    password: data.password,
-                    autoLogin: data.autoLogin,
-                }),
-            });
+                headers: {
+                    Authorization: `Bearer ${authToken}`,
+                    "Content-Type": "application/json",
+                },
+            })
 
-            const userDetailData = await (await fetch(`${AUTH_URL}/${data.email}`)).json();
-            const noticeData = await (await fetch(`${NOTICE_URL}/user/${data.id}`)).json();
+            if (firstResponse.ok) {
+                const data = await firstResponse.json();
 
-            localStorage.setItem("userData", JSON.stringify(response));
-            dispatch(userEditActions.saveUserNotice(noticeData));
-            dispatch(userEditActions.updateUserDetail(userDetailData));
+                const response = await fetch(`${AUTH_URL}/sign-in`, {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({
+                        email: data.email,
+                        password: data.password,
+                        autoLogin: data.autoLogin,
+                    }),
+                });
+
+                const userDetailData = await (await fetch(`${AUTH_URL}/${data.email}`)).json();
+                const noticeData = await (await fetch(`${NOTICE_URL}/user/${data.id}`)).json();
+
+                localStorage.setItem("userData", JSON.stringify(response));
+                dispatch(userEditActions.saveUserNotice(noticeData));
+                dispatch(userEditActions.updateUserDetail(userDetailData));
+            }
         }
     }
 
