@@ -5,7 +5,6 @@
     min-height: 100vh;
     background-color: #F1E1C8;
     padding: 20px;
-    // font-family: 'Arial', sans-serif;
 }
 
 .title {
@@ -119,25 +118,24 @@
     }
 }
 
-//
 .headerNav {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    max-width: 700px; // 폼의 최대 너비와 일치
+    max-width: 700px;
     margin-bottom: 20px;
-    padding: 0; // 패딩 제거
+    padding: 0;
 }
 
 .backButton,
 .homeButton {
-    font-size: 24px; // 버튼 크기 약간 축소
+    font-size: 24px;
     color: #333;
     background: none;
     border: none;
     cursor: pointer;
-    padding: 5px; // 패딩 축소
+    padding: 5px;
     transition: transform 0.3s ease;
 
     &:hover {
@@ -146,9 +144,42 @@
 }
 
 .postTitle {
-    font-size: 28px; // 제목 크기 약간 축소
+    font-size: 28px;
     font-weight: bold;
     margin-bottom: 20px;
     color: #333;
     text-align: center;
+}
+
+
+.imagePreview {
+    display: flex;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.imageItem {
+    margin-right: 10px;
+}
+
+.currentImages {
+    display: flex;
+    flex-wrap: wrap;
+    /* 줄바꿈을 허용합니다 */
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.imageWrapper {
+    margin-right: 10px;
+    /* 이미지 간격 조정 */
+    margin-bottom: 10px;
+    /* 줄바꿈 시 아래 여백 추가 */
+}
+
+.thumbnails {
+    max-width: 100px;
+    /* 이미지 최대 너비 설정 */
+    max-height: 100px;
+    /* 이미지 최대 높이 설정 */
 }

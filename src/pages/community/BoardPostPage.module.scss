@@ -123,3 +123,40 @@
         font-size: 14px;
     }
 }
+
+.imagePreview{
+    display: flex;
+    flex-wrap: wrap;/* 줄 바꿈 허용 */
+    margin-top: 10px;
+    margin-bottom:10px;
+}
+.imageItem{
+    margin-right: 10px;
+    margin-bottom: 10px;
+        /* 아래쪽 여백 추가 */
+}
+
+.imageUpload {
+    background-color: #f0f0f0; // 기본 배경색
+    transition: background-color 0.3s; // 배경색 변화 애니메이션
+    margin-bottom: 10px;
+}
+
+.imageUpload.hasImages {
+    background-color: #8EBC8F; // 이미지가 있는 경우 변경할 색상
+}
+
+.imageLabel {
+    color: gray; // 기본 색상
+    color: #FFFFFF; // 글자색
+}
+
+.imageLabelActive {
+     // 이미지가 있을 때의 색상
+    background-color: #218838; // 배경색
+        color: #FFFFFF; // 글자색
+}
+
+.imageLabelInactive {
+    background-color: gray; // 이미지가 없을 때의 색상
+}
