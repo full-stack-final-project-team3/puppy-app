@@ -294,7 +294,7 @@ const Drawer = ({ open, onClose }) => {
           <div className="x-shape"></div>
         </CloseButton>
         <NavItem onClick={() => handleNavClick("/")} className="special-spacing-home">Home</NavItem>
-        <NavItem href="/mypage" className="special-spacing">My Page</NavItem>
+        <NavItem onClick={() => handleNavClick("/mypage")} className="special-spacing">My Page</NavItem>
         <NavItem onClick={() => handleNavClick("/hotel")}>Hotel</NavItem>
         <NavItem onClick={() => handleNavClick("/treats")}>Shop</NavItem>
         <NavItem onClick={() => handleNavClick("/board")}>Community</NavItem>
