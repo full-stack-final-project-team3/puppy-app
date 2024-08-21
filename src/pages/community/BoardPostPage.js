@@ -88,7 +88,9 @@ const handleImageChange = (e) => {
         >
           <IoChevronBack />
         </button>
-        <h1 className={styles.postTitle}>커뮤니티</h1>
+        <h1 className={styles.postTitle} onClick={() => navigate("/board")}>
+          커뮤니티
+        </h1>
         <button onClick={() => navigate("/")} className={styles.homeButton}>
           <GiDogHouse />
         </button>
