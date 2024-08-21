@@ -83,8 +83,8 @@ const Home = () => {
         setAdImage2("/main_ad/메인반응2.png");
         setAdImage3("/main_ad/메인반응3.png");
       } else {
-        setAdImage1("/main_ad/메인2.png");
-        setAdImage2("/main_ad/메인1.png");
+        setAdImage1("/main_ad/메인1.png");
+        setAdImage2("/main_ad/메인2.png");
         setAdImage3("/main_ad/메인3.png");
       }
     };
@@ -113,9 +113,16 @@ const Home = () => {
     }
   };
 
-  const handleNavigate = (path) => {
-    navigate(path);
-    window.scrollTo(0, 0);
+  const handleNavigate = async (path) => {
+    setLoading(true); // 로딩 시작
+    try {
+      // 비동기 작업 또는 페이지 로딩 처리
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // 실제 비동기 작업으로 대체 가능
+      navigate(path);
+    } finally {
+      setLoading(false); // 로딩 종료
+      window.scrollTo(0, 0);
+    }
   };
 
   return (
