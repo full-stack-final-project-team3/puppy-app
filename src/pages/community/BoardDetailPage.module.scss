@@ -73,17 +73,28 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
+    padding: 10px;
     transform: translateY(100%);
     transition: transform 0.3s ease-out;
     z-index: 1000;
-    border-radius: 15px 15px 0 0;
+    border-radius: 15px;
     max-width: 800px;
     margin: 0 auto;
+    height: 150px;
 }
 
 .optionsMenu.active {
-    transform: translateY(0);
+    position: fixed;
+        /* 모달을 화면에 고정 */
+        top: 25%;
+        /* 세로 중앙에 위치 */
+        left: 50%;
+        /* 가로 중앙에 위치 */
+        transform: translate(-50%, -50%);
+        /* 정확한 중앙으로 이동 */
+        z-index: 1000;
+        /* 다른 요소들 위에 표시되도록 */
+        /* 모달 창의 배경이나 크기 설정 등 다른 스타일들 */
 }
 
 .optionsMenu button {
@@ -564,7 +575,7 @@ display: flex;
     border-radius: 30px;
     cursor: pointer;
     transition: background-color 0.3s;
-    margin-top: 10px;
+    // margin-top: 10px;
 
     &:hover {
         background-color: #777; // 호버 시 약간 어두운 회색
