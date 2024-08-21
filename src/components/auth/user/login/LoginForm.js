@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useRef } from "react";
+import React, { useContext, useState } from "react";
 import styles from "./LoginForm.module.scss";
 import { Link, useNavigate } from "react-router-dom";
 import UserContext from "../../../context/user-context";
@@ -7,7 +7,8 @@ import { RiKakaoTalkFill } from "react-icons/ri";
 import { userEditActions } from "../../../store/user/UserEditSlice";
 import { useDispatch } from "react-redux";
 import Footer from "../../../../layout/user/Footer";
-import {Cookies, useCookies} from "react-cookie";
+import { Cookies, useCookies } from "react-cookie";
+import { PulseLoader } from "react-spinners"; // 스피너 임포트
 
 const APP_KEY = process.env.REACT_APP_KAKAO_APP_KEY;
 const REDIRECT_URL = process.env.REACT_APP_KAKAO_REDIRECT_URL;
@@ -20,6 +21,7 @@ const LoginForm = () => {
     const [password, setPassword] = useState("");
     const [autoLogin, setAutoLogin] = useState(false);
     const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false); // 로딩 상태 추가
     const navigate = useNavigate();
     const { changeIsLogin, setUser } = useContext(UserContext);
     const dispatch = useDispatch();
@@ -67,8 +69,15 @@ const LoginForm = () => {
     };
 
     const getKakaoUserInfo = async () => {
+        setLoading(true); // 스피너 시작
 
-            localStorage.setItem('provider', 'kakao');
+        const setProviderInLocalStorage = () => {
+            setTimeout(() => {
+                localStorage.setItem('provider', 'kakao')
+            }, 3000)
+        }
+        setProviderInLocalStorage()
+
         if (authToken) {
             const firstResponse = await fetch(`${AUTH_URL}/auto-login`, {
                 method: "POST",
@@ -76,14 +85,14 @@ const LoginForm = () => {
                     Authorization: `Bearer ${authToken}`,
                     "Content-Type": "application/json",
                 },
-            })
+            });
 
             if (firstResponse.ok) {
                 const data = await firstResponse.json();
 
                 const response = await fetch(`${AUTH_URL}/sign-in`, {
                     method: "POST",
-                    headers: {"Content-Type": "application/json"},
+                    headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
                         email: data.email,
                         password: data.password,
@@ -99,7 +108,10 @@ const LoginForm = () => {
                 dispatch(userEditActions.updateUserDetail(userDetailData));
             }
         }
-    }
+
+        // 카카오 로그인 페이지로 리다이렉트
+        window.location.href = KAKAO_LOGIN_URL;
+    };
 
     return (
         <>
@@ -190,6 +202,13 @@ const LoginForm = () => {
                     </div>
                 </div>
             </div>
+            {loading && ( // loading이 true일 때 스피너 오버레이 표시
+                <div className={styles.loadingOverlay}>
+                    <div className={styles.spinnerContainer}>
+                        <PulseLoader color="#333" loading={loading} size={15} />
+                    </div>
+                </div>
+            )}
             <Footer />
         </>
     );

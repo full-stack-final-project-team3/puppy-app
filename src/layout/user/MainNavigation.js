@@ -15,7 +15,6 @@ const MainNavigation = ({ drawerOpen, onToggleDrawer }) => {
   const navi = useNavigate();
   const [openNotice, setOpenNotice] = useState(false);
   const noticeRef = useRef(null);
-  const bellRef = useRef(null);
 
   const { changeIsLogin, user, setUser } = useContext(UserContext);
   const userData = useRouteLoaderData("user-data");
@@ -152,7 +151,7 @@ const MainNavigation = ({ drawerOpen, onToggleDrawer }) => {
                   <Link to={"/cart"}>
                     <BiBasket className={`${styles.icon} ${styles.basket}`} />
                   </Link>
-                  <BsBell className={styles.bell} onClick={toggleNotice} ref={bellRef}></BsBell>
+                  <BsBell className={styles.bell} onClick={toggleNotice}></BsBell>
                   {Array.isArray(noticeList) && userDetail.noticeCount !== 0 && (
                       <span className={styles.count}>{userDetail.noticeCount}</span>
                   )}

@@ -6,7 +6,7 @@ import MyPageHeader from "../auth/user/mypage/MyPageHeader";
 const DetailAboutReservation = () => {
     const location = useLocation();
     const { hotel, roomName, totalPrice, reservationDate, reservationEndDate, hotelImage } = location.state || {};
-
+    console.log("ㅎㅇ", hotel)
     if (!hotel) {
         return <div>호텔 정보를 불러오는 중입니다...</div>;
     }
