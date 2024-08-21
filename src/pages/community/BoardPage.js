@@ -21,6 +21,7 @@ const BoardPage = () => {
   const [filteredPosts, setFilteredPosts] = useState([]);
 
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [lastSearchTerm, setLastSearchTerm] = useState(""); // 마지막 검색어 상태 추가
 
   const user = useSelector((state) => state.userEdit.userDetail);
 
@@ -48,11 +49,14 @@ const BoardPage = () => {
         }
 
         const newPosts = await response.json();
+
+        console.log("새로운 게시글:", newPosts);
+        console.log("현재 게시글:", posts);
+
         if (newPosts.length === 0) {
           setIsAllLoaded(true);
         } else {
-          const updatedPosts = searchKeyword ? filteredPosts : posts;
-          const existingPostIds = new Set(updatedPosts.map((post) => post.id));
+          const existingPostIds = new Set(posts.map((post) => post.id));
           const uniquePosts = newPosts.filter(
             (post) => !existingPostIds.has(post.id)
           );
@@ -60,27 +64,23 @@ const BoardPage = () => {
           if (uniquePosts.length === 0) {
             setIsAllLoaded(true);
           } else {
-            if (searchKeyword) {
-              setFilteredPosts((prevPosts) => [...prevPosts, ...uniquePosts]);
-            } else {
-              setPosts((prevPosts) => [...prevPosts, ...uniquePosts]);
-            }
+            setPosts((prevPosts) => [...prevPosts, ...uniquePosts]);
             setPage((prevPage) => prevPage + 1);
           }
         }
       } catch (error) {
-        console.error("게시글 가져오기 오류:", error.message);
+        console.error("🐶 게시글 가져오기 오류:", error.message);
         setIsAllLoaded(true);
       } finally {
         setLoading(false);
       }
     },
-    [page, loading, posts, filteredPosts, isAllLoaded]
+    [page, loading, isAllLoaded] // posts 제거
   );
 
   useEffect(() => {
     fetchPosts();
-  }, []);
+  }, [fetchPosts]); // 빈 배열을 넣어 컴포넌트가 처음 마운트될 때만 호출
 
   useEffect(() => {
     const handleScroll = () => {
@@ -134,43 +134,66 @@ const BoardPage = () => {
   };
 
   const handleSearchClick = () => {
-    setIsSearching(!isSearching);
-    if (isSearching) {
-      setSearchTerm("");
-      setFilteredPosts([]);
-      setPage(1);
-      setIsAllLoaded(false);
-      fetchPosts();
-    }
+    setIsSearching((prev) => {
+      if (prev) {
+        // 검색 상태를 토글할 때 검색어를 지우지 않도록 수정
+        // setSearchTerm(""); // 이 줄 주석 처리 또는 삭제
+        setFilteredPosts([]);
+        setPage(1);
+        setIsAllLoaded(false);
+        fetchPosts(); // 기존 게시글을 다시 불러옴
+      }
+      return !prev;
+    });
   };
 
   const handleSearchChange = (e) => {
     const newSearchTerm = e.target.value;
     setSearchTerm(newSearchTerm);
+    handleSearch(newSearchTerm); // 이 줄 유지
   };
 
   const handleSearch = useCallback(
     debounce(async (term) => {
+      if (term === lastSearchTerm) return; // 이전 검색어와 동일하면 검색하지 않음
+
+      setLastSearchTerm(term); // 현재 검색어를 마지막 검색어로 설정
+      setPage(1);
+      setIsAllLoaded(false);
+      setPosts([]); // 검색 시 기존 게시글을 지우고 새로 불러옴
+
       if (term) {
-        setPage(1);
-        setFilteredPosts([]);
-        setIsAllLoaded(false);
         await fetchPosts(term);
+        setFilteredPosts(
+          posts.filter((post) =>
+            post.boardTitle.toLowerCase().includes(term.toLowerCase())
+          )
+        );
       } else {
+        await fetchPosts(); // 검색어가 없을 때 기존 게시글을 불러옴
         setFilteredPosts([]);
-        setPage(1);
-        setIsAllLoaded(false);
-        fetchPosts();
       }
     }, 300),
-    []
+    [fetchPosts, lastSearchTerm] // lastSearchTerm을 의존성 배열에 추가
   );
 
+  // searchTerm이 변경될 때마다 검색 수행
   useEffect(() => {
-    handleSearch(searchTerm);
+    if (searchTerm) {
+      handleSearch(searchTerm);
+    }
   }, [searchTerm, handleSearch]);
 
+  useEffect(() => {
+    console.log("posts 변경됨:", posts);
+  }, [posts]);
+
+  useEffect(() => {
+    console.log("filteredPosts 변경됨:", filteredPosts);
+  }, [filteredPosts]);
   const displayPosts = searchTerm ? filteredPosts : posts;
+
+  console.log("🐶 게시글:", displayPosts);
 
   return (
     <div className={styles.boardPageWrapper}>
@@ -198,8 +221,8 @@ const BoardPage = () => {
           <div className={styles.noPosts}>게시글이 없습니다!</div>
         ) : (
           <ul className={styles.postList}>
-            {displayPosts.map((post) => (
-              <li key={post.id} className={styles.postItem}>
+            {displayPosts.map((post, index) => (
+              <li key={`${post.id}`} className={styles.postItem}>
                 <Link to={`/board/${post.id}`} className={styles.postLink}>
                   <div className={styles.postContent}>
                     <h2 className={styles.postTitle}>{post.boardTitle}</h2>
