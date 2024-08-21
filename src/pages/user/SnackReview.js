@@ -215,7 +215,6 @@ const SnackReview = () => {
           toggleTreatSelection={toggleTreatSelection}
         />
       </div>
-      <Footer />
     </>
   );
 };
