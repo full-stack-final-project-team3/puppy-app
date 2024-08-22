@@ -26,3 +26,15 @@
     }
   }
 }
+.total {
+  width: 100%;
+  text-align: center;
+  margin: 0 auto 20px;
+  font-size: 1.15rem;
+  font-weight: 600;
+  line-height: 1.8;
+  .number {
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+}

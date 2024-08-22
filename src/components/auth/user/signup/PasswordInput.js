@@ -30,6 +30,7 @@ const PasswordInput = ({ onSuccess }) => {
       setError(''); // 에러 메시지 초기화
     } else { // 형식 검증 에러
       setError("비밀번호는 8자 이상이며, 숫자, 문자, 특수문자를 모두 포함해야 합니다");
+      onSuccess(false, false);
       setPasswordValid(false);
       setSuccess(''); // 성공 메시지 초기화
     }
@@ -40,12 +41,13 @@ const PasswordInput = ({ onSuccess }) => {
     const passwordCheck = e.target.value;
     setPasswordCheck(passwordCheck);
 
-    if (password === passwordCheck) { // 비밀번호 재확인 성공
+    if (password === passwordCheck && validatePassword(password) && password.length > 7) { // 비밀번호 재확인 성공
       setCheckSuccess("비밀번호가 일치합니다");
       setTimeout(() => {
         onSuccess(passwordCheck, true);
       }, 1500);
     } else {
+      onSuccess(null, false);
       setCheckSuccess('');
       setCheckError("비밀번호가 일치하지 않습니다"); // 비밀번호 재확인 실패
     }

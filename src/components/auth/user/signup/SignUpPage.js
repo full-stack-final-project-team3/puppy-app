@@ -68,6 +68,10 @@ const SignUpPage = () => {
   // 서버에 회원가입 완료 요청하기
   const submitHandler = async (e) => {
     e.preventDefault();
+
+    if (enteredNickname === null) {
+      alert("tlqkf")
+    }
     const payload = {
       email: enteredEmail,
       nickname: enteredNickname,
@@ -207,12 +211,12 @@ const SignUpPage = () => {
                   <div className={styles.btnBox}>
                     <button
                       type="submit"
-                      className={`${step2Button ? styles.active : styles.button}`}
+                      className={ styles.active}
                       disabled={!step2Button}
                     >가입 완료</button>
                     <button
                       type="button"
-                      className={`${step2Button ? styles.active : styles.button}`}
+                      className={ styles.active}
                       disabled={!step2Button}
                       onClick={() => nextStep()}
                     >추가정보 등록</button>
