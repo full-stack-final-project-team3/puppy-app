@@ -110,6 +110,10 @@ const OrderDetail = () => {
     setShowSuccessModal(false);
   };
 
+  const orderListClick = () => {
+    navigate('/snack-record');  // 버튼 클릭 시 '/snack-record'로 이동
+  };
+
   const Modal = ({ title, message, onConfirm, onClose, confirmButtonText, showCloseButton }) => {
     return ReactDOM.createPortal(
       <div className={styles.modalOverlay}>
@@ -244,16 +248,25 @@ const OrderDetail = () => {
             ))}
           </div>
         </div>
-        {orderDetail.orderStatus !== "CANCELLED" && (
-          <button
-            className={styles.order_cancel_btn}
-            onClick={() => {
-              confirmCancelOrder();
-            }}
-          >
-            주문 취소
-          </button>
-        )}
+        
+        <div className={styles.order_bottom_box}>
+          {orderDetail.orderStatus !== "CANCELLED" && (
+            <button
+              className={styles.order_cancel_btn}
+              onClick={() => {
+                confirmCancelOrder();
+              }}
+            >
+              주문 취소
+            </button>
+          )}
+          <button 
+            className={styles.order_list_btn}
+            onClick={orderListClick}
+            >
+            주문 목록
+            </button>
+        </div>
 
         {showConfirmModal && (
           <Modal
