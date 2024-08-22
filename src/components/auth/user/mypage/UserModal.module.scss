@@ -12,11 +12,11 @@
 }
 
 .modalContent {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
+  background-color: #f1e1c8;
+  padding: 30px 15px;
+  border-radius: 12px;
   width: 90%;
-  max-width: 400px;
+  max-width: 350px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   text-align: center;
 }
@@ -47,7 +47,7 @@
 }
 
 .confirmButton {
-  background-color: #007bff;
+  background-color: #b4787a;
   color: #fff;
 }
 
@@ -57,7 +57,7 @@
 }
 
 .confirmButton:hover {
-  background-color: #0056b3;
+  background-color: #9e676a;
 }
 
 .closeButton:hover {

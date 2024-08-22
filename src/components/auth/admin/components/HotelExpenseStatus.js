@@ -35,7 +35,7 @@ const TotalExpenseStatus = () => {
         fetchDayHotelPoint();
     }, []);
 
-    console.log(totalPoint);
+
 
     const dayHandler = () => {
         setShowDay(true);

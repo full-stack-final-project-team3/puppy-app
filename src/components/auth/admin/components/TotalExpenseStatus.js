@@ -36,7 +36,7 @@ const TotalExpenseStatus = () => {
         fetchMonthTotalPoint();
     }, []);
 
-    console.log(totalPoint)
+
 
     const dayHandler = () => {
         setShowDay(true);

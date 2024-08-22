@@ -55,7 +55,7 @@ const TotalExpenseStatus = () => {
         fetchMonthShopTotalPoint();
     }, []);
 
-    console.log(totalPoint)
+
     return (
         <>
             <div>
