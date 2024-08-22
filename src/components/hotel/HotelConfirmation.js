@@ -71,7 +71,7 @@ const HotelConfirmation = ({
             })
             .catch((error) => {
                 console.error('Reservation failed:', error);
-                setModalMessage("예약이 되어있는 객실입니다.");
+                setModalMessage("포인트가 부족합니다..");
                 setIsConfirmStep(false); // 상태를 변경하여 확인 버튼만 표시되도록 함
             });
     };
