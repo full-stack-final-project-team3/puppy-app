@@ -7,7 +7,7 @@ let backendHostName;
 if (clientHostName === "localhost") {
   backendHostName = "http://localhost:" + LOCAL_PORT;
 } else {
-  backendHostName = 'https://3.34.195.72:8888';
+  backendHostName = 'http://15.164.236.187:8888';
 }
 
 const API_BASE_URL = backendHostName;
