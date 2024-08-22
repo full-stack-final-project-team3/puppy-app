@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import ReactDOM from 'react-dom'; // 20240822: ReactDOM import 추가
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Rating from '@mui/material/Rating';
@@ -43,10 +44,6 @@ const ReviewPage = ({ treatsId }) => {
     }
     return 0;
   });
-
-  // const handleReviewClick = (reviewId) => {
-  //   navigate(`/review-page/review-detail/${reviewId}`);
-  // };
 
   const handleButtonClick = () => {
     navigate('/review-page/write-review');
@@ -103,7 +100,6 @@ const ReviewPage = ({ treatsId }) => {
           <ul className={styles.review_list_box}>
             {sortedReviews.map((review) => (
               <li key={review.id} className={styles.review_item}>
-                {/* <div className={styles.review_profile_box} onClick={() => handleReviewClick(review.id)}> */}
                 <div className={styles.review_profile_box}>
                   <div className={styles.review_left}>
                     <img className={styles.image} src={review.user.profileUrl} alt="Profile" />
@@ -176,6 +172,7 @@ const ReviewText = ({ text }) => {
   );
 };
 
+// 20240822: 모달을 Portal로 구현
 const Modal = ({ images, currentIndex, onClose, onPrev, onNext }) => {
   if (!images || images.length === 0) return null;
 
@@ -187,7 +184,7 @@ const Modal = ({ images, currentIndex, onClose, onPrev, onNext }) => {
     e.stopPropagation();
   };
 
-  return (
+  return ReactDOM.createPortal( // 20240822: Portal로 모달 구현
     <div className={styles.modal_overlay} onClick={handleOverlayClick}>
       <div className={styles.modal_content} onClick={handleContentClick}>
         <span className={styles.close_button} onClick={onClose}>X</span>
@@ -201,7 +198,8 @@ const Modal = ({ images, currentIndex, onClose, onPrev, onNext }) => {
           <button className={styles.next_button} onClick={onNext}>›</button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.getElementById('root') // 20240822: #root에 모달을 포털로 렌더링
   );
 };
 
