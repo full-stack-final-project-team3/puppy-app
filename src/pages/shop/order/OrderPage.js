@@ -8,6 +8,7 @@ import OrderInfo from "./OrderInfo";
 import ProductInfo from "./ProductInfo";
 import PaymentInfo from "./PaymentInfo";
 import { SHOP_URL } from "../../../config/user/host-config";
+import Footer from '../../../layout/user/Footer';
 
 const OrderPage = () => {
   const user = useSelector((state) => state.userEdit.userDetail);
@@ -261,50 +262,53 @@ const OrderPage = () => {
   };
 
   return (
-    <div className={styles["order-page-container"]}>
-      <h1>주문 / 결제</h1>
-      <OrderInfo
-        user={user}
-        orderInfo={orderInfo}
-        handleReceiverInfoUpdate={handleReceiverInfoUpdate}
-        handleUserInfoUpdate={handleUserInfoUpdate}
-        handleDeliveryRequestChange={handleDeliveryRequestChange}
-        handleCustomRequestChange={handleCustomRequestChange}
-      />
-      <ProductInfo
-        bundles={bundles}
-        subscriptionPeriodLabels={subscriptionPeriodLabels}
-        subscriptionPeriods={subscriptionPeriods}
-      />
-      <PaymentInfo
-        totalPrice={totalPrice}
-        pointUsage={pointUsage}
-        finalPrice={finalPrice}
-        handlePaymentMethodClick={handlePaymentMethodClick}
-        showPointPayment={showPointPayment}
-        handlePointChange={handlePointChange}
-        handleUseAllPoints={handleUseAllPoints}
-        user={user}
-      />
-      <div className={styles.order_price_box}>
-        <p>{finalPrice.toLocaleString()}</p>
-        <button
-          onClick={handleSubmit}
-          disabled={!canPurchase}
-          className={styles.order_btn}
-        >
-          결제하기
-        </button>
-      </div>
-      {showModal && (
-        <Modal
-          title={isConfirmStep ? "결제 확인" : "알림"}
-          message={modalMessage}
-          onConfirm={isConfirmStep ? handleReservation : handleCloseModal}
-          onClose={handleCloseModal}
+    <>
+      <div className={styles["order-page-container"]}>
+        <h1>주문 / 결제</h1>
+        <OrderInfo
+          user={user}
+          orderInfo={orderInfo}
+          handleReceiverInfoUpdate={handleReceiverInfoUpdate}
+          handleUserInfoUpdate={handleUserInfoUpdate}
+          handleDeliveryRequestChange={handleDeliveryRequestChange}
+          handleCustomRequestChange={handleCustomRequestChange}
         />
-      )}
-    </div>
+        <ProductInfo
+          bundles={bundles}
+          subscriptionPeriodLabels={subscriptionPeriodLabels}
+          subscriptionPeriods={subscriptionPeriods}
+        />
+        <PaymentInfo
+          totalPrice={totalPrice}
+          pointUsage={pointUsage}
+          finalPrice={finalPrice}
+          handlePaymentMethodClick={handlePaymentMethodClick}
+          showPointPayment={showPointPayment}
+          handlePointChange={handlePointChange}
+          handleUseAllPoints={handleUseAllPoints}
+          user={user}
+        />
+        <div className={styles.order_price_box}>
+          <p>{finalPrice.toLocaleString()}</p>
+          <button
+            onClick={handleSubmit}
+            disabled={!canPurchase}
+            className={styles.order_btn}
+          >
+            결제하기
+          </button>
+        </div>
+        {showModal && (
+          <Modal
+            title={isConfirmStep ? "결제 확인" : "알림"}
+            message={modalMessage}
+            onConfirm={isConfirmStep ? handleReservation : handleCloseModal}
+            onClose={handleCloseModal}
+          />
+        )}
+      </div>
+    <Footer /> 
+    </>  
   );
 };
 
