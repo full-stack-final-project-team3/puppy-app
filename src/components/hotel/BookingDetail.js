@@ -18,10 +18,14 @@ const BookingDetail = ({ hotel, startDate, endDate, onPay }) => {
     const navigate = useNavigate();
     const userData = useSelector((state) => state.userEdit.userDetail);
     const isAdmin =userData && userData.role === 'ADMIN';
-
     const roomPrice = selectedRoom ? selectedRoom['room-price'] || 0 : 0;
     const finalPersonCount = personCount || 1;
-    const totalPrice = roomPrice * roomCount * finalPersonCount;
+
+    const checkInDate = new Date(startDate);
+    const checkOutDate = new Date(endDate);
+    const stayDuration = (checkOutDate - checkInDate) / (1000 * 60 * 60 * 24);
+
+    const totalPrice = roomPrice * roomCount * finalPersonCount * stayDuration;
 
     // 리덕스 상태에 totalPrice 저장
     useEffect(() => {
@@ -111,7 +115,7 @@ const BookingDetail = ({ hotel, startDate, endDate, onPay }) => {
                                         e.target.onerror = null;
                                     }}
                                     className={styles.sliderImage}
-                                    />
+                                />
                             </div>
                         )}
                     </div>
@@ -130,7 +134,7 @@ const BookingDetail = ({ hotel, startDate, endDate, onPay }) => {
                             <span className={styles.priceLabel}>Total Price: </span>
                             <span className={styles.priceValue}>{formatPrice(totalPrice)} 원</span>
                         </div>
-                    <button className={styles.bookNow} onClick={() => onPay(hotel, selectedRoom, totalPrice)}>Book Now</button>
+                        <button className={styles.bookNow} onClick={() => onPay(hotel, selectedRoom, totalPrice)}>Book Now</button>
                     </div>
                 </div>
 

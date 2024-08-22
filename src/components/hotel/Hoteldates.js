@@ -1,5 +1,3 @@
-// DualDatePickers.js
-
 import * as React from 'react';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
@@ -41,29 +39,39 @@ export default function DualDatePickers({ startDate, setStartDate, endDate, setE
                     label="Arrival"
                     value={startDate}
                     onChange={handleStartDateChange}
-                    renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            value={startDate ? dayjs(startDate).format('YYYY년 MM월 DD일') : ''}
-                            aria-label="Arrival date"
-                        />
-                    )}
                     inputFormat="YYYY년 MM월 DD일"
                     minDate={today} // 오늘 날짜 이전은 선택할 수 없습니다
+                    components={{
+                        TextField: ({ inputRef, inputProps, InputProps }) => (
+                            <TextField
+                                ref={inputRef}
+                                {...inputProps}
+                                InputProps={{ ...InputProps }}
+                                label="Arrival"
+                                value={startDate ? dayjs(startDate).format('YYYY년 MM월 DD일') : ''}
+                                aria-label="Arrival date"
+                            />
+                        )
+                    }}
                 />
                 <DatePicker
                     label="Departure"
                     value={endDate}
                     onChange={handleEndDateChange}
-                    renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            value={endDate ? dayjs(endDate).format('YYYY년 MM월 DD일') : ''}
-                            aria-label="Departure date"
-                        />
-                    )}
                     inputFormat="YYYY년 MM월 DD일"
                     minDate={startDate || today} // startDate 이후만 선택할 수 있습니다
+                    components={{
+                        TextField: ({ inputRef, inputProps, InputProps }) => (
+                            <TextField
+                                ref={inputRef}
+                                {...inputProps}
+                                InputProps={{ ...InputProps }}
+                                label="Departure"
+                                value={endDate ? dayjs(endDate).format('YYYY년 MM월 DD일') : ''}
+                                aria-label="Departure date"
+                            />
+                        )
+                    }}
                 />
             </Box>
         </LocalizationProvider>
