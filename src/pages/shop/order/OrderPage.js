@@ -122,47 +122,47 @@ const OrderPage = () => {
     );
   };
 
-  //20240822: 결제 버튼 클릭 시 "받는 사람 정보"를 먼저 검증하고, 그 다음 결제 수단을 확인하도록 수정
+  //결제 버튼 클릭 시 "받는 사람 정보"를 먼저 검증하고, 그 다음 결제 수단을 확인하도록 수정
   const handleSubmit = () => {
     // "받는 사람 정보"가 유효한지 먼저 확인
-    const isValid = validateFields(); //20240822
-    if (!isValid) { //20240822
-      setModalMessage("받는 사람 정보에 입력이 되지 않았습니다."); //20240822
-      setIsConfirmStep(null); //20240822
-      setShowModal(true); //20240822
-      return; //20240822
+    const isValid = validateFields();
+    if (!isValid) { 
+      setModalMessage("받는 사람 정보에 입력이 되지 않았습니다."); 
+      setIsConfirmStep(null); 
+      setShowModal(true); 
+      return; 
     }
 
-    // "받는 사람 정보"가 유효한 경우, 포인트 결제 여부 확인
-    if (pointUsage === 0) { //20240822
-      setModalMessage("결제 수단을 선택해 주세요"); //20240822
-      setIsConfirmStep(null); //20240822
-      setShowModal(true); //20240822
-      return; //20240822
+    // 받는 사람 정보가 유효한 경우, 포인트 결제 여부 확인하는거 
+    if (pointUsage === 0) { 
+      setModalMessage("결제 수단을 선택해 주세요");
+      setIsConfirmStep(null); 
+      setShowModal(true); 
+      return; 
     }
 
-    setModalMessage("결제를 진행하시겠습니까?"); //20240822
-    setIsConfirmStep(true); //20240822
-    setShowModal(true); //20240822
+    setModalMessage("결제를 진행하시겠습니까?"); 
+    setIsConfirmStep(true); 
+    setShowModal(true); 
   };
 
-  //20240822: "받는 사람 정보"가 유효한지 확인하는 함수
-  const validateFields = () => { //20240822
-    const errors = {}; //20240822
+  //받는 사람 정보 가 유효한지 확인하는 함서 
+  const validateFields = () => { 
+    const errors = {}; 
     
     // "받는 사람 정보" 필드 검증
-    if (!orderInfo.receiverName || orderInfo.receiverName === '정보 없음') { //20240822
-      errors.receiverName = "이름을 입력해 주세요."; //20240822
+    if (!orderInfo.receiverName || orderInfo.receiverName === '정보 없음') { 
+      errors.receiverName = "이름을 입력해 주세요."; 
     }
-    if (!orderInfo.receiverPhone || orderInfo.receiverPhone === '정보 없음') { //20240822
-      errors.receiverPhone = "연락처를 입력해 주세요."; //20240822
+    if (!orderInfo.receiverPhone || orderInfo.receiverPhone === '정보 없음') { 
+      errors.receiverPhone = "연락처를 입력해 주세요."; 
     }
-    if (!orderInfo.receiverAddress || orderInfo.receiverAddress === '정보 없음' || !orderInfo.receiverDetailAddress) { //20240822
-      errors.receiverAddress = "주소를 입력해 주세요."; //20240822
+    if (!orderInfo.receiverAddress || orderInfo.receiverAddress === '정보 없음' || !orderInfo.receiverDetailAddress) { 
+      errors.receiverAddress = "주소를 입력해 주세요."; 
     }
     
-    setValidationErrors(errors); //20240822
-    return Object.keys(errors).length === 0; //20240822
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0; 
   };
 
   const handlePaymentMethodClick = (method) => {
@@ -297,7 +297,7 @@ const OrderPage = () => {
         <div className={styles.order_price_box}>
           <p>{finalPrice.toLocaleString()}</p>
           <button
-            onClick={handleSubmit} //20240822: handleSubmit 함수에서 유효성 검사 및 결제 수단 검증
+            onClick={handleSubmit} //20240822: 핸들서브밋 함수에서 유효성 검사 및 결제 수단 검증
             className={styles.order_btn}
           >
             결제하기
