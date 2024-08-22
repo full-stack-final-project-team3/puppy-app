@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { userEditActions } from "../../../store/user/UserEditSlice";
 import styles from "./UserEdit.module.scss";
 import { AUTH_URL } from "../../../../config/user/host-config";
-import DeleteAccountModal from "./DeleteAccountModal"; // 모달 컴포넌트 import
+import DeleteAccountModal from "./DeleteAccountModal";
 import UserModal from "./UserModal";
-import UserEditSkeleton from "./UserEditSkeleton.js"; // 모달 컴포넌트 import
+import UserEditSkeleton from "./UserEditSkeleton.js";
 
 const UserEdit = () => {
     const user = useSelector(state => state.userEdit.userDetail);
@@ -27,36 +27,50 @@ const UserEdit = () => {
     const [passwordMessage, setPasswordMessage] = useState('');
     const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
     const [loading, setLoading] = useState(true);
-    const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const [showModal, setShowModal] = useState(false);
     const [modalText, setModalText] = useState('');
 
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setLoading(false);
-        }, 850); // 850ms 후에 loading을 false로 설정
-        return () => clearTimeout(timer); // 컴포넌트 언마운트 시 타이머를 정리
-    }, []); // 컴포넌트가 처음 로딩될 때만 실행
+    // 비밀번호 형식 검증 함수
+    const validatePassword = (password) => {
+        const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+        return passwordPattern.test(password);
+    };
 
+    // 비밀번호 변경 시 처리
     const handlePasswordChange = () => {
-        if (passwordRef.current.value && confirmPasswordRef.current.value) {
-            if (passwordRef.current.value === confirmPasswordRef.current.value) {
-                setPasswordMatch(true);
-                setPasswordMessage('비밀번호가 일치합니다.');
-                setIsSubmitDisabled(false);
-            } else {
+        const password = passwordRef.current.value;
+        const confirmPassword = confirmPasswordRef.current.value;
+
+        if (password && confirmPassword) {
+            if (password !== confirmPassword) {
                 setPasswordMatch(false);
                 setPasswordMessage('비밀번호가 일치하지 않습니다.');
                 setIsSubmitDisabled(true);
+            } else if (!validatePassword(password)) {
+                setPasswordMatch(false);
+                setPasswordMessage("비밀번호는 8자 이상이며, 숫자, 문자, 특수문자를 모두 포함해야 합니다.");
+                setIsSubmitDisabled(true);
+            } else {
+                setPasswordMatch(true);
+                setPasswordMessage('비밀번호가 일치합니다.');
+                setIsSubmitDisabled(false);
             }
         } else {
             setPasswordMessage('');
             setIsSubmitDisabled(true);
         }
     };
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoading(false);
+        }, 850);
+        return () => clearTimeout(timer);
+    }, []);
 
     const handleAddressSearch = () => {
         new window.daum.Postcode({
@@ -97,10 +111,8 @@ const UserEdit = () => {
         setFormattedPoint(`${new Intl.NumberFormat('ko-KR').format(value)}p`);
         setIsSubmitDisabled(false);
 
-        // 현재 커서 위치 저장
         const cursorPosition = e.target.selectionStart;
 
-        // 상태가 업데이트된 후 커서 위치 조정
         setTimeout(() => {
             pointInputRef.current.selectionStart = pointInputRef.current.selectionEnd = cursorPosition;
         }, 0);
@@ -161,20 +173,20 @@ const UserEdit = () => {
     };
 
     const dropUserHandler = () => {
-        setIsModalOpen(true); // 모달 열기
+        setIsModalOpen(true);
     };
 
     const closeModal = () => {
-        setIsModalOpen(false); // 모달 닫기
+        setIsModalOpen(false);
     };
 
     const handleConfirmModal = () => {
         setShowModal(false);
-        handleSubmit(); // 확인 버튼 클릭 시 handleSubmit 실행
+        handleSubmit();
     };
 
     const handleCloseModal = () => {
-        setShowModal(false); // 모달 닫음
+        setShowModal(false);
     };
 
     if (loading) {
@@ -182,6 +194,7 @@ const UserEdit = () => {
             <UserEditSkeleton/>
         );
     }
+
     return (
         <div className={styles.wrap}>
             <h2 className={styles.title}>회원 정보 수정</h2>
