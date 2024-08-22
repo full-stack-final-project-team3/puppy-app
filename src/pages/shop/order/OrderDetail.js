@@ -182,8 +182,8 @@ const OrderDetail = () => {
               </p>
               <hr />
               <p>
-                포인트
-                <span>
+                포인트 사용
+                <span>- 
                   {orderDetail.totalPrice
                     ? orderDetail.totalPrice.toLocaleString()
                     : "0"}{" "}
@@ -192,7 +192,12 @@ const OrderDetail = () => {
               </p>
               <p>
                 총 결제금액
-                <span>0 원</span>
+                <span>
+                  {orderDetail.totalPrice
+                    ? orderDetail.totalPrice.toLocaleString()
+                    : "0"}{" "}
+                     원
+                </span>
               </p>
             </div>
           </div>
