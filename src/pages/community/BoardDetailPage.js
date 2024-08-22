@@ -24,6 +24,7 @@ import { GoClock } from "react-icons/go";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import { IoChevronBack } from "react-icons/io5";
 import { GiDogHouse } from "react-icons/gi";
+import DeletePortal from "../../components/community/DeletePortal";
 
 // const BASE_URL = "http://localhost:8888";
 
@@ -272,22 +273,27 @@ const BoardDetailPage = () => {
   };
 
   //삭제 모달 함수
-  const DeleteModal = ({ isOpen, onClose, onDelete }) => {
-  // console.log("실행된다.");
-  return (
-    <div
-      className={`${styles.modalOverlay} ${isOpen ? styles.active : ""}`}
-      onClick={onClose}
-    >
-      <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-        <h3>삭제</h3>
-        <p>정말로 삭제하시겠습니까?</p>
-        <button onClick={onDelete}>삭제</button>
-        <button onClick={onClose}>취소</button>
-      </div>
-    </div>
-  );
-};
+  const renderDeletePortal = () => {
+    if (!showDeleteModal) return null;
+
+    const handleDelete = () => {
+      if (deleteTarget?.type === "comment") {
+        handleDeleteCommentConfirm();
+      } else if (deleteTarget?.type === "subReply") {
+        handleDeleteSubReplyConfirm();
+      } else {
+        handleDeleteConfirm();
+      }
+    };
+
+    return (
+      <DeletePortal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onDelete={handleDelete}
+      />
+    );
+  };
 
   // 게시글 삭제 함수
   const handleDelete = () => {
@@ -1137,19 +1143,17 @@ setDeleteTarget({ type: "subReply", id: subReplyId, commentId: commentId });
           </div>
         </>
       )}
-      {showDeleteModal && (
-        <DeleteModal
-          isOpen={showDeleteModal}
-          onClose={() => setShowDeleteModal(false)}
-          onDelete={
-            deleteTarget?.type === "comment"
-              ? handleDeleteCommentConfirm
-              : deleteTarget?.type === "subReply"
-              ? handleDeleteSubReplyConfirm
-              : handleDeleteConfirm
-          }
-        />
-      )}
+      <DeletePortal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onDelete={
+          deleteTarget?.type === "comment"
+            ? handleDeleteCommentConfirm
+            : deleteTarget?.type === "subReply"
+            ? handleDeleteSubReplyConfirm
+            : handleDeleteConfirm
+        }
+      />
     </div> // postDetailPage end
   );
 };
