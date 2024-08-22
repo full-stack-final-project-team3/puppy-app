@@ -82,7 +82,7 @@ const ShopMainBg = ({ content, manageShopBtn }) => {
                 PLAN
               </h2>
               <p className={styles.featureContent}>
-                강아지의 정보와 취향을 입력하면 강아지에 최적화된 펫 푸드를 매월
+                강아지의 정보와 취향을 입력하면 강아지에 <br></br>최적화된 펫 푸드를 매월
                 정기 배달합니다.
               </p>
             </div>
