@@ -114,10 +114,6 @@
   display: flex;
   justify-content: space-between;
 }
-
-.order_cancel_btn:hover{
-  background-color: #777;
-}
 .bundleItem ul, .bundleItem li{
   list-style: none;
   margin: 0;
@@ -252,11 +248,14 @@
   transition: background-color 0.3s ease;
 }
 .order_cancel_btn{
+  margin-right: 50px;
   background-color: #999;
+}
+.order_cancel_btn:hover{
+  background-color: #777;
 }
 .order_list_btn{
   background-color: #B3797A;
-  margin-left: 50px;
 }
 .order_list_btn:hover{
   background-color: #9F5A5B;
