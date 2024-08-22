@@ -27,7 +27,7 @@
 
 @media screen and (width: 400px) {
   .wrap {
-    width: 95%; /* 모바일에서 완전한 폭 사용 */
+    width: 95% !important; /* 모바일에서 완전한 폭 사용 */
     margin-bottom: 80px;
     padding: 10px; /* 모바일에서 패딩 추가 */
     border-radius: 0;
