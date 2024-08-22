@@ -35,20 +35,17 @@ const OrderPage = () => {
 
   const [validationErrors, setValidationErrors] = useState({});
   const [remainingPoints, setRemainingPoints] = useState(user.point);
-  const [canPurchase, setCanPurchase] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [isConfirmStep, setIsConfirmStep] = useState(true);
   const [showPointPayment, setShowPointPayment] = useState(false);
   const [pointUsage, setPointUsage] = useState(0);
-  const [finalPrice, setFinalPrice] = useState(totalPrice); // 20240821: finalPrice를 totalPrice로 초기 설정
+  const [finalPrice, setFinalPrice] = useState(totalPrice);
 
   useEffect(() => {
     const remaining = user.point - totalPrice;
     setRemainingPoints(remaining);
-    setFinalPrice(totalPrice); // 20240821: finalPrice를 totalPrice로 초기화
-    setCanPurchase(false);
-
+    setFinalPrice(totalPrice);
     console.log("user: " + user);
     console.log(user);
     console.log(orderInfo);
@@ -125,34 +122,47 @@ const OrderPage = () => {
     );
   };
 
+  //20240822: 결제 버튼 클릭 시 "받는 사람 정보"를 먼저 검증하고, 그 다음 결제 수단을 확인하도록 수정
   const handleSubmit = () => {
-    const isValid = validateFields();
-    if (!isValid) {
-      setModalMessage("받는 사람 정보에 입력이 되지 않았습니다.");
-      setIsConfirmStep(null);
-      setShowModal(true);
-      return;
+    // "받는 사람 정보"가 유효한지 먼저 확인
+    const isValid = validateFields(); //20240822
+    if (!isValid) { //20240822
+      setModalMessage("받는 사람 정보에 입력이 되지 않았습니다."); //20240822
+      setIsConfirmStep(null); //20240822
+      setShowModal(true); //20240822
+      return; //20240822
     }
-    if (canPurchase) {
-      setModalMessage("결제를 진행하시겠습니까?");
-      setIsConfirmStep(true);
-      setShowModal(true);
+
+    // "받는 사람 정보"가 유효한 경우, 포인트 결제 여부 확인
+    if (pointUsage === 0) { //20240822
+      setModalMessage("결제 수단을 선택해 주세요"); //20240822
+      setIsConfirmStep(null); //20240822
+      setShowModal(true); //20240822
+      return; //20240822
     }
+
+    setModalMessage("결제를 진행하시겠습니까?"); //20240822
+    setIsConfirmStep(true); //20240822
+    setShowModal(true); //20240822
   };
 
-  const validateFields = () => {
-    const errors = {};
-    if (!orderInfo.receiverName) {
-      errors.receiverName = "이름을 입력해 주세요.";
+  //20240822: "받는 사람 정보"가 유효한지 확인하는 함수
+  const validateFields = () => { //20240822
+    const errors = {}; //20240822
+    
+    // "받는 사람 정보" 필드 검증
+    if (!orderInfo.receiverName || orderInfo.receiverName === '정보 없음') { //20240822
+      errors.receiverName = "이름을 입력해 주세요."; //20240822
     }
-    if (!orderInfo.receiverPhone) {
-      errors.receiverPhone = "연락처를 입력해 주세요.";
+    if (!orderInfo.receiverPhone || orderInfo.receiverPhone === '정보 없음') { //20240822
+      errors.receiverPhone = "연락처를 입력해 주세요."; //20240822
     }
-    if (!orderInfo.receiverAddress || !orderInfo.receiverDetailAddress) {
-      errors.receiverAddress = "주소를 입력해 주세요.";
+    if (!orderInfo.receiverAddress || orderInfo.receiverAddress === '정보 없음' || !orderInfo.receiverDetailAddress) { //20240822
+      errors.receiverAddress = "주소를 입력해 주세요."; //20240822
     }
-    setValidationErrors(errors);
-    return Object.keys(errors).length === 0;
+    
+    setValidationErrors(errors); //20240822
+    return Object.keys(errors).length === 0; //20240822
   };
 
   const handlePaymentMethodClick = (method) => {
@@ -170,15 +180,11 @@ const OrderPage = () => {
     points = Math.min(points, user.point);
     points = Math.min(points, totalPrice);
     setPointUsage(points);
-    // setFinalPrice(totalPrice - points); // 20240821: 주석 처리하여 최종 결제 금액이 총 금액으로 유지되도록 함
-    setCanPurchase(points >= totalPrice);
   };
 
   const handleUseAllPoints = () => {
     const pointsToUse = Math.min(user.point, totalPrice);
     setPointUsage(pointsToUse);
-    // setFinalPrice(totalPrice - pointsToUse); // 20240821: 주석 처리하여 최종 결제 금액이 총 금액으로 유지되도록 함
-    setCanPurchase(pointsToUse >= totalPrice);
   };
 
   const handleReservation = async () => {
@@ -291,8 +297,7 @@ const OrderPage = () => {
         <div className={styles.order_price_box}>
           <p>{finalPrice.toLocaleString()}</p>
           <button
-            onClick={handleSubmit}
-            disabled={!canPurchase}
+            onClick={handleSubmit} //20240822: handleSubmit 함수에서 유효성 검사 및 결제 수단 검증
             className={styles.order_btn}
           >
             결제하기
