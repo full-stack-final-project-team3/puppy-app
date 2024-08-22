@@ -213,6 +213,11 @@ export const router = createBrowserRouter([
         loader: authCheckLoader, // 로그인 정보를 확인하는 loader 추가
       },
       {
+        path: "board/:id/deleteImage", // 게시글 상세 페이지 경로 추가
+        element: <BoardEditPage />,
+        loader: authCheckLoader, // 로그인 정보를 확인하는 loader 추가
+      },
+      {
         path: "likes/board/:id", // 좋아요 - 게시글
         element: <BoardEditPage />,
         loader: authCheckLoader,
