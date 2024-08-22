@@ -1,6 +1,6 @@
 :root {
   --padding-top: 90px;
-  --padding-left: 130px;
+  --padding-left: 150px;
   --img-section-display: flex;
 }
 
@@ -8,13 +8,44 @@
   .mainSection {
     height: 95vh;
 
+    .processContainer1 {
+      width: 50%;
+      background-color: #3a556f; // 배경 색상
+      text-align: left;
+
+      .processContent1 {
+        padding-top: var(--padding-top);
+        padding-left: var(--padding-left);
+      }
+    }
+
+    .shopTitle1 {
+      margin-top: 120px;
+      font-size: 50px;
+      color: #fffff0;
+    }
+    .shopTitle2 {
+      font-size: 35px;
+      margin-bottom: 50px;
+      color: #fffff0;
+    }
+    .shopTitle3 {
+      font-size: 20px;
+      margin-bottom: 50px;
+      color: #fffff0;
+    }
+
     .imgSection {
-      background-image: url(../../../public/shop_img/1.png); // 배경 이미지 경로
-      background-size: cover;
-      background-position: center;
-      height: 710px; /* 높이를 원하는 값으로 설정 */
-      width: 100%; /* 너비를 원하는 값으로 설정 */
-      position: relative; /* 부모 요소에 relative 설정 */
+      position: relative;
+      float: left;
+      background-image: url("../../../public/shop_img/shop_main2\ 910\ x\ 710\ px.png"); // 배경 이미지 경로
+      background-size: cover; // 배경 이미지가 전체 영역을 덮도록 설정
+      background-position: center; // 배경 이미지를 중앙에 배치
+      height: 710px; // 원하는 높이 설정
+      width: 50%; // 너비를 절반으로 설정
+      left: 0;
+      display: var(--img-section-display);
+      flex-direction: column; // 세로 방향으로 배치
 
       .manageShopBtn {
         position: absolute; /* 자식 요소에 absolute 설정 */
@@ -103,12 +134,44 @@
       font-size: 15px;
     }
 
+    .processContainer2 {
+      width: 50%;
+      background-color: #E6E3DB; // 배경 색상
+      text-align: left;
+
+      .processContent1 {
+        padding-top: var(--padding-top);
+        padding-left: var(--padding-left);
+      }
+    }
+
     .imgSection2 {
-      background-image: url(../../../public/shop_img/2.png); // 배경 이미지 경로
-      background-size: cover;
-      background-position: center;
-      height: 710px; /* 높이를 원하는 값으로 설정 */
-      width: 100%; /* 너비를 원하는 값으로 설정 */
+      float: right;
+      background-image: url("../../../public/shop_img/shop_main\ 910\ x\ 710\ px.png"); // 배경 이미지 경로
+      background-size: cover; // 배경 이미지가 전체 영역을 덮도록 설정
+      background-position: center; // 배경 이미지를 중앙에 배치
+      height: 710px; // 원하는 높이 설정
+      width: 50%; // 너비를 절반으로 설정
+      left: 0;
+      display: var(--img-section-display);
+      flex-direction: column; // 세로 방향으로 배치
+    }
+
+    .shop2Title1 {
+      margin-top: 60px;
+      line-height: 1.4; 
+      font-size: 50px;
+      color: #403c36;
+    }
+    .shop2Title2 {
+      font-size: 35px;
+      margin-bottom: 50px;
+      color: #403c36;
+    }
+    .shop2Title3 {
+      font-size: 20px;
+      margin-bottom: 50px;
+      color: #403c36;
     }
 
     .imgSection3Box {
@@ -126,6 +189,42 @@
       display: var(--img-section-display);
       flex-direction: column; // 세로 방향으로 배치
     }
+    .selectDogBox {
+      display: flex; /* Flexbox 사용 */
+      width: 100%; /* 부모 요소의 너비를 상속 */
+
+      .dogList {
+        background: #e8e4d7;
+        color: #403c36;
+        font-size: 18px;
+        width: 42%;
+        margin-left: 35px;
+      }
+    }
+
+    .startBtnBox {
+      display: flex; /* Flexbox 사용 */
+      width: 100%; /* 부모 요소의 너비를 상속 */
+
+      .startButton {
+        width: 42%;
+        background-color: #f39c12; // 버튼 배경색
+        padding: 18px;
+        margin-top: 20px;
+        margin-left: 35px;
+        color: #fffff0;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        transition: transform 0.4s ease-in-out; /* 애니메이션 속도 조절 */
+      }
+
+      .startButton:hover {
+        transform: translateY(-3px); /* 호버 시 버튼이 5px 위로 이동 */
+      }
+    }
 
     .processContainer {
       width: 50%;
@@ -140,45 +239,43 @@
           width: 42%;
           margin-left: 35px;
         }
+      }
+      .selectDogBox {
+        display: flex; /* Flexbox 사용 */
+        width: 100%; /* 부모 요소의 너비를 상속 */
 
-        .selectDogBox {
-          display: flex; /* Flexbox 사용 */
-          width: 100%; /* 부모 요소의 너비를 상속 */
-
-          .dogList {
-            background: #e8e4d7;
-            color: #403c36;
-            font-size: 18px;
-            width: 42%;
-            margin-left: 35px;
-          }
-        }
-
-        .startBtnBox {
-          display: flex; /* Flexbox 사용 */
-          width: 100%; /* 부모 요소의 너비를 상속 */
-
-          .startButton {
-            width: 42%;
-            background-color: #F39C12; // 버튼 배경색
-            padding: 18px;
-            margin-top: 20px;
-            margin-left: 35px;
-            color: #fffff0;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            transition: transform 0.4s ease-in-out; /* 애니메이션 속도 조절 */
-          }
-
-          .startButton:hover {
-            transform: translateY(-3px); /* 호버 시 버튼이 5px 위로 이동 */
-          }
+        .dogList {
+          background: #e8e4d7;
+          color: #403c36;
+          font-size: 18px;
+          width: 42%;
+          margin-left: 35px;
         }
       }
 
+      .startBtnBox {
+        display: flex; /* Flexbox 사용 */
+        width: 100%; /* 부모 요소의 너비를 상속 */
+
+        .startButton {
+          width: 42%;
+          background-color: #f39c12; // 버튼 배경색
+          padding: 18px;
+          margin-top: 20px;
+          margin-left: 35px;
+          color: #fffff0;
+          border: none;
+          border-radius: 25px;
+          cursor: pointer;
+          font-size: 16px;
+          font-weight: bold;
+          transition: transform 0.4s ease-in-out; /* 애니메이션 속도 조절 */
+        }
+
+        .startButton:hover {
+          transform: translateY(-3px); /* 호버 시 버튼이 5px 위로 이동 */
+        }
+      }
       .processContent {
         padding-top: var(--padding-top);
         padding-left: var(--padding-left);
@@ -188,7 +285,7 @@
         color: #403c36;
         font-size: 36px;
         font-weight: bold;
-        margin-bottom: 50px;
+        margin-bottom: 40px;
       }
 
       .processStep {
@@ -207,6 +304,11 @@
 
           .processName {
             margin-top: 10px;
+            font-size: 22px;
+          }
+
+          .processP{
+            font-size: 18px;
           }
 
           .stepIcon1 {
@@ -270,15 +372,16 @@
 
     .featureItem {
       text-align: center; /* 텍스트 중앙 정렬 */
-      max-width: 345px; /* 최대 너비 설정 */
+      max-width: 380px; /* 최대 너비 설정 */
 
       .featureTitle {
-        font-size: 20px;
+        font-size: 24px;
         color: white;
         margin-top: 10px;
       }
       .featureContent {
         color: white;
+        font-size: 18px;
       }
     }
 
