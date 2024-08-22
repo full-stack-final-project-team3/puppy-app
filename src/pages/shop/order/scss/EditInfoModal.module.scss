@@ -1,3 +1,6 @@
+.modalOverlay *{
+  box-sizing: border-box;
+}
 .modalOverlay {
   position: fixed;
   top: 0;
@@ -61,7 +64,7 @@
 .modalContent .addressGroup button {
   width: 90px;
   padding: 10px;
-  background-color: #007bff;
+  background-color: #8EBC8F;
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -71,7 +74,7 @@
 }
 
 .modalContent .addressGroup button:hover {
-  background-color: #0056b3;
+  background-color: #218838;
 }
 
 .buttons {
@@ -90,12 +93,12 @@
 }
 
 .applyButton {
-  background-color: #28a745;
+  background-color: #B3797A;
   color: white;
 }
 
 .applyButton:hover {
-  background-color: #218838;
+  background-color: #9F5A5B;
 }
 
 .cancelButton {

@@ -90,8 +90,8 @@ const EditInfoModal = ({
           />
         </div>
         <div className={styles.buttons}>
-          <button className={styles.applyButton} onClick={handleSaveClick}>적용하기</button>
           <button className={styles.cancelButton} onClick={onClose}>취소</button>
+          <button className={styles.applyButton} onClick={handleSaveClick}>적용하기</button>
         </div>
       </div>
     </div>
