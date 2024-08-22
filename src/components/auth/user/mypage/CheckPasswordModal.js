@@ -10,7 +10,9 @@ const CheckPasswordModal = ({ onClose, cancelEdit }) => {
     const [error, setError] = useState("");
     const [isValid, setIsValid] = useState(false);
 
+
     const checkPassword = async () => {
+
         try {
             const response = await fetch(`${AUTH_URL}/check-password/${user.email}?password=${password}`);
             const flag = await response.json();
@@ -40,6 +42,14 @@ const CheckPasswordModal = ({ onClose, cancelEdit }) => {
         cancelEdit(false);
     };
 
+
+    const enterHandler = (e) => {
+        if (e.key === "Enter") {
+            checkPassword()
+            console.log("zz")
+        }
+    };
+
     return (
         <PortalPasswordModal onClose={cancel}>
             <h2 className={styles.h2}>현재 비밀번호를 입력해주세요.</h2>
@@ -49,6 +59,7 @@ const CheckPasswordModal = ({ onClose, cancelEdit }) => {
                 className={styles.input}
                 onChange={changeHandler}
                 value={password}
+                onKeyDown={enterHandler}
             />
             {!isValid && <p className={styles.error}>{error}</p>}
             <div className={styles.flex}>
