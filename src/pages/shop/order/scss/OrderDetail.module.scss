@@ -116,7 +116,7 @@
 }
 
 .order_cancel_btn:hover{
-  background-color: #9F5A5B;
+  background-color: #777;
 }
 .bundleItem ul, .bundleItem li{
   list-style: none;
@@ -257,4 +257,7 @@
 .order_list_btn{
   background-color: #B3797A;
   margin-left: 50px;
+}
+.order_list_btn:hover{
+  background-color: #9F5A5B;
 }
