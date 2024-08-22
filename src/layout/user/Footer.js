@@ -8,7 +8,7 @@ const Footer = () => {
     return (
         <footer className={styles.footerWrap}>
             <div className={styles.greenWrap}>
-                <p className={styles.pTitle}>© fweajfwpfjaefjwp. All rights reserved.</p>
+                <p className={styles.pTitle}>© 2024 doggle. All rights reserved.</p>
             </div>
             <div className={styles.orangeLine}></div>
             <div className={styles.mainWrap}>
