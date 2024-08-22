@@ -1,7 +1,7 @@
 :root {
   --padding-top: 90px;
   --padding-left: 130px;
-  --img-section-display: flex; 
+  --img-section-display: flex;
 }
 
 .shopMainBgContainer {
@@ -123,7 +123,7 @@
       height: 710px; // 원하는 높이 설정
       width: 50%; // 너비를 절반으로 설정
       left: 0;
-      display: var(--img-section-display); 
+      display: var(--img-section-display);
       flex-direction: column; // 세로 방향으로 배치
     }
 
@@ -148,6 +148,7 @@
           .dogList {
             background: #e8e4d7;
             color: #403c36;
+            font-size: 18px;
             width: 42%;
             margin-left: 35px;
           }
@@ -159,7 +160,7 @@
 
           .startButton {
             width: 42%;
-            background-color: #4d5d4c; // 버튼 배경색
+            background-color: #F39C12; // 버튼 배경색
             padding: 18px;
             margin-top: 20px;
             margin-left: 35px;
@@ -182,7 +183,7 @@
         padding-top: var(--padding-top);
         padding-left: var(--padding-left);
       }
-      
+
       .processTitle {
         color: #403c36;
         font-size: 36px;
@@ -203,6 +204,10 @@
 
         .stepContent {
           flex: 1;
+
+          .processName {
+            margin-top: 10px;
+          }
 
           .stepIcon1 {
             background-image: url("../../../public/shop_img/dog.png"); /* 아이콘 이미지 경로 */
@@ -256,7 +261,7 @@
     .featuresContainer {
       display: flex;
       justify-content: center; /* 항목들을 중앙 정렬 */
-      gap: 150px; /* 항목 간의 간격 조정 */
+      gap: 170px; /* 항목 간의 간격 조정 */
       background-color: #5e5850; /* 배경색 */
       margin: 0 auto;
       padding: 50px 0; /* 상하 패딩 */
@@ -265,7 +270,7 @@
 
     .featureItem {
       text-align: center; /* 텍스트 중앙 정렬 */
-      max-width: 335px; /* 최대 너비 설정 */
+      max-width: 345px; /* 최대 너비 설정 */
 
       .featureTitle {
         font-size: 20px;
@@ -316,14 +321,6 @@
   }
 }
 
-@media (max-height: 850px) {
-  .mainSection {
-    .imgSection {
-      height: 65%; /* 세로 크기가 작을 경우 높이 조정 */
-    }
-  }
-}
-
 // 반응형 설정
 @media (max-width: 400px) {
   .sliderContainer {
@@ -356,27 +353,8 @@
   }
 }
 
-@media (max-height: 850px) {
-  .sliderContainer {
-    height: 100px; // 세로 크기가 작을 경우 슬라이드 높이 조정
-  }
-
-  .slideImgBox {
-    .slide {
-      &.slide1,
-      &.slide2,
-      &.slide3,
-      &.slide4,
-      &.slide5 {
-        height: 35px; // 슬라이드 높이 조정
-      }
-    }
-  }
-}
-
 // 반응형 설정
 @media (max-width: 400px) {
-
   :root {
     --img-section-display: none; // 모바일에서 섹션 숨기기
   }
@@ -393,11 +371,15 @@
   }
 
   .imgSection3 {
-  display: var(--img-section-display); // 변수를 사용하여 display 설정
+    display: var(--img-section-display); // 변수를 사용하여 display 설정
   }
 
   .processContainer {
     width: 100% !important; // 프로세스 컨테이너 너비 조정
+
+    .processName {
+      margin-top: 0px !important;
+    }
 
     .content {
       margin-top: 20px; // 모바일에서 여백 조정
@@ -443,7 +425,7 @@
 
   .processTitle {
     font-size: 28px; /* 모바일에서 폰트 크기 조정 */
-    margin-bottom: 20px; /* 여백 조정 */
+    margin-bottom: 20px !important; /* 여백 조정 */
   }
 
   .processStep {

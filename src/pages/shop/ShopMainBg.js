@@ -80,10 +80,10 @@ const ShopMainBg = ({ content, manageShopBtn }) => {
               <div className={styles.processStep}>
                 <span className={styles.stepNumber}>✔️</span>
                 <div className={styles.stepContent}>
-                  <h5>
+                  <h4 className={styles.processName}>
                     강아지 정보를 입력하기
                     <span className={styles.stepIcon1}></span>
-                  </h5>
+                  </h4>
                   <p>
                     몇 가지 간단한 질문을 통해 우리에게 강아지를 소개해주세요!
                   </p>
@@ -92,9 +92,9 @@ const ShopMainBg = ({ content, manageShopBtn }) => {
               <div className={styles.processStep}>
                 <span className={styles.stepNumber}>✔️</span>
                 <div className={styles.stepContent}>
-                  <h5>
+                  <h4 className={styles.processName}>
                     간식 고르기 <span className={styles.stepIcon2}></span>
-                  </h5>
+                  </h4>
                   <p>
                     강아지 정보를 분석하여 추천한 몇 가지 상품 중 원하는 걸
                     선택해주세요!
@@ -104,9 +104,9 @@ const ShopMainBg = ({ content, manageShopBtn }) => {
               <div className={styles.processStep}>
                 <span className={styles.stepNumber}>✔️</span>
                 <div className={styles.stepContent}>
-                  <h5>
+                  <h4 className={styles.processName}>
                     월 정기 배송<span className={styles.stepIcon3}></span>
-                  </h5>
+                  </h4>
                   <p>선택한 정보를 바탕으로 강아지에게 매월 선물이 배송돼요!</p>
                 </div>
               </div>
