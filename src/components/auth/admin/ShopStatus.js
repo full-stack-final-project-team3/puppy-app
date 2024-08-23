@@ -15,11 +15,14 @@ const ShopStatus = () => {
         }
         const result = await response.json();
 
-        // API 응답 데이터를 필요한 형식으로 변환
-        const transformedData = Object.keys(result).map(key => ({
-          name: key,
-          sales: result[key],
-        }));
+        // API 응답 데이터를 필요한 형식으로 변환하여 상위 10개 항목만 추출
+        const transformedData = Object.keys(result)
+          .map(key => ({
+            name: key,
+            sales: result[key],
+          }))
+          .sort((a, b) => b.sales - a.sales) // 판매량 기준으로 내림차순 정렬
+          .slice(0, 10); // 상위 10개만 추출
 
         setData(transformedData);
         console.log(transformedData); // 데이터 확인을 위한 로그
@@ -33,7 +36,7 @@ const ShopStatus = () => {
 
   return (
     <div className={styles.chartContainer}>
-      <h2 className={styles.chartTitle}>가장 많이 팔린 상품</h2> {/* 그래프 제목 추가 */}
+      <h2 className={styles.chartTitle}>가장 많이 팔린 상품 Top 10</h2> {/* 그래프 제목 추가 */}
       <ResponsiveContainer width="100%" height={400}>
         <BarChart
           data={data}
