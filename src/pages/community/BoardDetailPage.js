@@ -69,6 +69,9 @@ const BoardDetailPage = () => {
   // 삭제 대상
   const [deleteTarget, setDeleteTarget] = useState(null);
 
+  // 관리자 상태 체크
+  const [isAdmin, setIsAdmin] = useState(false);
+
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -83,7 +86,12 @@ const BoardDetailPage = () => {
         const userData = JSON.parse(localStorage.getItem("userData"));
         const isLoggedIn = !!userData && !!userData.token;
         setIsLoggedIn(isLoggedIn);
+        setIsAdmin(userData?.role === "ADMIN");
 
+        console.log(user);
+        console.log(userData);
+        console.log("userData: " + userData?.role);
+        console.log("isAdmin상태쳌: " + isAdmin);
         const postData = await fetchPostDetail(
           isLoggedIn ? userData.token : null
         );
@@ -297,8 +305,8 @@ const BoardDetailPage = () => {
 
   // 게시글 삭제 함수
   const handleDelete = () => {
-    console.log('게시글 삭제됩니다.');
-      //  setDeleteTarget({ type: "post", id: post.id });
+    console.log("게시글 삭제됩니다.");
+    //  setDeleteTarget({ type: "post", id: post.id });
     setShowDeleteModal(true);
   };
 
@@ -340,8 +348,8 @@ const BoardDetailPage = () => {
     if (action === "edit") {
       handleEdit();
     } else if (action === "delete") {
-       setDeleteTarget({ type: "post", id: post.id });
-       setShowDeleteModal(true);
+      setDeleteTarget({ type: "post", id: post.id });
+      setShowDeleteModal(true);
     }
   };
 
@@ -404,24 +412,24 @@ const BoardDetailPage = () => {
 
   const handleDeleteCommentConfirm = async () => {
     try {
-          const userData = JSON.parse(localStorage.getItem("userData"));
-          const response = await fetch(
-            `${BOARD_URL}/${id}/comments/${deleteTarget.id}?userId=${user.id}`,
-            {
-              method: "DELETE",
-              headers: {
-                Authorization: `Bearer ${userData.token}`,
-              },
-            }
-          );
+      const userData = JSON.parse(localStorage.getItem("userData"));
+      const response = await fetch(
+        `${BOARD_URL}/${id}/comments/${deleteTarget.id}?userId=${user.id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${userData.token}`,
+          },
+        }
+      );
 
-          if (response.ok) {
-            setComments(
-              comments.filter((comment) => comment.id !== deleteTarget.id)
-            );
-          } else {
-            throw new Error("댓글 삭제에 실패했습니다.");
-          }
+      if (response.ok) {
+        setComments(
+          comments.filter((comment) => comment.id !== deleteTarget.id)
+        );
+      } else {
+        throw new Error("댓글 삭제에 실패했습니다.");
+      }
 
       setShowDeleteModal(false);
       setDeleteTarget(null);
@@ -576,47 +584,47 @@ const BoardDetailPage = () => {
   };
   //대댓글 삭제
   const handleSubReplyDelete = async (commentId, subReplyId) => {
-setShowDeleteModal(true);
-setDeleteTarget({ type: "subReply", id: subReplyId, commentId: commentId });
+    setShowDeleteModal(true);
+    setDeleteTarget({ type: "subReply", id: subReplyId, commentId: commentId });
   };
 
- const handleDeleteSubReplyConfirm = async () => {
-   try {
-         const userData = JSON.parse(localStorage.getItem("userData"));
-         const response = await fetch(
-           `${BOARD_URL}/${id}/comments/${deleteTarget.commentId}/subReplies/${deleteTarget.id}?userId=${user.id}`,
-           {
-             method: "DELETE",
-             headers: {
-               Authorization: `Bearer ${userData.token}`,
-             },
-           }
-         );
+  const handleDeleteSubReplyConfirm = async () => {
+    try {
+      const userData = JSON.parse(localStorage.getItem("userData"));
+      const response = await fetch(
+        `${BOARD_URL}/${id}/comments/${deleteTarget.commentId}/subReplies/${deleteTarget.id}?userId=${user.id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${userData.token}`,
+          },
+        }
+      );
 
-         if (response.ok) {
-           setComments((prevComments) =>
-             prevComments.map((comment) =>
-               comment.id === deleteTarget.commentId
-                 ? {
-                     ...comment,
-                     subReplies: comment.subReplies.filter(
-                       (subReply) => subReply.id !== deleteTarget.id
-                     ),
-                   }
-                 : comment
-             )
-           );
-         } else {
-           throw new Error("대댓글 삭제에 실패했습니다.");
-         }
+      if (response.ok) {
+        setComments((prevComments) =>
+          prevComments.map((comment) =>
+            comment.id === deleteTarget.commentId
+              ? {
+                  ...comment,
+                  subReplies: comment.subReplies.filter(
+                    (subReply) => subReply.id !== deleteTarget.id
+                  ),
+                }
+              : comment
+          )
+        );
+      } else {
+        throw new Error("대댓글 삭제에 실패했습니다.");
+      }
 
-     setShowDeleteModal(false);
-     setDeleteTarget(null);
-   } catch (error) {
-     console.error("대댓글 삭제 중 오류 발생:", error);
-     alert("대댓글 삭제에 실패했습니다. 다시 시도해 주세요.");
-   }
- };
+      setShowDeleteModal(false);
+      setDeleteTarget(null);
+    } catch (error) {
+      console.error("대댓글 삭제 중 오류 발생:", error);
+      alert("대댓글 삭제에 실패했습니다. 다시 시도해 주세요.");
+    }
+  };
 
   //시간 관련 처리
   const formatTimeAgo = (date) => {
@@ -747,13 +755,13 @@ setDeleteTarget({ type: "subReply", id: subReplyId, commentId: commentId });
         <span className={styles.viewCount}>
           <BsEye className={styles.iconWithSpacing} /> {post.viewCount}
         </span>
-        {isLoggedIn && user.id === post.user.id && (
+        {(isLoggedIn && user.id === post.user.id) || isAdmin ? (
           <div className={styles.optionsContainer}>
             <button className={styles.optionsButton} onClick={toggleOptions}>
               <BsThreeDotsVertical />
             </button>
           </div>
-        )}
+        ) : null}
       </div>
       {post.images && post.images.length > 0 && (
         <div className={styles.postImages}>
@@ -785,7 +793,15 @@ setDeleteTarget({ type: "subReply", id: subReplyId, commentId: commentId });
           )}
         </div>
       )}
-      <div className={styles.postContent}>{post.boardContent}</div>
+
+      <div className={styles.postContent}>
+        {post.boardContent.split("\n").map((line, index) => (
+          <React.Fragment key={index}>
+            {line}
+            <br />
+          </React.Fragment>
+        ))}
+      </div>
       <div className={styles.likeShareContainer}>
         <button
           className={`${styles.likeButton} ${postLiked ? styles.active : ""}`}
@@ -881,7 +897,7 @@ setDeleteTarget({ type: "subReply", id: subReplyId, commentId: commentId });
                           className={styles.commentImage}
                         />
                       )}
-                      {user && user.id === comment.user?.id && (
+                      {(user && user.id === comment.user?.id) || isAdmin ? (
                         <div className={styles.commentActions}>
                           <button
                             onClick={() =>
@@ -901,7 +917,7 @@ setDeleteTarget({ type: "subReply", id: subReplyId, commentId: commentId });
                             삭제
                           </button>
                         </div>
-                      )}
+                      ) : null}
                       <button
                         onClick={() => handleLike("reply", comment.id)}
                         className={`${styles.likeButton} ${
@@ -997,7 +1013,8 @@ setDeleteTarget({ type: "subReply", id: subReplyId, commentId: commentId });
                               )}
                             </>
                           )}
-                          {user && user.id === subReply.user?.id && (
+                          {(user && user.id === subReply.user?.id) ||
+                          isAdmin ? (
                             <div className={styles.subReplyActions}>
                               <button
                                 onClick={() =>
@@ -1019,7 +1036,7 @@ setDeleteTarget({ type: "subReply", id: subReplyId, commentId: commentId });
                                 삭제
                               </button>
                             </div>
-                          )}
+                          ) : null}
                           <button
                             onClick={() => handleLike("subReply", subReply.id)}
                             className={`${styles.likeButton} ${
