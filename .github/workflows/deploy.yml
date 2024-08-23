@@ -1,0 +1,35 @@
+name: Deploy React App to S3
+
+on:
+  push:
+    branches:
+      - main  # main 브랜치에 푸시될 때 실행
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4  # 리포지토리 코드 체크아웃
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'  # Node.js 버전 지정
+
+      - name: Install Dependencies
+        run: npm install  # 의존성 설치
+
+      - name: Build React App
+        run: CI=false npm run build  # 프로덕션 빌드 생성
+
+      - name: Deploy to AWS S3
+        uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --delete  #  불필요한 파일 삭제
+        env:
+          AWS_S3_BUCKET: ${{ secrets.S3_BUCKET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          SOURCE_DIR: 'build'  # 빌드된 파일이 있는 디렉토리

@@ -215,30 +215,24 @@ const Home = () => {
         <MarqueeBanner className={styles.Banner} />
       </div>
       <div className={styles.adContainer}>
-        <div className={styles.adBox}>
           <img
             className={styles.ad}
             src={adImage1}
             onClick={() => handleNavigate("/hotel")}
             alt="메인2"
           />
-        </div>
-        <div className={styles.adBox}>
           <img
             className={styles.ad}
             src={adImage2}
             onClick={() => handleNavigate("/board")}
             alt="메인1"
           />
-        </div>
-        <div className={styles.adBox}>
           <img
             className={styles.ad}
             src={adImage3}
             onClick={() => handleNavigate("/treats")}
             alt="메인3"
           />
-        </div>
       </div>
     </>
   );
