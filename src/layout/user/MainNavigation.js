@@ -140,7 +140,7 @@ const MainNavigation = ({ drawerOpen, onToggleDrawer }) => {
             </NavLink>
           </div>
           <div className={styles.right}>
-            {user ? (
+            {userDetail ? (
                 <>
                   <div className={styles.welcome}>
                     Welcome {userDetail.nickname}

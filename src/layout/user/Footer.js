@@ -15,11 +15,11 @@ const Footer = () => {
                 <div className={styles.bottom}>
                     <div className={styles.innerWrap}>
                         <p>장소</p>
-                        <p>서울특별시 관악구 봉천로 305</p>
-                        <p>Melb</p>
-                        <p>VIC 3912</p>
+                        <p>서울특별시 관악구 봉천로 306</p>
+                        <p>Seoul</p>
+                        <p>08183</p>
                         <p className={styles.cursor}>Contact</p>
-                        <p>041)902-2067</p>
+                        <p>041) 493-2044</p>
                         <p className={styles.cursor}>puppycompany@naver.com</p>
                     </div>
                 </div>
