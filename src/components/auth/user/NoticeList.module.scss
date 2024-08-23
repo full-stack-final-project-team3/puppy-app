@@ -12,6 +12,25 @@
   top: 73px;
   right: 40px;
 
+
+  .modalTop {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px 5px;
+    border-bottom: 1px solid black;
+
+    .dashBoard {
+      color: #B37A7A;
+    }
+    .readAll {
+      cursor: pointer;
+    }
+    .readAll:hover {
+      text-decoration: underline;
+      font-weight: 500;
+    }
+  }
+
   .message {
     width: 93%;
     padding-top: 14px;
