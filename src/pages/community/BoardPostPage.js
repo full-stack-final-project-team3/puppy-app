@@ -15,7 +15,7 @@ const BoardPostPage = () => {
   const [labelColor, setLabelColor] = useState(styles.imageLabelInactive);
 
   const user = useSelector((state) => state.userEdit.userDetail);
-  console.log("👽user: " + user.email);
+  // console.log("👽user: " + user.email);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

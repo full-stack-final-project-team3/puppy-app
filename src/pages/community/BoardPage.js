@@ -50,8 +50,8 @@ const BoardPage = () => {
 
         const newPosts = await response.json();
 
-        console.log("새로운 게시글:", newPosts);
-        console.log("현재 게시글:", posts);
+        // console.log("새로운 게시글:", newPosts);
+        // console.log("현재 게시글:", posts);
 
         if (newPosts.length === 0) {
           setIsAllLoaded(true);
@@ -185,15 +185,15 @@ const BoardPage = () => {
   }, [searchTerm, handleSearch]);
 
   useEffect(() => {
-    console.log("posts 변경됨:", posts);
+    // console.log("posts 변경됨:", posts);
   }, [posts]);
 
   useEffect(() => {
-    console.log("filteredPosts 변경됨:", filteredPosts);
+    // console.log("filteredPosts 변경됨:", filteredPosts);
   }, [filteredPosts]);
   const displayPosts = searchTerm ? filteredPosts : posts;
 
-  console.log("🐶 게시글:", displayPosts);
+  // console.log("🐶 게시글:", displayPosts);
 
   return (
     <div className={styles.boardPageWrapper}>
