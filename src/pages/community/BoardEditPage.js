@@ -55,49 +55,72 @@ const BoardEditPage = () => {
     }
   };
 
-  const handleImageDelete = (imageUrl) => {
-    const updatedImages = currentImages.filter((img) => img !== imageUrl);
-    setCurrentImages(updatedImages);
-    setImagesToDelete((prev) => [...prev, imageUrl]);
-  };
+const handleImageDelete = async (imageUrl) => {
+  const updatedImages = currentImages.filter((img) => img !== imageUrl);
+  setCurrentImages(updatedImages);
+  setImagesToDelete((prev) => [...prev, imageUrl]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const formData = new FormData();
-
-    const dto = {
-      boardTitle: title,
-      boardContent: content,
-      user: { id: user.id },
-      imagesToDelete: imagesToDelete,
-    };
-
-    formData.append(
-      "dto",
-      new Blob([JSON.stringify(dto)], { type: "application/json" })
-    );
-
-    newFiles.forEach((file) => {
-      formData.append("newFiles", file);
-    });
-
-    try {
-      const userData = JSON.parse(localStorage.getItem("userData"));
-      const response = await fetch(`${BOARD_URL}/${id}`, {
-        method: "PUT",
+  // 서버에 삭제 요청 보내기
+  try {
+    const userData = JSON.parse(localStorage.getItem("userData"));
+    const response = await fetch(
+      `${BOARD_URL}/${id}/deleteImage?imageUrl=${encodeURIComponent(imageUrl)}`,
+      {
+        method: "DELETE",
         headers: {
           Authorization: `Bearer ${userData.token}`,
         },
-        body: formData,
-      });
+      }
+    );
 
-      if (!response.ok) throw new Error("Failed to update post");
+    if (!response.ok) throw new Error("Failed to delete image");
+  } catch (error) {
+    console.error("Error deleting image:", error);
+  }
+};
 
-      navigate(`/board/${id}`);
-    } catch (error) {
-      console.error("Error updating post:", error);
-    }
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  const formData = new FormData();
+
+  const dto = {
+    boardTitle: title,
+    boardContent: content,
+    user: { id: user.id },
+    imagesToDelete: imagesToDelete,
   };
+
+  formData.append(
+    "dto",
+    new Blob([JSON.stringify(dto)], { type: "application/json" })
+  );
+
+  newFiles.forEach((file) => {
+    formData.append("newFiles", file);
+  });
+
+  try {
+    const userData = JSON.parse(localStorage.getItem("userData"));
+    const response = await fetch(`${BOARD_URL}/${id}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${userData.token}`,
+      },
+      body: formData,
+    });
+
+    if (!response.ok) throw new Error("Failed to update post");
+
+    // 게시글 수정 후 남은 이미지를 업데이트
+    const updatedData = await response.json();
+    setCurrentImages(updatedData.images); // 서버에서 받은 남은 이미지들로 업데이트
+
+    navigate(`/board/${id}`);
+  } catch (error) {
+    console.error("Error updating post:", error);
+  }
+};
 
   return (
     <div className={styles.editPostPage}>

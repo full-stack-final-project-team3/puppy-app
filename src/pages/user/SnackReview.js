@@ -6,7 +6,7 @@ import { SHOP_URL, RESOURCES_URL } from "../../config/user/host-config";
 import WriteReviewPage from "../../pages/shop/review/WriteReviewPage";
 import EditReviewPage from "../../pages/shop/review/EditReviewPage";
 import TreatsDetailModal from "../../pages/shop/TreatsDetailModal";
-import Footer from '../../layout/user/Footer';
+import Footer from "../../layout/user/Footer";
 
 // Modal 스타일 설정
 Modal.setAppElement("#root");
@@ -70,17 +70,16 @@ const SnackReview = () => {
     setSelectedTreat({ treatId });
     setIsProductModalOpen(true);
 
-    const viewportHeight = window.innerHeight; // 현재 뷰포트의 높이
-    const scrollY = window.scrollY; // 현재 스크롤 위치
-    const modalHeight = 800; // 모달의 높이
-    const topPosition = scrollY + (viewportHeight - modalHeight) / 2; // 중앙 위치 계산
-    setModalPosition({ x: window.innerWidth / 2, y: topPosition }); // 좌우 중앙, 세로는 계산된 위치
+    setModalPosition({
+      x: window.innerWidth / 2,
+      y: window.innerHeight * 0.09,
+    });
   };
 
   const toggleTreatSelection = () => {
     return;
   };
-  
+
   const closeModal = () => {
     setIsReviewModalOpen(false);
     setIsEditModalOpen(false);
@@ -125,7 +124,9 @@ const SnackReview = () => {
                                   />
                                 </div>
                                 <a
-                                  onClick={() => openProductModal(treat.treatId)}
+                                  onClick={() =>
+                                    openProductModal(treat.treatId)
+                                  }
                                 >
                                   <p style={{ cursor: "pointer" }}>
                                     {treat.treatTitle}

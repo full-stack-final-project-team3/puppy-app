@@ -62,11 +62,11 @@ const HotelPage = () => {
     };
 
     const backgroundImages = [
-        // 'url(https://www.zooplus.co.uk/magazine/wp-content/uploads/2018/03/dachshund.jpg)', // Step 1
-        'url(https://example.com/image2.jpg)', // Step 2
-        'url(https://example.com/image3.jpg)', // Step 3
-        'url(https://example.com/image4.jpg)', // Step 4
-        'url(https://example.com/image5.jpg)'  // Step 5
+        'url(/hotelmain.png)', // Step 1
+        'url(/hotelmain.png)', // Step 2
+        'url(/hotelmain.png)', // Step 3
+        'url(/hotelmain.png)', // Step 4
+        'url(/hotelmain.png)'  // Step 5
     ];
 
     // 슬라이드 개수에 따라 sliderSettings를 동적으로 설정
@@ -252,8 +252,8 @@ const HotelPage = () => {
                     </div>
                 </CSSTransition>
             </TransitionGroup>
-            <button className={styles.back} onClick={handlePreviousStep}>&laquo;</button>
         </div>
+            <button className={styles.back} onClick={handlePreviousStep}>&laquo;</button>
         </>
     );
 };

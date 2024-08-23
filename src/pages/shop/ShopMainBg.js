@@ -11,7 +11,7 @@ const Slider = () => {
     { className: "slide5", text: "NO ARTIFICIAL FLAVORS" },
   ];
 
-  const slideCount = slides.length; 
+  const slideCount = slides.length;
   const duplicatedSlides = [
     ...slides,
     ...slides,
@@ -20,7 +20,7 @@ const Slider = () => {
     ...slides,
     ...slides,
     ...slides,
-  ]; 
+  ];
 
   return (
     <div className={styles.sliderContainer}>
@@ -40,11 +40,38 @@ const ShopMainBg = ({ content, manageShopBtn }) => {
   return (
     <>
       <div className={styles.mainSection}>
-        <div className={styles.imgSection}>
-          <div className={styles.manageShopBtn}>{manageShopBtn}</div>
+        <div className={styles.imgSection3Box}>
+          <div className={styles.processContainer1}>
+            <div className={styles.processContent1}>
+              <h2 className={styles.shopTitle1}>BETTER FOR YOUR DOG</h2>
+              <h4 className={styles.shopTitle2}>건강한 습관의 시작</h4>
+              <p className={styles.shopTitle3}>
+                Doggle은 건강한 프로젝트를 통해 반려동물과 함께하는 삶이 더욱
+                빛나길 기대합니다.
+              </p>
+              <div className={styles.content}>{content}</div>
+            </div>
+          </div>
+          <div className={styles.imgSection}>
+            <div className={styles.manageShopBtn}>{manageShopBtn}</div>{" "}
+          </div>
         </div>
         <Slider />
-        <div className={styles.imgSection2}></div>
+        <div className={styles.imgSection3Box}>
+          <div className={styles.processContainer2}>
+            <div className={styles.processContent1}>
+              <h2 className={styles.shop2Title1}>
+                MAKE<br></br> YOUR LIFE<br></br> EASIER
+              </h2>
+              <h4 className={styles.shop2Title2}>편안한 반려라이프</h4>
+              <p className={styles.shop2Title3}>
+                Doggle은 여러분과 반려동물의 편안하고 안락한 라이프를 위해 항상
+                고민합니다.
+              </p>
+            </div>
+          </div>
+          <div className={styles.imgSection2}></div>
+        </div>
         <div className={styles.midSection}>
           <div className={styles.featuresContainer}>
             <div className={styles.featureItem}>
@@ -55,7 +82,7 @@ const ShopMainBg = ({ content, manageShopBtn }) => {
                 PLAN
               </h2>
               <p className={styles.featureContent}>
-                강아지의 정보와 취향을 입력하면 강아지에 최적화된 펫 푸드를 매월
+                강아지의 정보와 취향을 입력하면 강아지에 <br></br>최적화된 펫 푸드를 매월
                 정기 배달합니다.
               </p>
             </div>
@@ -80,11 +107,11 @@ const ShopMainBg = ({ content, manageShopBtn }) => {
               <div className={styles.processStep}>
                 <span className={styles.stepNumber}>✔️</span>
                 <div className={styles.stepContent}>
-                  <h5>
+                  <h4 className={styles.processName}>
                     강아지 정보를 입력하기
                     <span className={styles.stepIcon1}></span>
-                  </h5>
-                  <p>
+                  </h4>
+                  <p className={styles.processP}>
                     몇 가지 간단한 질문을 통해 우리에게 강아지를 소개해주세요!
                   </p>
                 </div>
@@ -92,10 +119,10 @@ const ShopMainBg = ({ content, manageShopBtn }) => {
               <div className={styles.processStep}>
                 <span className={styles.stepNumber}>✔️</span>
                 <div className={styles.stepContent}>
-                  <h5>
+                  <h4 className={styles.processName}>
                     간식 고르기 <span className={styles.stepIcon2}></span>
-                  </h5>
-                  <p>
+                  </h4>
+                  <p className={styles.processP}>
                     강아지 정보를 분석하여 추천한 몇 가지 상품 중 원하는 걸
                     선택해주세요!
                   </p>
@@ -104,10 +131,10 @@ const ShopMainBg = ({ content, manageShopBtn }) => {
               <div className={styles.processStep}>
                 <span className={styles.stepNumber}>✔️</span>
                 <div className={styles.stepContent}>
-                  <h5>
+                  <h4 className={styles.processName}>
                     월 정기 배송<span className={styles.stepIcon3}></span>
-                  </h5>
-                  <p>선택한 정보를 바탕으로 강아지에게 매월 선물이 배송돼요!</p>
+                  </h4>
+                  <p className={styles.processP}>선택한 정보를 바탕으로 강아지에게 매월 선물이 배송돼요!</p>
                 </div>
               </div>
               <div className={styles.content}>{content}</div>
