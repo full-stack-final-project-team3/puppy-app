@@ -1,12 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import styles from './DogEdit.module.scss';
-import { useDispatch, useSelector } from "react-redux";
-import { userEditActions } from "../../store/user/UserEditSlice";
-import { dogEditActions } from "../../store/dog/DogEditSlice";
-import { DOG_URL } from "../../../config/user/host-config";
-import { useNavigate } from "react-router-dom";
-import { decideGender, decideSize, translateAllergy, translateBreed } from './dogUtil.js';
-import { LuBadgeX, LuPlusCircle } from "react-icons/lu";
+import {useDispatch, useSelector} from "react-redux";
+import {userEditActions} from "../../store/user/UserEditSlice";
+import {dogEditActions} from "../../store/dog/DogEditSlice";
+import {DOG_URL} from "../../../config/user/host-config";
+import {useNavigate} from "react-router-dom";
+import {decideGender, decideSize, translateAllergy, translateBreed} from './dogUtil.js';
+import {LuBadgeX, LuPlusCircle} from "react-icons/lu";
 import UserModal from "../user/mypage/UserModal";
 import DogEditSkeleton from "../user/mypage/DogEditSkeleton.js";
 
@@ -19,6 +19,7 @@ const DogEdit = () => {
     const [loading, setLoading] = useState(true);
     const [showAllergyDropdown, setShowAllergyDropdown] = useState(false);
     const [selectedAllergies, setSelectedAllergies] = useState([]); // 다중 선택 가능
+    const [fileErrorMessage, setFileErrorMessage] = useState(''); // 파일 에러 메시지 상태 추가
 
     const weightRef = useRef();
     const fileInputRef = useRef();
@@ -49,6 +50,14 @@ const DogEdit = () => {
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
+            const fileSizeInMB = file.size / (1024 * 1024);
+            if (fileSizeInMB > 3) { // 파일 크기가 3MB 이상인 경우
+                setFileErrorMessage(`파일의 용량이 ${fileSizeInMB.toFixed(2)}MB입니다. 3MB 이하로 설정해주세요.`);
+                return;
+            } else {
+                setFileErrorMessage(''); // 에러 메시지 초기화
+            }
+
             const reader = new FileReader();
             reader.onloadend = () => {
                 setDogProfileUrl(reader.result);
@@ -82,7 +91,8 @@ const DogEdit = () => {
                 dispatch(userEditActions.updateUserDetail({...userDetail, dogList: updatedDogList}));
                 dispatch(dogEditActions.updateDogInfo({...dog, allergies: newAllergyList}));
                 setModalText("알러지가 추가되었습니다!");
-                setPendingFunction(() => {});
+                setPendingFunction(() => {
+                });
                 setShowModal(true);
             } else {
                 console.error('알러지 추가 실패:', response.statusText);
@@ -117,11 +127,13 @@ const DogEdit = () => {
             dispatch(userEditActions.clearMode());
             dispatch(dogEditActions.clearEdit());
             setModalText("성공적으로 수정이 완료되었습니다.");
-            setPendingFunction(() => {});
+            setPendingFunction(() => {
+            });
             setShowModal(true);
         } else {
             setModalText("수정에 실패했습니다.");
-            setPendingFunction(() => {});
+            setPendingFunction(() => {
+            });
             setShowModal(true);
         }
     };
@@ -170,7 +182,8 @@ const DogEdit = () => {
                 dispatch(userEditActions.updateUserDetail({...userDetail, dogList: updatedDogList}));
                 dispatch(dogEditActions.updateDogInfo({...dog, allergies: updatedAllergies}));
                 setModalText("알러지가 삭제되었습니다!");
-                setPendingFunction(() => {});
+                setPendingFunction(() => {
+                });
                 setShowModal(true);
             } else {
                 console.error('알러지 삭제 실패:', response.statusText);
@@ -298,7 +311,13 @@ const DogEdit = () => {
                         style={{display: 'none'}}
                         onChange={handleFileChange}
                     />
+                {fileErrorMessage && (
+                    <p className={styles.fileErrorMessage}>
+                        {fileErrorMessage}
+                    </p>
+                )}
                 </div>
+
             </div>
 
             {showModal && (
