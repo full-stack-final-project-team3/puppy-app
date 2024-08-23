@@ -377,12 +377,7 @@ p {
   text-align: center;
   padding: 20px 0;
 }
-@media (max-width: 400px) {
-  .review_common_box{
-    padding: 10px;
-    max-width: 100%;
-  }
-}
+
 .riview_close{
   position: absolute;
   font-size: 50px;
@@ -392,16 +387,41 @@ p {
   cursor: pointer;
 }
 
-
 .review_common_box .button_container{
+  width: 70%;
   display: flex;
   justify-content: space-between;
+  margin: 0 auto;
+}
+.review_common_box .button_container > button {
+    width: 45%;
+}
+.review_common_box .button_container > button:first-child{
+  background-color: #999;
+}
+.review_common_box .button_container > button:first-child:hover{
+  background-color: #777;
 }
 .review_common_box .button_container .close_button {
+  width: auto;
+  padding: 0;
+  margin: -15px 0 0 0;
   background-color: transparent!important;
   color: #000!important;
   font-size: 50px!important;
-  padding: 0;
-    margin: -15px 0 0 0;
 }
 
+@media (max-width: 400px) {
+  .review_common_box{
+    padding: 10px;
+    max-width: 100%;
+  }
+  .review_common_box .button_container{
+    width: 90%;
+  }
+  .review_common_box .button_container > button {
+      width: 45%;
+      padding: 10px;
+      font-size: 16px;
+  }
+}

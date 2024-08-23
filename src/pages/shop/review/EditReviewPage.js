@@ -5,7 +5,7 @@ import Rating from '@mui/material/Rating';
 import styles from './Review.module.scss';
 import { REVIEW_URL } from "../../../config/user/host-config";
 
-const EditReviewPage = ({ reviewId, onClose }) => { //20240821: onClose prop 추가
+const EditReviewPage = ({ reviewId, onClose, onReviewDeleted }) => { // onReviewDeleted prop 추가
   const [reviewContent, setReviewContent] = useState('');
   const [rate, setRate] = useState(5);
   const [reviewPics, setReviewPics] = useState([]);
@@ -73,6 +73,27 @@ const EditReviewPage = ({ reviewId, onClose }) => { //20240821: onClose prop 추
     }
   };
 
+  const handleDelete = async () => {
+    try {
+      const response = await fetch(`${REVIEW_URL}/${reviewId}`, {
+        method: 'DELETE',
+        headers: {
+          'userId': user.id
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('리뷰 삭제에 실패했습니다.');
+      }
+
+      console.log('리뷰 삭제 성공');
+      onClose(); // 모달 닫기
+      onReviewDeleted(reviewId); // 삭제 후 상태 갱신을 위한 콜백 호출
+    } catch (error) {
+      console.error('리뷰 삭제 오류:', error);
+    }
+  };
+
   return (
     <>
       <div className={`${styles.review_common_box} ${styles.review_editor_box}`}>
@@ -114,10 +135,11 @@ const EditReviewPage = ({ reviewId, onClose }) => { //20240821: onClose prop 추
               />
             ))}
           </div>
-          
-          <div className={styles.button_container}> {/* 20240821: 버튼을 감싸는 div 추가 */}
+
+          <div className={styles.button_container}> {/* 버튼을 감싸는 div 추가 */}
+            <button type="submit" onClick={handleDelete} className={styles.delete_button}>삭제하기</button>
             <button type="submit" className={styles.submit_button}>수정하기</button>
-            <button type="button" className={styles.close_button} onClick={onClose}>×</button> {/* 20240821: 닫기 버튼 추가 */}
+            <button type="button" className={styles.close_button} onClick={onClose}>×</button> {/* 닫기 버튼 */}
           </div>
         </form>
       </div>
