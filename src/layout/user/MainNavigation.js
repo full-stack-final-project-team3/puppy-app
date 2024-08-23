@@ -20,7 +20,6 @@ const MainNavigation = ({ drawerOpen, onToggleDrawer }) => {
   const userData = useRouteLoaderData("user-data");
   const noticeList = useSelector((state) => state.userEdit.userNotice);
   const userDetail = useSelector((state) => state.userEdit.userDetail);
-  console.log(userDetail === {})
 
   const dispatch = useDispatch();
 
