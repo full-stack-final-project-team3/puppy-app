@@ -20,6 +20,7 @@ const MainNavigation = ({ drawerOpen, onToggleDrawer }) => {
   const userData = useRouteLoaderData("user-data");
   const noticeList = useSelector((state) => state.userEdit.userNotice);
   const userDetail = useSelector((state) => state.userEdit.userDetail);
+  console.log(userDetail === {})
 
   const dispatch = useDispatch();
 
@@ -140,7 +141,7 @@ const MainNavigation = ({ drawerOpen, onToggleDrawer }) => {
             </NavLink>
           </div>
           <div className={styles.right}>
-            {userDetail ? (
+            {userDetail.id ? (
                 <>
                   <div className={styles.welcome}>
                     Welcome {userDetail.nickname}
