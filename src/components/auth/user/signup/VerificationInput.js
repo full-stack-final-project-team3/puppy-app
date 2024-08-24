@@ -114,7 +114,6 @@ const VerificationInput = ({ email, onSuccess }) => {
                 maxLength={1}
                 onChange={(e) => changeHandler(index + 1, e.target.value)}
                 value={codes[index]}
-                onKeyDown={checkCodeWithDebounce}
             />
         ))}
         <div className={styles.timer}>
