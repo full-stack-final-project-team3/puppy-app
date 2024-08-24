@@ -77,7 +77,7 @@ const MainNavigation = ({ drawerOpen, onToggleDrawer }) => {
     localStorage.removeItem("userDetail");
     const currentUrl = window.location.href;
     if (currentUrl !== "http://localhost:3000/") {
-      window.location.href = "http://localhost:3000/";
+      window.location.href = "http://doggle.kr:3000/";
     } else {
       window.location.reload();
     }
