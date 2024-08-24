@@ -30,13 +30,23 @@ const RootLayout = () => {
     const userDetail = useSelector(state => state.userEdit.userDetail);
     console.log(userDetail.autoLogin)
 
-    window.addEventListener('beforeunload', function () {
-        if (!userDetail.autoLogin) {
-            console.log("check")
-            localStorage.removeItem('userData');
-            localStorage.removeItem('userDetail');
-        }
-    });
+    useEffect(() => {
+        const handleBeforeUnload = (event) => {
+            if (!userDetail.autoLogin) {
+                localStorage.removeItem('userData');
+                localStorage.removeItem('userDetail');
+            }
+        };
+
+        // 이벤트 리스너 등록
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        // 컴포넌트가 언마운트되거나 userDetail.autoLogin 값이 변경될 때 이전 리스너 제거
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, [userDetail.autoLogin]); // userDetail.autoLogin이 변경될 때마다 useEffect 재실행
+
 
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [fullHeight, setFullHeight] = useState(false); // 관리되는 상태

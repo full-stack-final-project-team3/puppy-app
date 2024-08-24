@@ -90,10 +90,10 @@ export const router = createBrowserRouter([
         element: <Home />,
         children: homeRouter,
       },
-      {
-        path: "logout",
-        action: <Logout/>,
-      },
+      // {
+      //   path: "logout",
+      //   action: <Logout/>,
+      // },
       {
         path: "hotel",
         element: <HotelPage />,
