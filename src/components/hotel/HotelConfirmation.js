@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {useSelector, useDispatch} from 'react-redux';
 import styles from './HotelConfirmation.module.scss';
 import {useNavigate} from 'react-router-dom';
-import {submitReservation} from '../store/hotel/ReservationSlice';
+import {submitReservation, submitReservationWithKakaoPay} from '../store/hotel/ReservationSlice';
 import dayjs from "dayjs";
 import {userEditActions} from '../store/user/UserEditSlice';
 import HotelModal from '../hotel/HotelModal';
@@ -32,6 +32,32 @@ const HotelConfirmation = ({
     const [modalMessage, setModalMessage] = useState('');
     const [isConfirmStep, setIsConfirmStep] = useState(true);
 
+    const handleKakaoPayReady = () => {
+        // Redux dispatch로 submitReservationWithKakaoPay 호출
+        dispatch(submitReservationWithKakaoPay({
+            hotelId: hotel['hotel-id'],
+            roomId: selectedRoom['room-id'],
+            startDate: startDate,
+            endDate: endDate,
+            userId: user.id,
+            totalPrice: totalPrice,
+            user: user,
+            email: user.email,
+            token: token,
+            createdAt: dayjs().utc().format(),
+            hotelName: hotel['hotel-name']
+        }))
+        .then(() => {
+            console.log("카카오페이 결제가 완료되었습니다.");
+        })
+        .catch((error) => {
+            console.error("카카오페이 결제 준비 실패:", error);
+            setModalMessage("결제 준비 중 오류가 발생했습니다.");
+            setShowModal(true);
+        });
+    };
+    
+    
     const handleConfirmBooking = () => {
         if (!user) {
             setModalMessage("사용자 정보가 없습니다.");
@@ -44,6 +70,15 @@ const HotelConfirmation = ({
             setShowModal(true);
             navigate('/login');
             return;
+        }
+
+        if (remainingPrice === 0) {
+            setModalMessage("예약을 진행하시겠습니까?");
+            setShowModal(true);
+            console.log('포인트 결제로 진행');
+        } else {
+            console.log('카카오페이 결제 진행');
+            handleKakaoPayReady();
         }
 
         setModalMessage("예약을 진행하시겠습니까?");
@@ -120,10 +155,14 @@ const HotelConfirmation = ({
     const handlePaymentMethodClick = (method) => {
         if (method === 'point') {
             setShowPointPayment(!showPointPayment);
+        } else if (method === 'kakaoPay') {
+            handleKakaoPayReady();
         } else {
             alert('추후 업데이트 예정입니다.');
         }
     };
+
+    
 
     const isConfirmButtonDisabled = remainingPrice !== 0;
 
@@ -165,7 +204,11 @@ const HotelConfirmation = ({
                     <button className={styles.paymentButton}
                             onClick={() => handlePaymentMethodClick('accountTransfer')}>계좌이체
                     </button>
-                    <button className={styles.paymentButton} onClick={() => handlePaymentMethodClick('point')}>포인트
+                    <button className={styles.paymentButton} 
+                            onClick={() => handlePaymentMethodClick('kakaoPay')}>카카오페이
+                    </button>
+                    <button className={styles.paymentButton} 
+                            onClick={() => handlePaymentMethodClick('point')}>포인트
                     </button>
                 </div>
 
