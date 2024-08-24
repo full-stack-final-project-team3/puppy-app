@@ -227,10 +227,10 @@ const SignUpPage = () => {
                   <div className={styles.btnBox}>
                     <button
                       type="submit"
-                      className={`${step3Button ? styles.active : styles.button}`}
+                      className={`${step3Button ? styles.plusActive : styles.plusBtn}`}
                       disabled={!step3Button}
                       onClick={() => nextStep()}
-                    >추가정보 등록 완료</button>
+                    >등록 완료</button>
                   </div>
                 </div>
               )}
