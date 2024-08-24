@@ -28,6 +28,7 @@ const UserEdit = () => {
     const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
     const [loading, setLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [fileErrorMessage, setFileErrorMessage] = useState(''); // 파일 에러 메시지 상태 추가
 
     const [showModal, setShowModal] = useState(false);
     const [modalText, setModalText] = useState('');
@@ -125,6 +126,15 @@ const UserEdit = () => {
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
+            const fileSizeInMB = file.size / (1024 * 1024); // 파일 크기를 MB 단위로 변환
+            if (fileSizeInMB > 3) { // 파일 크기가 3MB 이상인 경우
+                setFileErrorMessage(`파일의 용량이 ${fileSizeInMB.toFixed(2)}MB입니다. 3MB 이하로 설정해주세요.`);
+                setIsSubmitDisabled(true); // 제출 버튼 비활성화
+                return;
+            } else {
+                setFileErrorMessage(''); // 에러 메시지 초기화
+            }
+
             const reader = new FileReader();
             reader.onloadend = () => {
                 setProfileUrl(reader.result);
@@ -208,6 +218,11 @@ const UserEdit = () => {
                     onChange={handleFileChange}
                 />
             </div>
+                {fileErrorMessage && (
+                    <p className={styles.fileErrorMessage}>
+                        {fileErrorMessage}
+                    </p>
+                )}
             <div className={styles.form}>
                 <div className={styles.section}>
                     <label htmlFor="email">이메일</label>

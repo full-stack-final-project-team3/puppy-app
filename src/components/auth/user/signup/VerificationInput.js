@@ -17,12 +17,10 @@ const VerificationInput = ({ email, onSuccess }) => {
     }
   };
 
-  // Debounced function to verify code
   const debouncedVerifyCode = debounce(async (code) => {
     await verifyCode(code);
   }, 1500);
 
-  // Function to verify code
   const verifyCode = async (code) => {
     try {
       const response = await fetch(
@@ -31,12 +29,12 @@ const VerificationInput = ({ email, onSuccess }) => {
       const flag = await response.json();
 
       if (!flag) {
-        setError("유효하지 않거나 만료된 코드입니다 인증코드를 재발송합니다");
+        setError("유효하지 않거나 만료된 코드입니다. 인증코드를 재발송합니다.");
         setCodes(Array(4).fill(""));
         setTimer(300);
         inputsRef.current[0].focus();
       } else {
-        setSuccess("인증이 완료되었습니다");
+        setSuccess("인증이 완료되었습니다.");
         setError('');
         setTimeout(() => {
           onSuccess();
@@ -45,6 +43,35 @@ const VerificationInput = ({ email, onSuccess }) => {
     } catch (err) {
       console.error("Verification failed", err);
       setError("서버와의 통신에 실패했습니다. 다시 시도해주세요.");
+    }
+  };
+
+  const checkCodeWithDebounce = async (e) => {
+    const code = codes.join("");
+
+    if (e.key === "Enter" && code.length === 4) {
+      try {
+        console.log("enter touch")
+        const response = await fetch(
+            `${AUTH_URL}/code?email=${email}&code=${code}`
+        );
+        const flag = await response.json();
+
+        if (!flag) {
+          setError("유효하지 않거나 만료된 코드입니다. 인증코드를 재발송합니다.");
+          setCodes(Array(4).fill(""));
+          // setTimer(300);
+          inputsRef.current[0].focus();
+        } else {
+          setSuccess("인증이 완료되었습니다.");
+          setError('');
+          onSuccess();
+        }
+      } catch (err) {
+        console.error("Verification failed", err);
+        setError("서버와의 통신에 실패했습니다. 다시 시도해주세요.");
+      }
+
     }
   };
 
@@ -59,9 +86,7 @@ const VerificationInput = ({ email, onSuccess }) => {
     }
 
     if (updatedCodes.every((code) => code !== "")) {
-
-      debouncedVerifyCode.cancel();
-      verifyCode(updatedCodes.join(""));
+      debouncedVerifyCode(updatedCodes.join(""));
     }
   };
 
@@ -89,6 +114,7 @@ const VerificationInput = ({ email, onSuccess }) => {
                 maxLength={1}
                 onChange={(e) => changeHandler(index + 1, e.target.value)}
                 value={codes[index]}
+                onKeyDown={checkCodeWithDebounce}
             />
         ))}
         <div className={styles.timer}>

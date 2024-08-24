@@ -31,7 +31,6 @@ const ErrorPage = () => {
                     </div>
                 </div>
             </div>
-            아직 디자인 안함 - 기범
         </>
     );
 };
