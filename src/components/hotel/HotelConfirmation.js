@@ -1,21 +1,23 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import styles from './HotelConfirmation.module.scss';
-import { useNavigate } from 'react-router-dom';
-import { submitReservation } from '../store/hotel/ReservationSlice';
+import {useNavigate} from 'react-router-dom';
+import {submitReservation} from '../store/hotel/ReservationSlice';
 import dayjs from "dayjs";
-import { userEditActions } from '../store/user/UserEditSlice'
+import {userEditActions} from '../store/user/UserEditSlice';
 import HotelModal from '../hotel/HotelModal';
 import Footer from '../../layout/user/Footer';
+import {resetHotels, setStep} from '../store/hotel/HotelPageSlice';
+import {resetReservation} from '../store/hotel/ReservationSlice';
 
 const HotelConfirmation = ({
                                hotel,
-                               selectedRoom = { name: 'Default Room Name' },
+                               selectedRoom = {name: 'Default Room Name'},
                                startDate,
                                endDate,
                                totalPrice,
-                               user = { realName: 'Guest', point: 0 }
+                               user = {realName: 'Guest', point: 0}
                            }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -28,7 +30,7 @@ const HotelConfirmation = ({
 
     const [showModal, setShowModal] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
-    const [isConfirmStep, setIsConfirmStep] = useState(true); // 새로운 상태 추가
+    const [isConfirmStep, setIsConfirmStep] = useState(true);
 
     const handleConfirmBooking = () => {
         if (!user) {
@@ -40,7 +42,7 @@ const HotelConfirmation = ({
         if (!token) {
             setModalMessage("로그인이 필요합니다.");
             setShowModal(true);
-            navigate('/login'); // 로그인 페이지로 이동
+            navigate('/login');
             return;
         }
 
@@ -65,15 +67,30 @@ const HotelConfirmation = ({
             .unwrap()
             .then((response) => {
                 setModalMessage("예약이 완료되었습니다.");
-                setIsConfirmStep(false); // 상태를 변경하여 확인 버튼만 표시되도록 함
+                setIsConfirmStep(false);
+                setShowModal(true); // 예약 완료 후 모달을 표시
                 const deletedPoint = user.point - totalPrice;
-                dispatch(userEditActions.updateUserDetail({ ...user, point: deletedPoint }));
+                dispatch(userEditActions.updateUserDetail({...user, point: deletedPoint}));
             })
             .catch((error) => {
                 console.error('Reservation failed:', error);
                 setModalMessage("포인트가 부족합니다..");
-                setIsConfirmStep(false); // 상태를 변경하여 확인 버튼만 표시되도록 함
+                setIsConfirmStep(false);
+                setShowModal(true); // 예약 실패 시에도 모달을 표시
             });
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+        if (!isConfirmStep) {
+            // 상태 초기화
+            dispatch(resetHotels());
+            dispatch(resetReservation());
+            dispatch(setStep(1));
+
+            // 예약 확인 페이지로 이동
+            navigate('/hotel', {replace: true});
+        }
     };
 
     const handleUseAllPoints = () => {
@@ -92,7 +109,7 @@ const HotelConfirmation = ({
 
     const formatDate = (dateStr) => {
         const date = new Date(dateStr);
-        const options = { weekday: 'short', year: 'numeric', month: '2-digit', day: '2-digit' };
+        const options = {weekday: 'short', year: 'numeric', month: '2-digit', day: '2-digit'};
         return date.toLocaleDateString('en-US', options).replace(',', '').replace(/\//g, ' / ');
     };
 
@@ -105,13 +122,6 @@ const HotelConfirmation = ({
             setShowPointPayment(!showPointPayment);
         } else {
             alert('추후 업데이트 예정입니다.');
-        }
-    };
-
-    const handleCloseModal = () => {
-        setShowModal(false);
-        if (!isConfirmStep) {
-            window.location.reload(); // 예약 완료 후 새로고침
         }
     };
 
@@ -144,11 +154,19 @@ const HotelConfirmation = ({
 
                 <div className={styles.paymentMethods}>
                     <h3 className={styles.sectionTitle}>결제수단</h3>
-                    <button className={styles.paymentButton} onClick={() => handlePaymentMethodClick('bank')}>무통장입금</button>
-                    <button className={styles.paymentButton} onClick={() => handlePaymentMethodClick('creditCard')}>신용카드</button>
-                    <button className={styles.paymentButton} onClick={() => handlePaymentMethodClick('virtualAccount')}>가상계좌</button>
-                    <button className={styles.paymentButton} onClick={() => handlePaymentMethodClick('accountTransfer')}>계좌이체</button>
-                    <button className={styles.paymentButton} onClick={() => handlePaymentMethodClick('point')}>포인트</button>
+                    <button className={styles.paymentButton} onClick={() => handlePaymentMethodClick('bank')}>무통장입금
+                    </button>
+                    <button className={styles.paymentButton}
+                            onClick={() => handlePaymentMethodClick('creditCard')}>신용카드
+                    </button>
+                    <button className={styles.paymentButton}
+                            onClick={() => handlePaymentMethodClick('virtualAccount')}>가상계좌
+                    </button>
+                    <button className={styles.paymentButton}
+                            onClick={() => handlePaymentMethodClick('accountTransfer')}>계좌이체
+                    </button>
+                    <button className={styles.paymentButton} onClick={() => handlePaymentMethodClick('point')}>포인트
+                    </button>
                 </div>
 
                 {showPointPayment && (
@@ -181,13 +199,12 @@ const HotelConfirmation = ({
                         message={modalMessage}
                         onConfirm={isConfirmStep ? handleReservation : handleCloseModal}
                         onClose={handleCloseModal}
-                        confirmButtonText={isConfirmStep ? "예" : "확인"} // 버튼 텍스트 변경
-                        showCloseButton={isConfirmStep} // 확인 단계에서는 닫기 버튼을 표시
+                        confirmButtonText={isConfirmStep ? "예" : "확인"}
+                        showCloseButton={isConfirmStep}
                     />
-                )}    
+                )}
             </div>
-            {/* Footer 추가 */}
-            <Footer />
+            <Footer/>
         </>
     );
 };

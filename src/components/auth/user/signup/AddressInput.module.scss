@@ -37,3 +37,17 @@
   border-radius: 50px;
   cursor: pointer;
 }
+
+@media screen and (max-width: 400px) {
+  .localInput {
+    width: 63%;
+  }
+
+  .detailInput {
+    width: 95%;
+  }
+
+  .addressBtn {
+    font-size: 13px;
+  }
+}

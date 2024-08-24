@@ -20,3 +20,11 @@
 .timer {
   margin-top: 10px;
 }
+
+@media screen and (max-width: 400px) {
+  .codeInput {
+    width: 35px;
+    height: 35px;
+    font-size: 20px;
+  }
+}
