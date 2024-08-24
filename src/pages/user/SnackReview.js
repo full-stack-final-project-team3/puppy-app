@@ -27,34 +27,33 @@ const SnackReview = () => {
   const [visibleCount, setVisibleCount] = useState(1); // 보여지는 .card의 수를 관리하는 상태
   const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 });
 
-  // 페이지가 로드될 때 스크롤을 맨 위로 이동
   useEffect(() => {
-    window.scrollTo(0, 0); // 20240821: 페이지가 로드될 때 스크롤을 맨 위로 이동
+    window.scrollTo(0, 0); // 페이지가 로드될 때 스크롤을 맨 위로 이동
   }, []);
 
   useEffect(() => {
-    const fetchOrderHistory = async () => {
-      try {
-        const response = await fetch(`${SHOP_URL}/orders/user/${user.id}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error("주문 내역을 가져오지 못했습니다.");
-        }
-
-        const data = await response.json();
-        setOrderHistory(data);
-      } catch (error) {
-        console.error("주문 내역을 가져오지 못했습니다:", error);
-      }
-    };
-
     fetchOrderHistory();
   }, [user.id]);
+
+  const fetchOrderHistory = async () => {
+    try {
+      const response = await fetch(`${SHOP_URL}/orders/user/${user.id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("주문 내역을 가져오지 못했습니다.");
+      }
+
+      const data = await response.json();
+      setOrderHistory(data);
+    } catch (error) {
+      console.error("주문 내역을 가져오지 못했습니다:", error);
+    }
+  };
 
   const openReviewModal = (orderId, treatId, dogId, treatTitle) => {
     setSelectedTreat({ orderId, treatId, dogId, treatTitle });
@@ -84,6 +83,25 @@ const SnackReview = () => {
     setIsReviewModalOpen(false);
     setIsEditModalOpen(false);
     setIsProductModalOpen(false);
+  };
+
+  const handleReviewDeleted = (deletedReviewId) => {
+    // 리뷰 삭제 시 해당 리뷰의 reviewId를 사용하여 상태를 갱신
+    const updatedOrderHistory = orderHistory.map((order) => {
+      return {
+        ...order,
+        bundles: order.bundles.map((bundle) => ({
+          ...bundle,
+          treats: bundle.treats.map((treat) =>
+            treat.reviewId === deletedReviewId
+              ? { ...treat, reviewId: null }
+              : treat
+          ),
+        })),
+      };
+    });
+
+    setOrderHistory(updatedOrderHistory);
   };
 
   const showMoreCards = () => {
@@ -189,7 +207,7 @@ const SnackReview = () => {
             treatId={selectedTreat.treatId}
             dogId={selectedTreat.dogId}
             treatTitle={selectedTreat.treatTitle}
-            onClose={closeModal} // 20240821: closeModal 함수를 onClose로 전달
+            onClose={closeModal} // closeModal 함수를 onClose로 전달
           />
         </Modal>
 
@@ -205,7 +223,8 @@ const SnackReview = () => {
             orderId={selectedTreat.orderId}
             treatId={selectedTreat.treatId}
             treatTitle={selectedTreat.treatTitle}
-            onClose={closeModal} // 20240821: closeModal 함수를 onClose로 전달
+            onClose={closeModal} // closeModal 함수를 onClose로 전달
+            onReviewDeleted={handleReviewDeleted} // 리뷰 삭제 후 상태 갱신
           />
         </Modal>
 
