@@ -179,6 +179,9 @@ const SignUpPage = () => {
     changeIsLogin(true);
     navigate("/add-dog");
   };
+  useEffect(() => {
+    console.log(step)
+  }, [step]);
 
   return (
     <>
