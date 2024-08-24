@@ -166,7 +166,7 @@ const MainNavigation = ({ drawerOpen, onToggleDrawer }) => {
             ) : (
                 <>
                   <NavLink className={styles.login} to="/login">
-                    로그인!
+                    Login
                   </NavLink>
                   <BiUser onClick={loginHandler} className={`${styles.icon} ${styles.user}`} />
                   <GiHamburgerMenu
