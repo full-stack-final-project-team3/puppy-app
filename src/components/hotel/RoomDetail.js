@@ -109,7 +109,7 @@ const RoomDetail = ({hotel, onBook, getSliderSettings, onModifyRoom}) => {
             <div className={styles.roomDetail}>
                 {availableRooms.length === 0 ? (
                     <div className={styles.noRoomsMessage}>
-                        <p>예약 가능한 객실이 없습니다!</p>
+                        <p>해당 날짜에 예약이 다 차있습니다!</p>
                         <img src="/pawpaw.png" alt="No results found" className={styles.noRoomImage}/>
                     </div>
                 ) : (

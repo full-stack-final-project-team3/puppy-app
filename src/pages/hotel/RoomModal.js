@@ -67,6 +67,7 @@ const RoomModal = ({ hotelId, onClose, onRoomAdded, backHandler }) => {
 
     const handleCloseConfirm = () => {
         setShowConfirm(false);  // 확인 창 숨기기
+        onClose();
     };
 
     return (
@@ -126,8 +127,8 @@ const RoomModal = ({ hotelId, onClose, onRoomAdded, backHandler }) => {
                 {roomData.errorMessage && <p className={styles.error}>{roomData.errorMessage}</p>}
             </form>
             {showConfirm && (
-                <div className="confirmBackdrop">
-                    <div className="confirmDialog">
+                <div className={styles.confirmBackdrop}>
+                    <div className={styles.confirmDialog}>
                         <p>추가 객실을 더 생성하시겠습니까?</p>
                         <button onClick={handleAddAnotherRoom}>예</button>
                         <button onClick={handleCloseConfirm}>아니요</button>
