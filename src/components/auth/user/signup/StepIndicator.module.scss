@@ -4,40 +4,47 @@
   width: 100%;
   background: #F4E8D3;
   align-items: center;
+  margin-bottom: 40px;
   
   .stepContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100px;
-    text-align: center;
+    width: 100px; /* 고정 너비 설정 */
+    text-align: center; /* 텍스트 중앙 정렬 */
   }
 
   .stepNumber {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+    margin-left: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    text-align: center;
-    background: none;
-    border: 2px solid lightgray;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
+    background-color: lightgray;
     color: white;
-    position: relative;
-    pointer-events: none;
+    cursor: default;
 
-    &.active {
-      background-color: #B3797A;
-      height: 30px;
-      width: 30px;
+    &.active,
+    &.completed {
+      background-color: #B37A7A;
+      color: #FFFFF0;
+    }
+
+    &:not(.active):not(.completed) {
+      background-color: transparent;
+      border: 2px solid lightgray;
+      width: 20px;
+      height: 20px;
     }
   }
   .stepLabel {
-    position: absolute;
-    font-size: 12px;
-    color: black;
-    margin-top: 36px;
+    color: #333;
+    position: relative;
+    top: 5px;
+    font-size: 13px;
   }
 
   .stepLine {
