@@ -5,6 +5,7 @@ import Drawer from './Drawer';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import Footer from "./Footer";
+import {useSelector} from "react-redux";
 
 // Container 컴포넌트가 fullHeight prop을 DOM 요소에 전달하지 않도록 설정
 const Container = styled(motion.div).withConfig({
@@ -25,6 +26,18 @@ const MainContent = styled.main`
 `;
 
 const RootLayout = () => {
+
+    const userDetail = useSelector(state => state.userEdit.userDetail);
+    console.log(userDetail.autoLogin)
+
+    window.addEventListener('beforeunload', function () {
+        if (!userDetail.autoLogin) {
+            console.log("check")
+            localStorage.removeItem('userData');
+            localStorage.removeItem('userDetail');
+        }
+    });
+
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [fullHeight, setFullHeight] = useState(false); // 관리되는 상태
 
