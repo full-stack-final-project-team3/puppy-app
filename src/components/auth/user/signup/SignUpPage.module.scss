@@ -32,6 +32,9 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   background-color: #F4E8D3;
   padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   > h1, h2 {
     text-align: center;
@@ -99,13 +102,13 @@
   background-color: #B37A7A;
   color: #FFFFF0;
   border: none;
-  width: 70%;
+  width: 45%;
   padding: 10px;
   margin: 5px 0;
   border-radius: 5px;
-  cursor: not-allowed;
   font-size: 16px;
   font-weight: bold;
+  cursor: not-allowed;
 
   &:hover {
     background-color: #9A5A5A;
@@ -116,40 +119,59 @@
   background-color: #B37A7A;
   color: #FFFFF0;
   border: none;
-  width: 40%;
-  padding: 15px;
+  width: 45%;
+  padding: 10px;
   margin: 5px 0;
   border-radius: 5px;
-  cursor: pointer;
   font-size: 16px;
   font-weight: bold;
+  cursor: pointer;
 
   &:hover {
     background-color: #9A5A5A;
   }
 }
 
-.signUpBtn {
-  transition: background-color 0.3s ease;
-  width: 30%;
-  padding: 15px;
+.plusBtn {
+  background-color: #B37A7A;
+  color: #FFFFF0;
+  border: none;
+  width: 100%;
+  padding: 10px;
   margin: 5px 0;
-  border: 1px solid #ccc;
-  border-radius: 50px;
-  text-align: center;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: not-allowed;
+
+  &:hover {
+    background-color: #9A5A5A;
+  }
+}
+
+.plusActive {
+  background-color: #B37A7A;
+  color: #FFFFF0;
+  border: none;
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
   cursor: pointer;
 
   &:hover {
-    background-color: #004494;
+    background-color: #9A5A5A;
   }
 }
 
 .codeInput {
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   border: 2px solid #ccc;
   text-align: center;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: bold;
   outline: none;
 
@@ -165,4 +187,19 @@
 
 .timer {
   margin-top: 10px;
+}
+
+@media screen and (max-width: 400px) {
+  .input {
+    width: 85%;
+  }
+
+  // .button, .active {
+  //   width: 45%;
+  //   font-size: 15px;
+  // }
+
+  .successMessage, .errorMessage {
+    font-size: 12px;
+  }
 }
