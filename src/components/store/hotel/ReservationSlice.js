@@ -27,8 +27,11 @@ export const fetchAvailableRooms = createAsyncThunk(
     'reservation/fetchAvailableRooms',
     async ({city, startDate, endDate}, thunkAPI) => {
         // 시간대를 KST로 설정하여 처리
-        const formattedStartDate = dayjs(startDate).tz('Asia/Seoul').format();
-        const formattedEndDate = dayjs(endDate).tz('Asia/Seoul').format();
+        const formattedStartDate = dayjs(startDate).tz('Asia/Seoul').hour(14).minute(0).second(0).format('YYYY-MM-DDTHH:mm:ss');
+        const formattedEndDate = dayjs(endDate).tz('Asia/Seoul').hour(11).minute(0).second(0).format('YYYY-MM-DDTHH:mm:ss');
+
+        console.log("start",formattedStartDate);
+        console.log("end", formattedEndDate);
 
         const response = await fetch(`${ROOM_URL}/available?hotelId=${city}&reservationAt=${encodeURIComponent(formattedStartDate)}&reservationEndAt=${encodeURIComponent(formattedEndDate)}`);
         if (!response.ok) {
@@ -236,6 +239,18 @@ const reservationSlice = createSlice({
         setTotalPrice(state, action) {
             state.totalPrice = action.payload;
         },
+        resetReservation(state) {
+            state.selectedCity = '';
+            state.startDate = null;
+            state.endDate = null;
+            state.personCount = 1;
+            state.showWarning = false;
+            state.totalPrice = 0;
+            state.availableRooms = [];
+            state.reservation = null;
+            state.status = 'idle';
+            state.error = null;
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -294,6 +309,7 @@ export const {
     setShowWarning,
     setPersonCount,
     setTotalPrice,
+    resetReservation,
 } = reservationSlice.actions;
 
 export default reservationSlice.reducer;

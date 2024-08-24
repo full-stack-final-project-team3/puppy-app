@@ -221,7 +221,7 @@ const HotelPage = () => {
                                 <h1 className={styles.selectedDate}>Selected date</h1>
                                 <button
                                     className={styles.dateButton}
-                                    onClick={() => handleStepClick(2)}
+                                    onClick={() => handleStepClick(3)}
                                 >
                                     {`${formatDate(startDate)} - ${formatDate(endDate)}`}
                                 </button>

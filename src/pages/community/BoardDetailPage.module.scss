@@ -196,10 +196,13 @@
 
 .postContent {
     font-size: 1.1rem;
-    line-height: 1.6;
     color: #333;
     margin-bottom: 20px;
     padding: 0 20px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+        
+    line-height: 1.5;
 }
 
 .shareButtonContainer {
