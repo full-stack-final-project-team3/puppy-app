@@ -32,7 +32,6 @@ const ShowCart = () => {
       const data = await response.json();
       setCart(data);
       window.scrollTo(0, 0); // 페이지의 맨 위로 스크롤
-      console.log("cart: ", data);
     } catch (error) {
       setError(error.message);
     } finally {

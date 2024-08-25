@@ -71,7 +71,6 @@ const CartContent = ({
         },
       });
 
-      console.log("업데이트 완료");
     } catch (error) {
       console.error("오류 발생:", error);
     }

@@ -29,7 +29,6 @@ const EditTreat = ({}) => {
       try {
         const response = await fetch(`${TREATS_URL}/${id}`);
         const data = await response.json();
-        console.log(data);
         setTitle(data.title);
         setTreatsType(data.treatsType);
         setTreatsWeight(data.weight);

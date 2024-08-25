@@ -85,8 +85,6 @@ const AddTreats = () => {
         body: formData,
       });
 
-      console.log("Response status:", response.status);
-
       if (!response.ok) {
         const errorMessage = await response.json();
         throw new Error(`서버 응답이 올바르지 않습니다: ${errorMessage}`);

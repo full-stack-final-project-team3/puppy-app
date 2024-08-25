@@ -61,8 +61,6 @@ const CreateBundle = ({ selectedTreats, dogId }) => {
         throw new Error("장바구니 생성 실패");
       }
 
-      // 장바구니 생성 성공 시 처리
-      console.log("장바구니 생성 성공");
     } catch (error) {
       alert(error.message);
     }

@@ -13,8 +13,6 @@ const Modal = ({
 
   if (!isOpen) return null;
 
-  console.info("TreatsDetailModal: " + treatsId);
-
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
       <div
