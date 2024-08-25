@@ -46,9 +46,9 @@ const OrderPage = () => {
     const remaining = user.point - totalPrice;
     setRemainingPoints(remaining);
     setFinalPrice(totalPrice);
-    console.log("user: " + user);
-    console.log(user);
-    console.log(orderInfo);
+    //console.log("user: " + user);
+    //console.log(user);
+    //console.log(orderInfo);
   }, [user.point, totalPrice]);
 
   const handlePhoneNumberChange = (event) => {
@@ -205,7 +205,7 @@ const OrderPage = () => {
       orderDate: new Date().toLocaleString(),
     };
 
-    console.log("Order Data:", orderData);
+    //console.log("Order Data:", orderData);
 
     try {
       const response = await fetch(`${SHOP_URL}/orders`, {
@@ -233,7 +233,7 @@ const OrderPage = () => {
         },
       });
     } catch (error) {
-      console.error("Error creating order:", error);
+      //console.error("Error creating order:", error);
       setModalMessage("결제에 실패했습니다.");
       setIsConfirmStep(false);
       setShowModal(true);

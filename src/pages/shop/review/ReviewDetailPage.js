@@ -20,10 +20,10 @@ const ReviewDetailPage = () => {
           throw new Error('네트워크 응답이 실패했습니다.');
         }
         const data = await response.json();
-        console.log('Fetched review data:', data);
+        //console.log('Fetched review data:', data);
         setReview(data);
       } catch (error) {
-        console.error('리뷰 조회 오류:', error);
+        //console.error('리뷰 조회 오류:', error);
       }
     };
 
