@@ -7,7 +7,7 @@ const UserModal = ({ title, message, onConfirm, onClose, confirmButtonText = "�
 
     useEffect(() => {
         const onEnterClose = (e) => {
-            if (e.key === 'Enter') {
+            if (e.key === 'Enter' && !title.includes("강아지가")) {
                 onClose();
             }
         };
