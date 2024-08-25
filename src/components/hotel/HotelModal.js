@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styles from './HotellModal.module.scss';
+import ReactDOM from 'react-dom';
 
 const HotelModal = ({ title, message, onConfirm, onClose, confirmButtonText = "예", showCloseButton = true }) => {
     useEffect(() => {
@@ -8,7 +9,7 @@ const HotelModal = ({ title, message, onConfirm, onClose, confirmButtonText = "�
         window.scrollTo(0, 0);
     }, []);
 
-    return (
+    return ReactDOM.createPortal (
         <div className={styles.modalBackdrop}>
             <div className={styles.modalContent}>
                 <h2 className={styles.modalTitle}>{title}</h2>
@@ -20,7 +21,8 @@ const HotelModal = ({ title, message, onConfirm, onClose, confirmButtonText = "�
                     )}
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body // 포탈이 렌더링될 노드
     );
 };
 

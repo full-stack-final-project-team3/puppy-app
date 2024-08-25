@@ -673,20 +673,29 @@ const BoardDetailPage = () => {
         headers: { Authorization: `Bearer ${userData.token}` },
       });
       const data = await response.json();
+      //console.log(data);
       if (type === "board") {
         setPostLiked(data.liked);
-        setBoardLikeCount((prev) => (data.liked ? prev + 1 : prev - 1));
+        setBoardLikeCount((prev) =>
+          Math.max(data.liked ? prev + 1 : prev - 1, 0)
+        );
       } else if (type === "reply") {
         setCommentLikes((prev) => ({ ...prev, [id]: data.liked }));
         setCommentLikeCounts((prev) => ({
           ...prev,
-          [id]: data.liked ? (prev[id] || 0) + 1 : (prev[id] || 1) - 1,
+          [id]: Math.max(
+            data.liked ? (prev[id] || 0) + 1 : (prev[id] || 1) - 1,
+            0
+          ),
         }));
       } else if (type === "subReply") {
         setSubReplyLikes((prev) => ({ ...prev, [id]: data.liked }));
         setSubReplyLikeCounts((prev) => ({
           ...prev,
-          [id]: data.liked ? (prev[id] || 0) + 1 : (prev[id] || 1) - 1,
+          [id]: Math.max(
+            data.liked ? (prev[id] || 0) + 1 : (prev[id] || 1) - 1,
+            0
+          ),
         }));
       }
     } catch (error) {
@@ -694,6 +703,7 @@ const BoardDetailPage = () => {
     }
   };
 
+  //정렬
   const toggleSortOptions = () => {
     setShowSortOptions(!showSortOptions);
   };
@@ -1087,13 +1097,16 @@ const BoardDetailPage = () => {
                             이미지 선택됨
                           </span>
                         )}
-                        <button type="submit" className={styles.submitButton}>
+                        <button
+                          type="submit"
+                          className={styles.subReplySubmitButton}
+                        >
                           등록
                         </button>
                         <button
                           type="button"
                           onClick={() => setReplyingTo(null)}
-                          className={styles.cancelButton}
+                          className={styles.subReplyCancelButton}
                         >
                           취소
                         </button>

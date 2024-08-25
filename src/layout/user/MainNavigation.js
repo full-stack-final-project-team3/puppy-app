@@ -5,16 +5,20 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { BsBell } from "react-icons/bs";
 import { BiBasket, BiUser } from "react-icons/bi";
 import UserContext from "../../components/context/user-context";
-import { userEditActions } from "../../components/store/user/UserEditSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { dogEditActions } from "../../components/store/dog/DogEditSlice";
-import { NOTICE_URL } from "../../config/user/host-config";
+import { userEditActions } from "../../components/store/user/UserEditSlice";
+import { NOTICE_URL, AUTH_URL } from "../../config/user/host-config";
 import NoticeList from "../../components/auth/user/NoticeList";
+import { Cookies } from 'react-cookie';
+import {getUserToken} from "../../config/user/auth";
 
 const MainNavigation = ({ drawerOpen, onToggleDrawer }) => {
   const navi = useNavigate();
   const [openNotice, setOpenNotice] = useState(false);
   const noticeRef = useRef(null);
+  const authToken = getUserToken();
+
 
   const { changeIsLogin, user, setUser } = useContext(UserContext);
   const userData = useRouteLoaderData("user-data");
@@ -72,14 +76,43 @@ const MainNavigation = ({ drawerOpen, onToggleDrawer }) => {
     }
   }, [userDetail.noticeCount]);
 
-  const logoutHandler = () => {
-    localStorage.removeItem("userData");
-    localStorage.removeItem("userDetail");
-    const currentUrl = window.location.href;
-    if (currentUrl !== "http://localhost:3000/") {
-      window.location.href = "http://doggle.kr/";
-    } else {
-      window.location.reload();
+  const logoutHandler = async () => {
+    try {
+      const response = await fetch(`${AUTH_URL}/logout/${userDetail.id}`, {
+        method: "POST",
+        credentials: 'include', // 쿠키를 포함하여 전송
+        headers: {
+          'Authorization': `Bearer ${authToken}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        console.log("response ok")
+        // 로컬 스토리지 비우기
+        localStorage.removeItem("userData");
+        localStorage.removeItem("userDetail");
+
+        if (userDetail.provider !== "KAKAO") {
+          localStorage.removeItem("provider");
+        }
+
+        // 쿠키 삭제
+        const cookies = new Cookies();
+        cookies.remove('authToken', { path: '/', domain: 'localhost' });
+
+        // 상태 초기화
+        // dispatch(userEditActions.clearUserDetail());
+        // dispatch(userEditActions.clearUserNotice());
+
+        // 홈으로 리디렉션
+        // navi('/');
+        window.location.reload();
+      } else {
+        console.error("로그아웃 실패:", await response.text());
+      }
+    } catch (error) {
+      console.error("로그아웃 중 오류 발생:", error);
     }
   };
 
@@ -91,7 +124,7 @@ const MainNavigation = ({ drawerOpen, onToggleDrawer }) => {
     setOpenNotice((prevState) => !prevState);
   };
 
-  const clearEditMode = async () => {
+  const clearEditMode = () => {
     dispatch(userEditActions.clearMode());
     dispatch(userEditActions.clearUserEditMode());
     dispatch(dogEditActions.clearEdit());

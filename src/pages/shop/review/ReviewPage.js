@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import ReactDOM from 'react-dom'; // 20240822: ReactDOM import 추가
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Rating from '@mui/material/Rating';
@@ -14,23 +13,23 @@ const ReviewPage = ({ treatsId }) => {
   const [sortCriteria, setSortCriteria] = useState('latest'); // 정렬 기준 상태
   const navigate = useNavigate();
   const user = useSelector((state) => state.userEdit.userDetail);
-  
-  useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        const response = await fetch(`${REVIEW_URL}/treats/${treatsId}`);
-        if (!response.ok) {
-          throw new Error('네트워크 응답이 실패했습니다.');
-        }
-        const data = await response.json();
-        setReviews(data);
-      } catch (error) {
-        console.error('리뷰 조회 오류:', error);
-      }
-    };
 
+  useEffect(() => {
     fetchReviews();
-  }, [treatsId]); // treatsId가 변경될 때마다 리뷰를 다시 불러옴
+  }, [treatsId]);
+
+  const fetchReviews = async () => {
+    try {
+      const response = await fetch(`${REVIEW_URL}/treats/${treatsId}`);
+      if (!response.ok) {
+        throw new Error('네트워크 응답이 실패했습니다.');
+      }
+      const data = await response.json();
+      setReviews(data);
+    } catch (error) {
+      console.error('리뷰 조회 오류:', error);
+    }
+  };
 
   const handleSortChange = (criteria) => {
     setSortCriteria(criteria);
@@ -44,6 +43,10 @@ const ReviewPage = ({ treatsId }) => {
     }
     return 0;
   });
+
+  const handleReviewDeleted = (deletedReviewId) => {
+    setReviews((prevReviews) => prevReviews.filter(review => review.id !== deletedReviewId));
+  };
 
   const handleButtonClick = () => {
     navigate('/review-page/write-review');
@@ -172,7 +175,6 @@ const ReviewText = ({ text }) => {
   );
 };
 
-// 20240822: 모달을 Portal로 구현
 const Modal = ({ images, currentIndex, onClose, onPrev, onNext }) => {
   if (!images || images.length === 0) return null;
 
@@ -184,7 +186,7 @@ const Modal = ({ images, currentIndex, onClose, onPrev, onNext }) => {
     e.stopPropagation();
   };
 
-  return ReactDOM.createPortal( // 20240822: Portal로 모달 구현
+  return (
     <div className={styles.modal_overlay} onClick={handleOverlayClick}>
       <div className={styles.modal_content} onClick={handleContentClick}>
         <span className={styles.close_button} onClick={onClose}>X</span>
@@ -198,8 +200,7 @@ const Modal = ({ images, currentIndex, onClose, onPrev, onNext }) => {
           <button className={styles.next_button} onClick={onNext}>›</button>
         </div>
       </div>
-    </div>,
-    document.getElementById('root') // 20240822: #root에 모달을 포털로 렌더링
+    </div>
   );
 };
 

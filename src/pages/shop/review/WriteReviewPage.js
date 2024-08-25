@@ -5,9 +5,8 @@ import RatingInput from './RatingInput';
 import styles from './Review.module.scss';
 import { userEditActions } from "../../../components/store/user/UserEditSlice";
 import { NOTICE_URL, REVIEW_URL } from "../../../config/user/host-config";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const WriteReviewPage = ({ orderId, treatId, dogId, treatTitle, onClose }) => { // 20240821: onClose prop 추가
+const WriteReviewPage = ({ orderId, treatId, dogId, treatTitle, onClose }) => {
   const [reviewContent, setReviewContent] = useState('');
   const [rate, setRate] = useState(5);
   const [reviewPics, setReviewPics] = useState([{ id: Date.now(), files: [], fileNames: [] }]);
@@ -153,9 +152,10 @@ const WriteReviewPage = ({ orderId, treatId, dogId, treatTitle, onClose }) => { 
             ))}
             <button type="button" onClick={handleAddPic}>이미지 추가</button>
           </div>
-          <div className={styles.button_container}> {/* 20240821: 버튼을 감싸는 div 추가 */}
+          <div className={styles.button_container}>
+            <button type="submit" onClick={onClose}>닫기</button> {/* onClose 함수를 연결 */}
             <button type="submit">작성하기</button>
-            <button type="button" className={styles.close_button} onClick={onClose}>×</button> {/* 20240821: 닫기 버튼 추가 */}
+            <button type="button" className={styles.close_button} onClick={onClose}>×</button> {/* 닫기 버튼 */}
           </div>
         </form>
       </div>

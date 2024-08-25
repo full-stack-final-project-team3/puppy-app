@@ -295,9 +295,8 @@
 }
 
 .submitButton,
-.cancelButton,
-.subReplySubmitButton,
-.subReplyCancelButton {
+.cancelButton
+ {
     padding: 8px 15px;
     background-color: #B3797A;
     color: white;
@@ -307,6 +306,19 @@
     border-radius: 15px;
     margin-left: 5px;
     font-size: 0.9rem;
+}
+
+.subReplySubmitButton,
+.subReplyCancelButton{
+        // padding: 8px 15px;
+            background-color: #B3797A;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            border-radius: 15px;
+            margin-left: 5px;
+            font-size: 0.9rem;
 }
 
 .submitButton:hover,
@@ -507,12 +519,6 @@
 
 .subReplyIconButton:hover {
     color: #333;
-}
-
-.subReplySubmitButton,
-.subReplyCancelButton {
-    padding: 6px 12px;
-    font-size: 0.8rem;
 }
 
 .replyButton{
