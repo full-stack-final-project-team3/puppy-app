@@ -95,9 +95,6 @@
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); // 그림자 추가
       transition: transform 0.3s;
 
-      &:hover {
-        transform: scale(1.05); // 호버 시 확대 효과
-      }
     }
   }
 }
