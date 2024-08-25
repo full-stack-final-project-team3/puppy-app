@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Rating from '@mui/material/Rating';
+import ReactDOM from 'react-dom'; 
 import styles from './Review.module.scss';
 import { REVIEW_URL } from "../../../config/user/host-config";
 
@@ -175,6 +176,7 @@ const ReviewText = ({ text }) => {
   );
 };
 
+//20240825: 모달 컴포넌트 수정 - 포탈 사용
 const Modal = ({ images, currentIndex, onClose, onPrev, onNext }) => {
   if (!images || images.length === 0) return null;
 
@@ -186,7 +188,7 @@ const Modal = ({ images, currentIndex, onClose, onPrev, onNext }) => {
     e.stopPropagation();
   };
 
-  return (
+  return ReactDOM.createPortal( //20240825: 포털로 모달 렌더링
     <div className={styles.modal_overlay} onClick={handleOverlayClick}>
       <div className={styles.modal_content} onClick={handleContentClick}>
         <span className={styles.close_button} onClick={onClose}>X</span>
@@ -200,7 +202,8 @@ const Modal = ({ images, currentIndex, onClose, onPrev, onNext }) => {
           <button className={styles.next_button} onClick={onNext}>›</button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body //20240825: 모달을 바디 하위에 렌더링
   );
 };
 
