@@ -1,9 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import styles from './UserModal.module.scss';
 
 const UserModal = ({ title, message, onConfirm, onClose, confirmButtonText = "확인", showCloseButton = true }) => {
+
+    useEffect(() => {
+        const onEnterClose = (e) => {
+            if (e.key === 'Enter') {
+                onClose();
+            }
+        };
+
+        window.addEventListener('keydown', onEnterClose);
+
+        return () => {
+            window.removeEventListener('keydown', onEnterClose);
+        };
+    }, [onClose]);
+
     return ReactDOM.createPortal(
         <div className={styles.modalBackdrop} onClick={onClose}>
             <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>

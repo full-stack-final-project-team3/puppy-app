@@ -345,7 +345,7 @@ const UserEdit = () => {
                     </button>
                 </div>
             </div>
-            {isModalOpen && <DeleteAccountModal onClose={closeModal}/>} {/* 모달 컴포넌트 추가 */}
+            {isModalOpen && <DeleteAccountModal onClose={closeModal}/>}
 
             {showModal && (
                 <UserModal
@@ -355,6 +355,7 @@ const UserEdit = () => {
                     onClose={handleCloseModal}    // 모달 닫기
                     confirmButtonText="확인"
                     showCloseButton={false}       // 닫기 버튼 표시 여부
+
                 />
             )}
         </div>
