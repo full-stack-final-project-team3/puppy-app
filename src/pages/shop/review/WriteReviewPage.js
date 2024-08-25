@@ -67,13 +67,13 @@ const WriteReviewPage = ({ orderId, treatId, dogId, treatTitle, onClose }) => {
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('응답 상태 코드:', response.status);
-        console.error('응답 상태 텍스트:', response.statusText);
-        console.error('서버 응답 내용:', errorText);
+        //console.error('응답 상태 코드:', response.status);
+        //console.error('응답 상태 텍스트:', response.statusText);
+        //console.error('서버 응답 내용:', errorText);
         throw new Error('네트워크 응답이 실패했습니다.');
       }
 
-      console.log('리뷰 제출 성공');
+      //console.log('리뷰 제출 성공');
       const noticePayload = {
         userId: user.id,
         message: `리뷰가 성공적으로 등록되었습니다.`
@@ -88,12 +88,12 @@ const WriteReviewPage = ({ orderId, treatId, dogId, treatTitle, onClose }) => {
 
         if (!noticeResponse.ok) {
           const noticeErrorText = await noticeResponse.text();
-          console.error('알림 등록 실패:', noticeErrorText);
+          //console.error('알림 등록 실패:', noticeErrorText);
           throw new Error('알림 등록 실패');
         }
 
         const noticeResponseText = await noticeResponse.text();
-        console.log(noticeResponseText);
+        //console.log(noticeResponseText);
 
         const newNotice = JSON.parse(noticeResponseText);
         dispatch(userEditActions.addUserNotice(newNotice));
@@ -105,10 +105,10 @@ const WriteReviewPage = ({ orderId, treatId, dogId, treatTitle, onClose }) => {
 
         window.location.reload();
       } catch (error) {
-        console.error('알림 등록 오류:', error);
+        //console.error('알림 등록 오류:', error);
       }
     } catch (error) {
-      console.error('리뷰 제출 오류:', error);
+      //console.error('리뷰 제출 오류:', error);
     }
   };
 

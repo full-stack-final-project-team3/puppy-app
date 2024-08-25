@@ -28,7 +28,7 @@ const ReviewPage = ({ treatsId }) => {
       const data = await response.json();
       setReviews(data);
     } catch (error) {
-      console.error('리뷰 조회 오류:', error);
+      //console.error('리뷰 조회 오류:', error);
     }
   };
 
