@@ -38,7 +38,9 @@ const RootLayout = () => {
             }
         };
 
-        // 이벤트 리스너 등록   
+        // 이벤트 리스너 등록
+
+
         window.addEventListener('beforeunload', handleBeforeUnload);
 
         // 컴포넌트가 언마운트되거나 userDetail.autoLogin 값이 변경될 때 이전 리스너 제거
