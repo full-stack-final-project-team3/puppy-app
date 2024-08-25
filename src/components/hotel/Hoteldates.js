@@ -5,9 +5,14 @@ import { TextField, Box } from '@mui/material';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'; // 이 플러그인을 추가
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';   // 이 플러그인을 추가
 
+// 필요한 플러그인 확장
 dayjs.extend(utc);
 dayjs.extend(timezone);
+dayjs.extend(isSameOrBefore);
+dayjs.extend(isSameOrAfter);
 
 export default function DualDatePickers({ startDate, setStartDate, endDate, setEndDate }) {
 

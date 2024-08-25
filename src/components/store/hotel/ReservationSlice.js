@@ -1,6 +1,6 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import {userEditActions} from '../user/UserEditSlice';
-import {ROOM_URL, NOTICE_URL, RESERVATION_URL, HOTEL_URL} from "../../../config/user/host-config";
+import {ROOM_URL, NOTICE_URL, RESERVATION_URL, HOTEL_URL, FRONT} from "../../../config/user/host-config";
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
@@ -138,9 +138,9 @@ export const submitReservationWithKakaoPay = createAsyncThunk(
         try {
             // Step 1: 카카오페이 결제 준비
             const orderId = uuidv4();
-            const approvalUrl = `http://localhost:3000/payment/success?order_id=${orderId}`;
-            const cancelUrl = `http://localhost:3000/payment/cancel`;
-            const failUrl = `http://localhost:3000/payment/fail`;
+            const approvalUrl = `${FRONT}/hotel/`;
+            const cancelUrl = `${FRONT}/hotel/`;
+            const failUrl = `${FRONT}/hotel/`;
 
             const paymentResponse = await fetch('https://kapi.kakao.com/v1/payment/ready', {
                 method: 'POST',
