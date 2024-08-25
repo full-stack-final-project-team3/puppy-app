@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import DogNameInput from "./DogNameInput";
 import DogBirthdayInput from "./DogBirthdayInput";
 import DogBreedInput from "./DogBreedInput";
@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { DOG_URL, NOTICE_URL } from "../../../config/user/host-config";
 import { useDispatch, useSelector } from "react-redux";
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import UserModal from "../user/mypage/UserModal"; // UserModal import
+import UserModal from "../user/mypage/UserModal";
 import { userEditActions } from "../../store/user/UserEditSlice";
 
 const AddDogMain = () => {
@@ -193,6 +193,21 @@ const AddDogMain = () => {
     const handleCloseModal = () => {
         setShowModal(false);
     };
+
+    // Enter 키를 감지하여 모달을 닫고 리다이렉트하는 로직 추가
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.key === 'Enter' && showModal) {
+                handleConfirmModal(); // 모달을 닫고 리다이렉트
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [showModal]);
 
     return (
         <>
