@@ -197,6 +197,7 @@ const UserEdit = () => {
 
     const handleCloseModal = () => {
         setShowModal(false);
+        handleSubmit();
     };
 
     if (loading) {

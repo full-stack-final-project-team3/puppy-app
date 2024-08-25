@@ -195,6 +195,7 @@ const DogEdit = () => {
 
     const handleCloseModal = () => {
         setShowModal(false);
+        clearEditMode()
     };
 
     const handleConfirmModal = () => {
