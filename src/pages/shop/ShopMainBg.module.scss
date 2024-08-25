@@ -44,7 +44,7 @@
     }
 
     .shopTitle1 {
-      margin-top: 120px;
+      margin-top: 100px;
       line-height: 1.4;
       font-size: 50px;
       color: #fffff0;
@@ -194,13 +194,55 @@
     }
 
     .dogList {
-      background: #e8e4d7;
-      color: #403c36;
-      font-size: 18px;
-      width: 42%;
-      margin-left: 35px;
+      background-color: #e8e4d7;  // 배경색
+      color: #403c36;  // 텍스트 색상
+      font-size: 18px;  // 글꼴 크기
+      width: 42%;  // 너비
+      margin-left: 35px;  // 왼쪽 마진
+      padding: 10px;  // 내부 여백
+      border: 1px solid #403c36;  // 경계선
+      border-radius: 5px;  // 모서리 둥글게
+      appearance: none;  // 기본 드롭다운 화살표 숨기기 (커스텀 가능)
+      cursor: pointer;  // 포인터 모양
+    
+      &:hover {
+        background-color: #d7cfbf;  // 호버 시 배경색
+      }
+    
+      &:focus {
+        outline: none;  // 포커스 시 외곽선 제거
+        border-color: #665f54;  // 포커스 시 경계선 색상
+        box-shadow: 0 0 5px rgba(102, 95, 84, 0.5);  // 포커스 시 그림자 효과
+      }
     }
-
+    
+    .dogList {
+      background-color: #e8e4d7;  // 배경색
+      color: #403c36;  // 텍스트 색상
+      font-size: 16px;  // 글꼴 크기
+      width: 42%;  // 너비
+      margin-left: 35px;  // 왼쪽 마진
+      padding: 10px;  // 내부 여백
+      border: 1px solid #403c36;  // 경계선
+      border-radius: 5px;  // 모서리 둥글게
+      appearance: none;  // 기본 드롭다운 화살표 숨기기
+      cursor: pointer;  // 포인터 모양
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23403c36'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E"); // 화살표 아이콘 추가
+      background-repeat: no-repeat;  // 아이콘 반복 안함
+      background-position: right 10px center;  // 아이콘 위치 조정
+      background-size: 22px;  // 아이콘 크기
+    
+      &:hover {
+        background-color: #d7cfbf;  // 호버 시 배경색
+      }
+    
+      &:focus {
+        outline: none;  // 포커스 시 외곽선 제거
+        border-color: #665f54;  // 포커스 시 경계선 색상
+        box-shadow: 0 0 5px rgba(102, 95, 84, 0.5);  // 포커스 시 그림자 효과
+      }
+    }
+    
     .startButton {
       width: 42%;
       background-color: #f39c12;

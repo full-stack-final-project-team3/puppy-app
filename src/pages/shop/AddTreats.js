@@ -188,6 +188,7 @@ const AddTreats = () => {
             <option value="SMALL">SMALL</option>
             <option value="MEDIUM">MEDIUM</option>
             <option value="LARGE">LARGE</option>
+            <option value="ALL">ALL</option>
           </select>
         </div>
         <div className={styles.formGroup}>
