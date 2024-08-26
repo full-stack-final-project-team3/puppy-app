@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import { v4 as uuidv4 } from 'uuid';
+import {getUserToken} from "../../../config/user/auth";
 
 // Dayjs 플러그인 등록
 dayjs.extend(utc);
@@ -47,7 +48,7 @@ export const fetchReservation = createAsyncThunk(
     'reservation/fetchReservation',
     async ({reservationId}, {rejectWithValue}) => {
         try {
-            const token = JSON.parse(localStorage.getItem('userData')).token;
+            const token = getUserToken();
             const response = await fetch(`${RESERVATION_URL}/${reservationId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -69,7 +70,7 @@ export const fetchUserReservations = createAsyncThunk(
     'reservation/fetchUserReservations',
     async ({userId}, {rejectWithValue, dispatch}) => {
         try {
-            const token = JSON.parse(localStorage.getItem('userData')).token;
+            const token = getUserToken();
             const response = await fetch(`${RESERVATION_URL}/user/${userId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -321,7 +322,7 @@ export const submitReservation = createAsyncThunk(
 export const deleteReservation = createAsyncThunk(
     'reservation/deleteReservation',
     async (reservationId, {getState, rejectWithValue}) => {
-        const token = JSON.parse(localStorage.getItem('userData')).token;
+        const token = getUserToken();
         try {
             const response = await fetch(`${RESERVATION_URL}/${reservationId}`, {
                 method: 'DELETE',

@@ -25,6 +25,7 @@ import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import { IoChevronBack } from "react-icons/io5";
 import { GiDogHouse } from "react-icons/gi";
 import DeletePortal from "../../components/community/DeletePortal";
+import {userDataLoader} from "../../config/user/auth";
 
 // const BASE_URL = "http://localhost:8888";
 
@@ -83,7 +84,7 @@ const BoardDetailPage = () => {
       setIsLoading(true);
       setError(null);
       try {
-        const userData = JSON.parse(localStorage.getItem("userData"));
+        const userData = userDataLoader();
         const isLoggedIn = !!userData && !!userData.token;
         setIsLoggedIn(isLoggedIn);
         setIsAdmin(userData?.role === "ADMIN");
@@ -190,7 +191,7 @@ const BoardDetailPage = () => {
       return;
     }
     try {
-      const userData = JSON.parse(localStorage.getItem("userData"));
+      const userData = userDataLoader();
       const formData = new FormData();
       formData.append("content", newComment);
       formData.append(
@@ -313,7 +314,7 @@ const BoardDetailPage = () => {
   // 게시글 삭제 확인 함수
   const handleDeleteConfirm = async () => {
     try {
-      const userData = JSON.parse(localStorage.getItem("userData"));
+      const userData = userDataLoader();
       const response = await fetch(`${BOARD_URL}/${id}`, {
         method: "DELETE",
         headers: {
@@ -372,7 +373,7 @@ const BoardDetailPage = () => {
 
   const handleCommentUpdate = async (commentId) => {
     try {
-      const userData = JSON.parse(localStorage.getItem("userData"));
+      const userData = userDataLoader();
       const response = await fetch(`${BOARD_URL}/${id}/comments/${commentId}`, {
         method: "PUT",
         headers: {
@@ -412,7 +413,7 @@ const BoardDetailPage = () => {
 
   const handleDeleteCommentConfirm = async () => {
     try {
-      const userData = JSON.parse(localStorage.getItem("userData"));
+      const userData = userDataLoader();
       const response = await fetch(
         `${BOARD_URL}/${id}/comments/${deleteTarget.id}?userId=${user.id}`,
         {
@@ -446,7 +447,7 @@ const BoardDetailPage = () => {
       return;
     }
     try {
-      const userData = JSON.parse(localStorage.getItem("userData"));
+      const userData = userDataLoader();
       const formData = new FormData();
       formData.append("subReplyContent", newSubReply);
       formData.append(
@@ -540,7 +541,7 @@ const BoardDetailPage = () => {
 
   const handleSubReplyUpdate = async (commentId, subReplyId) => {
     try {
-      const userData = JSON.parse(localStorage.getItem("userData"));
+      const userData = userDataLoader();
       const response = await fetch(
         `${BOARD_URL}/${id}/comments/${commentId}/subReplies/${subReplyId}`,
         {
@@ -590,7 +591,7 @@ const BoardDetailPage = () => {
 
   const handleDeleteSubReplyConfirm = async () => {
     try {
-      const userData = JSON.parse(localStorage.getItem("userData"));
+      const userData = userDataLoader();
       const response = await fetch(
         `${BOARD_URL}/${id}/comments/${deleteTarget.commentId}/subReplies/${deleteTarget.id}?userId=${user.id}`,
         {
@@ -667,7 +668,7 @@ const BoardDetailPage = () => {
       return;
     }
     try {
-      const userData = JSON.parse(localStorage.getItem("userData"));
+      const userData = userDataLoader();
       const response = await fetch(`${LIKE_URL}/${type}/${id}`, {
         method: "POST",
         headers: { Authorization: `Bearer ${userData.token}` },
