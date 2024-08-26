@@ -91,6 +91,10 @@ export const router = createBrowserRouter([
         children: homeRouter,
       },
       {
+        path: "logout",
+        action: <Logout />,
+      },
+      {
         path: "hotel",
         element: <HotelPage />,
         loader: authCheckLoader,
@@ -186,7 +190,37 @@ export const router = createBrowserRouter([
         loader: authCheckLoader,
       },
       {
-        path: "board/:id/edit",
+        path: "board/:id/edit", // 게시글 상세 페이지 경로 추가
+        element: <BoardEditPage />,
+        loader: authCheckLoader, // 로그인 정보를 확인하는 loader 추가
+      },
+      {
+        path: "board/:id/deleteImage", // 게시글 상세 페이지 경로 추가
+        element: <BoardEditPage />,
+        loader: authCheckLoader, // 로그인 정보를 확인하는 loader 추가
+      },
+      {
+        path: "board/keywords", // 게시판 태그 추가 (관리자만 가능)
+        element: <BoardPage />,
+        loader: authCheckLoader,
+      },
+      {
+        path: "board/keywords/:id", // 게시판 태그 삭제 (관리자만 가능)
+        element: <BoardPage />,
+        loader: authCheckLoader,
+      },
+      {
+        path: "likes/board/:id", // 좋아요 - 게시글
+        element: <BoardEditPage />,
+        loader: authCheckLoader,
+      },
+      {
+        path: "likes/reply/:id", // 좋아요 - 댓글
+        element: <BoardEditPage />,
+        loader: authCheckLoader,
+      },
+      {
+        path: "likes/subreply/:id", // 좋아요 - 대댓글
         element: <BoardEditPage />,
         loader: authCheckLoader,
       },
