@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import styles from "./SignUpPage.module.scss";
+import styles from "./VerificationInput.module.scss";
 import { debounce } from "lodash";
 import { AUTH_URL } from "../../../../config/user/host-config";
 
@@ -82,7 +82,7 @@ const VerificationInput = ({ email, onSuccess }) => {
     setCodes(updatedCodes);
 
     if (inputValue && index < 4) {
-      focusNextInput(index); // Move to the next input field
+      focusNextInput(index);
     }
 
     if (updatedCodes.every((code) => code !== "")) {
@@ -105,6 +105,7 @@ const VerificationInput = ({ email, onSuccess }) => {
   return (
       <div className={styles.signUpInput}>
         <h2 className={styles.h2}>인증코드</h2>
+        <div className={styles.codeInputWrapper}>
         {Array.from(new Array(4)).map((_, index) => (
             <input
                 ref={($input) => (inputsRef.current[index] = $input)}
@@ -116,6 +117,7 @@ const VerificationInput = ({ email, onSuccess }) => {
                 value={codes[index]}
             />
         ))}
+        </div>
         <div className={styles.timer}>
           {`${"0" + Math.floor(timer / 60)}:${("0" + (timer % 60)).slice(-2)}`}
         </div>
