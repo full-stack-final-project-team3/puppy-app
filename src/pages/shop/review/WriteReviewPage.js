@@ -103,7 +103,7 @@ const WriteReviewPage = ({ orderId, treatId, dogId, treatTitle, onClose }) => {
         };
         dispatch(userEditActions.updateUserDetail(updatedUserDetailWithNoticeCount));
 
-        window.location.reload();
+        // window.location.reload();
       } catch (error) {
         //console.error('알림 등록 오류:', error);
       }
