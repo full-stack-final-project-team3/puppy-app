@@ -34,9 +34,27 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease-in-out;
 
+
     &:hover {
         transform: translateY(-3px);
     }
+ .postTitle {
+     display: flex;
+     align-items: center;
+     gap: 10px;
+    font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #333;
+
+     .keywordLabel {
+            padding: 3px 8px;
+            border-radius: 10px;
+            margin-right: 10px;
+            white-space: nowrap;
+     }
+ }
+
 }
 
 .postLink {
@@ -230,4 +248,66 @@
     .searchIcon {
         font-size: 20px;
     }
+}
+
+//관리자용
+
+.keywordForm {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.keywordInput {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.keywordSubmit {
+    margin-left: 10px;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #45a049;
+    }
+}
+
+//
+.keywordsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-top: 25px;
+    padding-bottom: 10px;
+}
+
+.keywordLabel {
+    background-color: #B3797A;
+    border-radius: 15px;
+    color: #f0f0f0;
+    display: inline-block;
+    padding: 10px;
+}
+.keywordLabel:hover{
+        background-color: #9F5A5B;
+        cursor: pointer;
+}
+
+
+
+.keywordDeleteBtn {
+    background: none;
+    border: none;
+    color: red;
+    margin-left: 5px;
+    cursor: pointer;
+    font-size: 12px;
 }

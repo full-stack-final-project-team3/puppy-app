@@ -181,3 +181,121 @@
 .imageLabelInactive {
     background-color: gray; // 이미지가 없을 때의 색상
 }
+
+
+
+
+//
+
+.customSelectWrapper {
+    position: relative;
+    width: 100%;
+    max-width: 700px;
+    margin-bottom: 15px;
+}
+
+.customSelect {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    font-size: 15px;
+    color: #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+.customSelect:hover {
+    border-color: #b3797a;
+}
+
+.chevronIcon {
+    font-size: 14px;
+}
+
+.customSelectDropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-top: 5px;
+    z-index: 10;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.customSelectOption {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.customSelectOption:hover {
+    background-color: #f0f0f0;
+}
+
+.customSelectOption:last-child {
+    border-bottom: none;
+}
+
+///
+/// 
+
+.keywordSection {
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.keywordTitle {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.keywordList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.keywordButton {
+    padding: 8px 15px;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+        background-color: #e0e0e0;
+    }
+
+    &.selected {
+        background-color: #B3797A;
+        color: white;
+        border-color: #B3797A;
+    }
+}
+
+.selectedKeywordText {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #666;
+
+    span {
+        font-weight: bold;
+        color: #B3797A;
+    }
+}
