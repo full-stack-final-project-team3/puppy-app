@@ -16,7 +16,7 @@ const REDIRECT_URL = process.env.REACT_APP_KAKAO_REDIRECT_URL;
 const KAKAO_LOGIN_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${APP_KEY}&redirect_uri=${REDIRECT_URL}&response_type=code`;
 
 const LoginForm = () => {
-    const [cookies] = useCookies(['authToken']);
+    const [cookies, setCookie] = useCookies(['authToken']);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [autoLogin, setAutoLogin] = useState(false);
@@ -38,18 +38,31 @@ const LoginForm = () => {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload),
+                credentials: 'include',
             });
-
             if (response.ok) {
+                const responseDataCookie = await response.json();
+
+                if (payload.autoLogin) {
+                    const token = responseDataCookie.token;
+                    setCookie('authToken', token, {
+                        path: '/',
+                        maxAge: 60 * 60 * 24 * 30 // 30일
+                    });
+                    dispatch(userEditActions.setUserCookie(token));
+                    localStorage.setItem("userData", JSON.stringify(responseDataCookie));
+                } else {
+                    sessionStorage.setItem("userData", JSON.stringify(responseDataCookie));
+                }
+
                 const userDetailData = await (await fetch(`${AUTH_URL}/${email}`)).json();
                 const noticeData = await (await fetch(`${NOTICE_URL}/user/${userDetailData.id}`)).json();
 
                 dispatch(userEditActions.saveUserNotice(noticeData));
                 dispatch(userEditActions.updateUserDetail(userDetailData));
 
-                const responseData = await response.json();
-                localStorage.setItem("userData", JSON.stringify(responseData));
-                setUser(responseData);
+                // const responseData = await response.json();
+                setUser(responseDataCookie);
                 changeIsLogin(true);
                 localStorage.removeItem('provider'); // 로그인 시 provider 정보 제거
                 navigate("/");

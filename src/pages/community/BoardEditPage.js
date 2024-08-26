@@ -6,6 +6,7 @@ import styles from "./BoardEditPage.module.scss";
 import { IoChevronBack } from "react-icons/io5";
 import { GiDogHouse } from "react-icons/gi";
 import { MdDelete } from "react-icons/md";
+import {userDataLoader} from "../../config/user/auth";
 
 const BoardEditPage = () => {
   const [title, setTitle] = useState("");
@@ -21,7 +22,7 @@ const BoardEditPage = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const userData = JSON.parse(localStorage.getItem("userData"));
+        const userData = userDataLoader();
         const response = await fetch(`${BOARD_URL}/${id}`, {
           headers: {
             Authorization: `Bearer ${userData.token}`,
@@ -62,7 +63,7 @@ const handleImageDelete = async (imageUrl) => {
 
   // 서버에 삭제 요청 보내기
   try {
-    const userData = JSON.parse(localStorage.getItem("userData"));
+    const userData = userDataLoader();
     const response = await fetch(
       `${BOARD_URL}/${id}/deleteImage?imageUrl=${encodeURIComponent(imageUrl)}`,
       {
@@ -101,7 +102,7 @@ const handleSubmit = async (e) => {
   });
 
   try {
-    const userData = JSON.parse(localStorage.getItem("userData"));
+    const userData = userDataLoader();
     const response = await fetch(`${BOARD_URL}/${id}`, {
       method: "PUT",
       headers: {

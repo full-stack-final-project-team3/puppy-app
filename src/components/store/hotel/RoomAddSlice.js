@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {ROOM_URL, UPLOAD_URL, HOTEL_URL} from '../../../config/user/host-config';
+import {getUserToken} from "../../../config/user/auth";
 
 const initialRoomAddState = {
     rooms: [],
@@ -40,7 +41,7 @@ export const uploadFile = createAsyncThunk(
 export const fetchRooms = createAsyncThunk(
     'roomAdd/fetchRooms',
     async (roomId, thunkAPI) => {
-        const token = JSON.parse(localStorage.getItem('userData')).token;
+        const token = getUserToken();
         const response = await fetch(`${HOTEL_URL}/${roomId}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -98,7 +99,7 @@ export const submitRoom = createAsyncThunk(
 export const updateRoom = createAsyncThunk(
     'roomAdd/updateRoom',
     async ({roomData, roomId}, {getState, rejectWithValue}) => {
-        const token = JSON.parse(localStorage.getItem('userData')).token;
+        const token = getUserToken();
         try {
             const response = await fetch(`${ROOM_URL}/${roomId}`, {
                 method: 'PATCH',
@@ -139,7 +140,7 @@ export const updateRoom = createAsyncThunk(
 export const deleteRoom = createAsyncThunk(
     'roomAdd/deleteRoom',
     async (roomId, thunkAPI) => {
-        const token = JSON.parse(localStorage.getItem('userData')).token;
+        const token = getUserToken();
         try {
             const response = await fetch(`${ROOM_URL}/${roomId}`, {
                 method: 'DELETE',

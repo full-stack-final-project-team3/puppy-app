@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { HOTEL_URL } from '../../../config/user/host-config';
+import {getUserToken} from "../../../config/user/auth";
 
 const initialState = {
     hotels: [],
@@ -15,7 +16,7 @@ const initialState = {
 export const fetchHotels = createAsyncThunk(
     'hotelPage/fetchHotels',
     async (location, thunkAPI) => {
-        const token = JSON.parse(localStorage.getItem('userData')).token;
+        const token = getUserToken();
         const response = await fetch(`${HOTEL_URL}?location=${location}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -34,7 +35,7 @@ export const fetchHotels = createAsyncThunk(
 export const fetchHotelDetails = createAsyncThunk(
     'hotelPage/fetchHotelDetails',
     async (hotelId, thunkAPI) => {
-        const token = JSON.parse(localStorage.getItem('userData')).token;
+        const token = getUserToken();
         const response = await fetch(`${HOTEL_URL}/${hotelId}`, {
             headers: {
                 'Authorization': `Bearer ${token}`

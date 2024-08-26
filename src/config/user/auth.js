@@ -5,10 +5,8 @@ import {redirect} from "react-router-dom";
 
 
 const getUserData = () => {
-    const userDataJson = localStorage.getItem('userData')
-    // console.log(userDataJson)
-
-    return  JSON.parse(userDataJson);
+    const userData = localStorage.getItem('userData') || sessionStorage.getItem('userData');
+    return userData ? JSON.parse(userData) : null;
 };
 
 // 인증 토큰만 가져오기

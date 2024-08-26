@@ -1,5 +1,6 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import {HOTEL_URL} from "../../../config/user/host-config";
+import {getUserToken} from "../../../config/user/auth";
 
 const initialState = {
     favorites: [],
@@ -12,7 +13,7 @@ export const fetchFavorites = createAsyncThunk(
     'favorites/fetch',
     async (_, {getState, rejectWithValue}) => {
         try {
-            const token = JSON.parse(localStorage.getItem('userData')).token;
+            const token = getUserToken();
             const response = await fetch(`${HOTEL_URL}/favorites`, {
                 method: 'GET',
                 headers: {
@@ -33,7 +34,7 @@ export const fetchFavorites = createAsyncThunk(
 export const addFavorite = createAsyncThunk(
     'favorites/add',
     async (hotelId, {getState, rejectWithValue}) => {
-        const token = JSON.parse(localStorage.getItem('userData')).token;
+        const token = getUserToken();
         const userId = getState().userEdit.userDetail.userId;
         const response = await fetch(`${HOTEL_URL}/${hotelId}/favorite`, {
             method: 'POST',
@@ -58,7 +59,7 @@ export const addFavorite = createAsyncThunk(
 export const removeFavorite = createAsyncThunk(
     'favorites/remove',
     async (hotelId, {getState, rejectWithValue}) => {
-        const token = JSON.parse(localStorage.getItem('userData')).token;
+        const token = getUserToken();
         const userId = getState().userEdit.userDetail.userId;
         const response = await fetch(`${HOTEL_URL}/${hotelId}/favorite`, {
             method: 'DELETE',

@@ -6,6 +6,7 @@ import { BOARD_URL } from "../../config/user/host-config";
 import { IoChevronBack } from "react-icons/io5";
 import { GiDogHouse } from "react-icons/gi";
 import { MdDelete } from "react-icons/md";
+import {getUserToken} from "../../config/user/auth";
 
 const BoardPostPage = () => {
   const [title, setTitle] = useState("");
@@ -37,11 +38,13 @@ const BoardPostPage = () => {
     });
 
     try {
+      const token = getUserToken();
+
       const response = await fetch(`${BOARD_URL}`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${
-            JSON.parse(localStorage.getItem("userData")).token
+            token
           }`,
         },
         body: formData,

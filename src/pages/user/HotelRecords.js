@@ -7,14 +7,16 @@ import { Link, useNavigate } from 'react-router-dom';
 import styles from './HotelRecords.module.scss';
 import HotelModal from '../../components/hotel/HotelModal';
 import {AUTH_URL} from "../../config/user/host-config";
+import {userDataLoader} from "../../config/user/auth";
 
 const HotelRecords = () => {
     const dispatch = useDispatch();
     const { userReservations, status, error } = useSelector(state => state.reservation);
     const { reviewsByReservationId } = useSelector(state => state.reviews);
-    const userId = JSON.parse(localStorage.getItem('userData')).userId;
+    const userData = userDataLoader();
     const userDetail = useSelector((state) => state.userEdit.userDetail);
     const navigate = useNavigate();
+    const userId = userData.userId
 
     const [showModal, setShowModal] = useState(false);
     const [selectedReservationId, setSelectedReservationId] = useState(null);
@@ -49,7 +51,7 @@ const HotelRecords = () => {
 
     const hasUserReviewed = (reservationId) => {
         const reviews = reviewsByReservationId[reservationId] || [];
-        return reviews.some(review => review.userId === userId);
+        return reviews.some(review => review.userId === userData);
     };
 
     const handleDeleteReservation = async () => {
