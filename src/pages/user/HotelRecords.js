@@ -8,6 +8,7 @@ import styles from './HotelRecords.module.scss';
 import HotelModal from '../../components/hotel/HotelModal';
 import {AUTH_URL} from "../../config/user/host-config";
 import {userDataLoader} from "../../config/user/auth";
+import Footer from '../../layout/user/Footer';
 
 const HotelRecords = () => {
     const dispatch = useDispatch();
@@ -100,6 +101,7 @@ const HotelRecords = () => {
     }
 
     return (
+        <>
         <div className={styles.wrap}>
             <MyPageHeader />
             <div className={styles.subWrap}>
@@ -184,6 +186,9 @@ const HotelRecords = () => {
                 />
             )}
         </div>
+
+        <Footer />
+        </>
     );
 };
 

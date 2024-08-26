@@ -204,7 +204,7 @@ const SnackRecords = () => {
                         </div>
                     ))
                 ) : (
-                    <p className={styles.noOrder}>주문 내역이 없습니다.</p>
+                    <p className={styles.noOrder}>구독 내역이 없습니다.</p>
                 )}
             </div>
             {showConfirmModal && (
