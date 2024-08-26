@@ -8,7 +8,7 @@ import {
     modifyReview
 } from '../../components/store/hotel/HotelReviewSlice';
 import { fetchUserReservations } from '../../components/store/hotel/ReservationSlice';
-import { Modal, ModalBody, Button } from "reactstrap";
+import { Modal, Button } from "react-bootstrap"; // react-bootstrap에서 가져오기
 import { FaStar } from 'react-icons/fa';
 import RatingInput from '../shop/review/RatingInput';
 import HotelModal from '../../components/hotel/HotelModal';
@@ -165,9 +165,8 @@ const HotelReview = () => {
                 <p className={styles.noReview}>작성하신 리뷰가 없습니다.</p>
             )}
 
-            <Modal isOpen={isModalOpen} toggle={closeModal} className={styles.modal}>
-
-                <ModalBody className={styles.modalBody}>
+            <Modal show={isModalOpen} onHide={closeModal} className={styles.modal}>
+                <Modal.Body className={styles.modalBody}>
                     <textarea
                         name="reviewContent"
                         placeholder="Write your review here..."
@@ -186,18 +185,18 @@ const HotelReview = () => {
                     <div className={styles.modalActions}>
                         <Button
                             className={styles.primaryButton}
-                            color="primary"
+                            variant="primary"
                             onClick={openEditConfirmModal}>
                             저장
                         </Button>{' '}
                         <Button
                             className={styles.secondaryButton}
-                            color="secondary"
+                            variant="secondary"
                             onClick={closeModal}>
                             취소
                         </Button>
                     </div>
-                </ModalBody>
+                </Modal.Body>
             </Modal>
 
             {/* 리뷰 삭제 확인 모달 */}
