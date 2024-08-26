@@ -32,9 +32,6 @@ export const fetchAvailableRooms = createAsyncThunk(
         const formattedStartDate = dayjs(startDate).tz('Asia/Seoul').hour(14).minute(0).second(0).format('YYYY-MM-DDTHH:mm:ss');
         const formattedEndDate = dayjs(endDate).tz('Asia/Seoul').hour(11).minute(0).second(0).format('YYYY-MM-DDTHH:mm:ss');
 
-        console.log("start",formattedStartDate);
-        console.log("end", formattedEndDate);
-
         const response = await fetch(`${ROOM_URL}/available?hotelId=${city}&reservationAt=${encodeURIComponent(formattedStartDate)}&reservationEndAt=${encodeURIComponent(formattedEndDate)}`);
         if (!response.ok) {
             throw new Error('Failed to fetch available rooms');
@@ -71,7 +68,6 @@ export const fetchUserReservations = createAsyncThunk(
     async ({userId}, {rejectWithValue, dispatch}) => {
         try {
             const token = getUserToken();
-            console.log(token)
             const response = await fetch(`${RESERVATION_URL}/user/${userId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -172,7 +168,6 @@ export const submitReservationWithKakaoPay = createAsyncThunk(
             }
 
             const paymentData = await paymentResponse.json();
-            console.log('카카오페이 응답 데이터:', paymentData);
 
             // Step 2: 결제 URL로 리다이렉트
             window.location.href = paymentData.next_redirect_pc_url;
