@@ -7,12 +7,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import styles from './HotelRecords.module.scss';
 import HotelModal from '../../components/hotel/HotelModal';
 import {AUTH_URL} from "../../config/user/host-config";
+import {userDataLoader} from "../../config/user/auth";
 
 const HotelRecords = () => {
     const dispatch = useDispatch();
     const { userReservations, status, error } = useSelector(state => state.reservation);
     const { reviewsByReservationId } = useSelector(state => state.reviews);
-    const userId = JSON.parse(localStorage.getItem('userData')).userId;
+    const userId = userDataLoader();
     const userDetail = useSelector((state) => state.userEdit.userDetail);
     const navigate = useNavigate();
 

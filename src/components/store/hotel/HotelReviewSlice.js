@@ -1,5 +1,6 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import { HOTEL_REVIEW_URL } from "../../../config/user/host-config";
+import {getUserToken} from "../../../config/user/auth";
 
 
 const initialState = {
@@ -54,7 +55,7 @@ export const fetchReviewsByHotelId = createAsyncThunk(
 export const addReview = createAsyncThunk(
     'reviews/addReview',
     async ({hotelId, reviewContent, rate, userId, reservationId}, thunkAPI) => {
-        const token = JSON.parse(localStorage.getItem('userData')).token;
+        const token = getUserToken();
         const reviewData = {hotelId, reviewContent, rate, userId, reservationId};
         try {
             const response = await fetch(`${HOTEL_REVIEW_URL}`, {
@@ -83,7 +84,7 @@ export const addReview = createAsyncThunk(
 export const deleteReview = createAsyncThunk(
     'reviews/deleteReview',
     async ({ reviewId, userId }, thunkAPI) => {
-        const token = JSON.parse(localStorage.getItem('userData')).token;
+        const token = getUserToken();
         try {
             const response = await fetch(`${HOTEL_REVIEW_URL}/${reviewId}?userId=${userId}`, {
                 method: 'DELETE',
@@ -109,7 +110,7 @@ export const deleteReview = createAsyncThunk(
 export const modifyReview = createAsyncThunk(
     'reviews/modifyReview',
     async ({ reviewId, reviewContent, rate, userId }, thunkAPI) => {
-        const token = JSON.parse(localStorage.getItem('userData')).token;
+        const token = getUserToken();
         try {
             const response = await fetch(`${HOTEL_REVIEW_URL}/${reviewId}`, {
                 method: 'PATCH',

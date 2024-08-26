@@ -10,6 +10,7 @@ import HotelModal from '../hotel/HotelModal';
 import Footer from '../../layout/user/Footer';
 import {resetHotels, setStep} from '../store/hotel/HotelPageSlice';
 import {resetReservation} from '../store/hotel/ReservationSlice';
+import {getUserToken} from "../../config/user/auth";
 
 const HotelConfirmation = ({
                                hotel,
@@ -23,7 +24,7 @@ const HotelConfirmation = ({
     const navigate = useNavigate();
     const personCount = useSelector(state => state.hotelPage.personCount);
     const email = user.email;
-    const token = JSON.parse(localStorage.getItem('userData')).token;
+    const token = getUserToken();
     const [remainingPrice, setRemainingPrice] = useState(totalPrice);
     const [pointUsage, setPointUsage] = useState('');
     const [showPointPayment, setShowPointPayment] = useState(false);

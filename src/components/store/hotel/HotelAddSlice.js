@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {HOTEL_URL, UPLOAD_URL} from '../../../config/user/host-config';
+import {getUserToken} from "../../../config/user/auth";
 
 const initialHotelAddState = {
     hotelData: {
@@ -101,7 +102,7 @@ export const submitHotel = createAsyncThunk(
 export const deleteHotel = createAsyncThunk(
     'hotelPage/deleteHotel',
     async (hotelId, { getState, rejectWithValue }) => {
-        const token = JSON.parse(localStorage.getItem('userData')).token;
+        const token = getUserToken();
         try {
             const response = await fetch(`${HOTEL_URL}/${hotelId}`, {
                 method: 'DELETE',
@@ -122,7 +123,7 @@ export const deleteHotel = createAsyncThunk(
 export const updateHotel = createAsyncThunk(
     'hotelAdd/updateHotel',
     async ({ hotelId, hotelData }, { rejectWithValue }) => {
-        const token = JSON.parse(localStorage.getItem('userData')).token;
+        const token = getUserToken();
         try {
             const response = await fetch(`${HOTEL_URL}/${hotelId}`, {
                 method: 'PATCH',
