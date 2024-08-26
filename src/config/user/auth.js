@@ -6,7 +6,6 @@ import {redirect} from "react-router-dom";
 
 const getUserData = () => {
     const userData = localStorage.getItem('userData') || sessionStorage.getItem('userData');
-    console.log(userData)
     return userData ? JSON.parse(userData) : null;
 };
 
