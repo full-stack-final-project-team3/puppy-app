@@ -71,6 +71,7 @@ export const fetchUserReservations = createAsyncThunk(
     async ({userId}, {rejectWithValue, dispatch}) => {
         try {
             const token = getUserToken();
+            console.log(token)
             const response = await fetch(`${RESERVATION_URL}/user/${userId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,

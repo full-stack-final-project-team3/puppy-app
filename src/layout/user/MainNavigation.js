@@ -18,7 +18,6 @@ const MainNavigation = ({ drawerOpen, onToggleDrawer }) => {
   const noticeRef = useRef(null);
 
   const userData = JSON.parse(sessionStorage.getItem("userData"));
-  console.log(userData)
 
   const { changeIsLogin, setUser } = useContext(UserContext);
 
@@ -55,7 +54,6 @@ const MainNavigation = ({ drawerOpen, onToggleDrawer }) => {
   useEffect(() => {
     const signInUser = async () => {
       if (userData) {
-        console.log(userDetail)
         const payload = {
           email: userDetail.email,
           password: userDetail.password,
