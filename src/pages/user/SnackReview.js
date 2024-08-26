@@ -33,7 +33,7 @@ const SnackReview = () => {
 
   useEffect(() => {
     fetchOrderHistory();
-  }, [user.id]);
+  }, [user.id, isReviewModalOpen, isEditModalOpen]);
 
   const fetchOrderHistory = async () => {
     try {
@@ -51,7 +51,7 @@ const SnackReview = () => {
       const data = await response.json();
       setOrderHistory(data);
     } catch (error) {
-      //console.error("주문 내역을 가져오지 못했습니다:", error);
+      console.error("주문 내역을 가져오지 못했습니다:", error);
     }
   };
 
