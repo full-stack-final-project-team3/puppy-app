@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import styles from "./BoardPostPage.module.scss";
@@ -8,15 +8,44 @@ import { GiDogHouse } from "react-icons/gi";
 import { MdDelete } from "react-icons/md";
 import {getUserToken} from "../../config/user/auth";
 
+import { FaChevronDown } from "react-icons/fa";
+
 const BoardPostPage = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [images, setImages] = useState([]);
+  const [keywords, setKeywords] = useState([]);
+  const [selectedKeywords, setSelectedKeywords] = useState([]);
+  const [selectedKeyword, setSelectedKeyword] = useState(""); // 선택된 키워드 추가
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
   const navigate = useNavigate();
   const [labelColor, setLabelColor] = useState(styles.imageLabelInactive);
-
   const user = useSelector((state) => state.userEdit.userDetail);
-  // console.log("👽user: " + user.email);
+
+  useEffect(() => {
+    fetchKeywords();
+  }, []);
+
+  const fetchKeywords = async () => {
+    try {
+      const response = await fetch(`${BOARD_URL}/keywords`);
+      if (response.ok) {
+        const data = await response.json();
+        setKeywords(data);
+      }
+    } catch (error) {
+      console.error("키워드 불러오기 실패:", error);
+    }
+  };
+
+  const handleKeywordSelect = (keyword) => {
+    setSelectedKeyword(keyword);
+    if (!selectedKeywords.includes(keyword)) {
+      setSelectedKeywords((prev) => [...prev, keyword]);
+    }
+    setDropdownOpen(false);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,6 +55,7 @@ const BoardPostPage = () => {
       boardTitle: title,
       boardContent: content,
       user: { id: user.id },
+      keyword: selectedKeyword ? { id: selectedKeyword.id } : null,
     };
 
     formData.append(
@@ -57,26 +87,21 @@ const BoardPostPage = () => {
       }
     } catch (error) {
       console.error("Error creating post:", error);
-      // Handle error (e.g., show error message to user)
     }
   };
 
-const handleImageChange = (e) => {
-  if (e.target.files) {
-    const newImages = Array.from(e.target.files);
-    setImages((prevImages) => [...prevImages, ...newImages]);
-
-    // 이미지가 추가될 때 색상 변경
-    setLabelColor(styles.imageLabelActive);
-  }
-};
+  const handleImageChange = (e) => {
+    if (e.target.files) {
+      const newImages = Array.from(e.target.files);
+      setImages((prevImages) => [...prevImages, ...newImages]);
+      setLabelColor(styles.imageLabelActive);
+    }
+  };
 
   const handleImageDelete = (index) => {
     const newImages = [...images];
     newImages.splice(index, 1);
     setImages(newImages);
-
-    // 이미지 수가 0이 되면 색상을 회색으로 변경
     if (newImages.length === 0) {
       setLabelColor(styles.imageLabelInactive);
     }
@@ -115,6 +140,33 @@ const handleImageChange = (e) => {
           className={styles.textarea}
           required
         />
+
+        {/* 여기에 키워드 선택 부분 추가 */}
+        <div className={styles.keywordSection}>
+          <h3 className={styles.keywordTitle}>키워드 선택</h3>
+          <div className={styles.keywordList}>
+            {keywords.map((keyword) => (
+              <button
+                key={keyword.id}
+                type="button"
+                className={`${styles.keywordButton} ${
+                  selectedKeyword && selectedKeyword.id === keyword.id
+                    ? styles.selected
+                    : ""
+                }`}
+                onClick={() => handleKeywordSelect(keyword)}
+              >
+                {keyword.name}
+              </button>
+            ))}
+          </div>
+          {selectedKeyword && (
+            <p className={styles.selectedKeywordText}>
+              선택된 키워드: <span>{selectedKeyword.name}</span>
+            </p>
+          )}
+        </div>
+
         <label
           htmlFor="image-upload"
           className={`${styles.imageLabel} ${labelColor}`}
@@ -129,15 +181,8 @@ const handleImageChange = (e) => {
             accept="image/*"
             multiple
             className={styles.imageInput}
-            style={{ display: "none" }} // 파일 선택 버튼 숨기기
+            style={{ display: "none" }}
           />
-          {/* <button
-            type="button"
-            onClick={() => document.getElementById("image-upload").click()} // 이미지 업로드 버튼 클릭
-            className={styles.imageUploadButton}
-          >
-            이미지 선택
-          </button> */}
           {images.length > 0 && (
             <div className={styles.imagePreview}>
               {images.map((image, index) => (
