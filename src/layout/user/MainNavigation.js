@@ -1,38 +1,38 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
-import { Link, NavLink, useNavigate, useRouteLoaderData } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import styles from "./MainNavigation.module.scss";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { BsBell } from "react-icons/bs";
 import { BiBasket, BiUser } from "react-icons/bi";
 import UserContext from "../../components/context/user-context";
+import { userEditActions } from "../../components/store/user/UserEditSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { dogEditActions } from "../../components/store/dog/DogEditSlice";
-import { userEditActions } from "../../components/store/user/UserEditSlice";
-import { NOTICE_URL, AUTH_URL } from "../../config/user/host-config";
+import {AUTH_URL, NOTICE_URL} from "../../config/user/host-config";
 import NoticeList from "../../components/auth/user/NoticeList";
-import { Cookies } from 'react-cookie';
-import {getUserToken} from "../../config/user/auth";
+import {Cookies} from "react-cookie";
 
 const MainNavigation = ({ drawerOpen, onToggleDrawer }) => {
   const navi = useNavigate();
   const [openNotice, setOpenNotice] = useState(false);
   const noticeRef = useRef(null);
-  const authToken = getUserToken();
 
+  const userData = JSON.parse(sessionStorage.getItem("userData"));
+  console.log(userData)
 
-  const { changeIsLogin, user, setUser } = useContext(UserContext);
-  const userData = useRouteLoaderData("user-data");
+  const { changeIsLogin, setUser } = useContext(UserContext);
+
   const noticeList = useSelector((state) => state.userEdit.userNotice);
   const userDetail = useSelector((state) => state.userEdit.userDetail);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (userData) {
+    if (userDetail) {
       changeIsLogin(true);
-      setUser(userData);
+      setUser(userDetail);
     }
-  }, [userData, changeIsLogin, setUser]);
+  }, [userDetail, changeIsLogin, setUser]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -52,6 +52,43 @@ const MainNavigation = ({ drawerOpen, onToggleDrawer }) => {
     };
   }, [openNotice]);
 
+  useEffect(() => {
+    const signInUser = async () => {
+      if (userData) {
+        console.log(userDetail)
+        const payload = {
+          email: userDetail.email,
+          password: userDetail.password,
+          autoLogin: false,
+        };
+
+
+        try {
+          const response = await fetch(`${AUTH_URL}/sign-in`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+            credentials: 'include',
+          });
+
+          if (response.ok) {
+            const responseDataCookie = await response.json();
+            console.log(responseDataCookie)
+            window.location.reload();
+          }
+        } catch (error) {
+          console.error("로그인 중 오류 발생:", error);
+        }
+      }
+    };
+
+    signInUser();
+  }, []);
+
+
+
+
+
   const fetchNotices = async () => {
     try {
       const response = await fetch(`${NOTICE_URL}/user/${userDetail.id}`);
@@ -65,56 +102,53 @@ const MainNavigation = ({ drawerOpen, onToggleDrawer }) => {
   };
 
   useEffect(() => {
-    if (userDetail.id) {
+    if (userDetail && userDetail.id) {  // userDetail이 존재하고, id가 있을 때만 실행
       fetchNotices();
     }
-  }, [userDetail.id, dispatch]);
+  }, [userDetail, dispatch]);
+
 
   useEffect(() => {
-    if (userDetail.id) {
+    if (userDetail && userDetail.id) {  // userDetail이 존재하고, id가 있을 때만 실행
       fetchNotices();
     }
-  }, [userDetail.noticeCount]);
+  }, [userDetail?.noticeCount]); // userDetail이 undefined일 경우에도 안전하게 처리
+
 
   const logoutHandler = async () => {
     try {
-      const response = await fetch(`${AUTH_URL}/logout/${userDetail.id}`, {
+
+      const userId = userDetail.id;
+      const response = await fetch(`${AUTH_URL}/logout/${userId}`, {
         method: "POST",
-        credentials: 'include', // 쿠키를 포함하여 전송
-        headers: {
-          'Authorization': `Bearer ${authToken}`,
-          'Content-Type': 'application/json'
-        }
+        credentials: "include",
       });
 
       if (response.ok) {
-        console.log("response ok")
-        // 로컬 스토리지 비우기
+
         localStorage.removeItem("userData");
         localStorage.removeItem("userDetail");
+        sessionStorage.removeItem("userData");
+        sessionStorage.removeItem("userDetail");
+        dispatch(userEditActions.updateUserDetail({}));
 
-        if (userDetail.provider !== "KAKAO") {
-          localStorage.removeItem("provider");
-        }
-
-        // 쿠키 삭제
         const cookies = new Cookies();
-        cookies.remove('authToken', { path: '/', domain: 'localhost' });
+        cookies.remove('authToken', { path: '/' }); // 'authToken' 쿠키를 제거합니다.
 
-        // 상태 초기화
-        // dispatch(userEditActions.clearUserDetail());
-        // dispatch(userEditActions.clearUserNotice());
-
-        // 홈으로 리디렉션
-        // navi('/');
-        window.location.reload();
+        const currentUrl = window.location.href;
+        if (currentUrl !== "http://localhost:3000/") {
+          window.location.href = "http://localhost:3000/";
+        } else {
+          window.location.reload();
+        }
       } else {
-        console.error("로그아웃 실패:", await response.text());
+        console.error("로그아웃 요청이 실패했습니다.", response.statusText);
       }
     } catch (error) {
-      console.error("로그아웃 중 오류 발생:", error);
+      console.error("로그아웃 중 오류가 발생했습니다.", error);
     }
   };
+
 
   const loginHandler = () => {
     navi("/login");
@@ -124,7 +158,7 @@ const MainNavigation = ({ drawerOpen, onToggleDrawer }) => {
     setOpenNotice((prevState) => !prevState);
   };
 
-  const clearEditMode = () => {
+  const clearEditMode = async () => {
     dispatch(userEditActions.clearMode());
     dispatch(userEditActions.clearUserEditMode());
     dispatch(dogEditActions.clearEdit());
@@ -173,7 +207,7 @@ const MainNavigation = ({ drawerOpen, onToggleDrawer }) => {
             </NavLink>
           </div>
           <div className={styles.right}>
-            {userDetail.id ? (
+            {userDetail && userDetail.id ? (
                 <>
                   <div className={styles.welcome}>
                     Welcome {userDetail.nickname}
@@ -208,6 +242,7 @@ const MainNavigation = ({ drawerOpen, onToggleDrawer }) => {
                   />
                 </>
             )}
+
           </div>
         </nav>
         <NoticeList
@@ -222,3 +257,4 @@ const MainNavigation = ({ drawerOpen, onToggleDrawer }) => {
 };
 
 export default MainNavigation;
+

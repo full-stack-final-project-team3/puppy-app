@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import MainNavigation from './MainNavigation';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import Drawer from './Drawer';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import Footer from "./Footer";
-import {useSelector} from "react-redux";
+import { useCookies } from 'react-cookie';
+import { AUTH_URL } from '../../config/user/host-config';
+import { useDispatch } from "react-redux";
+import { userEditActions } from "../../components/store/user/UserEditSlice";
+import UserContext from "../../components/context/user-context";
 
 // Container 컴포넌트가 fullHeight prop을 DOM 요소에 전달하지 않도록 설정
 const Container = styled(motion.div).withConfig({
@@ -26,30 +30,9 @@ const MainContent = styled.main`
 `;
 
 const RootLayout = () => {
-
-    const userDetail = useSelector(state => state.userEdit.userDetail);
-    console.log(userDetail.autoLogin)
-
-    useEffect(() => {
-        const handleBeforeUnload = (event) => {
-            if (!userDetail.autoLogin) {
-                localStorage.removeItem('userData');
-                localStorage.removeItem('userDetail');
-            }
-        };
-
-        // 이벤트 리스너 등록
-        window.addEventListener('beforeunload', handleBeforeUnload);
-
-        // 컴포넌트가 언마운트되거나 userDetail.autoLogin 값이 변경될 때 이전 리스너 제거
-        return () => {
-            window.removeEventListener('beforeunload', handleBeforeUnload);
-        };
-    }, [userDetail.autoLogin]); // userDetail.autoLogin이 변경될 때마다 useEffect 재실행
-
-
     const [drawerOpen, setDrawerOpen] = useState(false);
-    const [fullHeight, setFullHeight] = useState(false); // 관리되는 상태
+    const [fullHeight, setFullHeight] = useState(false);
+
 
     useEffect(() => {
         if (drawerOpen) {
