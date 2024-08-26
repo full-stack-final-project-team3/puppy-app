@@ -32,50 +32,7 @@ const MainContent = styled.main`
 const RootLayout = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [fullHeight, setFullHeight] = useState(false);
-    const [cookies, setCookie, removeCookie] = useCookies(['authToken']);
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const { changeIsLogin, setUser } = useContext(UserContext);
 
-    // useEffect(() => {
-    //     const authToken = cookies.authToken;
-    //
-    //     if (authToken) {
-    //         const fetchData = async () => {
-    //             try {
-    //                 const firstResponse = await fetch(`${AUTH_URL}/auto-login`, {
-    //                     method: "POST",
-    //                     headers: {
-    //                         Authorization: `Bearer ${authToken}`,
-    //                         "Content-Type": "application/json",
-    //                     },
-    //                 });
-    //
-    //                 if (firstResponse.ok) {
-    //                     const userData = await firstResponse.json();
-    //
-    //                     // 사용자 세부 정보를 상태에 저장하고 로그인 상태 업데이트
-    //                     dispatch(userEditActions.updateUserDetail(userData));
-    //                     setUser(userData);
-    //                     changeIsLogin(true);
-    //                 } else {
-    //                     // 토큰이 유효하지 않다면 쿠키를 제거하고 로그인 페이지로 이동
-    //                     removeCookie('authToken', { path: '/' });
-    //                     // navigate("/login");
-    //                 }
-    //             } catch (error) {
-    //                 console.error("자동 로그인 중 오류 발생:", error);
-    //                 removeCookie('authToken', { path: '/' });
-    //                 // navigate("/login");
-    //             }
-    //         };
-    //
-    //         fetchData();
-    //     } else {
-    //         // 쿠키가 없으면 로그인 페이지로 이동
-    //         // navigate("/login");
-    //     }
-    // }, [cookies.authToken, dispatch, navigate, removeCookie, changeIsLogin, setUser]);
 
     useEffect(() => {
         if (drawerOpen) {
