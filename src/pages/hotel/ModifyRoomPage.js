@@ -105,10 +105,6 @@ const ModifyRoomPage = () => {
             });
     };
 
-    console.log("roomData", roomData);
-    console.log("room", room)
-    console.log("initialRoomData", initialRoomData);
-
     return (
         <div className={styles.modifyRoomPage}>
             <h1>Modify Room</h1>
