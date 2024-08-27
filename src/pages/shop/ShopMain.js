@@ -29,6 +29,7 @@ const ShopMain = () => {
   }, [dogList, selectedDogId]);
 
   // 유저 정보 가져오기
+
   const getUserData = async (email) => {
     try {
       const userDetailData = await (await fetch(`${AUTH_URL}/${email}`)).json();
@@ -41,9 +42,11 @@ const ShopMain = () => {
   useEffect(() => {
     if (isLoggedIn) {
       const email = user.email; // 유저 이메일을 사용
-      getUserData(email); // 유저 정보 가져오기
+      if (email) {
+        getUserData(email); // 유저 정보 가져오기
+      }
     }
-  }, [isLoggedIn, user.email, dispatch]);
+  }, [isLoggedIn, dispatch]);
 
   const handleSelectChange = (event) => {
     const selectedId = event.target.value;
