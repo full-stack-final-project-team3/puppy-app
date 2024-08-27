@@ -124,6 +124,7 @@ const MainNavigation = ({ drawerOpen, onToggleDrawer }) => {
 
       if (response.ok) {
 
+
         localStorage.removeItem("userData");
         localStorage.removeItem("userDetail");
         sessionStorage.removeItem("userData");
@@ -133,13 +134,16 @@ const MainNavigation = ({ drawerOpen, onToggleDrawer }) => {
         const cookies = new Cookies();
         cookies.remove('authToken', { path: '/' }); // 'authToken' 쿠키를 제거합니다.
 
+
         const currentUrl = window.location.href;
+
         if (currentUrl !== "http://localhost:3000/") {
-          window.location.reload();
-          window.location.href = "http://doggle.kr:3000/";
+          navi("/")
         } else {
-          window.location.reload();
+          navi('/')
         }
+
+
       } else {
         console.error("로그아웃 요청이 실패했습니다.", response.statusText);
       }
