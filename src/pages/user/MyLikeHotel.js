@@ -14,6 +14,8 @@ const MyLikeHotel = () => {
     const dispatch = useDispatch();
     const userDetail = useSelector((state) => state.userEdit.userDetail);
 
+
+
     useEffect(() => {
         if (userDetail && userDetail.id) {
             dispatch(fetchFavorites(userDetail.userId));
@@ -36,6 +38,9 @@ const MyLikeHotel = () => {
     const handleRemoveFavorite = (hotelId) => {
         dispatch(removeFavorite(hotelId));
     };
+
+   
+
 
     if (status === 'loading') {
         return <div>Loading...</div>;
@@ -70,6 +75,7 @@ const MyLikeHotel = () => {
                                         src={getImageUrl(hotel["hotel-images"][0].hotelImgUri)}
                                         alt={`${hotel.hotelName} 이미지`}
                                         className={styles.hotelImage}
+                                        
                                     />
                                 )}
                             </li>
@@ -82,6 +88,7 @@ const MyLikeHotel = () => {
         </div>
             
         <Footer />
+
         </>
     );
 };

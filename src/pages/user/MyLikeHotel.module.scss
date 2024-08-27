@@ -64,6 +64,7 @@
       .hotelImage {
         width: 100px;
         height: 100px;
+        margin-right: 15px;
         border-radius: 12px;
         object-fit: cover;
         z-index: 1;  // 이미지의 z-index를 낮게 설정
@@ -72,7 +73,8 @@
       .favoriteButton {
         position: absolute;
         top: 10px;  // 버튼 위치 조정
-        right: 10px;
+        left: 30px;
+        margin-bottom: 20px;
         background: none;
         border: none;
         cursor: pointer;
@@ -88,7 +90,7 @@
   }
 }
 
-@media (max-width: 400px) {
+@media screen and (max-width: 400px) {
   .wrap {
     width: 87%;
     margin: 10px auto;
@@ -151,7 +153,7 @@
   .favoriteButton {
     position: absolute;
     top: 10px;
-    right: 10px;
+    right: -200px;
     background: none;
     border: none;
     cursor: pointer;
