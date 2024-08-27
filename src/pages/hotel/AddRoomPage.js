@@ -7,6 +7,7 @@ import {
 } from '../../components/store/hotel/RoomAddSlice';
 import styles from './AddRoomPage.module.scss';
 import {AUTH_URL} from '../../config/user/host-config'
+import {getUserToken} from "../../config/user/auth";
 
 
 const AddRoomPage = () => {
@@ -46,7 +47,7 @@ const AddRoomPage = () => {
 
     const handleRoomSubmit = (e) => {
         e.preventDefault();
-        const token = JSON.parse(localStorage.getItem('userData')).token;
+        const token = getUserToken();
         dispatch(submitRoom({ roomData, token, hotelId }))
             .unwrap()
             .then((response) => {

@@ -132,6 +132,7 @@
 
   .adBox {
     height: 400px !important;
+    margin: 0px 10px 10px 10px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -141,7 +142,6 @@
       width: 380px;
       height: 380px;
       background-size: cover;
-      margin-bottom: 20px;
     }
   }
 }

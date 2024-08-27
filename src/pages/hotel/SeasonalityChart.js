@@ -14,6 +14,7 @@ import {
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
+import {userDataLoader} from "../../config/user/auth";
 
 // Dayjs 플러그인 등록
 dayjs.extend(utc);
@@ -72,7 +73,9 @@ const getTypeBasedReservations = (reservations) => {
 const SeasonalityChart = () => {
     const dispatch = useDispatch();
     const { userReservations, status, error } = useSelector(state => state.reservation);
-    const userId = JSON.parse(localStorage.getItem('userData')).userId;
+    const userData = userDataLoader();
+    const userId = userData.userId
+
 
     useEffect(() => {
         if (status === 'idle' && userId) {

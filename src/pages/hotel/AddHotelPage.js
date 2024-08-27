@@ -9,6 +9,7 @@ import {
 import styles from './AddHotelPage.module.scss';
 import RoomModal from "./RoomModal";
 import {AUTH_URL} from '../../config/user/host-config'
+import {getUserToken} from "../../config/user/auth";
 
 // 이미지 URL 생성 함수
 const createImageUrl = (image) => {
@@ -48,7 +49,7 @@ const AddHotelPage = () => {
 
     const handleHotelSubmit = (e) => {
         e.preventDefault();
-        const token = JSON.parse(localStorage.getItem('userData')).token;
+        const token = getUserToken();
         dispatch(submitHotel({ hotelData, token }));
     };
 

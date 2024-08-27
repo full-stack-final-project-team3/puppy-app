@@ -115,8 +115,9 @@ h4 {
 .treatsImage {
   width: 100%;
   height: auto; /* 높이를 자동으로 조정 */
+  min-height: 500px;
   max-height: 500px; /* 최대 높이 설정 */
-  object-fit: cover;
+  // object-fit: cover;
   border-radius: 4px;
   border: $treats-image-border;
 }
@@ -174,6 +175,7 @@ h4 {
 
   .treatsImage {
     max-height: 300px; /* 이미지 최대 높이 조정 */
+    min-height: 300px;
   }
 
   .detailPics {

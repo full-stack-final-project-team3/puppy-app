@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import { v4 as uuidv4 } from 'uuid';
+import {getUserToken} from "../../../config/user/auth";
 
 // Dayjs 플러그인 등록
 dayjs.extend(utc);
@@ -31,9 +32,6 @@ export const fetchAvailableRooms = createAsyncThunk(
         const formattedStartDate = dayjs(startDate).tz('Asia/Seoul').hour(14).minute(0).second(0).format('YYYY-MM-DDTHH:mm:ss');
         const formattedEndDate = dayjs(endDate).tz('Asia/Seoul').hour(11).minute(0).second(0).format('YYYY-MM-DDTHH:mm:ss');
 
-        console.log("start",formattedStartDate);
-        console.log("end", formattedEndDate);
-
         const response = await fetch(`${ROOM_URL}/available?hotelId=${city}&reservationAt=${encodeURIComponent(formattedStartDate)}&reservationEndAt=${encodeURIComponent(formattedEndDate)}`);
         if (!response.ok) {
             throw new Error('Failed to fetch available rooms');
@@ -47,7 +45,7 @@ export const fetchReservation = createAsyncThunk(
     'reservation/fetchReservation',
     async ({reservationId}, {rejectWithValue}) => {
         try {
-            const token = JSON.parse(localStorage.getItem('userData')).token;
+            const token = getUserToken();
             const response = await fetch(`${RESERVATION_URL}/${reservationId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -69,7 +67,7 @@ export const fetchUserReservations = createAsyncThunk(
     'reservation/fetchUserReservations',
     async ({userId}, {rejectWithValue, dispatch}) => {
         try {
-            const token = JSON.parse(localStorage.getItem('userData')).token;
+            const token = getUserToken();
             const response = await fetch(`${RESERVATION_URL}/user/${userId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -170,7 +168,6 @@ export const submitReservationWithKakaoPay = createAsyncThunk(
             }
 
             const paymentData = await paymentResponse.json();
-            console.log('카카오페이 응답 데이터:', paymentData);
 
             // Step 2: 결제 URL로 리다이렉트
             window.location.href = paymentData.next_redirect_pc_url;
@@ -321,7 +318,7 @@ export const submitReservation = createAsyncThunk(
 export const deleteReservation = createAsyncThunk(
     'reservation/deleteReservation',
     async (reservationId, {getState, rejectWithValue}) => {
-        const token = JSON.parse(localStorage.getItem('userData')).token;
+        const token = getUserToken();
         try {
             const response = await fetch(`${RESERVATION_URL}/${reservationId}`, {
                 method: 'DELETE',

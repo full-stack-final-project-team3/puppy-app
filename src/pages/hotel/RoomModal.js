@@ -6,6 +6,7 @@ import {
 } from '../../components/store/hotel/RoomAddSlice';
 import styles from './RoomModal.module.scss';
 import { AUTH_URL } from "../../config/user/host-config";
+import {getUserToken} from "../../config/user/auth";
 
 const RoomModal = ({ hotelId, onClose, onRoomAdded, backHandler }) => {
     const dispatch = useDispatch();
@@ -40,7 +41,7 @@ const RoomModal = ({ hotelId, onClose, onRoomAdded, backHandler }) => {
 
     const handleRoomSubmit = (e) => {
         e.preventDefault();
-        const token = JSON.parse(localStorage.getItem('userData')).token;
+        const token = getUserToken();
         dispatch(submitRoom({ roomData, token, hotelId }))
             .unwrap()
             .then((response) => {

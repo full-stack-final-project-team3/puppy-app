@@ -33,7 +33,7 @@ const SnackReview = () => {
 
   useEffect(() => {
     fetchOrderHistory();
-  }, [user.id]);
+  }, [user.id, isReviewModalOpen, isEditModalOpen]);
 
   const fetchOrderHistory = async () => {
     try {

@@ -41,7 +41,6 @@ const TreatsListForDog = () => {
         document.documentElement;
 
       if (scrollTop + clientHeight >= scrollHeight - 5) {
-        console.log("무한 스크롤 이벤트 실행");
         if (treatsList.length < totalCount) {
           setPageNo((prevPage) => prevPage + 1); // 페이지 번호 증가
         }
@@ -112,8 +111,6 @@ const TreatsListForDog = () => {
         setLoading(false);
       }, 850);
 
-      console.log(data);
-      console.log(currentStep);
     } catch (err) {
       setError(err);
       setLoading(false);
@@ -197,8 +194,6 @@ const TreatsListForDog = () => {
       return prevStep; // 이전 스텝 유지
     });
   };
-
-  console.log(selectedTreats);
 
   const openModal = (treat) => {
     const viewportHeight = window.innerHeight; // 현재 뷰포트의 높이

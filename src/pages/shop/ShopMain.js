@@ -33,7 +33,6 @@ const ShopMain = () => {
     try {
       const userDetailData = await (await fetch(`${AUTH_URL}/${email}`)).json();
       dispatch(userEditActions.updateUserDetail(userDetailData)); // 유저 디테일 업데이트
-      console.log("유저 정보 업데이트 성공")
     } catch (error) {
       console.error("유저 정보를 가져오는 데 실패했습니다:", error);
     }
@@ -51,7 +50,6 @@ const ShopMain = () => {
     setSelectedDogId(selectedId);
     const selectedDog = dogList.find((dog) => dog.id === selectedId);
     setSelectedDog(selectedDog);
-    console.log(selectedDog);
     setSelectedDogName(selectedDog ? selectedDog.dogName : "");
   };
 

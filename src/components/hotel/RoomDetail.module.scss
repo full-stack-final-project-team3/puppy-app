@@ -226,7 +226,7 @@
 }
 
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 400px) and (min-width: 380px) {
   .roomDetail {
     display: flex;
     flex-wrap: wrap;

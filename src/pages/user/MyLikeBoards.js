@@ -5,6 +5,7 @@ import {AUTH_URL} from "../../config/user/host-config";
 import {useSelector} from "react-redux";
 import {Link} from "react-router-dom";
 import {BsChat, BsEye, BsPerson} from "react-icons/bs";
+import Footer from '../../layout/user/Footer';
 
 const MyBoards = () => {
 
@@ -18,7 +19,6 @@ const MyBoards = () => {
             try {
                 const response = await fetch(`${AUTH_URL}/board/like/${user.id}`);
                 const data = await response.json();
-                console.log(data);
                 setData(data);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -29,6 +29,7 @@ const MyBoards = () => {
     }, [user.id]);
 
     return (
+        <>
         <div className={styles.wrap}>
             <MyPageHeader/>
             <div className={styles.subWrap}>
@@ -83,6 +84,9 @@ const MyBoards = () => {
 
             </div>
         </div>
+
+        <Footer />
+        </>
     );
 };
 

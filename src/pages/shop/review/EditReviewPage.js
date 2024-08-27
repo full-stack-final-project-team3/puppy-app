@@ -24,7 +24,7 @@ const EditReviewPage = ({ reviewId, onClose, onReviewDeleted }) => { // onReview
         setRate(data.rate);
         setReviewPics(data.reviewPics || []);
       } catch (error) {
-        console.error('리뷰 조회 오류:', error);
+        //console.error('리뷰 조회 오류:', error);
       }
     };
 
@@ -61,15 +61,15 @@ const EditReviewPage = ({ reviewId, onClose, onReviewDeleted }) => { // onReview
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.error('서버 응답 오류:', errorData);
+        //console.error('서버 응답 오류:', errorData);
         throw new Error(`네트워크 응답이 실패했습니다. 오류: ${errorData.message}`);
       }
 
-      console.log('리뷰 수정 성공');
+      //console.log('리뷰 수정 성공');
       window.location.reload();
     } catch (error) {
-      console.error('리뷰 수정 오류:', error);
-      console.log('리뷰 수정 실패:', error.message);
+      //console.error('리뷰 수정 오류:', error);
+      //console.log('리뷰 수정 실패:', error.message);
     }
   };
 
@@ -86,11 +86,11 @@ const EditReviewPage = ({ reviewId, onClose, onReviewDeleted }) => { // onReview
         throw new Error('리뷰 삭제에 실패했습니다.');
       }
 
-      console.log('리뷰 삭제 성공');
+      //console.log('리뷰 삭제 성공');
       onClose(); // 모달 닫기
       onReviewDeleted(reviewId); // 삭제 후 상태 갱신을 위한 콜백 호출
     } catch (error) {
-      console.error('리뷰 삭제 오류:', error);
+      //console.error('리뷰 삭제 오류:', error);
     }
   };
 

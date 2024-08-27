@@ -176,7 +176,7 @@
   }
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 400px) and (min-width: 380px) {
   .bookingDetail {
     display: flex;
     flex-direction: column !important;

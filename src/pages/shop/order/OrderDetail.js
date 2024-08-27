@@ -66,7 +66,7 @@ const OrderDetail = () => {
         const data = await response.json();
         setOrderDetail(data);
       } catch (error) {
-        console.error("주문 내역을 가져오지 못했다:", error);
+        //console.error("주문 내역을 가져오지 못했다:", error);
       }
     };
 
@@ -97,7 +97,7 @@ const OrderDetail = () => {
       }));
       setShowSuccessModal(true);
     } catch (error) {
-      console.error("주문 취소 실패:", error);
+      //console.error("주문 취소 실패:", error);
     }
   };
 

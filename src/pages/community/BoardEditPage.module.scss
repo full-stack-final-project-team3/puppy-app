@@ -195,3 +195,58 @@
     max-height: 100px;
     /* 이미지 최대 높이 설정 */
 }
+
+.keywordsContainer{
+    padding: 10px;
+}
+
+///
+/// 
+.keywordSection {
+    margin-bottom: 20px;
+}
+
+.keywordLabel {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+}
+
+.keywordSelectWrapper {
+    position: relative;
+    width: 100%;
+}
+
+.keywordSelect {
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 16px;
+    border: 2px solid #B3797A;
+    border-radius: 8px;
+    background-color: #fff;
+    appearance: none;
+    cursor: pointer;
+    transition: border-color 0.3s, box-shadow 0.3s;
+
+    &:focus {
+        outline: none;
+        border-color: #9F5A5B;
+        box-shadow: 0 0 0 2px rgba(179, 121, 122, 0.2);
+    }
+
+    &:hover {
+        border-color: #9F5A5B;
+    }
+}
+
+.keywordSelectWrapper::after {
+    content: '\25BC';
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #B3797A;
+}
+

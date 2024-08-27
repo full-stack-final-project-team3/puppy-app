@@ -75,7 +75,7 @@ const SnackRecords = () => {
                 const data = await response.json();
                 setOrderHistory(data);
             } catch (error) {
-                console.error('주문 내역을 가져오지 못했다:', error);
+                //console.error('주문 내역을 가져오지 못했다:', error);
             }
         };
     
@@ -94,11 +94,11 @@ const SnackRecords = () => {
 
     const handleCancelOrder = async (orderId) => {
         if (!orderId) {
-            console.error('유효하지 않은 주문 ID:', orderId);
+            //console.error('유효하지 않은 주문 ID:', orderId);
             return;
         }
 
-        console.log('취소할 주문 ID:', orderId); // 추가된 로그
+        //console.log('취소할 주문 ID:', orderId); // 추가된 로그
 
         try {
             const response = await fetch(`${SHOP_URL}/orders/cancel/${orderId}`, {
@@ -118,12 +118,12 @@ const SnackRecords = () => {
             setOrderHistory(updatedOrderHistory);
             setShowSuccessModal(true);
         } catch (error) {
-            console.error('주문 취소 실패:', error);
+            //console.error('주문 취소 실패:', error);
         }
     };
 
     const confirmCancelOrder = (orderId) => {
-        console.log('confirmCancelOrder 함수 호출 시 orderId:', orderId); // 추가된 로그
+        //console.log('confirmCancelOrder 함수 호출 시 orderId:', orderId); // 추가된 로그
         setSelectedOrderIndex(orderId);
         setShowConfirmModal(true);
     };
@@ -192,7 +192,7 @@ const SnackRecords = () => {
                                     <button 
                                     className={`${styles.cancelButton} ${styles.cancelButton_gray}`}
                                         onClick={() => {
-                                            console.log('버튼 클릭 시 전달된 주문 ID:', order.orderId); 
+                                            //console.log('버튼 클릭 시 전달된 주문 ID:', order.orderId);
                                             confirmCancelOrder(order.orderId);
                                         }}>
                                         주문 취소
@@ -204,7 +204,7 @@ const SnackRecords = () => {
                         </div>
                     ))
                 ) : (
-                    <p className={styles.noOrder}>주문 내역이 없습니다.</p>
+                    <p className={styles.noOrder}>구독 내역이 없습니다.</p>
                 )}
             </div>
             {showConfirmModal && (

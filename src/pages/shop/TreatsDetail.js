@@ -26,7 +26,6 @@ const TreatDetail = ({ treatsId, toggleTreatSelection }) => {
 
     if (treatsId) {
       fetchTreatDetail(); // treatId가 있을 때만 데이터 요청
-      console.log(treats);
     } else {
       setLoading(false); // treatId가 없으면 로딩 완료
     }
@@ -35,8 +34,6 @@ const TreatDetail = ({ treatsId, toggleTreatSelection }) => {
   if (loading) return <div>로딩 중...</div>; // 로딩 중일 때 표시
   if (error) return <div>에러: {error}</div>; // 에러 발생 시 표시
   if (!treats) return null; // treat가 없으면 null 반환
-
-  console.log(treats["treats-pics"]);
 
   return (
     <TreatsDetailContent

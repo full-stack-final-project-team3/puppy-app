@@ -1,20 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteReservation, fetchUserReservations } from "../../components/store/hotel/ReservationSlice";
-import { fetchReviews } from "../../components/store/hotel/HotelReviewSlice"; // fetchReviews 가져오기
+import { fetchReviews } from "../../components/store/hotel/HotelReviewSlice";
 import MyPageHeader from "../../components/auth/user/mypage/MyPageHeader";
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './HotelRecords.module.scss';
 import HotelModal from '../../components/hotel/HotelModal';
 import {AUTH_URL} from "../../config/user/host-config";
+import {userDataLoader} from "../../config/user/auth";
+import Footer from '../../layout/user/Footer';
+
 
 const HotelRecords = () => {
     const dispatch = useDispatch();
     const { userReservations, status, error } = useSelector(state => state.reservation);
     const { reviewsByReservationId } = useSelector(state => state.reviews);
-    const userId = JSON.parse(localStorage.getItem('userData')).userId;
+    const userData = userDataLoader();
     const userDetail = useSelector((state) => state.userEdit.userDetail);
     const navigate = useNavigate();
+    const userId = userData.userId;
 
     const [showModal, setShowModal] = useState(false);
     const [selectedReservationId, setSelectedReservationId] = useState(null);
@@ -49,7 +53,7 @@ const HotelRecords = () => {
 
     const hasUserReviewed = (reservationId) => {
         const reviews = reviewsByReservationId[reservationId] || [];
-        return reviews.some(review => review.userId === userId);
+        return reviews.some(review => review.userId === userData.userId); // userId로 수정
     };
 
     const handleDeleteReservation = async () => {
@@ -69,9 +73,11 @@ const HotelRecords = () => {
         setShowModal(true);
     };
 
-    const handleAddReview = (hotelId, reservationId) => {
+    const handleAddReview = async (hotelId, reservationId) => {
         if (userDetail && userDetail.id) {
-            navigate(`/add-review/${hotelId}/${reservationId}`);
+            navigate(`/add-review/${hotelId}/${reservationId}`, {
+                state: { from: `/hotel-records` }
+            });
         } else {
             console.error('사용자 ID가 누락되었습니다');
         }
@@ -89,6 +95,12 @@ const HotelRecords = () => {
         return startDate >= today;
     };
 
+    useEffect(() => {
+        if (selectedReservationId) {
+            dispatch(fetchReviews(selectedReservationId));
+        }
+    }, [selectedReservationId, dispatch]);
+
     if (status === 'loading') {
         return <div>Loading...</div>;
     }
@@ -98,6 +110,7 @@ const HotelRecords = () => {
     }
 
     return (
+        <>
         <div className={styles.wrap}>
             <MyPageHeader />
             <div className={styles.subWrap}>
@@ -133,20 +146,20 @@ const HotelRecords = () => {
                                         <div><strong>예약 종료 날짜:</strong> {new Date(reservation.reservationEndAt).toLocaleDateString()}</div>
                                     </div>
                                     <div className={styles.reservationActions}>
-                                <Link 
-                                    to={`/detail-reservation`}
-                                    state={{
-                                        hotel,
-                                        roomName: reservation.room.room_name,
-                                        totalPrice: reservation.price,
-                                        reservationDate: reservation.reservationAt,
-                                        reservationEndDate: reservation.reservationEndAt,
-                                        hotelImage: firstImageUrl
-                                    }}
-                                    className={styles.link}
-                                >
-                                    상세조회
-                                </Link>
+                                        <Link
+                                            to={`/detail-reservation`}
+                                            state={{
+                                                hotel,
+                                                roomName: reservation.room.room_name,
+                                                totalPrice: reservation.price,
+                                                reservationDate: reservation.reservationAt,
+                                                reservationEndDate: reservation.reservationEndAt,
+                                                hotelImage: firstImageUrl
+                                            }}
+                                            className={styles.link}
+                                        >
+                                            상세조회
+                                        </Link>
                                         {isCancelable(reservation.reservationAt) && (
                                             <button
                                                 onClick={() => confirmDeleteReservation(reservation.reservationId)}
@@ -182,6 +195,9 @@ const HotelRecords = () => {
                 />
             )}
         </div>
+
+        <Footer />
+        </>
     );
 };
 
