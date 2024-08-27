@@ -53,7 +53,7 @@ const HotelList = ({onShowProperty, getSliderSettings}) => {
         if (userDetail && userDetail.id) {
             dispatch(fetchFavorites());
         }
-    }, [dispatch, userDetail.id]);
+    }, [dispatch, userDetail]);
 
 
     // 호텔 즐겨찾기 추가
@@ -125,7 +125,7 @@ const HotelList = ({onShowProperty, getSliderSettings}) => {
                         </div>
                         <br></br>
                         <h2>{hotel.name}</h2><br></br>
-                        <p>{hotel.description}</p><br></br>
+                        <p>{hotel.description.length > 100 ? `${hotel.description.substring(0, 100)}…` : hotel.description}</p>
                         <p>{hotel.location}</p>
 
                         {/*<button className={styles.ListButton} onClick={() => handleAddReview(hotel.id)}>리뷰 작성</button>*/}
