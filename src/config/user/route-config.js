@@ -48,7 +48,7 @@ import OrderPage from "../../pages/shop/order/OrderPage"; //쇼핑몰오더
 import ManagementTreats from "../../pages/shop/ManagementTreats.js";
 import EditTreat from "../../pages/shop/EditTreats.js";
 import OrderDetail from "../../pages/shop/order/OrderDetail.js";
-import Logout from "./Logout"; //쇼핑몰상세페이지
+// import Logout from "./Logout"; //쇼핑몰상세페이지
 
 const homeRouter = [
   {
@@ -90,10 +90,10 @@ export const router = createBrowserRouter([
         element: <Home />,
         children: homeRouter,
       },
-      {
-        path: "logout",
-        action: <Logout />,
-      },
+      // {
+      //   path: "logout",
+      //   action: <Logout />,
+      // },
       {
         path: "hotel",
         element: <HotelPage />,
