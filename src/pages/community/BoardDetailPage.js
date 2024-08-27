@@ -252,30 +252,19 @@ const BoardDetailPage = () => {
   };
 
   //공유하기
-  const handleShare = () => {
-    setShowShareModal(true);
-    if (navigator.share) {
-      navigator
-        .share({
-          title: post.boardTitle,
-          text: post.boardContent,
-          url: window.location.href,
-        })
-        .then(() => console.log("공유 성공"))
-        .catch((error) => console.log("공유 오류:", error));
-    } else {
-      const url = window.location.href;
-      navigator.clipboard
-        .writeText(url)
-        .then(() => {
-          // alert("URL이 클립보드에 복사되었습니다.");
-        })
-        .catch((error) => {
-          console.error("클립보드 복사 오류:", error);
-          // alert("URL 복사에 실패했습니다. URL을 직접 복사하여 공유하세요.");
-        });
-    }
-  };
+const handleShare = () => {
+  setShowShareModal(true);
+  const currentUrl = window.location.href;
+  navigator.clipboard
+    .writeText(currentUrl)
+    .then(() => {
+      console.log("클립보드에 복사되었습니다");
+    })
+    .catch((error) => {
+      console.error("클립보드 복사 실패!", error);
+    });
+};
+
   // 공유하기 닫기
   const closeShareModal = () => {
     setShowShareModal(false);
