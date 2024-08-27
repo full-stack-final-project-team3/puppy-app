@@ -122,7 +122,7 @@ function ModifyHotelPage() {
                 </div>
                 <div>
                     <label>Rules Policy:</label>
-                    <input
+                    <textarea
                         type="text"
                         name="rulesPolicy"
                         value={hotelData.rulesPolicy}
@@ -131,7 +131,7 @@ function ModifyHotelPage() {
                 </div>
                 <div>
                     <label>Cancel Policy:</label>
-                    <input
+                    <textarea
                         type="text"
                         name="cancelPolicy"
                         value={hotelData.cancelPolicy}

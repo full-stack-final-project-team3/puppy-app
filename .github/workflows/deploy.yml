@@ -20,6 +20,12 @@ jobs:
       - name: Install Dependencies
         run: npm install  # 의존성 설치
 
+      - name: Create .env File
+        run: |
+          echo REACT_APP_KAKAO_APP_KEY=${{ secrets.REACT_APP_KAKAO_APP_KEY }} >> .env
+          echo REACT_APP_KAKAO_REDIRECT_URL=${{ secrets.REACT_APP_KAKAO_REDIRECT_URL }} >> .env
+          echo REACT_APP_KAKAO_API_KEY=${{ secrets.REACT_APP_KAKAO_API_KEY }} >> .env
+
       - name: Build React App
         run: CI=false npm run build  # 프로덕션 빌드 생성
 
@@ -33,3 +39,4 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
           SOURCE_DIR: 'build'  # 빌드된 파일이 있는 디렉토리
+          

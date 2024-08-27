@@ -146,11 +146,13 @@
       &.rulesPolicy {
         font-size: 1.25em;
         font-weight: bold;
+        white-space: pre-wrap;
       }
 
       &.cancelPolicy {
         font-size: 1.25em;
         font-weight: bold;
+        white-space: pre-wrap;
       }
     }
   }

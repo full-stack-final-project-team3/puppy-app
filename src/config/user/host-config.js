@@ -11,7 +11,7 @@ if (clientHostName === "localhost") {
   frontendHostName = "http://localhost:" + LOCAL_FRONT;
 } else {
   backendHostName = 'http://43.203.105.27:8888';
-  frontendHostName = "http://43.203.105.27:3000";
+  frontendHostName = "http://doggle.kr";
 }
 
 
