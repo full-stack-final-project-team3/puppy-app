@@ -18,9 +18,17 @@ const DogWeightInput = ({ dogWeightValue }) => {
         const value = e.target.value.replace(/[^0-9]/g, ''); // 숫자 외 문자 제거
         ref.current.value = value;
 
+        const firstValue = parseFloat(firstRef.current.value) || 0;
+        const secondValue = parseFloat(secondRef.current.value) || 0;
+        const totalWeight = firstValue + secondValue / 10;
+
         // 입력된 값이 없으면 isValid를 false로 설정
         if (firstRef.current.value === "" && secondRef.current.value === "") {
             setIsValid(false);
+            setError("입력값이 비어있습니다.");
+        } else if (totalWeight > 100) {
+            setIsValid(false);
+            setError("체중은 100키로 이상 불가능합니다.");
         } else {
             setIsValid(true);
             setError(""); // 에러 메시지 초기화
@@ -31,27 +39,41 @@ const DogWeightInput = ({ dogWeightValue }) => {
         const firstValue = parseFloat(firstRef.current.value) || 0;
         const secondValue = parseFloat(secondRef.current.value) || 0;
         const totalWeight = firstValue + secondValue / 10;
-        setWeight(totalWeight);
-        if (dogWeightValue) {
-            dogWeightValue(totalWeight);
+
+        if (firstRef.current.value === "" && secondRef.current.value === "") {
+            setError("입력값이 비어있습니다.");
+            setIsValid(false);
+        } else if (totalWeight > 100) {
+            setError("체중은 100키로 이상 불가능합니다.");
+            setIsValid(false);
+        } else {
+            setWeight(totalWeight);
+            setIsValid(true);
+            if (dogWeightValue) {
+                dogWeightValue(totalWeight);
+            }
         }
     };
 
     const nextStep = () => {
         const firstValue = parseFloat(firstRef.current.value) || 0;
         const secondValue = parseFloat(secondRef.current.value) || 0;
-
-        // 입력된 값이 없으면 에러 메시지 설정
-        if (firstValue === 0 && secondValue === 0) {
-            setError("무게를 입력해주세요.");
-            setIsValid(false);
-            return;
-        }
-
         const totalWeight = firstValue + secondValue / 10;
-        setWeight(totalWeight);
-        if (dogWeightValue && firstValue) {
-            dogWeightValue(totalWeight);
+
+        // 입력된 값이 없거나 100을 초과하면 에러 메시지 설정
+        if (firstRef.current.value === "" && secondRef.current.value === "") {
+            setError("입력값이 비어있습니다.");
+            setIsValid(false);
+        } else if (totalWeight > 100) {
+            setError("체중은 100키로 이상 불가능합니다.");
+            setIsValid(false);
+        } else {
+            setWeight(totalWeight);
+            setIsValid(true);
+            setError("");
+            if (dogWeightValue) {
+                dogWeightValue(totalWeight);
+            }
         }
     };
 

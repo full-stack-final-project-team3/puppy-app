@@ -39,7 +39,12 @@ const PaymentInfo = ({
             모두사용
           </button>
           <p className={styles.pointPaymentMessage}>사용 가능: {user.point.toLocaleString()}p</p>
-          <p>사용 후 남은 포인트: {remainingPoints.toLocaleString()}p</p>
+          {
+            user.point ?
+              <p>사용 후 남은 포인트: {remainingPoints.toLocaleString()}p</p>
+              :
+            <p className={styles.chargePoint}>* 포인트는 마이페이지에서 충전하실 수 있습니다. (마이페이지 -> 수정)</p>
+          }
         </div>
       )}
         
