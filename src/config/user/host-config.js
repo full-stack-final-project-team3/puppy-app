@@ -14,6 +14,7 @@ if (clientHostName === "localhost") {
   frontendHostName = "http://43.203.105.27:3000";
 }
 
+
 const API_BASE_URL = backendHostName;
 const APP_BASE_URL = frontendHostName;
 
