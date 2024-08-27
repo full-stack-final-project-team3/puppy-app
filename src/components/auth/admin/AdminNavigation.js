@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { useDispatch } from 'react-redux';
-import { adminActions } from "../../store/user/AdminSlice"; // 적절한 경로로 수정하세요
+import { adminActions } from "../../store/user/AdminSlice";
 import styles from './AdminNavigation.module.scss';
 
 const AdminNavigation = ({ exit }) => {
     const dispatch = useDispatch();
+    const [active, setActive] = useState(false);
 
     const handleNavigationClick = (componentName) => {
         dispatch(adminActions.setVisibleComponent(componentName));

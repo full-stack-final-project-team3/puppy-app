@@ -18,7 +18,6 @@ const MyBoards = () => {
             try {
                 const response = await fetch(`${AUTH_URL}/board/like/${user.id}`);
                 const data = await response.json();
-                console.log(data);
                 setData(data);
             } catch (error) {
                 console.error('Error fetching data:', error);

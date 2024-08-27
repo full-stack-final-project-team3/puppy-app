@@ -5,11 +5,7 @@ import Drawer from './Drawer';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import Footer from "./Footer";
-import { useCookies } from 'react-cookie';
-import { AUTH_URL } from '../../config/user/host-config';
-import { useDispatch } from "react-redux";
-import { userEditActions } from "../../components/store/user/UserEditSlice";
-import UserContext from "../../components/context/user-context";
+
 
 // Container 컴포넌트가 fullHeight prop을 DOM 요소에 전달하지 않도록 설정
 const Container = styled(motion.div).withConfig({
