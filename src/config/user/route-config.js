@@ -77,9 +77,9 @@ export const router = createBrowserRouter([
   {
     path: "/",
     element: (
-        <UserProvider>
-          <RootLayout />
-        </UserProvider>
+      <UserProvider>
+        <RootLayout />
+      </UserProvider>
     ),
     loader: userDataLoader,
     id: "user-data",
@@ -167,17 +167,17 @@ export const router = createBrowserRouter([
       {
         path: "board",
         element: <BoardPage />,
-        loader: authCheckLoader,
+        // loader: authCheckLoader,
       },
       {
         path: "board/search",
         element: <BoardPage />,
-        loader: authCheckLoader,
+        // loader: authCheckLoader,
       },
       {
         path: "board/:id",
         element: <BoardDetailPage />,
-        loader: authCheckLoader,
+        // loader: authCheckLoader,
       },
       {
         path: "board/create",
@@ -202,7 +202,7 @@ export const router = createBrowserRouter([
       {
         path: "board/keywords", // 게시판 태그 추가 (관리자만 가능)
         element: <BoardPage />,
-        loader: authCheckLoader,
+        // loader: authCheckLoader,
       },
       {
         path: "board/keywords/:id", // 게시판 태그 삭제 (관리자만 가능)
