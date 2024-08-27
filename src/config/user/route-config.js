@@ -132,7 +132,7 @@ export const router = createBrowserRouter([
       {
         path: "treats",
         element: <ShopMain />,
-        loader: authCheckLoader,
+        // loader: authCheckLoader,
       },
       {
         path: "add-treats",
