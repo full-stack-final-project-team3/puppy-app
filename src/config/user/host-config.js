@@ -14,6 +14,7 @@ if (clientHostName === "localhost") {
   frontendHostName = "http://doggle.kr";
 }
 
+
 const API_BASE_URL = backendHostName;
 const APP_BASE_URL = frontendHostName;
 
