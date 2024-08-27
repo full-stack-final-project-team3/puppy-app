@@ -82,7 +82,7 @@
 }
 
 /* 반응형 디자인을 위한 미디어 쿼리 */
-@media (max-width: 400px) {
+@media screen and (max-width: 400px) and (min-width: 380px) {
   .stepContent {
     padding: 10px; /* 아이폰 12 화면에 맞게 패딩 추가 */
   }
