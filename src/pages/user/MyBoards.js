@@ -6,6 +6,7 @@ import {useSelector} from "react-redux";
 import {Link} from "react-router-dom";
 import {BsChat, BsEye, BsPerson} from "react-icons/bs";
 import Footer from '../../layout/user/Footer';
+import {HiOutlineHeart} from "react-icons/hi2";
 
 const MyBoards = () => {
 
@@ -28,6 +29,7 @@ const MyBoards = () => {
         fetchList();
     }, [userDetail.id]);
 
+    console.log(data)
 
     return (
         <>
@@ -62,6 +64,9 @@ const MyBoards = () => {
                       </span>
                                                 <span className={styles.viewCount}>
                         <BsEye/> {post.viewCount}
+                      </span>
+                                                <span className={styles.likes}>
+                        <HiOutlineHeart/> {post.likeCount}
                       </span>
                                             </div>
                                         </div>
