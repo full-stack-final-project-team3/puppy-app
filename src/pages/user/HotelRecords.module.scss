@@ -110,7 +110,7 @@
   }
 }
 
-@media (max-width: 400px) {
+@media screen and (max-width: 400px) and (min-width: 380px) {
   .wrap {
     width: 87%; /* Adjusted to better fit the screen */
     margin: 10px auto;

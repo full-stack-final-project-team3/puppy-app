@@ -117,7 +117,7 @@
 
 
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 400px) and (min-width: 380px) {
   .stepContent {
     width: 90% !important;
     height: 0vh;
