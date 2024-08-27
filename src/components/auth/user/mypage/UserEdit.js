@@ -32,6 +32,7 @@ const UserEdit = () => {
 
     const [showModal, setShowModal] = useState(false);
     const [modalText, setModalText] = useState('');
+    const [pointErrorMessage, setPointErrorMessage] = useState(''); // 포인트 에러 메시지 상태 추가
 
     const dispatch = useDispatch();
 
@@ -108,9 +109,22 @@ const UserEdit = () => {
         let value = e.target.value.replace(/,/g, '').replace('p', '');
         value = parseInt(value, 10) || 0;
 
+        // 경고 메시지와 상태 업데이트를 위한 로컬 변수
+        let warningMessage = '';
+        let isDisabled = false;
+
+        if (value > 1000000000) {
+            warningMessage = '포인트는 10억 이하로 입력해주세요.';
+            isDisabled = true;
+        } else if (value < 0) {
+            warningMessage = '포인트는 음수일 수 없습니다.';
+            isDisabled = true;
+        }
+
         setPoint(value);
         setFormattedPoint(`${new Intl.NumberFormat('ko-KR').format(value)}p`);
-        setIsSubmitDisabled(false);
+        setIsSubmitDisabled(isDisabled);
+        setPointErrorMessage(warningMessage); // 경고 메시지 설정
 
         const cursorPosition = e.target.selectionStart;
 
@@ -219,11 +233,11 @@ const UserEdit = () => {
                     onChange={handleFileChange}
                 />
             </div>
-                {fileErrorMessage && (
-                    <p className={styles.fileErrorMessage}>
-                        {fileErrorMessage}
-                    </p>
-                )}
+            {fileErrorMessage && (
+                <p className={styles.fileErrorMessage}>
+                    {fileErrorMessage}
+                </p>
+            )}
             <div className={styles.form}>
                 <div className={styles.section}>
                     <label htmlFor="email">이메일</label>
@@ -302,6 +316,11 @@ const UserEdit = () => {
                             onChange={handlePointInputChange}
                             ref={pointInputRef}
                         />
+                        {pointErrorMessage && (
+                            <p className={styles.errorMessage}>
+                                {pointErrorMessage}
+                            </p>
+                        )}
                     </div>
                 </div>
                 <div className={styles.section}>
