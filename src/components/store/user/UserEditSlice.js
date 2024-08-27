@@ -42,7 +42,6 @@ const userEditSlice = createSlice({
         },
         setUserCookie(state, action) {
             state.userCookie = action.payload;
-            console.log(state.userCookie)
         }
         // updateUserNotice(state, action) {
         //     const updatedNotice = state.userNotice.map(notice =>
