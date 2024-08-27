@@ -151,8 +151,14 @@ const CloseButton = styled(motion.button)`
     left: -8%;
   }
   @media (max-width: 400px) {
-  right: calc(42.5% - 100px); /* 기존 위치에서 30px 더 오른쪽으로 이동 */
+    right: calc(42.5% - 100px);
+    top: 2%;
+    right: 0 !important;
+    left: 85%;
+    width: 50px;
+    height: 50px;
   }
+
 
   .x-shape {
     width: 60%;
