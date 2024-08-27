@@ -135,6 +135,7 @@ const MainNavigation = ({ drawerOpen, onToggleDrawer }) => {
 
         const currentUrl = window.location.href;
         if (currentUrl !== "http://localhost:3000/") {
+          window.location.reload();
           window.location.href = "http://doggle.kr:3000/";
         } else {
           window.location.reload();
