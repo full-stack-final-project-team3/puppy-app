@@ -97,7 +97,7 @@ export const router = createBrowserRouter([
       {
         path: "hotel",
         element: <HotelPage />,
-        loader: authCheckLoader,
+        // loader: authCheckLoader,
       },
       {
         path: "add-hotel",

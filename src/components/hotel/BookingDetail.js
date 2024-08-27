@@ -1,14 +1,15 @@
-import React, { useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 import styles from './BookingDetail.module.scss';
 import { useSelector, useDispatch } from 'react-redux';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import {useNavigate} from "react-router-dom";
-import {setTotalPrice} from "../store/hotel/ReservationSlice";
+import { useNavigate } from "react-router-dom";
+import { setTotalPrice } from "../store/hotel/ReservationSlice";
 import Footer from '../../layout/user/Footer';
-import {AUTH_URL} from "../../config/user/host-config"
+import { AUTH_URL } from "../../config/user/host-config";
+import HotelModal from '../hotel/HotelModal';  // HotelModal 임포트
 
 const BookingDetail = ({ hotel, startDate, endDate, onPay }) => {
     const [roomCount, setRoomCount] = React.useState(1);
@@ -17,9 +18,10 @@ const BookingDetail = ({ hotel, startDate, endDate, onPay }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const userData = useSelector((state) => state.userEdit.userDetail);
-    const isAdmin =userData && userData.role === 'ADMIN';
+    const isAdmin = userData && userData.role === 'ADMIN';
     const roomPrice = selectedRoom ? selectedRoom['room-price'] || 0 : 0;
     const finalPersonCount = personCount || 1;
+    const [showLoginModal, setShowLoginModal] = useState(false);  // 로그인 모달 상태
 
     const checkInDate = new Date(startDate);
     const checkOutDate = new Date(endDate);
@@ -34,6 +36,25 @@ const BookingDetail = ({ hotel, startDate, endDate, onPay }) => {
 
     const handleModifyRoom = () => {
         navigate(`/modify-room/${selectedRoom['room-id']}`, { state: { hotel, room: selectedRoom } });
+    };
+
+    const handleBookNow = () => {
+        if (!userData || !userData.id) {
+            // 로그인되지 않은 경우 모달을 표시
+            setShowLoginModal(true);
+        } else {
+            // 로그인된 경우 결제 프로세스 진행
+            onPay(hotel, selectedRoom, totalPrice);
+        }
+    };
+
+    const handleConfirmLogin = () => {
+        setShowLoginModal(false);
+        navigate('/login'); // 로그인 페이지로 이동
+    };
+
+    const handleCloseModal = () => {
+        setShowLoginModal(false);
     };
 
     if (!hotel) {
@@ -67,8 +88,6 @@ const BookingDetail = ({ hotel, startDate, endDate, onPay }) => {
     const handleIncrement = () => setRoomCount(roomCount + 1);
     const handleDecrement = () => setRoomCount(Math.max(1, roomCount - 1));
 
-
-
     const getImageUrl = (imageUri) => {
         if (imageUri && imageUri.startsWith('/local/')) {
             return `${AUTH_URL}${imageUri.replace('/local', '/hotel/images')}`;
@@ -96,7 +115,6 @@ const BookingDetail = ({ hotel, startDate, endDate, onPay }) => {
         viewport: { once: false },
         transition: { ease: "easeInOut", duration: 1, y: { duration: 0.5 } }
     };
-
 
     return (
         <>
@@ -134,7 +152,7 @@ const BookingDetail = ({ hotel, startDate, endDate, onPay }) => {
                             <span className={styles.priceLabel}>Total Price: </span>
                             <span className={styles.priceValue}>{formatPrice(totalPrice)} 원</span>
                         </div>
-                        <button className={styles.bookNow} onClick={() => onPay(hotel, selectedRoom, totalPrice)}>Book Now</button>
+                        <button className={styles.bookNow} onClick={handleBookNow}>Book Now</button>
                     </div>
                 </div>
 
@@ -144,6 +162,17 @@ const BookingDetail = ({ hotel, startDate, endDate, onPay }) => {
                 </motion.div>
             </div>
             <Footer />
+
+            {showLoginModal && (
+                <HotelModal
+                    title="로그인이 필요한 서비스 입니다."
+                    message="로그인 페이지로 이동하시겠습니까?"
+                    onConfirm={handleConfirmLogin}
+                    onClose={handleCloseModal}
+                    confirmButtonText="예"
+                    showCloseButton={true}
+                />
+            )}
         </>
     );
 };
