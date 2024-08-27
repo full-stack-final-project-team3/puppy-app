@@ -125,15 +125,24 @@ const EditReviewPage = ({ reviewId, onClose, onReviewDeleted }) => { // onReview
               onChange={handleFileChange}
             />
           </div>
+          {/* 수정했을 때 이미지 안보이는 오류 수정  */}
           <div>
-            {reviewPics.map((pic, index) => (
-              <img
-                key={index}
-                src={`${REVIEW_URL}/review-img/${pic.reviewPic}`}
-                alt={`Review Pic ${index + 1}`}
-                className={styles.review_image}
-              />
-            ))}
+              {reviewPics.map((pic, index) => {
+                  const isNewFile = pic instanceof File;
+                  const imageUrl = isNewFile 
+                      ? URL.createObjectURL(pic) 
+                      : `${REVIEW_URL}/review-img/${pic.reviewPic}`;
+
+                  return (
+                      <img
+                          key={index}
+                          src={imageUrl}
+                          alt={`Review Pic ${index + 1}`}
+                          className={styles.review_image}
+                          onLoad={() => isNewFile && URL.revokeObjectURL(imageUrl)} // 이미지 로딩 후 객체 URL 해제
+                      />
+                  );
+              })}
           </div>
 
           <div className={styles.button_container}> {/* 버튼을 감싸는 div 추가 */}

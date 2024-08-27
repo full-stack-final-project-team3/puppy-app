@@ -151,7 +151,7 @@ const WriteReviewPage = ({ orderId, treatId, dogId, treatTitle, onClose }) => {
                 )}
               </div>
             ))}
-            <button type="button" onClick={handleAddPic}>이미지 추가</button>
+            {/* <button type="button" onClick={handleAddPic}>이미지 추가</button> */}
           </div>
           <div className={styles.button_container}>
             <button type="submit" onClick={onClose}>닫기</button> {/* onClose 함수를 연결 */}
