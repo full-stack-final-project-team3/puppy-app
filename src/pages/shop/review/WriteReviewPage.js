@@ -103,7 +103,8 @@ const WriteReviewPage = ({ orderId, treatId, dogId, treatTitle, onClose }) => {
         };
         dispatch(userEditActions.updateUserDetail(updatedUserDetailWithNoticeCount));
 
-        window.location.reload();
+        // window.location.reload();
+        onClose(); // 20240826: 리뷰가 성공적으로 제출이 되면 모달을 닫는거임
       } catch (error) {
         //console.error('알림 등록 오류:', error);
       }

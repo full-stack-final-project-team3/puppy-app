@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark as filledBookmark } from "@fortawesome/free-solid-svg-icons";
 import { faBookmark as emptyBookmark } from "@fortawesome/free-regular-svg-icons";
 import {AUTH_URL} from "../../config/user/host-config";
+import Footer from '../../layout/user/Footer';
 
 const MyLikeHotel = () => {
     const { favorites, status } = useSelector(state => state.favorites);
@@ -45,6 +46,7 @@ const MyLikeHotel = () => {
     }
 
     return (
+        <>
         <div className={styles.wrap}>
             <MyPageHeader />
             <div className={styles.subWrap}>
@@ -78,6 +80,9 @@ const MyLikeHotel = () => {
                 )}
             </div>
         </div>
+            
+        <Footer />
+        </>
     );
 };
 

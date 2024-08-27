@@ -5,6 +5,7 @@ import {BOARD_URL} from "../../config/user/host-config";
 import {useSelector} from "react-redux";
 import {Link} from "react-router-dom";
 import {BsChat, BsEye, BsPerson} from "react-icons/bs";
+import Footer from '../../layout/user/Footer';
 
 const MyBoards = () => {
 
@@ -29,6 +30,7 @@ const MyBoards = () => {
 
 
     return (
+        <>
         <div className={styles.wrap}>
             <MyPageHeader/>
             <div className={styles.subWrap}>
@@ -83,6 +85,9 @@ const MyBoards = () => {
 
             </div>
         </div>
+
+        <Footer />
+        </>
     );
 };
 
