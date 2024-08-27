@@ -8,15 +8,21 @@ import {
     modifyReview
 } from '../../components/store/hotel/HotelReviewSlice';
 import { fetchUserReservations } from '../../components/store/hotel/ReservationSlice';
-import { Modal, ModalBody, Button } from "reactstrap";
+import { Modal, Button } from "react-bootstrap"; // react-bootstrap에서 가져오기
 import { FaStar } from 'react-icons/fa';
 import RatingInput from '../shop/review/RatingInput';
+import HotelModal from '../../components/hotel/HotelModal';
 
 const HotelReview = () => {
     const { hotelId } = useParams();
     const dispatch = useDispatch();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingReview, setEditingReview] = useState({ reviewContent: '', rate: 0 });
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [isEditConfirmModalOpen, setIsEditConfirmModalOpen] = useState(false);
+    const [isCompletionModalOpen, setIsCompletionModalOpen] = useState(false);
+    const [completionMessage, setCompletionMessage] = useState('');
+    const [reviewToDelete, setReviewToDelete] = useState(null);
 
     const reviewsByReservationId = useSelector(state => state.reviews.reviewsByReservationId);
     const { userReservations } = useSelector(state => state.reservation);
@@ -49,11 +55,19 @@ const HotelReview = () => {
         fetchAllReviews();
     }, [dispatch, userReservations]);
 
-    // 리뷰 삭제
-    const deleteReviewHandler = async (reviewId) => {
+    // 리뷰 삭제 모달 열기
+    const openDeleteModal = (review) => {
+        setReviewToDelete(review);
+        setIsDeleteModalOpen(true);
+    };
+
+    // 리뷰 삭제 처리
+    const confirmDeleteReview = async () => {
         try {
-            await dispatch(deleteReview({ reviewId, userId }));
-            alert("리뷰가 삭제되었습니다.");
+            await dispatch(deleteReview({ reviewId: reviewToDelete.id, userId }));
+            setIsDeleteModalOpen(false);
+            setCompletionMessage('리뷰가 삭제되었습니다.');
+            setIsCompletionModalOpen(true);
             // 삭제 후 리뷰 목록 다시 불러오기
             await dispatch(fetchUserReservations({ userId }));
         } catch (error) {
@@ -74,6 +88,12 @@ const HotelReview = () => {
         setEditingReview({ reviewContent: '', rate: 0 });
     };
 
+    // 수정 확인 모달 열기
+    const openEditConfirmModal = () => {
+        setIsModalOpen(false);  // 리뷰 수정 모달을 먼저 닫음
+        setIsEditConfirmModalOpen(true);  // 그 후 확인 모달을 띄움
+    };
+
     // 리뷰 수정 저장
     const handleEditSubmit = async () => {
         try {
@@ -83,8 +103,9 @@ const HotelReview = () => {
                 reviewContent: editingReview.reviewContent,
                 rate: editingReview.rate
             }));
-            alert("리뷰가 수정되었습니다.");
-            closeModal();
+            setIsEditConfirmModalOpen(false);
+            setCompletionMessage('리뷰가 수정되었습니다.');
+            setIsCompletionModalOpen(true);
             // 수정 후 리뷰 목록 다시 불러오기
             await dispatch(fetchUserReservations({ userId }));
         } catch (error) {
@@ -115,12 +136,12 @@ const HotelReview = () => {
                     <p>{review.reviewContent}</p>
                 </div>
                 <div className={styles.reviewFooter}>
-                    <span>Rating: 
+                    <span>Rating:
                         <span className={styles.star}>&nbsp;{renderStars(review.rate)}</span>
                     </span>
                     <div className={styles.actions}>
-                        <button className={styles.actionLink} onClick={() => deleteReviewHandler(review.id)}>삭제</button>
                         <button className={styles.actionLink} onClick={() => openModal(review)}>수정</button>
+                        <button className={styles.actionLink} onClick={() => openDeleteModal(review)}>삭제</button>
                     </div>
                 </div>
             </div>
@@ -144,17 +165,16 @@ const HotelReview = () => {
                 <p className={styles.noReview}>작성하신 리뷰가 없습니다.</p>
             )}
 
-            <Modal isOpen={isModalOpen} toggle={closeModal} className={styles.modal}>
-
-                <ModalBody className={styles.modalBody}>
-                        <textarea
-                            name="reviewContent"
-                            placeholder="Write your review here..."
-                            value={editingReview.reviewContent}
-                            onChange={handleChange}
-                            required
-                            className={styles.textarea}
-                        />
+            <Modal show={isModalOpen} onHide={closeModal} className={styles.modal}>
+                <Modal.Body className={styles.modalBody}>
+                    <textarea
+                        name="reviewContent"
+                        placeholder="Write your review here..."
+                        value={editingReview.reviewContent}
+                        onChange={handleChange}
+                        required
+                        className={styles.textarea}
+                    />
                     <label className={styles.label}>
                         Rate:
                         <RatingInput
@@ -165,19 +185,53 @@ const HotelReview = () => {
                     <div className={styles.modalActions}>
                         <Button
                             className={styles.primaryButton}
-                            color="primary"
-                            onClick={handleEditSubmit}>
+                            variant="primary"
+                            onClick={openEditConfirmModal}>
                             저장
                         </Button>{' '}
                         <Button
                             className={styles.secondaryButton}
-                            color="secondary"
+                            variant="secondary"
                             onClick={closeModal}>
                             취소
                         </Button>
                     </div>
-                </ModalBody>
+                </Modal.Body>
             </Modal>
+
+            {/* 리뷰 삭제 확인 모달 */}
+            {isDeleteModalOpen && (
+                <HotelModal
+                    title="리뷰 삭제"
+                    message="정말로 이 리뷰를 삭제하시겠습니까?"
+                    onConfirm={confirmDeleteReview}
+                    onClose={() => setIsDeleteModalOpen(false)}
+                    confirmButtonText="예"
+                />
+            )}
+
+            {/* 리뷰 수정 확인 모달 */}
+            {isEditConfirmModalOpen && (
+                <HotelModal
+                    title="리뷰 수정"
+                    message="정말로 이 리뷰를 수정하시겠습니까?"
+                    onConfirm={handleEditSubmit}
+                    onClose={() => setIsEditConfirmModalOpen(false)}
+                    confirmButtonText="예"
+                />
+            )}
+
+            {/* 작업 완료 모달 */}
+            {isCompletionModalOpen && (
+                <HotelModal
+                    title="완료"
+                    message={completionMessage}
+                    onConfirm={() => setIsCompletionModalOpen(false)}
+                    onClose={() => setIsCompletionModalOpen(false)}
+                    confirmButtonText="확인"
+                    showCloseButton={false}
+                />
+            )}
         </div>
     );
 };
