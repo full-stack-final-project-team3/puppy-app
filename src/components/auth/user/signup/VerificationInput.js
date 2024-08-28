@@ -29,12 +29,12 @@ const VerificationInput = ({ email, onSuccess }) => {
       const flag = await response.json();
 
       if (!flag) {
-        setError("유효하지 않거나 만료된 코드입니다. 인증코드를 재발송합니다.");
+        setError("유효하지 않거나 만료된 코드입니다 인증코드를 재발송합니다");
         setCodes(Array(4).fill(""));
         setTimer(300);
         inputsRef.current[0].focus();
       } else {
-        setSuccess("인증이 완료되었습니다.");
+        setSuccess("인증이 완료되었습니다");
         setError('');
         setTimeout(() => {
           onSuccess();
@@ -58,12 +58,12 @@ const VerificationInput = ({ email, onSuccess }) => {
         const flag = await response.json();
 
         if (!flag) {
-          setError("유효하지 않거나 만료된 코드입니다. 인증코드를 재발송합니다.");
+          setError("유효하지 않거나 만료된 코드입니다 인증코드를 재발송합니다");
           setCodes(Array(4).fill(""));
           // setTimer(300);
           inputsRef.current[0].focus();
         } else {
-          setSuccess("인증이 완료되었습니다.");
+          setSuccess("인증이 완료되었습니다");
           setError('');
           onSuccess();
         }
