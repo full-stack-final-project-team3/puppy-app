@@ -45,7 +45,8 @@ const DeleteAccountModal = ({ onClose }) => {
 
     const submitDeleteHandler = async () => {
         const response = await fetch(`${AUTH_URL}/${user.id}`, {
-            method: "DELETE"
+            method: "DELETE",
+            credentials: "include",
         });
         localStorage.removeItem('userData');
         localStorage.removeItem('userDetail');
@@ -60,7 +61,7 @@ const DeleteAccountModal = ({ onClose }) => {
         const currentUrl = window.location.href;
 
         if (currentUrl !== "http://localhost:3000/") {
-            navi("/")
+            navi("/doggle.kr")
         } else {
             navi('/')
         }
