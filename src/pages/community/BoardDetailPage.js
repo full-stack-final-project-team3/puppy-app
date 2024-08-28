@@ -91,8 +91,8 @@ const BoardDetailPage = () => {
 
         console.log(user);
         console.log(userData);
-        console.log("userData: " + userData?.role);
-        console.log("isAdmin상태쳌: " + isAdmin);
+        // console.log("userData: " + userData?.role);
+        // console.log("isAdmin상태쳌: " + isAdmin);
         const postData = await fetchPostDetail(
           isLoggedIn ? userData.token : null
         );
@@ -129,19 +129,19 @@ const BoardDetailPage = () => {
   //함수 목록들
   //----------------------
   const fetchPostDetail = async (token) => {
-    console.log("🐶 게시물 상세 정보를 가져오는 중...");
+    // console.log("🐶 게시물 상세 정보를 가져오는 중...");
     const headers = token ? { Authorization: `Bearer ${token}` } : {};
     const response = await fetch(`${BOARD_URL}/${id}`, { headers });
     if (!response.ok) {
       throw new Error("게시물 정보를 가져오는 데 실패했습니다.");
     }
     const data = await response.json();
-    console.log("🐶 게시물 데이터:", data);
+    // console.log("🐶 게시물 데이터:", data);
     return data;
   };
   //
   const fetchLikeStatus = async (token) => {
-    console.log("🐶 좋아요 상태 가져오는 중...");
+    // console.log("🐶 좋아요 상태 가져오는 중...");
     const postLikeResponse = await fetch(`${LIKE_URL}/board/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -311,7 +311,7 @@ const BoardDetailPage = () => {
 
   // 게시글 삭제 함수
   const handleDelete = () => {
-    console.log("게시글 삭제됩니다.");
+    // console.log("게시글 삭제됩니다.");
     //  setDeleteTarget({ type: "post", id: post.id });
     setShowDeleteModal(true);
   };
@@ -349,7 +349,7 @@ const BoardDetailPage = () => {
   };
 
   const handleOptionClick = (action) => {
-    console.log("여기는 삭제 옵션 클릭");
+    // console.log("여기는 삭제 옵션 클릭");
     setShowOptions(false);
     if (action === "edit") {
       handleEdit();
