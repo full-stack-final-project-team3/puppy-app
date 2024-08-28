@@ -3,8 +3,10 @@ import Portal from '../Portal';
 import styles from './DeleteAccountModal.module.scss';
 import { debounce } from "lodash";
 import { AUTH_URL } from "../../../../config/user/host-config";
-import { useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { useNavigate } from "react-router-dom";
+import {userEditActions} from "../../../store/user/UserEditSlice";
+import {Cookies} from "react-cookie";
 
 const DeleteAccountModal = ({ onClose }) => {
     const user = useSelector(state => state.userEdit.userDetail);
@@ -13,6 +15,7 @@ const DeleteAccountModal = ({ onClose }) => {
     const [isValid, setIsValid] = useState(false);
     const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
     const navi = useNavigate();
+    const dispatch = useDispatch();
 
     const checkPassword = debounce(async (password) => {
         const response = await fetch(`${AUTH_URL}/check-password/${user.email}?password=${password}`);
@@ -46,8 +49,21 @@ const DeleteAccountModal = ({ onClose }) => {
         });
         localStorage.removeItem('userData');
         localStorage.removeItem('userDetail');
-        navi("/");
-        window.location.reload();
+        sessionStorage.removeItem('userData');
+        sessionStorage.removeItem('userDetail');
+        dispatch(userEditActions.updateUserDetail({}));
+
+        const cookies = new Cookies();
+        cookies.remove('authToken', { path: '/' }); // 'authToken' 쿠키를 제거합니다.
+
+
+        const currentUrl = window.location.href;
+
+        if (currentUrl !== "http://localhost:3000/") {
+            navi("/")
+        } else {
+            navi('/')
+        }
         alert("회원탈퇴가 성공적으로 이루어졌습니다.");
     };
 
