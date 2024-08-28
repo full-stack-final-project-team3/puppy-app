@@ -25,7 +25,7 @@ import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import { IoChevronBack } from "react-icons/io5";
 import { GiDogHouse } from "react-icons/gi";
 import DeletePortal from "../../components/community/DeletePortal";
-import {userDataLoader} from "../../config/user/auth";
+import { userDataLoader } from "../../config/user/auth";
 
 // const BASE_URL = "http://localhost:8888";
 
@@ -251,21 +251,37 @@ const BoardDetailPage = () => {
     }
   };
 
-  //공유하기
-const handleShare = () => {
-  setShowShareModal(true);
-  const currentUrl = window.location.href;
-  navigator.clipboard
-    .writeText(currentUrl)
-    .then(() => {
-      console.log("클립보드에 복사되었습니다");
-    })
-    .catch((error) => {
-      console.error("클립보드 복사 실패!", error);
-    });
-};
+  const handleShare = () => {
+    setShowShareModal(true);
+    const currentUrl = window.location.href;
 
-  // 공유하기 닫기
+    const textArea = document.createElement("textarea");
+    textArea.value = currentUrl;
+
+    // Avoid scrolling to bottom
+    textArea.style.top = "0";
+    textArea.style.left = "0";
+    textArea.style.position = "fixed";
+
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+
+    try {
+      const successful = document.execCommand("copy");
+      if (successful) {
+        console.log("클립보드에 복사되었습니다");
+      } else {
+        console.error("클립보드 복사 실패");
+      }
+    } catch (err) {
+      console.error("클립보드 복사 실패:", err);
+    }
+
+    document.body.removeChild(textArea);
+  };
+
+  // 공유하기 닫기 함수는 그대로 유지
   const closeShareModal = () => {
     setShowShareModal(false);
   };
