@@ -31,27 +31,11 @@
   margin-bottom: 20px;
 }
 
-.iconPlaceholder {
-  font-size: 20px;
-  font-family: 'Raleway', sans-serif;
-}
-
 .navLinks {
   display: flex;
   justify-content: space-between;
   width: 100%;
   margin-left: 55px;
-}
-
-.navLinks a {
-  color: #333;
-  text-decoration: none;
-  font-size: 14px;
-  font-family: 'Raleway', sans-serif;
-
-  &:hover {
-    color: #9A5A5A;
-  }
 }
 
 .title {
