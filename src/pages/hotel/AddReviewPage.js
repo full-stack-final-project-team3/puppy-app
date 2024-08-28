@@ -82,6 +82,7 @@ const AddReviewPage = () => {
                             placeholder="Write your review here..."
                             value={reviewContent}
                             onChange={(e) => dispatch(setReviewContent(e.target.value))}
+                            maxLength={30}
                             required
                         />
                         <label>

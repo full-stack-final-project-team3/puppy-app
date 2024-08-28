@@ -33,6 +33,7 @@ const sliderSettings = {
         400: {
             slidesPerView: 1,
             slidesPerGroup: 1,
+            spaceBetween:10,
             loop: true,
         },
     },
