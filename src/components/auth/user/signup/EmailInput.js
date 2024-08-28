@@ -31,11 +31,11 @@ const EmailInput = ({ onSuccess }) => {
 
     if (flag) {
       setEmailValid(false);
-      setError("이미 회원가입된 이메일입니다.");
+      setError("이미 가입되어있는 이메일입니다");
       return;
     } else {
       setEmailValid(true);
-      setSuccess("사용가능한 이메일입니다.");
+      setSuccess("사용가능한 이메일입니다");
     }
 
     // 이메일 중복확인 끝
@@ -67,7 +67,7 @@ const EmailInput = ({ onSuccess }) => {
 
       if (flag) {
         setEmailValid(false);
-        setError("이미 회원가입된 이메일입니다.");
+        setError("이미 가입되어있는 이메일입니다");
         return;
       } else {
         setEmailValid(true);

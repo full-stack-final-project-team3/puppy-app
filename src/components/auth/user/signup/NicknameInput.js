@@ -13,7 +13,7 @@ const NicknameInput = ({ onSuccess }) => {
   const checkNickname = debounce(async (nickname) => {
     if (nickname.trim() === "") {
       setNicknameValid(false);
-      setError("닉네임이 비어있습니다");
+      setError("닉네임을 입력해주세요");
       setSuccess("");
       onSuccess(null); // 닉네임이 비어있음을 알림
       return;
