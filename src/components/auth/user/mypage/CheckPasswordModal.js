@@ -46,7 +46,6 @@ const CheckPasswordModal = ({ onClose, cancelEdit }) => {
     const enterHandler = (e) => {
         if (e.key === "Enter") {
             checkPassword()
-            console.log("zz")
         }
     };
 
