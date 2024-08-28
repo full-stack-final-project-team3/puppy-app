@@ -23,7 +23,33 @@ const initialState = {
     showWarning: false,
     userReservations: [],
     totalPrice: 0,
+    allReservations: [],
 };
+
+// 전체 예약을 가져오는 AsyncThunk
+export const fetchAllReservations = createAsyncThunk(
+    'reservation/fetchAllReservations',
+    async (_, { rejectWithValue }) => {
+        try {
+            const token = getUserToken();
+            const response = await fetch(`${RESERVATION_URL}/all`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch all reservations');
+            }
+
+            const data = await response.json();
+            return data; // 전체 예약 데이터를 반환
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
 
 export const fetchAvailableRooms = createAsyncThunk(
     'reservation/fetchAvailableRooms',
@@ -428,6 +454,17 @@ const reservationSlice = createSlice({
                 state.reservation = action.payload;
             })
             .addCase(submitReservationWithKakaoPay.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.payload;
+            })
+            .addCase(fetchAllReservations.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(fetchAllReservations.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.allReservations = action.payload;  // 전체 예약 데이터를 상태에 저장
+            })
+            .addCase(fetchAllReservations.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.payload;
             });
