@@ -160,6 +160,7 @@ const OrderPage = () => {
     if (!orderInfo.receiverAddress || orderInfo.receiverAddress === '정보 없음' || !orderInfo.receiverDetailAddress) { 
       errors.receiverAddress = "주소를 입력해 주세요."; 
     }
+
     
     setValidationErrors(errors);
     return Object.keys(errors).length === 0; 
