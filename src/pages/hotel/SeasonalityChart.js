@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUserReservations } from '../../components/store/hotel/ReservationSlice';
+import { fetchAllReservations } from '../../components/store/hotel/ReservationSlice';
 import { Bar } from 'react-chartjs-2';
 import {
     Chart as ChartJS,
@@ -14,7 +14,8 @@ import {
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
-import {userDataLoader} from "../../config/user/auth";
+import { getUserToken } from "../../config/user/auth";
+import { ROOM_URL } from "../../config/user/host-config";
 
 // Dayjs 플러그인 등록
 dayjs.extend(utc);
@@ -30,12 +31,54 @@ ChartJS.register(
     Legend
 );
 
-// 월별 예약 현황을 가져오는 로직
+// Room details fetching function
+const fetchRoomDetails = async (roomId) => {
+    const token = getUserToken();
+    const response = await fetch(`${ROOM_URL}/${roomId}`, {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch room details');
+    }
+
+    return response.json();
+};
+
+// Function to get type-based reservations
+const getTypeBasedReservations = async (reservations) => {
+    const typeReservations = {
+        SMALL_DOG: 0,
+        MEDIUM_DOG: 0,
+        LARGE_DOG: 0
+    };
+
+    for (const reservation of reservations) {
+        let updatedReservation = { ...reservation }; // 기존 reservation 객체를 복사하여 새로운 객체 생성
+        if (!updatedReservation.room) {
+            const roomDetails = await fetchRoomDetails(updatedReservation.roomId);
+            updatedReservation = { ...updatedReservation, room: roomDetails }; // 새로운 room 속성을 추가한 새로운 객체 생성
+        }
+
+        const roomType = updatedReservation.room && updatedReservation.room['room-type'];
+        if (roomType && typeReservations[roomType] !== undefined) {
+            typeReservations[roomType] += 1;
+        }
+    }
+
+    return typeReservations;
+};
+
+
+// Function to get monthly reservations
 const getMonthlyReservations = (reservations) => {
     const now = dayjs();
     const monthlyReservations = {};
 
-    // 현재 월로부터 미래 11개월까지의 월을 초기화
+    // Initialize the next 12 months
     for (let i = 0; i < 12; i++) {
         const month = now.add(i, 'month').format('YYYY-MM');
         monthlyReservations[month] = 0;
@@ -51,37 +94,27 @@ const getMonthlyReservations = (reservations) => {
     return monthlyReservations;
 };
 
-// 객실 타입별 예약빈도 수 가져오는 로직
-const getTypeBasedReservations = (reservations) => {
-    const typeReservations = {
-        SMALL_DOG: 0,
-        MEDIUM_DOG: 0,
-        LARGE_DOG: 0
-    };
-
-    reservations.forEach(reservation => {
-        const type = reservation.room['room-type'];
-        if (type && typeReservations[type] !== undefined) {
-            typeReservations[type] += 1;
-        }
-    });
-
-    return typeReservations;
-};
-
-// 그래프를 그려주는 로직
+// Main component to render charts
 const SeasonalityChart = () => {
     const dispatch = useDispatch();
-    const { userReservations, status, error } = useSelector(state => state.reservation);
-    const userData = userDataLoader();
-    const userId = userData.userId
-
+    const { allReservations, status, error } = useSelector(state => state.reservation);
+    const [typeReservations, setTypeReservations] = useState(null);
 
     useEffect(() => {
-        if (status === 'idle' && userId) {
-            dispatch(fetchUserReservations({ userId }));
+        if (status === 'idle') {
+            dispatch(fetchAllReservations());
         }
-    }, [status, dispatch, userId]);
+    }, [status, dispatch]);
+
+    useEffect(() => {
+        const fetchTypeReservations = async () => {
+            if (allReservations.length > 0) {
+                const types = await getTypeBasedReservations(allReservations);
+                setTypeReservations(types);
+            }
+        };
+        fetchTypeReservations();
+    }, [allReservations]);
 
     if (status === 'loading') {
         return <p>로딩 중...</p>;
@@ -91,8 +124,7 @@ const SeasonalityChart = () => {
         return <p>오류: {error}</p>;
     }
 
-    const monthlyReservations = getMonthlyReservations(userReservations);
-    const typeReservations = getTypeBasedReservations(userReservations);
+    const monthlyReservations = getMonthlyReservations(allReservations);
 
     const monthlyData = {
         labels: Object.keys(monthlyReservations),
@@ -107,7 +139,7 @@ const SeasonalityChart = () => {
         ],
     };
 
-    const typeData = {
+    const typeData = typeReservations ? {
         labels: Object.keys(typeReservations),
         datasets: [
             {
@@ -126,7 +158,7 @@ const SeasonalityChart = () => {
                 borderWidth: 1,
             },
         ],
-    };
+    } : null;
 
     const options = {
         scales: {
@@ -150,8 +182,12 @@ const SeasonalityChart = () => {
         <div>
             <h2>월별 예약 트렌드</h2>
             <Bar data={monthlyData} options={{ ...options, title: { ...options.title, text: '월별 예약 현황' } }} />
-            <h2>객실 타입별 예약</h2>
-            <Bar data={typeData} options={{ ...options, title: { ...options.title, text: '객실 타입별 예약' } }} />
+            {typeData && (
+                <>
+                    <h2>객실 타입별 예약</h2>
+                    <Bar data={typeData} options={{ ...options, title: { ...options.title, text: '객실 타입별 예약' } }} />
+                </>
+            )}
         </div>
     );
 };
