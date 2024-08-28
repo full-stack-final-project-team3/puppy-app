@@ -120,7 +120,7 @@ const ShopMainBg = ({ content, manageShopBtn }) => {
                 <span className={styles.stepNumber}>✔️</span>
                 <div className={styles.stepContent}>
                   <h4 className={styles.processName}>
-                    간식 고르기 <span className={styles.stepIcon2}></span>
+                    상품 선택하기 <span className={styles.stepIcon2}></span>
                   </h4>
                   <p className={styles.processP}>
                     강아지 정보를 분석하여 추천한 몇 가지 상품 중 원하는 걸
