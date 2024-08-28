@@ -61,7 +61,7 @@ const DeleteAccountModal = ({ onClose }) => {
         const currentUrl = window.location.href;
 
         if (currentUrl !== "http://localhost:3000/") {
-            navi("/doggle.kr")
+            navi("/")
         } else {
             navi('/')
         }
