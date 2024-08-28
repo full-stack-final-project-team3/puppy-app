@@ -33,7 +33,6 @@ const SignUpPage = () => {
   const [address, setAddress] = useState({ localAddress: "", detailAddress: "" });
   const { changeIsLogin, setUser } = useContext(UserContext);
 
-  // Modal 관련 상태
   const [showModal, setShowModal] = useState(false);
   const [modalText, setModalText] = useState("");
 
@@ -67,7 +66,6 @@ const SignUpPage = () => {
     e.preventDefault();
 
     if (enteredNickname === null) {
-      alert("tlqkf")
     }
     const payload = {
       email: enteredEmail,
@@ -106,7 +104,6 @@ const SignUpPage = () => {
           setUser(responseData);
           changeIsLogin(true);
 
-          // 모달을 열고 텍스트 설정
           setModalText("회원가입에 성공하셨습니다");
           setShowModal(true);
 
