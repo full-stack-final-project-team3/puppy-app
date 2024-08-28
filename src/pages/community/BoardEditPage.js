@@ -123,10 +123,10 @@ const selectedKeywordObject = keywords.find(
         : null,
     };
 
-    console.log("🐶dto: " + dto);
-    console.log("🐶keyword: " + dto.keyword);
-    console.log("🐶Selected Keyword ID:", selectedKeyword);
-    console.log("🐶Selected Keyword Object:", selectedKeywordObject);
+    // console.log("🐶dto: " + dto);
+    // console.log("🐶keyword: " + dto.keyword);
+    // console.log("🐶Selected Keyword ID:", selectedKeyword);
+    // console.log("🐶Selected Keyword Object:", selectedKeywordObject);
     
     formData.append(
       "dto",
