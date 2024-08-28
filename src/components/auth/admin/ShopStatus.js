@@ -45,7 +45,7 @@ const ShopStatus = () => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
+          <XAxis dataKey="name" tick={false}/>
           <YAxis tickFormatter={(value) => value.toLocaleString()} />
           <Tooltip className={styles.tooltipStyle} />
           <Legend />
