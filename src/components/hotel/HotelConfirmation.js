@@ -226,7 +226,8 @@ const HotelConfirmation = ({
                         />
                         <button className={styles.useAllPointsButton} onClick={handleUseAllPoints}>모두사용</button>
                         <p className={styles.pointPaymentMessage}>사용 가능: {formatPrice(user.point - pointUsage)}p</p>
-                        {user.point ? <p className={styles.chargePoint}>* 포인트는 마이페이지에서 충전하실 수 있습니다. (마이페이지 -> 수정)</p> : <p></p>}
+                        {user.point ? <p></p> :
+                            <p className={styles.chargePoint}>* 포인트는 마이페이지에서 충전하실 수 있습니다. (마이페이지 -> 수정)</p>}
                     </div>
                 )}
 
