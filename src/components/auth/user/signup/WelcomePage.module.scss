@@ -16,6 +16,7 @@
 }
 
 .welcomeCard {
+  justify-content: space-between;
   background-color: #f4e8d3;
   padding: 40px;
   border-radius: 16px;
@@ -32,13 +33,14 @@
 
 .iconPlaceholder {
   font-size: 20px;
-  color: green;
   font-family: 'Raleway', sans-serif;
 }
 
 .navLinks {
   display: flex;
-  gap: 15px;
+  justify-content: space-between;
+  width: 100%;
+  margin-left: 55px;
 }
 
 .navLinks a {
@@ -64,9 +66,13 @@
 .text {
   font-size: 18px;
   color: #666;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   text-align: center;
   font-family: 'Raleway', sans-serif;
+
+  &:hover {
+    color: #9A5A5A;
+  }
 }
 
 .btnBox {
@@ -88,5 +94,15 @@
 
   &:hover {
     background-color: #9A5A5A;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .welcomeCard {
+    width: 300px;
+  }
+
+  .navLinks {
+    margin-left: 25px;
   }
 }
