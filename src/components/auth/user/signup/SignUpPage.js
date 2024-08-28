@@ -14,7 +14,7 @@ import { useDispatch } from "react-redux";
 import UserContext from "../../../context/user-context";
 import { userEditActions } from "../../../store/user/UserEditSlice";
 import WelcomePage from "./WelcomePage";
-import UserModal from "../mypage/UserModal"; // UserModal import
+import UserModal from "../mypage/UserModal";
 
 const SignUpPage = () => {
   const dispatch = useDispatch();
@@ -181,6 +181,12 @@ const SignUpPage = () => {
     navigate("/");
   };
 
+  // ADD DOG 버튼을 눌렀을 때 모달 띄우기
+  const handleAddDogModal = () => {
+    setModalText("강아지 등록 페이지로 이동합니다");
+    setShowModal(true);
+  };
+
   return (
       <>
         <StepIndicator step={step} onStepClick={handleStepClick} />
@@ -241,7 +247,10 @@ const SignUpPage = () => {
                 )}
 
                 {step === 4 && (
-                    <WelcomePage onAddDogClick={autoLoginHandler} />
+                    <WelcomePage 
+                    onAddDogClick={autoLoginHandler} 
+                    onShowAddDogModal={handleAddDogModal}
+                    />
                 )}
               </div>
             </div>
